@@ -1,0 +1,22 @@
+export default{
+    createEnvironmentVariable: '//button[@aria-label="Create Environment Variable"]',
+    searchEnviromentVariable: '//input[@aria-label="Search"]',
+    loadingEnvironmentVariable: ".jumbotron.jumbotron-fluid",
+    paginationEnvironmentVariable: ".pagination",
+    oneVariableInList: '//div[text()="1 - 1 of 1 Variable"]',
+    environmentVariableFound: "//span[contains(text(),'environmentVariable')]/ancestor::tr/td/div/button",
+    editVariableEnvironmentVariable: '//span[text()="Edit Variable"]',
+    nameInputEnvironmentVariable: "div[id='createEnvironmentVariable'] input[name='name']",
+    descriptionTextAreaEnviromentVariable: "div[id='createEnvironmentVariable'] textarea[name='description']",
+    valueTextAreaEnviromentVariable: "div[id='createEnvironmentVariable'] textarea[name='value']",
+    saveEnvironmentVariable: "//div[@id='createEnvironmentVariable']//footer//button[text()='Save']",
+    editNameField:"div[id='editEnvironmentVariable'] input[id='name']",
+    editDescriptionField: "div[id='editEnvironmentVariable'] textarea[id='description']",
+    editValueField: "div[id='editEnvironmentVariable'] textarea[name='value'",
+    editSaveBtn: "//div[@id='editEnvironmentVariable']//button[text()='Save']",
+    deleteEnviromentVariable: '//span[text()="Delete"]',
+    confirmDeleteEnviromentVariable: '//button[text()="Confirm"]',
+    ///
+    optionModal: '[class="data-table"] [aria-haspopup="menu"]',
+    option: '//ul[@role="menu"]//span[text()="selectOption"]',
+}

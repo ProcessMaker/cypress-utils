@@ -1,0 +1,23 @@
+{
+  "name": "@processmaker/cypress-utils",
+  "version": "1.0.0",
+  "description": "ProcessMaker Cypress Testing Utilities",
+  "main": "index.js",
+  "scripts": {},
+  "author": "DevOps <devops@processmaker.com>",
+  "license": "AGPL-3.0",
+  "repository": "https://github.com/processmaker/cypress-utils",
+  "imports": {
+    "#helpers/*": "./helpers/*",
+    "#pages/*": "./pages/*",
+    "#selectors/*": "./selectors/*",
+    "#support/*": "./support/*"
+  },
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.5",
+    "cypress-downloadfile": "^1.2.3",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-promise": "^1.1.0",
+    "date-fns": "^3.6.0"
+  }
+}

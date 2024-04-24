@@ -1,0 +1,16 @@
+export default {
+    userAvatarBtn: '[id="avatarMenu"] button',
+    addRequestBtn: '#navbar-request-button',
+    loadingProcesses: '//h4[text()="Finding Requests available to you..."]',
+    searchWithProceesNameTxtBx: '#requests-modal input[type="text"]',
+    startBtnBasedOnProcessName:"(//div[@class='col-2 text-right']//a)[1]",
+    processNameInputTxt:'(//span[text()="processName"])[1]',
+    searchBtn:'//button[@aria-label="Search"]//i[@class="fas fa-search"]',
+    usercIconBtn:'[id="userMenu"] button',
+    logOutBtn:"//div[@id='userMenu']//div/ul/li/a[@href='/logout']",
+    userNameTxtBxL:'[id="username"]',
+    notification: "#notificationMenu > .btn",
+    notificationList:'[class="notification-popover"]',
+    lastNotification:'//div[@class="notification-popover"]//ul//li[1]',
+    labelLastNotification:'//div[@class="notification-popover"]//ul//li[1]//div//div//a',
+}

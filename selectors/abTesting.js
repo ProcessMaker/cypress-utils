@@ -1,0 +1,45 @@
+export default {
+    iframeA: '[id="alternative_a"]',
+    iframeB: '[id="alternative_b"]',
+
+    //AB alternatives
+    menuAB: '[id="myTab"]',
+    alternativeA_Tab: '[id="tab-A"]',
+    alternativeB_Tab: '[data-test="tab-B"]',
+    plusTab: '[data-test="tab-plus"]',
+    deleteAltB_Btn: '[id="tab-B-remove"]',
+    confirmBtn: '[class="btn m-0 btn-secondary"]',
+
+
+    //Replace alternative
+    replaceAlternativeBtn: '[data-test="tab-replace"]',
+    ABsettingsBtn: '[data-test="btn-switch-version-info"]',
+
+    //Publish New Version
+    publishBtn: '[data-cy="publish-btn"]',
+    modalPublishVersion: '[class="modal-dialog modal-lg modal-dialog-centered"]',
+    publishBtnInModal: '[data-test="btn-save-publish"]',
+    alternativeA_Btn: '[data-test="btn-alternative-a"]',
+    alternativeB_Btn: '[data-test="btn-alternative-b"]',
+    alternativeAB_Btn: '[data-test="btn-alternative-ab"]',
+    saveAndPublish: '[data-test="btn-save-publish"]',
+    version: 'input[name="version"]',
+    description: '[name="description"]',
+    saveBtnInLaunchpadSettingModal: '[class="btn btn-secondary"]',
+    modalLaunchpad: '[id="launchpadSettingsModal___BV_modal_content_"]',
+    labelLaunchpad: '[id="launchpadSettingsModal___BV_modal_title_"]',
+    closeModalPublish: '[aria-label="Close"]',
+
+    //AB Settings 
+    simpleBtn: '[data-test="btn-simple-mode"]',
+    advancedBtn: '[data-test="btn-advanced-mode"]',
+    expressionInput: '[data-test="expression-input"]',
+    scrollBar: '[data-test="ratio-input"]',
+    seeProcessABTestingConfiguration: '//div[@class="row justify-content-center"]//a',
+
+    //AB Testing from configuration of process
+    ABTestingTab: '[id="testing-configuration-tab"]',
+
+    //Modeler Elements
+    addBtn: '[title="Add"]',
+}
