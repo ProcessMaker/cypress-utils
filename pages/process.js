@@ -2169,5 +2169,12 @@ export class Process {
         cy.xpath(selectors.copyWebEntryURL).click();
         cy.xpath(selectors.spanAnonymousWebLinkCopied).should('be.visible');
         cy.xpath("//span").contains("Please use this link when you are not logged into ProcessMaker");
-    } 
+    }
+     
+    openAlternativeModeler(alternative = "A") {
+        cy.url().then(($url) => {
+            let processID = $url.split("/")[4].trim();
+            cy.visit("/modeler/" + processID + "/alternative/" + alternative);
+        });
+    }
 }
