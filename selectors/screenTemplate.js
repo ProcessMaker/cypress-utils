@@ -18,7 +18,9 @@ export default {
     searchScreen:'[data-cy="input-search"]',
     loadingSpinnerScreen:'(//div[".icon-container"]/h3[contains(text(),"Loading")])[1]',
     tabMyTemplates:'//*[@id="nav-myTemplates-tab"]',
+    tabSharedTemplates:'//*[@id="nav-publicTemplates-tab"]',
     tableScreenTemplate:'[data-cy="my-templates-table"]',
+    tableScreenSharedTemplate:'[data-cy="public-templates-table"]',
     screenTemplateList:'[id="myTemplatesIndex"]',
     searchInputScreenTemplate: '//div[@id="myTemplatesIndex"]//textarea[@placeholder="Search here"]',
     menuOptionScreenTemplateMyTemplate2:'//div[@id="myTemplatesIndex"]//table/tbody/tr//button[@aria-haspopup="menu"]',
@@ -29,14 +31,17 @@ export default {
     confirmDeleteScreentemplate:'//button[text()="Confirm"]',
     downloadExport:'//*[@class="btn btn-secondary ml-2"]',
     ImportButtonMyTemplate:'(//*[@id="import_template"])[1]',
+    ImportButtonSharedTemplate:'(//*[@id="import_template"])[2]',
     titleImportScreenTemplate:'(//div[@id="importScreen"]//h5)[1]',
     browseScreenTemplate: '[data-cy="button-browse"]',
     importBtnScreentemplate:'//*[@class="btn btn-primary ml-2"]',
     importBtnScreenMyTemplate: '[data-cy="button-import"]',
+    importBtnScreenSharedTemplate: '[data-cy="button-import"]',
     loadingScreenTemplateSpinner:'[class="fas fa-circle-notch fa-spin"]',
     screenTemplateTableBx:'[data-cy="my-templates-table"]',
     screentemplateIndex:'[id="nav-myTemplates"]',
     totalPaginationScreenMyTemplate:'[data-cy="my-templates-pagination"] span[class="pagination-total"]',
+    totalPaginationScreenSharedTemplate:'[data-cy="public-templates-pagination"] span[class="pagination-total"]',
 
     
 }
