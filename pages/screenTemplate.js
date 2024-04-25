@@ -103,6 +103,15 @@ export class ScreenTemplate {
         cy.get(".jumbotron.jumbotron-fluid").should("not.be.visible");
 	}
 
+    searchScreenSharedTemplate(nameScreenTemplate) {
+        cy.xpath('//*[@id="nav-publicTemplates"]/div').should("be.visible");
+        cy.get(selectors.tableScreenSharedTemplate).should("be.visible");
+        cy.xpath(selectors.searchInputScreenTemplatePublic).should('be.visible');
+        cy.xpath(selectors.searchInputScreenTemplatePublic).click().clear();
+        cy.xpath(selectors.searchInputScreenTemplatePublic).type(`${nameScreenTemplate}`,{delay:100}).type('{enter}').should("have.value", nameScreenTemplate);
+        cy.get(".jumbotron.jumbotron-fluid").should("not.be.visible");
+	}
+
     selectMenuOptionRowScreenTemplate(nameOption2) {
         const optionCatXpath2 = `//div[@id="myTemplatesIndex"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
         cy.xpath(optionCatXpath2).should("be.visible").first().click();
@@ -278,7 +287,51 @@ importScreenTemplate(screenTemplatePath) {
 		cy.get(selectors.importBtnScreenMyTemplate).click();
 	}
 
+verifyPresenceOfScreenSharedtemplateAndImport(screenTemplateSharedTemplate, screenTemplatePath) {
+        var editBtn =
+        '//div[@id="publicTemplatesIndex"]//button[@aria-haspopup="menu"]';
+        cy.get("[data-cy='public-templates-table-td-0-4']").first().trigger("mouseover", { force: true });
+        cy.wait(3000);
+        cy.xpath(editBtn).should("be.visible");
+        cy.xpath(selectors.searchInputScreenTemplatePublic)
+    .type(`${screenTemplateSharedTemplate}`, {delay:60})
+    .should("have.value", screenTemplateSharedTemplate);
+        cy.xpath(selectors.searchInputScreenTemplatePublic).type("{enter}");
+        cy.wait(3000);
+        cy.get(selectors.totalPaginationScreenSharedTemplate)
+            .invoke("text")
+            .then(($el) => {
+                if ($el.trim() == "0 items") {
+                    this.importBtnScreenSharedTemplate(screenTemplatePath);
+                } else {
+                    cy.log("no result");
+                }
+            });
+}
 
+    importScreenSharedTemplate(screenTemplatePath) {
+
+        cy.xpath(selectors.ImportButtonSharedTemplate).should('be.visible');
+        cy.xpath(selectors.ImportButtonSharedTemplate).click();
+
+        cy.window().then((win) => {
+                const element = win.document.getElementById("import-file");
+                element.classList.remove("d-none");
+                win.document.querySelector(Selectors.fileBtn).style.visibility = "visible";
+                win.document.querySelector(Selectors.fileBtn).style.display = "block";
+                win.document.querySelector(Selectors.fileBtn).style.width = "200px";
+                win.document.querySelector(Selectors.fileBtn).style.height = "20px";
+                win.document.querySelector(Selectors.fileBtn).style.position = "fixed";
+                win.document.querySelector(Selectors.fileBtn).style.overflow = "visible";
+                win.document.querySelector(Selectors.fileBtn).style.zIndex = "9999999";
+                win.document.querySelector(Selectors.fileBtn).style.top = "500px";
+                win.document.querySelector(Selectors.fileBtn).style.left = "500px";
+                win.document.querySelector(Selectors.fileBtn).style.right = "500px";
+                win.document.querySelector(Selectors.fileBtn).style.bottom = "500px";
+            });
+            cy.get(Selectors.fileBtn).attachFile(screenTemplatePath);
+            cy.get(selectors.importBtnScreenSharedTemplate).click();
+        }
    /* cy.xpath(selectors.ImportButtonMyTemplate).first().click();
         cy.xpath(selectors.titleImportScreenTemplate)
             .first()
