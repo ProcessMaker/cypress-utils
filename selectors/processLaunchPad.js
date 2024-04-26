@@ -29,6 +29,15 @@ export default {
     inputSearchCategories: '//input[@placeholder="Search Categories"]',
     categoryFound: "//div['#infinite-list']/div[contains(text(),'category')]",
     bookMarkedSuccessAlert: '[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]',
-    optionLaunchPad: '//a//span[contains(text(),"option")]'
-
+    optionLaunchPad: '//a//span[contains(text(),"option")]',
+    dragAndClickHere: "//span[contains(text(),'Drag or click here')]",
+    loadAnImage: '//div[@class="input-file-custom dropdown-toggle"]',
+    embedVideo: "//a[contains(text(),'Embed Media')]",
+    urlVideo: '//input[@id="newEmbed"]',
+    buttonApply: '//button[contains(text(),"Apply")]',
+    defaultChart: '//canvas[@id="pie-chart"]',
+    videoLink: '(//div/i[@class="fas fa-link"])[1]',
+    trashIcon: '//div/i[@class="fas fa-trash-alt custom-trash-icon"]',
+    deleteVideo: '//div/button[@class="btn btn-delete-embed btns-popover"]',
+    embedMediaDeleteAlert: '//span[contains(text(), "The embed media was deleted")]'
 }
