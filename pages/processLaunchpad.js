@@ -208,4 +208,25 @@ export class ProcessLaunchpad {
                 }
             })
     }
-}
+
+    clickOnMenuOptionLaunchPad(option){
+        cy.xpath(selectors.optionLaunchPad.replace('option',option)).should('be.visible');
+        cy.xpath(selectors.optionLaunchPad.replace('option',option)).click();
+    }
+ 
+    attachVideo(video){
+        cy.xpath(selectors.dragAndClickHere).should('be.visible');
+        cy.xpath(selectors.dragAndClickHere).click();
+        cy.xpath(selectors.embedVideo).should('be.visible');
+        cy.xpath(selectors.embedVideo).click();
+        cy.xpath(selectors.urlVideo).type(video);
+        cy.xpath(selectors.buttonApply).click();
+    }  
+
+    deleteVideos(){
+        cy.xpath(selectors.videoLink).click();
+        cy.xpath(selectors.trashIcon).click();
+        cy.xpath(selectors.deleteVideo).click();
+        cy.xpath(selectors.embedMediaDeleteAlert).should('be.visible');
+    } 
+} 
