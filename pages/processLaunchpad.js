@@ -65,7 +65,7 @@ export class ProcessLaunchpad {
     verifyOptionEllipsis(userType){
         if(userType === "admin"){
             cy.xpath("//*[contains(text(),'Open in Modeler')]").should("exist");
-            cy.xpath("//*[contains(text(),'Edit in Launchpad')]").should("exist");
+            cy.xpath("//*[contains(text(),'Edit Launchpad')]").should("exist");
             cy.xpath("//*[contains(text(),'Save as Template')]").should("exist");
             cy.xpath("//*[contains(text(),'Save as PM Block')]").should("exist");
             cy.xpath("//*[contains(text(),'Add to Project')]").should("exist");
