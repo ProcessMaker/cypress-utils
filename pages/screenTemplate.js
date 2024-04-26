@@ -114,6 +114,7 @@ export class ScreenTemplate {
 
     selectMenuOptionRowScreenTemplate(nameOption2) {
         const optionCatXpath2 = `//div[@id="myTemplatesIndex"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
+        cy.get("[data-cy='my-templates-table-td-0-3']").first().trigger("mouseover", { force: true });
         cy.xpath(optionCatXpath2).should("be.visible").first().click();
     }
 
@@ -160,7 +161,7 @@ export class ScreenTemplate {
     }
 
     makePublicMyTemplate() {
-        this.selectMenuOptionRowScreenTemplate("Make Public");
+        this.selectMenuOptionRowScreenTemplate("Share Template");
     }
     deleteScreenTemplate() {
         this.selectMenuOptionRowScreenTemplate("Delete Template");
