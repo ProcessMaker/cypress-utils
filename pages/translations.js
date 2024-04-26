@@ -243,10 +243,9 @@ export class Translations {
      * @return nothing returns
      */
     cancelTranslation(languageSet){
-        cy.xpath(selectors.translationsSearch).click();
+        cy.xpath(selectors.translationsSearch).should('be.visible').click();
         cy.xpath(selectors.translationsSearch).type(languageSet);
-        cy.wait(5000);
-        cy.xpath(selectors.progressTranslateBtn).click();
+        cy.get(selectors.progressTranslateBtn).first().click();
         cy.xpath(selectors.cancelTranslationOption).click();
         cy.xpath(selectors.confirmDeleteBtn).click();
     }
@@ -257,13 +256,10 @@ export class Translations {
      * @return nothing returns
      */
     verifyCancelation(languageSet){
-        cy.xpath(selectors.translationsSearch).click().clear();
-        cy.wait(2000);
-        cy.xpath(selectors.translationsSearch).click().type(languageSet);
-        cy.wait(2000);
-        cy.xpath(selectors.openTranslation).should("be.visible").click();
+        cy.xpath(selectors.translationsSearch).clear();
+        cy.xpath(selectors.translationsSearch).type(languageSet);
+        cy.xpath(selectors.openTranslation.replace('language', languageSet)).should('be.visible').first().click({force: true});
         cy.xpath(selectors.translationScreenList).click();
-        cy.wait(2000);
         cy.get(selectors.optionListScreen.replace("ScreenOption",screen2)).click();
         cy.xpath(selectors.EmailStingInPut).should('have.value', '');
         cy.xpath(selectors.FinishStingInPut).should('have.value', '');

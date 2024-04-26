@@ -28,7 +28,7 @@ export default{
     deleteOption: '//div[@class="ellipsis-dropdown-content"]/i[@class="pr-1 fa-fw fas fa-trash"]',
     confirmDeleteBtn: '//button[@class="btn m-0 btn-secondary"]',
     saveButtonTranslations: '//div[@id="nav-translations"]//div[@class="d-flex justify-content-end mt-2"]//button[@class="btn btn-secondary ml-2"]',
-    progressTranslateBtn: '//button[@class="btn dropdown-toggle btn-ellipsis dropdown-toggle-no-caret"]',
+    progressTranslateBtn: 'button[class="btn dropdown-toggle btn-outlined-secondary static-header"]',
     cancelTranslationOption: '//i[@class="pr-1 fa-fw fas fa-stop-circle"]',
     EmailStingInPut: "//textarea[@aria-label='Add a translation for Email']",
     FinishStingInPut: "//textarea[@aria-label='Add a translation for Finish']",
