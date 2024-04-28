@@ -27,6 +27,9 @@ jobs:
 
       - name: Bump package version
         run: npm version patch
+        
+      - name: Push version change
+        run: git push --tags
 
       - name: Publish to npm
         run: npm publish
