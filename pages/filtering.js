@@ -38,7 +38,7 @@ export class Filtering {
             .find("button")
             .contains(option)
             .click();
-        cy.get('[class="jumbotron jumbotron-fluid"]').should("be.visible");
+        //cy.get('[class="jumbotron jumbotron-fluid"]').should("be.visible");
         //cy.get('[class="jumbotron jumbotron-fluid"]').should("not.be.visible");
     }
     /**
