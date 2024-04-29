@@ -127,7 +127,7 @@ export class NaturalLanguage {
     }
 
     generateProcessFromImage(){
-        cy.get('.preview-file-info').should('exist');
+        cy.get('[class="icon-wrapper p-1 mx-3"]').should('exist');
         cy.get('.btn-outline-secondary').should('be.visible',{timeout: 1000});
         cy.xpath("//button[contains(text(),'Generate')]").should('be.visible').click({timeout: 1000});
         cy.get('[role="progressbar"]').should('exist');

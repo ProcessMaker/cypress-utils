@@ -41,7 +41,7 @@ export class Translations {
         cy.xpath("//label[text()='Select a target language']/parent::div//input").type(languageSet+'{enter}',{delay:1000});
         cy.xpath(selectors.translateProcessBtn).should("be.visible").click({force: true}, {timeout: 2000});
         cy.xpath('//div[@id="createProcessTranslation___BV_modal_content_"]').should("be.visible",{timeout: 5000});
-        cy.wait(3000);
+        cy.wait(5000);
     }
 
     /**
@@ -50,7 +50,7 @@ export class Translations {
      * @return nothing returns
      */
     verifyCreation(languageSet){
-        cy.xpath(selectors.translationsSearch).should("be.visible").type(languageSet,{delay:1000});
+        cy.xpath(selectors.translationsSearch).should("be.visible").type(languageSet);
         this.waitUntilTranslationComplete('selector','button [class="text-capitalize screen-toolbar-button"]');
         cy.get('#table-translations > tbody > tr:nth-child(1)').should("be.visible");
         cy.xpath(selectors.openTranslation.replace('language', languageSet)).should('be.visible').first().click({force: true});
