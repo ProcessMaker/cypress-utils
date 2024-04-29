@@ -1,6 +1,6 @@
 # ProcessMaker Cypress Testing Utilities
 
-This package provides a collection of utilities designed to enhance and simplify the development of tests with Cypress, an end-to-end testing framework. These utilities aim to make your ProcessMaker automated testing workflow more efficient and manageable.
+This package provides a collection of utilities designed to enhance and simplify the development of tests for ProcessMaker with Cypress, an end-to-end testing framework. These utilities aim to make your ProcessMaker automated testing workflow more efficient and manageable.
 
 ## Features
 
@@ -14,7 +14,7 @@ This package provides a collection of utilities designed to enhance and simplify
 To start using the cypress-utils in your project, you'll need to add it as a dependency. Assuming you have Node.js and npm installed, you can add the package by running:
 
 ```bash
-npm install --save-dev @processmaker/cypress-utils
+npm install --save @processmaker/cypress-utils
 ```
 
 ## Usage
