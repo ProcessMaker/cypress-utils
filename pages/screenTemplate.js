@@ -303,7 +303,7 @@ verifyPresenceOfScreenSharedtemplateAndImport(screenTemplateSharedTemplate, scre
             .invoke("text")
             .then(($el) => {
                 if ($el.trim() == "0 items") {
-                    this.importBtnScreenSharedTemplate(screenTemplatePath);
+                    this.importScreenSharedTemplate(screenTemplatePath);
                 } else {
                     cy.log("no result");
                 }
