@@ -1170,121 +1170,125 @@ export class Admin {
      * @return nothing returns
      */
     createMailServer(serverEmailType){
-        cy.xpath('//a[text()="Email Default Settings"]').should('be.visible').click();
-        cy.xpath('//button[contains(.,"Mail Server")]').should('be.visible').click();
-        cy.xpath('//div[@aria-hidden="false"]//div[contains(text(),"alias name")]/ancestor::tr/td[2]').should('be.visible');
-        switch(serverEmailType){
-            case "smtp":
-                //variables
-                var aliasServerEmailTxt= Cypress.env("defaultMailTrap.aliasEmail");
-                var senderEmailTxt = Cypress.env("defaultMailTrap.senderEmail");
-                var senderNameTxt = Cypress.env("defaultMailTrap.senderName");
-                var serverHostTxt = Cypress.env("defaultMailTrap.serverHost");
-                var serverPortTxt = Cypress.env("defaultMailTrap.serverPort");
-                var secureOption = Cypress.env("defaultMailTrap.secureOption");
-                var userAccount = Cypress.env("defaultMailTrap.userAccount");
-                var userAccountPass = Cypress.env("defaultMailTrap.userAccountPass");
-                let optionConfigXpath = '//div[@aria-hidden="false"]//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
-                let optionColumnXpath = '//div[@aria-hidden="false"]//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
-                //edit Mailer alias name
-                //cy.xpath('//div[contains(text(),"Mailer alias name")]/ancestor::tr//button[@aria-label="Edit"]').click();
-                cy.xpath(optionConfigXpath.replace('optionName','Mailer alias name')).click();
-                cy.xpath('//div[@class="modal-content"]//div/input').should('be.visible').clear();
-                cy.xpath('//div[@class="modal-content"]//div/input').type(aliasServerEmailTxt).should('have.value',aliasServerEmailTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                cy.xpath('//div[@role="alert"]').should('exist');
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                cy.xpath(optionColumnXpath.replace('optionColumn','Mailer alias name')).should('have.contain',aliasServerEmailTxt);
+        var ServerHost = Cypress.env("defaultMailTrap").serverHost;
+        cy.get('[data-target="#collapseOne1"]').as("emailTitle").should("be.visible");
+        cy.get('@emailTitle').invoke("attr", "aria-expanded").then(($op) => {
+            if($op === "true"){ 
+                cy.get("@emailTitle").click();
+            }
+        });
+        cy.get('[id="collapseOne1"]').as("listEmail").should("have.class", "collapse show");
+        cy.get("@listEmail").click();
 
-                //edit sender email
-                cy.xpath(optionConfigXpath.replace('optionName','Sender Email')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderEmailTxt).should('have.value',senderEmailTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                cy.xpath('//div[@role="alert"]').should('exist');
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                cy.xpath(optionColumnXpath.replace('optionColumn','Sender Email')).should('have.contain',senderEmailTxt);
-
-                //edit sender name
-                cy.xpath(optionConfigXpath.replace('optionName','Sender Name')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderNameTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                cy.xpath('//div[@role="alert"]').should('exist');
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                cy.xpath(optionColumnXpath.replace('optionColumn','Sender Name')).should('have.contain',senderNameTxt);
-
-                //edit server host
-                cy.xpath(optionConfigXpath.replace('optionName','Server Host')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverHostTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                cy.xpath('//div[@role="alert"]').should('exist');
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                cy.xpath(optionColumnXpath.replace('optionColumn','Server Host')).should('have.contain',serverHostTxt);
-
-                //edit server port
-                cy.xpath(optionColumnXpath.replace('optionColumn','Server Port')).invoke('text').then(($port)=>{
-                    cy.log("port="+$port+"/");
-                    if($port.trim() !== serverPortTxt){
-                        cy.xpath(optionConfigXpath.replace('optionName','Server Port')).click();
+        cy.xpath('//div[contains(text(),"Email Default Settings")]').click();      
+        cy.xpath('//table/tbody//div[contains(text(),"Server Host")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text').then(elem => {
+            if(elem.trim() === ServerHost){
+                cy.log('email server exits: '+ ServerHost);
+            }else{
+                switch(serverEmailType){
+                    case "smtp":
+                        //variables
+                        var aliasServerEmailTxt= Cypress.env("defaultMailTrap").aliasEmail;
+                        var senderEmailTxt = Cypress.env("defaultMailTrap").senderEmail;
+                        var senderNameTxt = Cypress.env("defaultMailTrap").senderName;
+                        var serverHostTxt = Cypress.env("defaultMailTrap").serverHost;
+                        var serverPortTxt = Cypress.env("defaultMailTrap").serverPort;
+                        var secureOption = Cypress.env("defaultMailTrap").secureOption;
+                        var userAccount = Cypress.env("defaultMailTrap").userAccount;
+                        var userAccountPass = Cypress.env("defaultMailTrap").userAccountPass;
+                        let optionConfigXpath = '//table/tbody//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
+                        let optionColumnXpath = '//table/tbody//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
+                        //edit sender email
+                        cy.xpath(optionConfigXpath.replace('optionName','Sender Email')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverPortTxt);
+                        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderEmailTxt).should('have.value',senderEmailTxt);
                         cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
                         cy.xpath('//div[@role="alert"]').should('exist');
                         cy.xpath('//div[@role="alert"]').should('not.exist');
-                    }
-                    cy.xpath(optionColumnXpath.replace('optionColumn','Server Port')).should('have.contain',serverPortTxt);
-                });
-
-                //edit server secure option
-                cy.xpath(optionColumnXpath.replace('optionColumn','Use secure connection')).invoke('text').then(($option)=>{
-                    cy.log("port="+$option+"/");
-                    if($option.trim() !== secureOption){
-                        cy.xpath(optionConfigXpath.replace('optionName','Use secure connection')).click();
+                        cy.xpath(optionColumnXpath.replace('optionColumn','Sender Email')).should('have.contain',senderEmailTxt);
+        
+                        //edit sender name
+                        cy.xpath(optionConfigXpath.replace('optionName','Sender Name')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                        cy.xpath('//label[text()="'+secureOption+'"]').click();
+                        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderNameTxt);
                         cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
                         cy.xpath('//div[@role="alert"]').should('exist');
                         cy.xpath('//div[@role="alert"]').should('not.exist');
-                    }
-                    cy.xpath(optionColumnXpath.replace('optionColumn','Use secure connection')).should('have.contain',secureOption);
-                });
-
-                //edit user account
-                cy.xpath(optionColumnXpath.replace('optionColumn','User Account')).invoke('text').then(($option)=>{
-                    if($option.trim() !== userAccount){
-                        cy.xpath(optionConfigXpath.replace('optionName','User Account')).click();
+                        cy.xpath(optionColumnXpath.replace('optionColumn','Sender Name')).should('have.contain',senderNameTxt);
+        
+                        //edit server host
+                        cy.xpath(optionConfigXpath.replace('optionName','Server Host')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccount);
+                        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverHostTxt);
                         cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
                         cy.xpath('//div[@role="alert"]').should('exist');
                         cy.xpath('//div[@role="alert"]').should('not.exist');
-                    }
-                    cy.xpath(optionColumnXpath.replace('optionColumn','User Account')).should('have.contain',userAccount);
-                });
-
-                //edit password account
-                cy.xpath(optionConfigXpath.replace('optionName','User Password')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccountPass);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-
-                break;
-            case "sendmail":
-                //press edit Email Server button
-                cy.xpath('//div[@aria-hidden="false"]//tr[@aria-rowindex="2"]//button[@aria-label="Edit"]').click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//label[text()="'+emailServerType+'"]').click();
-                break;
-            case "mailgun":
-                break;
-            case "postmark":
-                break;
-            case "ses":
-                break;
-        }
+                        cy.xpath(optionColumnXpath.replace('optionColumn','Server Host')).should('have.contain',serverHostTxt);
+        
+                        //edit server port
+                        cy.xpath(optionColumnXpath.replace('optionColumn','Server Port')).invoke('text').then(($port)=>{
+                            cy.log("port="+$port+"/");
+                            if($port.trim() !== serverPortTxt){
+                                cy.xpath(optionConfigXpath.replace('optionName','Server Port')).click();
+                                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverPortTxt);
+                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                                cy.xpath('//div[@role="alert"]').should('exist');
+                                cy.xpath('//div[@role="alert"]').should('not.exist');
+                            }
+                            cy.xpath(optionColumnXpath.replace('optionColumn','Server Port')).should('have.contain',serverPortTxt);
+                        });
+        
+                        //edit server secure option
+                        cy.xpath(optionColumnXpath.replace('optionColumn','Use secure connection')).invoke('text').then(($option)=>{
+                            cy.log("port="+$option+"/");
+                            if($option.trim() !== secureOption){
+                                cy.xpath(optionConfigXpath.replace('optionName','Use secure connection')).click();
+                                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                                cy.xpath('//label[text()="'+secureOption+'"]').click();
+                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                                cy.xpath('//div[@role="alert"]').should('exist');
+                                cy.xpath('//div[@role="alert"]').should('not.exist');
+                            }
+                            cy.xpath(optionColumnXpath.replace('optionColumn','Use secure connection')).should('have.contain',secureOption);
+                        });
+        
+                        //edit user account
+                        cy.xpath(optionColumnXpath.replace('optionColumn','User Account')).invoke('text').then(($option)=>{
+                            if($option.trim() !== userAccount){
+                                cy.xpath(optionConfigXpath.replace('optionName','User Account')).click();
+                                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccount);
+                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                                cy.xpath('//div[@role="alert"]').should('exist');
+                                cy.xpath('//div[@role="alert"]').should('not.exist');
+                            }
+                            cy.xpath(optionColumnXpath.replace('optionColumn','User Account')).should('have.contain',userAccount);
+                        });
+        
+                        //edit password account
+                        cy.xpath(optionConfigXpath.replace('optionName','User Password')).click();
+                        cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccountPass);
+                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
+                        cy.xpath('//div[@role="alert"]').should('not.exist');
+        
+                        break;
+                    case "sendmail":
+                        //press edit Email Server button
+                        cy.xpath('//div[@aria-hidden="false"]//tr[@aria-rowindex="2"]//button[@aria-label="Edit"]').click();
+                        cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                        cy.xpath('//label[text()="'+emailServerType+'"]').click();
+                        break;
+                    case "mailgun":
+                        break;
+                    case "postmark":
+                        break;
+                    case "ses":
+                        break;
+                }
+            }  
+        })
     }
 
     /**
@@ -1524,7 +1528,7 @@ export class Admin {
      * @return nothing returns
      */
     createDefaultEmailServerIfNotConfigured(serverEmailType){
-        var ServerHost = Cypress.env("defaultEmailSettings.serverHost");
+        var ServerHost = Cypress.env("defaultEmailSettings").serverHost;
         cy.get('[data-target="#collapseOne1"]').as("emailTitle").should("be.visible");
         cy.get('@emailTitle').invoke("attr", "aria-expanded").then(($op) => {
             if($op === "true"){ 
@@ -1540,13 +1544,13 @@ export class Admin {
                 if(elem.trim() === ServerHost){
                     cy.log('email server exits: '+ serverEmailType);
                 }else{
-                    var senderEmailTxt = Cypress.env("defaultEmailSettings.senderEmail");
-                    var senderNameTxt = Cypress.env("defaultEmailSettings.senderName");
-                    var serverHostTxt = Cypress.env("defaultEmailSettings.serverHost");
-                    var serverPortTxt = Cypress.env("defaultEmailSettings.serverPort");
-                    var secureOption = Cypress.env("defaultEmailSettings.secureOption");
-                    var userAccount = Cypress.env("defaultEmailSettings.userAccount");
-                    var userAccountPass = Cypress.env("defaultEmailSettings.userAccountPass");
+                    var senderEmailTxt = Cypress.env("defaultEmailSettings").senderEmail;
+                    var senderNameTxt = Cypress.env("defaultEmailSettings").senderName;
+                    var serverHostTxt = Cypress.env("defaultEmailSettings").serverHost;
+                    var serverPortTxt = Cypress.env("defaultEmailSettings").serverPort;
+                    var secureOption = Cypress.env("defaultEmailSettings").secureOption;
+                    var userAccount = Cypress.env("defaultEmailSettings").userAccount;
+                    var userAccountPass = Cypress.env("defaultEmailSettings").userAccountPass;
                     let optionConfigXpath = '//table/tbody//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
                     let optionColumnXpath = '//table/tbody//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
 
@@ -1718,23 +1722,22 @@ export class Admin {
      * @return nothing returns
      */
     createIDPIfNotConfigured(serverIDPType){
-        var ServerIDP = Cypress.env("defaultIDPSettings.hostURL");
+        var ServerIDP = Cypress.env("defaultIDPSettings").hostURL;
 
         cy.get('[data-target="#collapseOne2"]').click();
         cy.xpath('//div[contains(text(),"IDP")]').should('be.visible');
         cy.xpath('//div[contains(text(),"IDP")]').click();
         cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Host URL")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
-                 
             .then(elem => {
                 if(elem.trim() === ServerIDP){
-                    cy.log('email server exits: '+ serverIDPType);
+                    cy.log('IDP configuration exists: '+ serverIDPType);
                 }else{
-                    var clientIDTxt = Cypress.env("defaultIDPSettings.clientID");
-                    var clientSecretTxt = Cypress.env("defaultIDPSettings.clientSecret");
-                    var hostURLTxt = Cypress.env("defaultIDPSettings. hostURL");
-                    var tokenURLTxt = Cypress.env("defaultIDPSettings.tokenURL");
-                    let optionConfigXpath = '//div[@aria-hidden="false"]//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
-                    let optionColumnXpath = '//div[@aria-hidden="false"]//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
+                    var clientIDTxt = Cypress.env("defaultIDPSettings").clientID;
+                    var clientSecretTxt = Cypress.env("defaultIDPSettings").clientSecret;
+                    var hostURLTxt = Cypress.env("defaultIDPSettingsL").hostUR;
+                    var tokenURLTxt = Cypress.env("defaultIDPSettings").tokenURL;
+                    let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
+                    let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
 
                     //edit client ID
                     cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();

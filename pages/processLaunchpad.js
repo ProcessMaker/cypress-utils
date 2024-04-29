@@ -15,30 +15,30 @@ export class ProcessLaunchpad {
     }
     saveLauchpPad(){
         cy.xpath(selectors.settings_saveConfiguration).click();
-        cy.get(selectors.publishSuccessAlert).should('be.visible');
-        cy.get(selectors.publishSuccessAlert).should('not.exist');
+        cy.xpath(selectors.settings_saveConfiguration).should('not.exist',{ timeout: 15000 });
     }
     cancelLauchpPad(){
         cy.xpath(selectors.settings_cancelConfiguration).click();
     }
     fillFieldsSetting(parameter){
+        cy.xpath('//span[contains(text(),"Default Launchpad Chart")]').should('be.visible');
         cy.get(selectors.settings_descriptions).should("be.visible");
-        cy.get(selectors.settings_descriptions).eq(0).clear({force: true}).type(parameter.description);
         if(parameter.icon !== "Search"){
             cy.xpath(selectors.settings_selectListIcon).click();
             cy.xpath(selectors.settings_inputIcon).type(parameter.icon).should("have.value",parameter.icon);
             cy.wait(2000);
             cy.xpath(selectors.settings_inputIcon).type("{enter}");
         }
+        cy.get(selectors.settings_dragButton).click();
         cy.xpath(selectors.settings_uploadImage).attachFile(parameter.image[0]);
         cy.xpath(selectors.settings_uploadImage).attachFile(parameter.image[1]);
         cy.xpath(selectors.settings_uploadImage).attachFile(parameter.image[2]);
         cy.xpath(selectors.settings_uploadImage).attachFile(parameter.image[3]);
+        cy.wait(3000);
     }
     verifyFieldsSetting(parameter){
         cy.get(selectors.settings_descriptions).should("be.visible");
         cy.get(selectors.settings_descriptions).should("have.value",parameter.description);
-        cy.xpath(selectors.settings_versionInfoButton).should("be.visible");
         cy.xpath(selectors.settings_selectListIcon).should("be.visible");
         cy.xpath(selectors.settigns_textIcon).should('contain.text',parameter.icon);
     }
@@ -57,12 +57,15 @@ export class ProcessLaunchpad {
         cy.xpath(selectors.launch_startProcessButton).should("be.visible");
     }
     clikOnElipsisMenu(){
-        cy.xpath(selectors.launch_elipsis).click();
+        cy.xpath(selectors.launch_elipsis).should('be.visible').click();
+    }
+    selectOptionOfElipsis(option="Edit Launchpad"){
+        cy.xpath(selectors.optionLaunchPad.replace("option",option)).click();
     }
     verifyOptionEllipsis(userType){
         if(userType === "admin"){
             cy.xpath("//*[contains(text(),'Open in Modeler')]").should("exist");
-            cy.xpath("//*[contains(text(),'Edit in Launchpad')]").should("exist");
+            cy.xpath("//*[contains(text(),'Edit Launchpad')]").should("exist");
             cy.xpath("//*[contains(text(),'Save as Template')]").should("exist");
             cy.xpath("//*[contains(text(),'Save as PM Block')]").should("exist");
             cy.xpath("//*[contains(text(),'Add to Project')]").should("exist");
@@ -92,9 +95,9 @@ export class ProcessLaunchpad {
         }
     }
     findProcess(process, category){
-           cy.xpath(selectors.processCategoryLabel.replace('element', category)).should('be.visible');
-           cy.xpath(selectors.processCategoryLabel.replace('element', category)).click();
-           cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');                
+        cy.xpath(selectors.processCategoryLabel.replace('element', category)).should('be.visible');
+        cy.xpath(selectors.processCategoryLabel.replace('element', category)).click();
+        cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
     }
     bookmarkIconSelect(process){
         cy.xpath(selectors.bookmarkSelection.replace('label',process)).invoke('attr','class')
@@ -110,7 +113,7 @@ export class ProcessLaunchpad {
     }
     clickSelectedProcess(process){
         cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
-        cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible').click();     
+        cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible').click();
     }
     clickOnEllipsisMenu(){
         cy.xpath(selectors.ellipsisMenu).should('be.visible');
@@ -121,26 +124,26 @@ export class ProcessLaunchpad {
         for (var i = 0; i < len; i++) {
             cy.xpath((selectors.optionMenuElement).replace('option', optionList[i])).should('exist');
         }
-    }   
+    }
     selectSpecificStartEvent(start, position=1){
         position = position-1;
         this.startRequestByLaunchPad(1,"");
         cy.xpath(selectors.startEvent.replace('start', start)).eq(position).should('be.visible');
         cy.xpath(selectors.startEvent.replace('start', start)).eq(position).click();
-    } 
+    }
     checkCategoriesAndProcessAssociation(process, elementArray=[]){
         let len = elementArray.length;
-       for (var i = 0; i < len; i++) {
-           this.searchCategory(elementArray[i]);        
-           cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).should('be.visible');
-           cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).click();
-           cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible'); 
-           cy.xpath(selectors.inputSearchCategories).clear();         
-       }
+        for (var i = 0; i < len; i++) {
+            this.searchCategory(elementArray[i]);
+            cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).should('be.visible');
+            cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).click();
+            cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
+            cy.xpath(selectors.inputSearchCategories).clear();
+        }
     }
     checkProcessImages(number){
         cy.xpath("//div['.carousel-inner']/div[@role='listitem']/img").should('have.length',number);
-    } 
+    }
     searchCategory(category){
         cy.xpath(selectors.launch_category.replace('category','All Process')).should("be.visible");
         cy.xpath(selectors.inputSearchCategories).type(category).should('have.value',category);
@@ -184,8 +187,9 @@ export class ProcessLaunchpad {
     deleteImageCarousel(numImaages){
         cy.xpath('(//img[@alt="No Image"])['+numImaages+']').should('be.visible');
         let deleteI=true;
-        cy.xpath('//div[contains(@class,"modal-content")]//div[contains(@class,"thumbnails")]/div')
+        cy.xpath('//div[contains(@class,"modal-content")]//div[contains(@class,"thumbnails")]/div[@class="images-container"]/div')
             .then(($elemts)=>{
+                cy.log("Dfsfsdfsdf"+$elemts.length);
                 if($elemts.length === 1){
                     const imageIsVisible = Cypress.$('img[alt="No Image"]').is(':visible');
                     if(!imageIsVisible)
@@ -193,14 +197,36 @@ export class ProcessLaunchpad {
                 }
                 if(deleteI){
                     for (let i = 0; i <$elemts.length ; i++) {
-                        cy.xpath('(//img[@alt="No Image"])[1]').trigger('mouseover');
-                        cy.xpath("//div[contains(@class,'modal-content')]//div[contains(@class,'thumbnail')]//button['#popover-button-event']/i")
+                        cy.xpath('(//img[@alt="No Image"])[2]').should('be.visible').trigger('mouseover');
+                        cy.xpath("(//div[contains(@class,'modal-content')]//div[contains(@class,'thumbnail')]//i)[1]")
                             .should('be.visible')
                             .click();
                         cy.xpath('//button[contains(text(),"Delete")]').click();
                         cy.wait(1000);
                     }
+                    cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
                 }
             })
     }
-}
+
+    clickOnMenuOptionLaunchPad(option){
+        cy.xpath(selectors.optionLaunchPad.replace('option',option)).should('be.visible');
+        cy.xpath(selectors.optionLaunchPad.replace('option',option)).click();
+    }
+ 
+    attachVideo(video){
+        cy.xpath(selectors.dragAndClickHere).should('be.visible');
+        cy.xpath(selectors.dragAndClickHere).click();
+        cy.xpath(selectors.embedVideo).should('be.visible');
+        cy.xpath(selectors.embedVideo).click();
+        cy.xpath(selectors.urlVideo).type(video);
+        cy.xpath(selectors.buttonApply).click();
+    }  
+
+    deleteVideos(){
+        cy.xpath(selectors.videoLink).click();
+        cy.xpath(selectors.trashIcon).click();
+        cy.xpath(selectors.deleteVideo).click();
+        cy.xpath(selectors.embedMediaDeleteAlert).should('be.visible');
+    } 
+} 
