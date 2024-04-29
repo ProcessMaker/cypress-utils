@@ -9,9 +9,9 @@ export class SmartInbox {
         cy.get(selectors.loadingSpinnerTask).should('not.be.visible');
         cy.xpath("//table//td//*[contains(text(),'"+taskName+"')]").should('be.visible');
     }
-    taskAsPriority(taskName){
+    taskAsPriority(taskName, priorityCol = 3){
         cy.xpath("//*[@data-cy='tasks-table']//*[contains(text(),'"+taskName+"')]").should('be.visible');
-        cy.xpath('(//tbody//td[2]//img)[1]').should('be.visible').click();
+        cy.xpath('(//tbody//td['+ priorityCol +']//img)[1]').should('be.visible').click();
         cy.get(selectors.loadingSpinnerTask).should('be.visible');
         cy.get(selectors.loadingSpinnerTask).should('not.be.visible');
         cy.get('[alt="priority"]').should('be.visible');
