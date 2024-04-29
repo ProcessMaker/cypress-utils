@@ -200,4 +200,14 @@ export class NavigationHelper {
         cy.title().should('eq','Processes Catalogue - ProcessMaker');
     }
 
+    navigateToScreenList(){
+        cy.visit('/designer/screens');
+        cy.title().should('eq','Screens - ProcessMaker');
+    }
+
+    selectLaunchScreen(screen){
+        cy.xpath(selectors.inputLaunchScreen).click({force:true}).clear();       
+        cy.xpath(selectors.inputLaunchScreen).type(screen).should('have.value', screen);
+        cy.xpath(selectors.inputLaunchScreen).type('{enter}');
+    }
 }

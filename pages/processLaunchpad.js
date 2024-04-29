@@ -228,5 +228,11 @@ export class ProcessLaunchpad {
         cy.xpath(selectors.trashIcon).click();
         cy.xpath(selectors.deleteVideo).click();
         cy.xpath(selectors.embedMediaDeleteAlert).should('be.visible');
+    }
+    
+    selectLaunchScreen(screen){
+        cy.xpath(selectors.inputLaunchScreen).click({force:true}).clear();       
+        cy.xpath(selectors.inputLaunchScreen).type(screen).should('have.value', screen);
+        cy.xpath(selectors.inputLaunchScreen).type('{enter}');
     } 
 } 

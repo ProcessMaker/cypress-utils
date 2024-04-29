@@ -39,5 +39,7 @@ export default {
     videoLink: '(//div/i[@class="fas fa-link"])[1]',
     trashIcon: '//div/i[@class="fas fa-trash-alt custom-trash-icon"]',
     deleteVideo: '//div/button[@class="btn btn-delete-embed btns-popover"]',
-    embedMediaDeleteAlert: '//span[contains(text(), "The embed media was deleted")]'
+    embedMediaDeleteAlert: '//span[contains(text(), "The embed media was deleted")]',
+    inputLaunchScreen: '//div/input[@placeholder="Type to search Screen"]'
 }
+
