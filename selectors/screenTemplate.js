@@ -42,6 +42,7 @@ export default {
     screentemplateIndex:'[id="nav-myTemplates"]',
     totalPaginationScreenMyTemplate:'[data-cy="my-templates-pagination"] span[class="pagination-total"]',
     totalPaginationScreenSharedTemplate:'[data-cy="public-templates-pagination"] span[class="pagination-total"]',
+    saveButtonConfiguration: '//button[text()="Save"]',
 
     
 }
