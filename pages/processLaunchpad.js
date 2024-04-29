@@ -216,10 +216,10 @@ export class ProcessLaunchpad {
  
     attachVideo(video){
         cy.xpath(selectors.dragAndClickHere).should('be.visible');
-        cy.xpath(selectors.dragAndClickHere).click();
+        cy.xpath(selectors.dragAndClickHere).click({force:true});
         cy.xpath(selectors.embedVideo).should('be.visible');
-        cy.xpath(selectors.embedVideo).click();
-        cy.xpath(selectors.urlVideo).type(video);
+        cy.xpath(selectors.embedVideo).click({force:true});
+        cy.xpath(selectors.urlVideo).type(video, {force:true});
         cy.xpath(selectors.buttonApply).click();
     }  
 
