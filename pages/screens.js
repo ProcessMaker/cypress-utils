@@ -21,7 +21,6 @@ export class Screens {
 	selectScreenType(type) {
 		cy.xpath(Selectors.arrowTypeScreen).click();
 
-		//cy.xpath(Selectors.typeDropDown).click();
 	}
 
 	clickOnSave() {
