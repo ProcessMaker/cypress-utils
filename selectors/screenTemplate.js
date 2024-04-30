@@ -44,6 +44,7 @@ export default {
     totalPaginationScreenSharedTemplate:'[data-cy="public-templates-pagination"] span[class="pagination-total"]',
     saveButtonConfiguration: '//button[text()="Save"]',
     txtDescriptionConfiguration: '//*[@id="description-text"]',
+    versionConfiguration: '//*[@id="version-text"]',
 
     
 }
