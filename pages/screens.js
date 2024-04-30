@@ -19,11 +19,13 @@ export class Screens {
 	}
 
 	selectScreenType(type) {
-		cy.get(Selectors.typeDropDown).select(type);
+		cy.xpath(Selectors.arrowTypeScreen).click();
+
+		//cy.xpath(Selectors.typeDropDown).click();
 	}
 
 	clickOnSave() {
-		cy.xpath(Selectors.saveBtn).should('be.visible').click();
+		cy.get(Selectors.saveBtn).should('be.visible').click();
 	}
 	clickOnPublishSave() {
 		cy.xpath(Selectors.savePublishBtn).should('be.visible').click();
@@ -34,14 +36,52 @@ export class Screens {
 		cy.get(Selectors.CategoryTxt).should('have.text','Uncategorized');
 		this.enterScreenName(name);
 		this.enterScreenDescription(description);
-		this.selectScreenType(type);
+		this.selectTypeScreen(type);
 		this.clickOnSave();
-		if (type == 'Conversational') {
-			cy.get(Selectors.saveScreenBtn).should('be.visible');
-		} else {
-			cy.get(Selectors.savePublishVersionsBtn).should('be.visible');
-		}
+		cy.get(Selectors.savePublishVersionsBtn).should('be.visible');
+		
 	}
+
+	selectTypeScreen(
+        type = " ",
+        
+    ) {
+        
+        {
+            cy.xpath(Selectors.arrowTypeScreen).should('be.visible');
+            cy.xpath(Selectors.arrowTypeScreen).click();
+
+        }
+                
+        switch (type) {
+            case "Form":
+                this.selectScreenForm();
+                break;
+            case "Email":
+                this.selectScreenEmail();
+                break;
+            case "Display":
+                this.selectScreenDisplay();
+                break;
+			case "Conversational":
+                this.selectScreenConversational();
+                break;
+        }
+    }
+
+	selectScreenForm() {
+        cy.get(Selectors.screenTypeForm).eq(1).click();
+    }
+	selectScreenEmail() {
+        cy.get(Selectors.screenTypeEmail).click();
+    }
+	selectScreenDisplay() {
+        cy.get(Selectors.screenTypeDisplay).click();
+    }
+	selectScreenConversational() {
+        cy.get(Selectors.screenTypeConversational).click();
+    }
+
 
 	saveTheChanges(type) {
 		if (type == 'Conversational') {
