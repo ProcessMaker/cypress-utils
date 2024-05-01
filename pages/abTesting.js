@@ -8,7 +8,7 @@ const process = new Process();
 export class ABTesting {
     //AB alternatives
     enableAlternativeB() {
-        cy.wait(1000)
+        this.waitUntilElementIsVisible('selector', '[data-test="processmaker-modeler-start-event-main"]');
         cy.iframe(selectors.iframeA).find(selectors.menuAB).invoke('text').then($text => {
             cy.log($text)
             if ($text.includes('Alternative B')) {
@@ -21,13 +21,15 @@ export class ABTesting {
     }
 
     clickOnPlusBtn() {
-        this.waitUntilElementIsVisible('selector', selectors.plusTab);
         cy.iframe(selectors.iframeA).find(selectors.plusTab).should('be.visible');
-        cy.iframe(selectors.iframeA).find(selectors.plusTab).click({ force: true });
+        cy.iframe(selectors.iframeA).find(selectors.plusTab).click({ force: true, delay: 1000 });
     }
 
     clickOnConfirmBtn() {
-        cy.iframe(selectors.iframeA).find(selectors.confirmBtn).click({ force: true });
+        cy.iframe(selectors.iframeA).find('[class="modal-content"]').should('be.visible');
+        cy.iframe(selectors.iframeA).find(selectors.confirmBtn).should('be.visible');
+        cy.wait(2000)
+        cy.iframe(selectors.iframeA).find(selectors.confirmBtn).click({ force: true, delay: 1000 });
     }
 
     replaceAlternativeAWithDataOfAlternativeB(iframeOption) {
