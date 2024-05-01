@@ -15,7 +15,7 @@ export class ABTesting {
                 return;
             } else {
                 this.clickOnPlusBtn();
-                this.clickOnConfirmBtn({ force: true });
+                this.clickOnConfirmEnableBtn({ force: true });
             }
         })
     }
@@ -25,11 +25,18 @@ export class ABTesting {
         cy.iframe(selectors.iframeA).find(selectors.plusTab).click({ force: true, delay: 1000 });
     }
 
-    clickOnConfirmBtn() {
+    clickOnConfirmEnableBtn() {
         cy.iframe(selectors.iframeA).find('[class="modal-content"]').should('be.visible');
-        cy.iframe(selectors.iframeA).find(selectors.confirmBtn).should('be.visible');
-        cy.wait(2000)
-        cy.iframe(selectors.iframeA).find(selectors.confirmBtn).click({ force: true, delay: 1000 });
+        cy.wait(2000);
+        cy.iframe(selectors.iframeA).find(selectors.confirmEnableBtn).should('be.visible');
+        cy.iframe(selectors.iframeA).find(selectors.confirmEnableBtn).click({ force: true, delay: 1000 });
+    }
+
+    clickOnConfirmDeleteBtn() {
+        cy.iframe(selectors.iframeA).find('[class="modal-content"]').should('be.visible');
+        cy.wait(2000);
+        cy.iframe(selectors.iframeA).find(selectors.confirmDeleteBtn).should('be.visible');
+        cy.iframe(selectors.iframeA).find(selectors.confirmDeleteBtn).click({ force: true, delay: 1000 });
     }
 
     replaceAlternativeAWithDataOfAlternativeB(iframeOption) {
@@ -58,7 +65,16 @@ export class ABTesting {
 
     deleteAlternativeB() {
         cy.iframe(selectors.iframeA).find(selectors.deleteAltB_Btn).first().click();
-        this.clickOnConfirmBtn();
+        this.clickOnConfirmDeleteBtn();
+    }
+
+    deleteAlternativeB_ifExist() {
+        cy.iframe(selectors.iframeA).find(selectors.menuAB).invoke('text').then($text => {
+            cy.log($text)
+            if ($text.includes('Alternative B')) {
+                this.deleteAlternativeB();
+            }
+        })
     }
 
     //Publish New Version
