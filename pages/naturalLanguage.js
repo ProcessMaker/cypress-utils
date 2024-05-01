@@ -17,7 +17,8 @@ export class NaturalLanguage {
     }
 
     clickOnGenerate(){
-        cy.get(selectors.generateBTtnNL).click();
+        cy.get(selectors.generateBTtnNL).should('be.visible').click({timeout: 1000});
+        cy.wait(3000);
     }
 
     createSimpleProcess(descriptionData){
@@ -66,7 +67,6 @@ export class NaturalLanguage {
     }
 
     clickOnSecondHistoryListed(){
-        //cy.wait(2000);
         cy.get('[data-test="history-list"]').should('be.visible');
         cy.get(selectors.historySecondListed).should('be.visible').click();
     }
