@@ -8,8 +8,8 @@ export default {
     alternativeB_Tab: '[data-test="tab-B"]',
     plusTab: '[data-test="tab-plus"]',
     deleteAltB_Btn: '[id="tab-B-remove"]',
-    confirmBtn: 'button[data-test="ab-enable-alternative-ok"]',
-
+    confirmEnableBtn: 'button[data-test="ab-enable-alternative-ok"]',
+    confirmDeleteBtn: 'button[data-test="ab-delete-alternative-ok"]',
 
     //Replace alternative
     replaceAlternativeBtn: '[data-test="tab-replace"]',
