@@ -6,54 +6,106 @@ const navHelper = new NavigationHelper();
 const process = new Process();
 export class ProcessTesting {
 
-    //1.RUN TEST IN MODELER
-    
-    clickOnRunTestOptionInModeler(){
-        cy.xpath(selectors.ellipsisMenuIcon).should('be.visible').click();
-        cy.xpath(selectors.runTestBtnInModeler).click();
+    //1.FROM MODELER
+    //1A. Open Modal Run test
+    clickOnRunTestOptionInModeler(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.ellipsisMenuIcon).should('be.visible').click();
+        cy.iframe(iframeSelector).xpath(selectors.runTestBtnInModeler).click();
     }
 
-    selectStartingPoint(startingPoint){
-        cy.xpath(selectors.labelSP).should('be.visible');
-        cy.xpath(selectors.containerSP).click();
-        cy.xpath(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value',startingPoint);
-        cy.xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
-        cy.xpath(selectors.inputSP).type('{enter}');
+    //1B. Modal Run Test (Only alternative A)
+    //Alternative
+    selectAlternativeFromModeler(alternative, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        switch (alternative) {
+            case "Alternative A":
+                cy.iframe(iframeSelector).find(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
+                break;
+            case "Alternative B":
+                cy.iframe(iframeSelector).find(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
+                break;
+            case "Advanced":
+                cy.iframe(iframeSelector).find(selectors.alternativeField).select('Advanced').should('have.value', 'Advanced');
+            default:
+                break;
+        }
     }
 
-    selectManualResumePoint(stopPoint){
-        cy.xpath(selectors.labelMRP).should('be.visible');
-        cy.xpath(selectors.containerMRP).click();
-        cy.xpath(selectors.inputMRP).type(`{backspace}${stopPoint}`).should('have.value',stopPoint);
-        cy.xpath(selectors.itemMRP).should('have.attr', 'aria-label').and('equal', `${stopPoint}. `);
-        cy.xpath(selectors.inputMRP).type('{enter}');
+    //Starting point from Modeler
+    selectStartingPointFromModeler(startingPoint, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.labelSP).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.containerSP).click();
+        cy.iframe(iframeSelector).find(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
+        cy.iframe(iframeSelector).xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
+        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}');
     }
 
-    selectScenario(scenario){
-        cy.xpath(selectors.labelScenario).should('be.visible');
-        cy.xpath(selectors.containerScenario).click();
-        cy.xpath(selectors.inputScenario).should('be.visible');
-        cy.xpath(selectors.inputScenario).type(`{backspace}${scenario}`,{ force: true,delay:300}).should('have.value',scenario);
-        cy.xpath(selectors.itemScenario).should('have.attr', 'aria-label').and('equal', `${scenario}. `);
-        cy.xpath(selectors.inputScenario).type('{enter}');
+    //Manual Resume Point from Modeler
+    selectManualResumePointFromModeler(stopPoint, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.labelMRP).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.containerMRP).click();
+        cy.iframe(iframeSelector).xpath(selectors.inputMRP).type(`{backspace}${stopPoint}`).should('have.value', stopPoint);
+        cy.iframe(iframeSelector).xpath(selectors.itemMRP).should('have.attr', 'aria-label').and('equal', `${stopPoint}. `);
+        cy.iframe(iframeSelector).xpath(selectors.inputMRP).type('{enter}');
     }
 
-    addAdditionalData(data){
-        cy.xpath(selectors.additionalData).type('{rightarrow}').type(data).should('have.value',`{${data}}`);
+    //Scenario from Modeler
+    selectScenarioFromModeler(scenario, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.wait(1000);
+        cy.iframe(iframeSelector).xpath(selectors.labelScenario).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.containerScenario).click();
+        cy.iframe(iframeSelector).xpath(selectors.inputScenario).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
+        cy.wait(1000)
+        cy.iframe(iframeSelector).xpath(selectors.inputScenario).type('{enter}');
     }
 
-    enableBypassCheckbox(){
-        cy.xpath(selectors.bypassCheckbox).click({force: true});
+    //Additional Data from Modeler
+    addAdditionalDataFromModeler(data, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.additionalData).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
     }
 
-    clickOnRunTestBtn(){
-        cy.xpath(selectors.runTestBtn).should('be.visible');
-        cy.xpath(selectors.runTestBtn).click({force: true});
+    //Bypass Script task and Data Connectors from Modeler
+    enableBypassCheckboxFromModeler(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.bypassCheckbox).click({ force: true });
     }
 
-    clickOnCancelBtn(){
-        cy.xpath(selectors.cancelBtn).click();
+    //Run button in modal Run Test from Modeler
+    clickOnRunTestBtnFromModeler(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.runTestBtn).click({ force: true });
     }
+
+    //Cancel button in modal Run Test from Modeler
+    clickOnCancelBtnFromModeler(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.cancelBtn).click();
+    }
+    //1C. Modal Run Test (A+B alternatives)
+
+    //Alternative
+
+    //Expression
+    fillExpression(expression, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.expressionInput).type(expression, { delay: 80 }).should('have.value', expression);
+    }
+
+    //Ratio
+
+    //Type of Run
+    selectTypeOfRun(option, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.typeOfRun).select(option);
+    }
+
+    //1D. Modal to Run Test
 
     /**
      * This method is responsible to run test in modeler
@@ -67,144 +119,93 @@ export class ProcessTesting {
         isEnabledBypass: true
     }
     */
- 
-    runTest(runTestConfig){
-        const {startingPoint, manualResumePoint, scenario, additionalData,isEnabledBypass }= runTestConfig
 
-        if(startingPoint !== null) {
-            this.selectStartingPoint(startingPoint.startingPointOption);
+    runTest(runTestConfig) {
+        const { startingPoint, manualResumePoint, scenario, additionalData, isEnabledBypass } = runTestConfig
+        if (startingPoint !== null) {
+            this.selectStartingPointFromModeler(startingPoint.startingPointOption);
         }
 
-        if(manualResumePoint !== null) {
-            this.selectManualResumePoint(manualResumePoint.stopPointOption);
+        if (manualResumePoint !== null) {
+            this.selectManualResumePointFromModeler(manualResumePoint.stopPointOption);
         }
 
-        if(scenario !== null) {
-            this.selectScenario(scenario.scenarioOption);
-
+        if (scenario !== null) {
+            this.selectScenarioFromModeler(scenario.scenarioOption);
         }
 
-        if(additionalData !== null) {
-            this.addAdditionalData(additionalData.data)
+        if (additionalData !== null) {
+            this.addAdditionalDataFromModeler(additionalData.data)
         }
 
-        if(isEnabledBypass ) {
-            this.enableBypassCheckbox();
+        if (isEnabledBypass) {
+            this.enableBypassCheckboxFromModeler();
         }
 
-        this.clickOnRunTestBtn();
-        cy.get('div[class="modal-content"]').should('not.exist');
+        this.clickOnRunTestBtnFromModeler();
+        //cy.get('div[class="modal-content"]').should('not.exist');
     }
 
-    //2. SCENARIOS
-    //2.1 Scenario created by process
-    clickOnScenariosTab(){
+    runTestFromModeler(runTestConfig, iframeOption, optionInAlternative, typeOfRun, expression) {
+        const { startingPoint, manualResumePoint, scenario, additionalData, isEnabledBypass } = runTestConfig
+        switch (optionInAlternative) {
+            case "Alternative A":
+                this.selectAlternativeFromModeler('Alternative A', iframeOption);
+                this.runTest(runTestConfig);
+                break;
+            case "Alternative A":
+                this.selectAlternativeFromModeler('Alternative B', iframeOption);
+                this.runTest(runTestConfig);
+                break;
+            case "Advanced":
+                this.selectAlternativeFromModeler('Advanced', iframeOption);
+                this.fillExpression(expression, iframeOption);
+                switch (typeOfRun) {
+                    case "Automatic":
+                        this.selectTypeOfRun('Automatic', iframeOption);
+                        break;
+                    case "Manual":
+                        this.selectTypeOfRun('Manual', iframeOption);
+                        break;
+                    default:
+                        break;
+                }
+                this.runTest(runTestConfig);
+        }
+    }
+
+    //2.FROM PROCESS CONFIGURE
+    //2A. Go to Test Run / Scenarios
+    //Go to TestRun/ScenariosTab
+    clickOnTestRun_ScenariosTab() {
+        cy.get(selectors.testRun_ScenariosTab).click();
+    }
+
+    //Go to scenarios Tab
+    clickOnScenariosTab() {
         cy.get(selectors.scenariosTab).click();
     }
 
-    selectScenarioCreationType(option) {
-        cy.xpath(selectors.labelSCT).should('be.visible');
-        cy.xpath('//legend[text()="Scenario Creation Type *"]//parent::fieldset//div[@class="multiselect__select"]').click();
-        cy.contains(option).click();
+    //Go to Test Run Tab
+    clickOnTestRunTab() {
+        cy.get(selectors.testRunTab).click();
     }
 
-    createScenarioByProcess(processName, nameScenario, description, option, data) {
-        navHelper.navigateToProcessPage();
-        process.searchProcessAndSelectOptions(processName, "config");
-        cy.get(selectors.scenariosTab).click();
-        cy.get(selectors.createScenarioBtnBP).click();
-        cy.xpath(selectors.nameScenarioBP).type(nameScenario).should('have.value',nameScenario);
-        cy.xpath(selectors.descriptionScenarioBP).type(description).should('have.value',description);
-        //Select type( Manual,Document upload, AI)
-        this.selectScenarioCreationType(option);
-        cy.xpath(selectors.dataScenarioBP).type('{{}}').type('{leftarrow}')
-        .type(data).should('have.value',`{${data}}`);
-        cy.xpath(selectors.saveBtnScenarioBP).click();
+    //2B. SCENARIOS
+
+    //I.Search scenario
+    searchScenario(scenarioName) {
+        cy.get(selectors.searchScenario).first().clear().type(scenarioName, { delay: 80, force: true });
+        cy.get(selectors.searchScenario).first().type('  ', { force: true });
+        cy.get(selectors.searchScenario).first().type('{backspace}{backspace}', { force: true })
     }
 
-    //2.2 Scenario created by request
-    createScenarioByRequest(nameScenario,description,data){
-        cy.xpath(selectors.dataTab).should('be.visible');
-        cy.xpath(selectors.dataTab).click();
-        cy.xpath(selectors.createScenarioBtnBR).should('be.visible');
-        cy.xpath(selectors.createScenarioBtnBR).click();
-        cy.get(selectors.nameInCreateScenarioBR).type(nameScenario).should('have.value',nameScenario);
-        cy.get(selectors.descriptionInCreateScenarioBR).type(description,{delay:5}).should('have.value',description);
-        cy.xpath(selectors.saveBtnInCreateScenarioBR).click();
-        this.alertMessageVisible();   
-    }
-
-    searchScenario(scenarioName){
-        cy.xpath(selectors.searchScenario).should('be.visible').type(`${scenarioName}{enter}`, { delay: 60 }).should('have.value', scenarioName);
-        cy.xpath(selectors.searchScenario).type(' ');
-        cy.xpath(selectors.searchScenario).type('{backspace}')
-    }
-
-    clickOnEllipsisScenario(){
-        cy.get('[class="pagination"]').first().should('contain','1 - 1 of 1 Scenario');
-        cy.xpath(selectors.menuScenario).click();
-    }
-
-    clickOnEditScenario(){
-        cy.xpath(selectors.editScenarioBtn).click();
-    }
-    /*
-    {
-    editName: "new Name",
-    editDescription: "new Description",
-    editData: '{"newField": "new Data"}'
-    }
-    */
-
-    addDataInScenario(data){
-        cy.xpath('//div[@class="view-line"]').type(`{{}${data}}`)
-        cy.xpath('//div[@class="view-line"]').invoke('text').should('contain',`${data}`);
-    }
-    
-
-
-    clearDataField(){
-        cy.xpath('//div[@class="view-line"]').then(($elements)=>{
-            if ($elements.length > 1) {
-                cy.xpath(selectors.dataScenarioBP).clear();
-                this.clearDataField();
-            }
-            if ($elements.length == 1) {
-                cy.xpath(selectors.dataScenarioBP).clear();
-            }
-        })
-    }
-
-
-    editScenario(scenarioConfig){
-        cy.xpath(selectors.editScenarioBtn).click();
-        const {editName, editDescription, editData} = scenarioConfig
-        if(editName !== null){
-            cy.xpath(selectors.nameScenarioBP).clear().type(editName).should('have.value',editName);
-        }
-        if(editDescription !== null) {
-            cy.xpath(selectors.editDescription).clear().should('have.value', "")
-                .type(editDescription).should('have.value',editDescription);
-        }
-        if(editData !== null){
-            cy.get('[class="active-line-number line-numbers lh-odd"]').should('be.visible');
-            this.clearDataField()
-            this.addDataInScenario(editData.data);
-        }
-        cy.xpath(selectors.saveBtnScenarioBP).click()
-        cy.get('.alert-wrapper > .alert').should('be.visible')
-    }
-
-    deleteScenario(){
-        cy.xpath(selectors.deleteScenarioBtn).click();
-        cy.xpath(selectors.confirmDeleteScenario).click();
-    }
-
-    searchScenarioAndSelectOption(scenarioName,optionCrud,scenarioConfig){
+    //Search scenario and select edit or delete
+    searchScenarioAndSelectOption(scenarioName, option, scenarioConfig) {
         this.searchScenario(scenarioName);
         cy.wait(2000)
         this.clickOnEllipsisScenario();
-        switch (optionCrud) {
+        switch (option) {
             case "edit":
                 this.editScenario(scenarioConfig);
                 break;
@@ -215,69 +216,418 @@ export class ProcessTesting {
                 break;
         }
     }
-    //3. TEST RUNS
-    clickOnTestRunsTab(){
+
+    //II.Create a scenario from process configuration
+    /*
+      {
+      editName: "new Name",
+      editDescription: "new Description",
+      editData: '{"newField": "new Data"}'
+      }
+      */
+
+    clickOnPlusScenario() {
+        cy.get(selectors.plusScenarioBtn).click();
+    }
+
+    fillName(nameScenario) {
+        cy.get(selectors.nameScenarioBP).type(nameScenario).should('have.value', nameScenario);
+    }
+
+    fillDescription(description) {
+        cy.get(selectors.descriptionScenarioBP).first().type(description).should('have.value', description);
+    }
+
+    //Select Scenario Creation Type (Manual or Document upload)
+    selectScenarioCreationType(option) {
+        cy.xpath(selectors.labelScenarioCreationType).should('be.visible');
+        cy.xpath('//legend[text()="Scenario Creation Type *"]//parent::fieldset//div[@class="multiselect__select"]').click();
+        cy.contains(option).click();
+    }
+
+    addDataInScenario(data) {
+        cy.get(selectors.dataScenarioBP).type(`{{}${data}}`);
+    }
+
+    clearDataField() {
+        cy.xpath('//div[@class="view-line"]').then(($elements) => {
+            if ($elements.length > 1) {
+                cy.xpath(selectors.dataScenarioBP).clear();
+                this.clearDataField();
+            }
+            if ($elements.length == 1) {
+                cy.xpath(selectors.dataScenarioBP).clear();
+            }
+        })
+    }
+
+    saveCreateScenario() {
+        cy.get(selectors.saveScenarioBPBtn).click({ force: true });
+    }
+
+    cancelCreateScenario() {
+
+    }
+
+    //III. Edit scenario
+
+    clickOnEditScenario() {
+        cy.xpath(selectors.editScenarioBtn).click();
+    }
+
+    editScenario(scenarioConfig) {
+        this.clickOnEditScenario();
+        const { editName, editDescription, editData } = scenarioConfig
+        if (editName !== null) {
+            cy.xpath(selectors.nameScenarioBP).clear().type(editName).should('have.value', editName);
+        }
+        if (editDescription !== null) {
+            cy.xpath(selectors.editDescription).clear().should('have.value', "")
+                .type(editDescription).should('have.value', editDescription);
+        }
+        if (editData !== null) {
+            cy.get('[class="active-line-number line-numbers lh-odd"]').should('be.visible');
+            this.clearDataField()
+            this.addDataInScenario(editData.data);
+        }
+        cy.xpath(selectors.saveScenarioBPBtn).click()
+        cy.get('.alert-wrapper > .alert').should('be.visible')
+    }
+
+
+    //IV. Delete scenario
+    deleteScenario() {
+        cy.get('a[data-test="delete-scenario-btn"]').click();
+        //cy.xpath(selectors.deleteScenarioBtn).first().click();
+        cy.wait(1500)
+        cy.xpath(selectors.confirmDeleteScenario).click();
+    }
+
+    //2C Scenarios (Document upload)
+
+    downloadFormat() {
+
+    }
+
+    uploadFile(nameFile, filePath) {
+        cy.get(selectors.uploadBtn).selectFile(filePath, { force: true });
+        cy.get(selectors.fileAttachedfield).should('contain', nameFile);
+    }
+
+    goToScenariosTab() {
+        this.clickOnTestRun_ScenariosTab();
+        this.clickOnScenariosTab();
+    }
+
+    goToTestRunTab() {
+        this.clickOnTestRun_ScenariosTab();
+        this.clickOnTestRunTab();
+    }
+
+    createScenario(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+        this.clickOnPlusScenario();
+        this.fillName(scenarioName);
+        this.fillDescription(scenarioDescription);
+        switch (scenarioCreationType) {
+            case 'Manual Data':
+                this.selectScenarioCreationType('Manual Data');
+                this.addDataInScenario(data);
+                break;
+            case 'Document Upload':
+                this.selectScenarioCreationType('Document Upload');
+                this.uploadFile(nameFile, filePath);
+                this.load();
+                break;
+            default:
+                break;
+        }
+        this.saveCreateScenario();
+    }
+
+
+    //2D Modal to create scenario 
+    createScenarioByProcess(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+        this.goToScenariosTab();
+        this.createScenario(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath)
+    }
+
+    createScenarioIfNotExist(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+        this.goToScenariosTab();
+        this.searchScenario(scenarioName);
+        this.load();
+        cy.xpath('//div[@id="scenarios-edit-tab"]//div[@class="data-table"]').invoke('text').then($element => {
+            cy.log($element)
+            if ($element.includes('No Data Available')) {
+                this.createScenario(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
+            } else {
+                cy.log('brenda')
+            }
+        })
+    }
+
+    //Create scenario by request
+    createScenarioByRequest(nameScenario, description, data) {
+        cy.xpath(selectors.dataTab).should('be.visible');
+        cy.xpath(selectors.dataTab).click();
+        cy.xpath(selectors.createScenarioBtnBR).should('be.visible');
+        cy.xpath(selectors.createScenarioBtnBR).click();
+        cy.get(selectors.nameInCreateScenarioBR).type(nameScenario).should('have.value', nameScenario);
+        cy.get(selectors.descriptionInCreateScenarioBR).type(description, { delay: 5 }).should('have.value', description);
+        cy.xpath(selectors.saveBtnInCreateScenarioBR).click();
+        this.alertMessageVisible();
+    }
+
+    //2E. Test Run
+    clickOnTestRunsTab() {
         cy.get(selectors.testRunTab).should('be.visible');
         cy.get(selectors.testRunTab).click();
     }
 
-    clickOnAddTest(){
+    clickOnPlusTest() {
         cy.get(selectors.testBtnInConfigProcess).click();
     }
 
-    searchTest(value){
-        cy.xpath().should('be.visible').type(`${value}{enter}`).should('have.value',value);
+    //Modal Run Test (Only alternative A)
+
+    //Search Test Run
+    searchTestRun(value) {
+        cy.get(selectors.searchTestRun).should('be.visible').clear().type(`${value}{enter}`, { delay: 100 }).should('have.value', value);
     }
 
-    openLastTest(){
+    //Create Run Test from process configure
+    createRunTest() {
+        this.clickOnTestRun_ScenariosTab();
+        this.clickOnTestRunTab();
+        this.clickOnPlusTest();
+    }
+
+    //Alternative
+    selectAlternativeFromProcessConfigure(alternative) {
+        cy.get('#select-alternative').invoke('attr', 'disabled').then(($Alternative) => {
+            cy.log($Alternative)
+            if ($Alternative == 'disabled') {
+                return
+            } else {
+                switch (alternative) {
+                    case "Alternative A":
+                        cy.get(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
+                        break;
+                    case "Alternative B":
+                        cy.get(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
+                        break;
+                    case "As configured in the process":
+                        cy.get(selectors.alternativeField).select('As configured in the process').should('have.value', 'A');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
+    }
+
+    //Starting point from process configure
+    selectStartingPoint(startingPoint) {
+        cy.xpath(selectors.labelSP).should('be.visible');
+        cy.xpath(selectors.containerSP).click();
+        cy.get(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
+        cy.xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
+        cy.get(selectors.inputSP).type('{enter}');
+    }
+
+    //Manual Resume Point from process configure
+    selectManualResumePoint(stopPoint) {
+        cy.xpath(selectors.labelMRP).should('be.visible');
+        cy.xpath(selectors.containerMRP).click();
+        cy.xpath(selectors.inputMRP).type(`{backspace}${stopPoint}`).should('have.value', stopPoint);
+        cy.xpath(selectors.itemMRP).should('have.attr', 'aria-label').and('equal', `${stopPoint}. `);
+        cy.xpath(selectors.inputMRP).type('{enter}');
+    }
+
+    //Select Manual or advanced
+    selectManualOrAdvanced(option) {
+        switch (option) {
+            case "Manual":
+                cy.get(selectors.manualBtn).click();
+                break;
+            case "Advanced":
+                cy.get(selectors.advancedBtn).click();
+                break;
+            default:
+                break;
+        }
+    }
+
+    //Advanced
+    fillPMQL(query) {
+        cy.get(selectors.pmqlField).type(query).should('have.value', query);
+    }
+
+    clickOnBrowseBtn() {
+        cy.get(selectors.browseBtn).click();
+    }
+
+    //Scenarios from process configure
+    selectScenarioByProcessConfigure(scenario) {
+        cy.xpath('//div[@data-test="test-run-scenario-select"]//div[@class="multiselect__select"]').click();
+        cy.xpath('//div[@data-test="test-run-scenario-select"]//input').type();
+        cy.xpath('//div[@data-test="test-run-scenario-select"]//div[@class="multiselect__content-wrapper"]//li[1]').should('have.attr', 'aria-label').and('equal', `${scenario}. `);
+        cy.xpath('//div[@data-test="test-run-scenario-select"]//input').type('{enter}');
+    }
+
+    selectScenario(scenario) {
+        cy.wait(1000);
+        cy.xpath(selectors.labelScenario).should('be.visible');
+        cy.xpath(selectors.containerScenario).click();
+        cy.xpath(selectors.inputScenario).should('be.visible');
+        cy.xpath(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
+        cy.wait(1000)
+        cy.xpath(selectors.inputScenario).type('{enter}');
+    }
+
+    selectAllScenarios(nameToFilter) {
+        cy.xpath(selectors.containerScenario).click();
+        cy.xpath(selectors.inputScenario).click().type(nameToFilter).should('have.value', nameToFilter);
+        cy.get('[aria-label="-- Select All --. "]').click();
+    }
+
+    //Additional Data from process configure
+    addAdditionalData(data) {
+        cy.get(selectors.additionalData).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
+    }
+
+    //Bypass Script task and Data Connectors from process configure
+    enableBypassCheckbox() {
+        cy.xpath(selectors.bypassCheckbox).click({ force: true });
+    }
+
+    //Run button in Run Test modal from process configure
+    clickOnRunBtn() {
+        cy.xpath(selectors.runBtn).should('be.visible').click();
+    }
+
+    //Close button
+
+    //Modal Run Test from process configure
+    runTestFromProcessConfigure(runTestConfig, manualOrAdvanced, singleOrMassive, query) {
+        const { alternative, startingPoint, manualResumePoint, scenario, additionalData, isEnabledBypass } = runTestConfig
+        this.createRunTest();
+        cy.xpath(selectors.labelAlternative).should('be.visible');
+        cy.xpath(selectors.containerSP).should('contain', 'Start Event');
+
+        if (alternative !== null) {
+            this.selectAlternativeFromProcessConfigure(alternative.alternative);
+        }
+
+        if (startingPoint !== null) {
+            this.selectStartingPoint(startingPoint.startingPointOption);
+        }
+
+        if (manualResumePoint !== null) {
+            this.selectManualResumePoint(manualResumePoint.stopPointOption);
+        }
+
+        switch (manualOrAdvanced) {
+            case "Manual":
+                this.selectManualOrAdvanced('Manual');
+                break;
+            case "Advanced":
+                this.selectManualOrAdvanced('Advanced');
+                this.fillPMQL(query);
+                this.clickOnBrowseBtn();
+                break;
+            default:
+                break;
+        }
+
+        if (scenario !== null) {
+            switch (singleOrMassive) {
+                case "Single":
+                    this.selectScenario(scenario.scenarioOption);
+                    break;
+                case "Massive":
+                    this.selectAllScenarios(scenario.scenarioOption);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if (additionalData !== null) {
+            this.addAdditionalData(additionalData.data)
+        }
+
+        if (isEnabledBypass) {
+            this.enableBypassCheckbox();
+        }
+
+        this.clickOnRunBtn();
+    }
+
+    //III.Others
+    openLastTest() {
         cy.xpath('//div[@id="test_runs"]//table//tbody//td[1]//a').last().click();
     }
 
-    clickOnclearBtn(){
+    clickOnclearBtn() {
         cy.get(selectors.clearBtnInRunTab).should('be.visible');
-        cy.get('div[class="tab-content"]', {timeout:10000}).should('be.visible')
+        cy.get('div[class="tab-content"]', { timeout: 10000 }).should('be.visible')
         cy.get(selectors.clearBtnInRunTab).click();
     }
 
-    clickOnConfirmClearTests(){
+    clickOnConfirmClearTests() {
         cy.xpath(selectors.confirmDeleteAllTests).should('be.visible');
         cy.xpath(selectors.confirmDeleteAllTests).click();
     }
-    
-    clearAllTestRuns(){
+
+    clearAllTestRuns() {
         this.clickOnTestRunsTab();
         cy.wait(2000);
-        cy.xpath(selectors.rowTestsRun).find('td').invoke('text').then(($element)=>{
-        if($element !== 'No Data Available'){
+        cy.xpath(selectors.rowTestsRun).find('td').invoke('text').then(($element) => {
+            if ($element !== 'No Data Available') {
             this.clickOnclearBtn();
             this.clickOnConfirmClearTests();
         }
-        else{
+            else {
             return;
         }
-        }) 
+        })
     }
 
-    openLastTestFromConfigOfProcess(processName){
+    openLastTestFromConfigOfProcess(processName) {
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(processName, "config");
         this.clickOnTestRunsTab();
         this.openLastTest();
     }
 
-    clickOnEmailsTab(){
+    clickOnEmailsTab() {
         cy.xpath(selectors.emailTab).click();
     }
-    //Buttons
-    clickOnsubmitBtn(){
+
+    clickOnsubmitBtn() {
         cy.get(selectors.submitBtn).should('be.visible').click();
     }
 
-    alertMessageVisible(){
-        cy.get(selectors.alertMessage).should('be.visible'); 
+    alertMessageVisible() {
+        cy.get(selectors.alertMessage).should('be.visible');
     }
 
-    clickOnCompletedTaskBtn(){
+    clickOnCompletedTaskBtn() {
         cy.xpath(selectors.completedBtn).should('be.visible').click();
+    }
+
+    clickOnEllipsisScenario() {
+        cy.xpath(selectors.menuScenario).first().click({ force: true });
+    }
+
+    load() {
+        cy.wait(5000);
+    }
+
+    deleteScenarios(scenarioName, init, end) {
+        for (let index = init; index < end; index++) {
+            this.searchScenarioAndSelectOption(`${scenarioName} - ${index}`, 'delete');
+            cy.wait(100)
+        }
     }
 }
