@@ -58,10 +58,10 @@ export class ProcessTesting {
         cy.wait(1000);
         cy.iframe(iframeSelector).xpath(selectors.labelScenario).should('be.visible');
         cy.iframe(iframeSelector).xpath(selectors.containerScenario).click();
-        cy.iframe(iframeSelector).xpath(selectors.inputScenario).should('be.visible');
-        cy.iframe(iframeSelector).xpath(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
+        cy.iframe(iframeSelector).find(selectors.inputScenario).should('be.visible');
+        cy.iframe(iframeSelector).find(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
         cy.wait(1000)
-        cy.iframe(iframeSelector).xpath(selectors.inputScenario).type('{enter}');
+        cy.iframe(iframeSelector).find(selectors.inputScenario).type('{enter}');
     }
 
     //Additional Data from Modeler
@@ -478,15 +478,15 @@ export class ProcessTesting {
         cy.wait(1000);
         cy.xpath(selectors.labelScenario).should('be.visible');
         cy.xpath(selectors.containerScenario).click();
-        cy.xpath(selectors.inputScenario).should('be.visible');
-        cy.xpath(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
+        cy.get(selectors.inputScenario).should('be.visible');
+        cy.get(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
         cy.wait(1000)
-        cy.xpath(selectors.inputScenario).type('{enter}');
+        cy.get(selectors.inputScenario).type('{enter}');
     }
 
     selectAllScenarios(nameToFilter) {
         cy.xpath(selectors.containerScenario).click();
-        cy.xpath(selectors.inputScenario).click().type(nameToFilter).should('have.value', nameToFilter);
+        cy.get(selectors.inputScenario).click().type(nameToFilter).should('have.value', nameToFilter);
         cy.get('[aria-label="-- Select All --. "]').click();
     }
 
@@ -584,12 +584,12 @@ export class ProcessTesting {
         cy.wait(2000);
         cy.xpath(selectors.rowTestsRun).find('td').invoke('text').then(($element) => {
             if ($element !== 'No Data Available') {
-            this.clickOnclearBtn();
-            this.clickOnConfirmClearTests();
-        }
+                this.clickOnclearBtn();
+                this.clickOnConfirmClearTests();
+            }
             else {
-            return;
-        }
+                return;
+            }
         })
     }
 
