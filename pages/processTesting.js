@@ -391,7 +391,9 @@ export class ProcessTesting {
 
     //Search Test Run
     searchTestRun(value) {
-        cy.get(selectors.searchTestRun).should('be.visible').clear().type(`${value}{enter}`, { delay: 100 }).should('have.value', value);
+        cy.get(selectors.searchTestRun).should('be.visible');
+        cy.get(selectors.searchTestRun).click().clear();
+        cy.get(selectors.searchTestRun).type(`${value}`, { delay: 100 }).should('have.value', value);
     }
 
     //Create Run Test from process configure
