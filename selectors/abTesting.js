@@ -4,7 +4,7 @@ export default {
 
     //AB alternatives
     menuAB: '[id="myTab"]',
-    alternativeA_Tab: '[id="tab-A"]',
+    alternativeA_Tab: '[data-test="tab-A"]',
     alternativeB_Tab: '[data-test="tab-B"]',
     plusTab: '[data-test="tab-plus"]',
     deleteAltB_Btn: '[id="tab-B-remove"]',
@@ -25,7 +25,7 @@ export default {
     saveAndPublish: '[data-test="btn-save-publish"]',
     version: 'input[name="version"]',
     description: '[name="description"]',
-    saveBtnInLaunchpadSettingModal: '[class="btn btn-secondary"]',
+    saveBtnInLaunchpadSettingModal: '[data-test="launchpad-modal-btn-ok"]',
     modalLaunchpad: '[id="launchpadSettingsModal___BV_modal_content_"]',
     labelLaunchpad: '[id="launchpadSettingsModal___BV_modal_title_"]',
     closeModalPublish: '[aria-label="Close"]',

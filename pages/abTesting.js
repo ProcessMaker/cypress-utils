@@ -70,7 +70,6 @@ export class ABTesting {
 
     deleteAlternativeB_ifExist() {
         cy.iframe(selectors.iframeA).find(selectors.menuAB).invoke('text').then($text => {
-            cy.log($text)
             if ($text.includes('Alternative B')) {
                 this.deleteAlternativeB();
             }
@@ -109,11 +108,13 @@ export class ABTesting {
         cy.iframe(iframeSelector).find('[class="modal-dialog modal-lg modal-dialog-centered"]').should('be.visible');
     }
 
-    saveLaunchPadModal() {
-        cy.iframe(selectors.iframeA).find(selectors.modalLaunchpad).should('be.visible');
-        cy.iframe(selectors.iframeA).find(selectors.labelLaunchpad).should('contain', 'Launchpad Settings')
-        cy.iframe(selectors.iframeA).find(selectors.saveBtnInLaunchpadSettingModal).should('be.visible');
-        cy.iframe(selectors.iframeA).find(selectors.saveBtnInLaunchpadSettingModal).click({ force: true });
+    saveLaunchPadModal(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.modalLaunchpad).should('be.visible');
+        cy.iframe(iframeSelector).find(selectors.labelLaunchpad).should('contain', 'Launchpad Settings')
+        cy.iframe(iframeSelector).find(selectors.saveBtnInLaunchpadSettingModal).should('be.visible');
+        cy.wait(3000);
+        cy.iframe(iframeSelector).find(selectors.saveBtnInLaunchpadSettingModal).click({ force: true });
     }
 
     selectAlternativeA(iframeOption = 'a') {
