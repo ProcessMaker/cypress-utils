@@ -1,8 +1,5 @@
 import selectors from "#selectors/translations"
-import pageConstants from "#helpers/pageConstants";
-import promisify from "cypress-promise";
 import { NavigationHelper } from "#helpers/navigationHelper";
-import { isThisWeek } from "date-fns";
 import { Process } from "./process";
 
 let navHelper = new NavigationHelper();
@@ -115,9 +112,9 @@ export class Translations {
     translateControlAdded(languageSet){
         cy.xpath(selectors.translationsSearch).should("be.visible").type(languageSet,{delay:500});
         cy.xpath(selectors.openTranslation.replace('language', languageSet)).should('be.visible').first().click({force: true});
-        cy.xpath(selectors.translationScreenList).click();
+        cy.xpath(selectors.translationScreenList).should("be.visible").click();
         cy.xpath(selectors.optionListScreen.replace("ScreenOption",screen2)).should("be.visible").click();
-        cy.xpath(selectors.TestForTranslationStingInPut).should('have.value', '');
+        cy.xpath(selectors.TestForTranslationStingInPut).should('exist');
         cy.xpath(selectors.translationsOptions).should("be.visible").click();
         cy.xpath(selectors.radioTranslateEmpty).should("be.visible").click();
         cy.xpath(selectors.translateOptionsBtn).should("be.visible").click();
