@@ -13,12 +13,12 @@ export class NaturalLanguage {
     }
 
     setDataOnDescription(descriptionData){
-        cy.get(selectors.descriptionNL).type(descriptionData);
+        cy.get(selectors.descriptionNL).type(descriptionData,{delay:1000});
     }
 
     clickOnGenerate(){
         cy.get(selectors.generateBTtnNL).should('be.visible').click({timeout: 1000});
-        cy.wait(3000);
+        cy.wait(5000);
     }
 
     createSimpleProcess(descriptionData){
