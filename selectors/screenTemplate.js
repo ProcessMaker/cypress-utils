@@ -49,6 +49,7 @@ export default {
     sharedTemplateType: '[data-cy="type-container-Shared Templates"]',
     myTemplateType: '[data-cy="type-container-My Templates"]',
     selectScreenTemplate:'[data-cy="CustomCard"] input',
-
-    
+    previewTemplate: '[data-cy="CustomCard"] a',
+    buttonViewCSS:'[class="btn text-uppercase btn-outline-secondary"]',
+   
 }
