@@ -6,7 +6,7 @@ var date = new Date();
 const navHelper = new NavigationHelper();
 export class Admin {
 
-	searchForCollection(collectionName,option="edit") {
+	/*searchForCollection(collectionName,option="edit") {
 		cy.get(selectors.RecordsBtn).should('be.visible');
 		cy.get(selectors.searchInputBox).type(collectionName).should('have.value', collectionName);
 		cy.xpath(selectors.searchctrl).click({
@@ -1721,62 +1721,67 @@ export class Admin {
      * @param serverIDPType: is the type of the configuration like: (client ID, client Secret, host URL, token)
      * @return nothing returns
      */
-    createIDPIfNotConfigured(serverIDPType){
-        var ServerIDP = Cypress.env("defaultIDPSettings").hostURL;
 
-        cy.get('[data-target="#collapseOne2"]').click();
-        cy.xpath('//div[contains(text(),"IDP")]').should('be.visible');
-        cy.xpath('//div[contains(text(),"IDP")]').click();
-        cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Host URL")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
-            .then(elem => {
-                if(elem.trim() === ServerIDP){
-                    cy.log('IDP configuration exists: '+ serverIDPType);
-                }else{
-                    var clientIDTxt = Cypress.env("defaultIDPSettings").clientID;
-                    var clientSecretTxt = Cypress.env("defaultIDPSettings").clientSecret;
-                    var hostURLTxt = Cypress.env("defaultIDPSettingsL").hostUR;
-                    var tokenURLTxt = Cypress.env("defaultIDPSettings").tokenURL;
-                    let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
-                    let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
+createIDPIfNotConfigured(serverIDPType){
+    var ServerIDP = Cypress.env("defaultIDPSettings").hostURL;
 
-                    //edit client ID
-                    cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
-                    cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                    cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientIDTxt).should('have.value',clientIDTxt).type(" ");
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                    cy.xpath('//div[@role="alert"]').should('exist');
-                    cy.xpath('//div[@role="alert"]').should('not.exist');
-                    cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
-                
-                    //edit Client Secret
-                    cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
-                    cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                    cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
-                    cy.xpath('//div[@role="alert"]').should('not.exist');
+    cy.get('[data-target="#collapseOne2"]').click();
+    cy.xpath('//div[contains(text(),"IDP")]').should('be.visible');
+    cy.xpath('//div[contains(text(),"IDP")]').click();
+    cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Host URL")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
+        .then(elem => {
+            if(elem.trim() === ServerIDP){
+                cy.log('IDP configuration exists: '+ serverIDPType);
+            }else{
+                var clientIDTxt = Cypress.env("defaultIDPSettings").clientID;
+                var clientSecretTxt = Cypress.env("defaultIDPSettings").clientSecret;
+                var hostURLTxt = Cypress.env("defaultIDPSettings").hostURL;
+                var tokenURLTxt = Cypress.env("defaultIDPSettings").tokenURL;
+                let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
+                let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
 
-                    //edit server host
-                    cy.xpath(optionConfigXpath.replace('optionName','Host URL')).click();
-                    cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                    cy.xpath('//div[@class="modal-content"]//div/input').clear().type(hostURLTxt);
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                    cy.xpath('//div[@role="alert"]').should('exist');
-                    cy.xpath('//div[@role="alert"]').should('not.exist');
-                    cy.xpath(optionColumnXpath.replace('optionColumn','Host URL')).should('have.contain',hostURLTxt);
 
-                    //edit token
-                    cy.xpath(optionConfigXpath.replace('optionName','Token URL')).click();
-                    cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                    cy.xpath('//div[@class="modal-content"]//div/input').clear().type(tokenURLTxt).should('have.value',tokenURLTxt).type(" ");
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                    cy.xpath('//div[@role="alert"]').should('exist');
-                    cy.xpath('//div[@role="alert"]').should('not.exist');
-                    cy.xpath(optionColumnXpath.replace('optionColumn','Token URL')).should('have.contain',tokenURLTxt);
-                                     
-                    }
-                
-                                 
-            });
+                //edit client ID
+                cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
+                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientIDTxt).should('have.value',clientIDTxt).type(" ");
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@role="alert"]').should('exist');
+                cy.xpath('//div[@role="alert"]').should('not.exist');
+                cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
+           
+                //edit Client Secret
+                cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
+                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
+                cy.xpath('//div[@role="alert"]').should('not.exist');
+
+
+                //edit server host
+                cy.xpath(optionConfigXpath.replace('optionName','Host URL')).click();
+                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(hostURLTxt);
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@role="alert"]').should('exist');
+                cy.xpath('//div[@role="alert"]').should('not.exist');
+                cy.xpath(optionColumnXpath.replace('optionColumn','Host URL')).should('have.contain',hostURLTxt);
+
+
+                //edit token
+                cy.xpath(optionConfigXpath.replace('optionName','Token URL')).click();
+                cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(tokenURLTxt).should('have.value',tokenURLTxt).type(" ");
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@role="alert"]').should('exist');
+                cy.xpath('//div[@role="alert"]').should('not.exist');
+                cy.xpath(optionColumnXpath.replace('optionColumn','Token URL')).should('have.contain',tokenURLTxt);
+                                
+                }
+           
+                            
+        });
+
         
 }
 
