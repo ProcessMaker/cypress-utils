@@ -6,7 +6,7 @@ var date = new Date();
 const navHelper = new NavigationHelper();
 export class Admin {
 
-	/*searchForCollection(collectionName,option="edit") {
+	searchForCollection(collectionName,option="edit") {
 		cy.get(selectors.RecordsBtn).should('be.visible');
 		cy.get(selectors.searchInputBox).type(collectionName).should('have.value', collectionName);
 		cy.xpath(selectors.searchctrl).click({
