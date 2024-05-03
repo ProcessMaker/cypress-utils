@@ -92,6 +92,7 @@ export class ScreenTemplate {
 
     clickOnSave() {
         cy.xpath(selectors.saveCreateScreenTemplate).should("be.visible").click();
+        
     }
 
     searchScreenTemplate(nameScreenTemplate) {
@@ -370,9 +371,8 @@ createScreenFromTemplate(name, description, type, typeScreenTemplate, nameTempla
     this.selectTypeScreen(type);
     this.selectTypeTemplate(typeScreenTemplate);
     this.selectTemplate(nameTemplate);
-    this.clickOnSave();
-    cy.get(Selectors.savePublishVersionsBtn).should('be.visible');
-    
+    this.previewTemplate(nameTemplate);
+        
 }
 
 clickOnAddScreen() {
@@ -450,6 +450,13 @@ selectTemplate(nameTemplate) {
     cy.get(selectors.selectScreenTemplate.replace('CustomCard',nameTemplate+'-card')).click({force:true});
     
 }
+previewTemplate(nameTemplate) {
+
+    cy.get(selectors.previewTemplate.replace('CustomCard',nameTemplate+'-card')).click({force:true});
+    cy.get(selectors.buttonViewCSS).should('be.visible').click();
+    
+}
+
 
 
 clickOnSave() {
