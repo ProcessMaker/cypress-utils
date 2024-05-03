@@ -51,5 +51,7 @@ export default {
     selectScreenTemplate:'[data-cy="CustomCard"] input',
     previewTemplate: '[data-cy="CustomCard"] a',
     buttonViewCSS:'[class="btn text-uppercase btn-outline-secondary"]',
+    saveBtn: '[data-cy="create_screen_save_btn"]',
+    customCSSpanel: 'div[class="css-preview"]',
    
 }

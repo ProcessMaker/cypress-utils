@@ -65,7 +65,7 @@ export class ScreenTemplate {
         this.enterScreenTemplateDescription(description, { delay: 200 });
         if (category != "") this.enterScreenTemplateCategory(category);
         if (version != "") this.enterVersionScreenTemplate(version, { delay: 200 });
-        this.clickOnSave();
+        this.clickOnSaveTemplate();
     }
 
     enterScreenTemplateName(nameScreenTemplate) {
@@ -90,7 +90,7 @@ export class ScreenTemplate {
             .type("{enter}");
     }
 
-    clickOnSave() {
+    clickOnSaveTemplate() {
         cy.xpath(selectors.saveCreateScreenTemplate).should("be.visible").click();
         
     }
@@ -460,7 +460,7 @@ previewTemplate(nameTemplate) {
 
 
 clickOnSave() {
-    cy.get(Selectors.saveBtn).should('be.visible').should('be.visible').click({force:true});
+    cy.get(selectors.saveBtn).should('be.visible').click({force:true});
 }
 
 
