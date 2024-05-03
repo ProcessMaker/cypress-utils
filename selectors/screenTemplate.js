@@ -45,6 +45,10 @@ export default {
     saveButtonConfiguration: '//button[text()="Save"]',
     txtDescriptionConfiguration: '//*[@id="description-text"]',
     versionConfiguration: '//*[@id="version-text"]',
+    arrowTypeTemplate: '(//div[@class="multiselect__select"])[2]',
+    sharedTemplateType: '[data-cy="type-container-Shared Templates"]',
+    myTemplateType: '[data-cy="type-container-My Templates"]',
+    selectScreenTemplate:'[data-cy="CustomCard"] input',
 
     
 }

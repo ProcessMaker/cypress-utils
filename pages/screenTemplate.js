@@ -333,23 +333,7 @@ verifyPresenceOfScreenSharedtemplateAndImport(screenTemplateSharedTemplate, scre
             cy.get(Selectors.fileBtn).attachFile(screenTemplatePath);
             cy.get(selectors.importBtnScreenSharedTemplate).click();
         }
-   /* cy.xpath(selectors.ImportButtonMyTemplate).first().click();
-        cy.xpath(selectors.titleImportScreenTemplate)
-            .first()
-            .should("have.text", "Import Screen Template")
-            .should("be.visible");
-        cy.get(selectors.browseScreenTemplate).attachFile(screenTemplatePath);
-        cy.xpath(selectors.importBtnScreentemplate)
-            .parent()
-            .should("have.attr", "disabled", "disabled");
-        cy.xpath(selectors.importBtnScreentemplate)
-            .parent()
-            .should("not.have.attr", "disabled", "disabled");
-        cy.xpath(selectors.importBtnScreentemplate).click();
-        cy.get(selectors.loadingScreenTemplateSpinner).should("not.exist");*/
-    
-    //}
-    
+     
     verifyPresenceOfScreenTemplateAndCreate(nameScreenTemplate) {
 
         cy.xpath('//*[@id="nav-myTemplates-tab"]').should('be.visible').click();
@@ -377,5 +361,102 @@ verifyPresenceOfScreenSharedtemplateAndImport(screenTemplateSharedTemplate, scre
         } else return;
     });
 }
+
+createScreenFromTemplate(name, description, type, typeScreenTemplate, nameTemplate) {
+    this.clickOnAddScreen();
+    cy.get(Selectors.CategoryTxt).should('have.text','Uncategorized');
+    this.enterScreenName(name);
+    this.enterScreenDescription(description);
+    this.selectTypeScreen(type);
+    this.selectTypeTemplate(typeScreenTemplate);
+    this.selectTemplate(nameTemplate);
+    this.clickOnSave();
+    cy.get(Selectors.savePublishVersionsBtn).should('be.visible');
+    
+}
+
+clickOnAddScreen() {
+    cy.get(Selectors.addScreenButton).click();
+}
+enterScreenName(name) {
+    cy.get(Selectors.nameTxtBx).type(name).should('have.value', name);
+}
+enterScreenDescription(description) {
+    cy.get(Selectors.descriptionTxtBx).type(description).should('have.value', description);
+}
+selectTypeScreen(
+    type = " "
+    
+) {
+    {
+        cy.xpath(Selectors.arrowTypeScreen).should('be.visible');
+        cy.xpath(Selectors.arrowTypeScreen).click();
+    }
+    switch (type) {
+        case "Form":
+            this.selectScreenForm();
+            break;
+        case "Email":
+            this.selectScreenEmail();
+            break;
+        case "Display":
+            this.selectScreenDisplay();
+            break;
+        case "Conversational":
+            this.selectScreenConversational();
+            break;
+    }
+}
+
+selectScreenForm() {
+    cy.get(Selectors.screenTypeForm).eq(1).click();
+}
+selectScreenEmail() {
+    cy.get(Selectors.screenTypeEmail).click();
+}
+selectScreenDisplay() {
+    cy.get(Selectors.screenTypeDisplay).click();
+}
+selectScreenConversational() {
+    cy.get(Selectors.screenTypeConversational).click();
+}
+
+selectTypeTemplate(typeScreenTemplate = " ") 
+{
+        cy.xpath(selectors.arrowTypeTemplate).should('be.visible');
+        cy.xpath(selectors.arrowTypeTemplate).click();
+               
+    switch (typeScreenTemplate) 
+    {
+        case "Shared":
+            this.selectSharedTemplate();
+            break;
+        case "My Templates":
+            this.selectMyTemplate();
+            break;
+    }
+}
+
+selectSharedTemplate() {
+    cy.get(selectors.sharedTemplateType).eq(1).click();
+}
+
+selectMyTemplate() {
+    cy.get(selectors.myTemplateType).should('be.visible').click();
+}
+
+selectTemplate(nameTemplate) {
+
+    cy.get(selectors.selectScreenTemplate.replace('CustomCard',nameTemplate+'-card')).click({force:true});
+    
+}
+
+
+clickOnSave() {
+    cy.get(Selectors.saveBtn).should('be.visible').should('be.visible').click({force:true});
+}
+
+
+
 
 }
