@@ -8,7 +8,7 @@ const process = new Process();
 export class ABTesting {
     //AB alternatives
     enableAlternativeB() {
-        this.waitUntilElementIsVisible('selector', '[data-test="processmaker-modeler-start-event-main"]');
+        this.load();
         cy.iframe(selectors.iframeA).find(selectors.menuAB).invoke('text').then($text => {
             cy.log($text)
             if ($text.includes('Alternative B')) {
@@ -264,5 +264,8 @@ export class ABTesting {
                 })
         }
 
+    }
+    load() {
+        cy.wait(3000);
     }
 }
