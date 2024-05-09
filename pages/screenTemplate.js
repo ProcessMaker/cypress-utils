@@ -437,6 +437,18 @@ selectTypeTemplate(typeScreenTemplate = " ")
     }
 }
 
+createScreenFromTemplateDefault(name, description, type, typeScreenTemplate) {
+    this.clickOnAddScreen();
+    cy.get(Selectors.CategoryTxt).should('have.text','Uncategorized');
+    this.enterScreenName(name);
+    this.enterScreenDescription(description);
+    this.selectTypeScreen(type);
+    this.selectTypeTemplate(typeScreenTemplate);
+    this.selectDefaultTemplate();
+    //this.previewTemplate(nameTemplate);
+        
+}
+
 selectSharedTemplate() {
     cy.get(selectors.sharedTemplateType).eq(1).click();
 }
@@ -448,6 +460,12 @@ selectMyTemplate() {
 selectTemplate(nameTemplate) {
 
     cy.get(selectors.selectScreenTemplate.replace('CustomCard',nameTemplate+'-card')).click({force:true});
+    
+}
+
+selectDefaultTemplate() {
+
+    cy.get(selectors.selectScreenDefaultTemplate).click({force:true});
     
 }
 previewTemplate(nameTemplate) {
