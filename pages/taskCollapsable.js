@@ -57,23 +57,14 @@ export class TaskCollapsable {
 
     verifyCompletedforTaskCollapsibleAllToggledOn(){
         cy.xpath(selectors.reassignButton).should('be.visible');
-       cy.xpath(selectors.openLabel).should('be.visible');
-       cy.xpath(selectors.dueIn).should('be.visible');
-       cy.xpath(selectors.autoSave).should('be.visible');
-       cy.xpath(selectors.assignedTo).should('be.visible');
-       cy.xpath(selectors.adminUserIcon).should('have.length', 3);
-       cy.xpath(selectors.escalateManagerButton).should('be.visible');
-       cy.xpath(selectors.requestTitle).should('have.length', 2);
-       cy.xpath(selectors.requestedBy).should('be.visible');
-       cy.xpath('//input[@aria-label="New Input"]').type('Buddhism');
-       cy.xpath('//button[@aria-label="New Submit"]').click();
-       cy.xpath(selectors.detailsTab).should('be.visible');
-       cy.xpath(selectors.commentsTab).should('be.visible');
-       cy.xpath(selectors.completed).should('be.visible');
-       cy.xpath(selectors.participants).should('be.visible');
-       cy.xpath(selectors.inProgressSince).should('be.visible');
-       cy.xpath(selectors.requestedBy).should('be.visible');
-       cy.xpath(selectors.adminUserIcon).should('have.length', 5);
+        cy.xpath(selectors.openLabel).should('be.visible');
+        cy.xpath(selectors.dueIn).should('be.visible');
+        cy.xpath(selectors.autoSave).should('be.visible');
+        cy.xpath(selectors.assignedTo).should('be.visible');
+        cy.xpath(selectors.adminUserIcon).should('have.length', 3);
+        cy.xpath(selectors.escalateManagerButton).should('be.visible');
+        cy.xpath(selectors.requestTitle).should('have.length', 2);
+        cy.xpath(selectors.requestedBy).should('be.visible');
     } 
 
     verifyCompletedforTaskCollapsibleAllToggledOff(){
@@ -85,15 +76,6 @@ export class TaskCollapsable {
         cy.xpath(selectors.adminUserIcon).should('have.length', 3);
         cy.xpath(selectors.requestTitle).should('have.length', 2);
         cy.xpath(selectors.requestedBy).should('be.visible');
-        cy.xpath('//input[@aria-label="New Input"]').type('Buddhism');
-        cy.xpath('//button[@aria-label="New Submit"]').click();
-        cy.xpath(selectors.detailsTab).should('be.visible');
-        cy.xpath(selectors.commentsTab).should('be.visible');
-        cy.xpath(selectors.completed).should('be.visible');
-        cy.xpath(selectors.participants).should('be.visible');
-        cy.xpath(selectors.inProgressSince).should('be.visible');
-        cy.xpath(selectors.requestedBy).should('be.visible');
-        cy.xpath(selectors.adminUserIcon).should('have.length', 5);
      }
  
      verifyCompletedRequestforTaskCollapsibleAllToggledOff(){
@@ -101,7 +83,7 @@ export class TaskCollapsable {
          cy.xpath(selectors.commentsTab).should('be.visible');
          cy.xpath(selectors.completed).should('be.visible');
          cy.xpath(selectors.participants).should('be.visible');
-         cy.xpath(selectors.inProgressSince).should('be.visible');
+         cy.xpath(selectors.completedOn).should('be.visible');
          cy.xpath(selectors.requestedBy).should('be.visible');
          cy.xpath(selectors.adminUserIcon).should('have.length', 5);
     }
