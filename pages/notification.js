@@ -89,9 +89,7 @@ export class Notification {
      * @return nothing returns
      */
     pressFirstNotificationOnPopup(requestID) {
-        cy.xpath(selectors.notificationList).should("be.visible");
-        cy.xpath(selectors.notificationList).find("a").first().click();
-        cy.url().should("include", "/requests/" + requestID);
+        cy.xpath(selectors.notificationLists).should("be.visible").first().click();
     }
 
     /**

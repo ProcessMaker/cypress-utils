@@ -24,7 +24,7 @@ export default {
     commentsTabCounter:
         "//div[@class='notification-popover']//div[@class='tabs']//a[contains(text(),'Comments')]//preceding-sibling::span",
     notificationLists:
-        "//div[@class='notification-popover']/div[starts-with(@title,'/tasks/')]",
+        "//div[@class='notification-popover']/div[@class='items']/div[starts-with(@title, '/requests/')]",
     generalCount:
         "//button[@id='notification-menu-button']//span[@class='message-count']",
     selectMessageNotification:
