@@ -13,7 +13,7 @@ export class NaturalLanguage {
     }
 
     setDataOnDescription(descriptionData){
-        cy.get(selectors.descriptionNL).type(descriptionData,{delay:1000});
+        cy.get(selectors.descriptionNL).type(descriptionData,{delay:500});
     }
 
     clickOnGenerate(){
@@ -136,4 +136,19 @@ export class NaturalLanguage {
         cy.get('.prev-btn').should('be.visible');
     }
 
+    waitUntilElementIsVisible(type, selectorXPath, maxAttempts = 15, attempts = 0) {
+        if (attempts > maxAttempts) {
+            throw new Error("Timed out waiting for report to be generated");
+        }
+        if (type === 'selector') {
+            cy.wait(4000);
+            cy.iframe('[id="alternative_a"]')
+                .then($body => {
+                    if ($body.find(selectorXPath).length <= 0) {
+                        this.waitUntilElementIsVisible(type, selectorXPath, maxAttempts, attempts + 1);
+                    }
+                })
+        }
+
+    }
 }
