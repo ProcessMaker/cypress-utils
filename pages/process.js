@@ -1098,7 +1098,7 @@ export class Process {
 
         cy.get(alternative).should('exist');
         cy.url().then(url => {
-            cy.visit(url+'/alternative/A');
+            cy.visit(url+'/alternative/'+defaultAlternative);
             cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click({force:true});
             cy.wait(2000);
             //Open hamburger menu if not is open
