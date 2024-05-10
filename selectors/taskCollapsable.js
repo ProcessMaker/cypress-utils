@@ -7,6 +7,7 @@ export default{
     inProgress: '//span[text()="In Progress"]',
     participants: '//p[contains(text(),"Participants")]',
     inProgressSince: '//p[contains(text(),"In Progress Since:")]',
+    completedOn: '//p[contains(text(),"Completed On:")]',
     requestedBy: '//p[contains(text(),"Requested By:")]',
     adminUserIcon: '//span/span[contains(text(),"AU")]',
     openLabel: '//span[text()="open"]',
