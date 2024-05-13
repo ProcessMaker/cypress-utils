@@ -386,7 +386,8 @@ export class Screens {
 			case 'config':
 				this.goToConfigScreen();
 				break;
-			case 'delete': break;
+			case 'delete': 
+				break;
 			case 'addProject':
 				this.addProject();
 		}

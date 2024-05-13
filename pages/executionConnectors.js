@@ -298,31 +298,6 @@ export class ExecutionConnectors {
             .should("be.visible");
     }
 
-    actionsAndAssertionsOfTCP43052(name) {
-        var filePath = "screens_data/screenForm_TCP4-3052.json";
-        var form_screen = "screenForm_TCP4-3052";
-
-        //Step 1: Search a screen created 
-        navHelper.navigateToScreensPage();
-
-        //Step 2:Import a  Screen
-        screens.verifyPresenceOfScreenAndImportScreen(form_screen, filePath);
-        navHelper.navigateToScreensPage();
-
-        //Step 3: Search screen for add a  project
-        screens.searchScreen(form_screen, "addProject");
-
-       //Step 4: Select project in Screen
-        pmProjects.selectProjectInScreen(name);
-        cy.xpath(selectors.assignProjects).first().should("be.visible");
-        cy.xpath(selectors.assignProjects)
-            .should("be.visible")
-            .click({ force: true });
-        //Step 5: Verify that screen is assigned in project
-        navHelper.navigateToPmProjects();
-        pmProjects.searchProjects(name);
-        cy.xpath('//*[contains(text(),"screenForm_TCP4-3052")]').should("be.visible");
-    }
     actionsAndAssertionsOfTCP43053(name) {
         var filePath = "screens_data/screenDisplay_TCP4-3053.json";
         var form_screen = "screenDisplay_TCP4-3053";
