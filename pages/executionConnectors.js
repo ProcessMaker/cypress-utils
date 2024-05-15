@@ -621,7 +621,7 @@ export class ExecutionConnectors {
         pmProjects.selectProjectInProcess(name);
         
         cy.xpath(selectors.assignProjects).first().should("be.visible");
-        cy.xpath(selectors.assignProjects).click();
+        cy.xpath(selectors.assignProjects).click({force: true});
 
         //Step 5: verify that the process is added to the project
         navHelper.navigateToProcessPage();
@@ -629,7 +629,7 @@ export class ExecutionConnectors {
         pmProjects.searchProjectsAndSelectOptions(name, "open");
 
         //Step 6: Verify that the process was assigned to the project
-        //cy.xpath('//*[contains(text(),"Process")]').should("be.visible");
+        cy.xpath('//*[contains(text(),"Process")]').should("be.visible");
     }
     actionsAndAssertionsOfTCP43179(name) {
         let timeStamp = new Date().getTime();
