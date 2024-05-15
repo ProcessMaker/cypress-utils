@@ -125,7 +125,7 @@ export class PMProjects {
 
     searchCategoryProjects(categoryName) {
         var editBtn =
-            '//*[@id="categories-listing"]/div[2]/div[2]/table/tbody/tr[1]/td[6]';
+            '//*[@id="categories-listing"]//button[@aria-haspopup="menu"]';
         cy.xpath(editBtn).should("be.visible");
         cy.xpath(selectors.searchCatProjects)
             .type(`${categoryName}{enter}`)

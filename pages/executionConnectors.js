@@ -117,7 +117,7 @@ export class ExecutionConnectors {
         pmProjects.searchProjects(projectName);
     }
     actionsAndAssertionsOfTCP43089() {
-        var categoryName = new Date().getTime()+"TCP4-3089 category Project";
+        var categoryName = "TCP4-3089 category Project " + new Date().getTime();
 
         //Step 1: Click on tab Category
         cy.xpath('//*[@id="nav-categories-tab"]').should("be.visible").click();
