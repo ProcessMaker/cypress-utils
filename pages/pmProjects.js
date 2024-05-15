@@ -27,11 +27,9 @@ export class PMProjects {
             .should("be.visible");
         cy.xpath(selectors.projectCategoryFieldXpath).click();
         cy.xpath(selectors.projectCategoryFieldXpath).type(name);
-        cy.xpath(selectors.projectCategoryFieldXpath).type("{enter}", {
-            delay: 60,
-        });
+        cy.xpath(selectors.projectCategoryFieldXpath).type("{enter}", {delay: 120});
         // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(200);
+        cy.wait(2000);
     }
     selectProjectInScreen(name) {
         cy.xpath(selectors.projectCategoryFieldXpath)
