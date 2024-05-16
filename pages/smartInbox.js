@@ -114,7 +114,7 @@ export class SmartInbox {
             cy.get("b").should("have.text", "Rule successfully created");
             cy.get("span").should(
                 "have.text",
-                'Check it out in the "Rules" section of your inbox.'
+                "Please take a look at it in the 'Rules' section located within your Inbox."
             );
         });
     }
