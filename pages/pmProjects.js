@@ -131,11 +131,6 @@ export class PMProjects {
         cy.xpath(selectors.searchCatProjects).type(' ').type('{backspace}');
         cy.xpath(editBtn).first().click({ force: true });
         
-       // cy.xpath(editBtn).should("be.visible");
-       // cy.xpath(selectors.searchCatProjects).type(`${categoryName}{enter}`).should("have.value", categoryName);
-       // cy.xpath(selectors.searchCatProjects).type(' ').type('{backspace}');
-       // cy.xpath(editBtn).should("be.visible");
-       // cy.xpath(editBtn).first().click({ force: true });
     }
 
     selectMenuOptionRowCategory(nameOption) {
