@@ -38,7 +38,7 @@ export class Process {
                 break;
         }
         // const id = await promisify(cy.get(locator).then($elems => {
-        const id = cy.get(locator).then($elems => {
+        const id = cy.iframe('[id="alternative_a"]').find(locator).then($elems => {
             var index = 0;
             var max_id = 0;
             for (let i = 0; i < $elems.length; i++) {
@@ -96,25 +96,23 @@ export class Process {
     }
 
     dragStartEvent(selector, offsetX, offsetY) {
-        cy.xpath(selector.replace('index', 1)).trigger('mousedown')
+        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(2) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
-            })
-        cy.xpath("(//span[text()='Start Event'])[2]")
-            .trigger('mouseup');
+            });
+        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     dragEndEvent(selector, offsetX, offsetY) {
-        cy.xpath(selector.replace('index', 1)).trigger('mousedown')
+        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(4) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
-            })
-        cy.xpath("(//span[text()='End Event'])[2]")
-            .trigger('mouseup');
+            });
+        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     dragPdfGeneratorEvent(selector, offsetX, offsetY) {
@@ -162,16 +160,12 @@ export class Process {
     }
 
     dragEventByOffSet(selector, offsetX, offsetY) {
-        cy.xpath(selector.replace('index', 1)).trigger('mousedown')
+        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(5) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY
-            })
-        cy.xpath(selector.replace('index', 2))
-            .trigger('mouseup', {
-                pageX: offsetX,
-                pageY: offsetY
             });
+        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     clickOnZoomOut() {
@@ -179,9 +173,10 @@ export class Process {
     }
 
     connectToEvents(event1Locator, event2Locator) {
-        cy.get('#' + event1Locator).click();
-        cy.get('#generic-flow-button').click();
-        cy.get('#' + event2Locator).click();
+        cy.iframe('[id="alternative_a"]').find('#'+event1Locator).click();
+        cy.iframe('[id="alternative_a"]').find('[class="crown-config"]').should('be.visible')
+        cy.iframe('[id="alternative_a"]').find('#generic-flow-button').click();
+        cy.iframe('[id="alternative_a"]').find('#'+event2Locator).click();
     }
 
     clickOnSave() {
@@ -289,7 +284,7 @@ export class Process {
 
     addScreenToFormTask(eventLocator, screenName) {
         //cy.wait(2000);
-        cy.get('#' + eventLocator).click();
+        cy.iframe('[id="alternative_a"]').find('#' + eventLocator).click();
         //cy.wait(1000);
         cy.xpath(selectors.screenForInputDropdown).should('be.visible');
         cy.xpath(selectors.screenForInputDropdown).click();
@@ -2182,4 +2177,32 @@ export class Process {
             cy.visit("/modeler/" + processID + "/alternative/" + alternative);
         });
     }
+    verifyPresenceOfProcessAndCreate(processName, description) {
+        var editBtn =
+            '//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="processIndex"]//table/tbody/tr//button[@aria-haspopup="menu"]';
+        cy.xpath(editBtn).should("be.visible");
+        cy.xpath(selectors.searchInputBox)
+            .type(`${processName}`)
+            .should("have.value", processName);
+        cy.xpath(selectors.searchInputBox)
+            .type('{enter}');
+        cy.wait(5000);
+        cy.get(selectors.loadingSpinnerProcess).should("not.be.visible");
+        cy.get('#processIndex > div.container-fluid > div > div.jumbotron.jumbotron-fluid').should('not.be.visible');
+        cy.xpath(selectors.processTableBody, { timeout: 10000 })
+            .then($rowsTable => {
+                if($rowsTable.find("tr").length <= 0){
+                    this.createProcess(processName, description);
+                }
+                if($rowsTable.find("tr").length===1){
+                    cy.xpath(selectors.processTable, { timeout: 10000 })
+                            .find("td")
+                            .then(($loadedTable) => {
+                                if ($loadedTable.length === 1) {
+                                    this.createProcess(processName, description);
+                                }
+                            });
+                        }
+                    });
+                }
 }
