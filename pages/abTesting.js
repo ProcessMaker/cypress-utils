@@ -142,7 +142,6 @@ export class ABTesting {
     }
 
     selectAlternative(alternative, iframeOption) {
-
         switch (alternative) {
             case 'Alternative A':
                 this.selectAlternativeA(iframeOption);
@@ -263,9 +262,14 @@ export class ABTesting {
                     }
                 })
         }
-
     }
     load() {
         cy.wait(3000);
+    }
+
+    //Close modal Run test in AB testing
+    closeModal(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find('[class="modal-content"]').find(selectors.closeModalPublish).click();
     }
 }
