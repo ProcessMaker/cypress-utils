@@ -1,5 +1,6 @@
 export default{
-    prrocessEvent: '(//div[@title="eventName"])[index]',
+    //prrocessEvent: '(//div[@title="eventName"])[index]',
+    prrocessEvent:'(//span[contains(text(),"eventName")])[index]' ,
     recentlyDropedEvent: '[data-type="processmaker.components.nodes.eventName.Shape"]',
     zoomOutBtn: '[data-test="zoom-out"]',
     saveBtn: '//a[@data-cy="publish-btn"]',
