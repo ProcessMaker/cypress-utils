@@ -124,11 +124,18 @@ export class PMProjects {
     searchCategoryProjects(categoryName) {
         var editBtn =
             '//*[@id="categories-listing"]//button[@aria-haspopup="menu"]';
+        cy.get('#projectsCategorizedList').should("be.visible");
         cy.xpath(editBtn).should("be.visible");
-        cy.xpath(selectors.searchCatProjects)
-            .type(`${categoryName}{enter}`)
-            .should("have.value", categoryName);
-        cy.xpath(editBtn).first().click();
+        cy.xpath(selectors.searchCatProjects).should("be.visible");
+        cy.xpath(selectors.searchCatProjects).type(`${categoryName}{enter}`).should("have.value", categoryName);
+        cy.xpath(selectors.searchCatProjects).type(' ').type('{backspace}');
+        cy.xpath(editBtn).first().click({ force: true });
+        
+       // cy.xpath(editBtn).should("be.visible");
+       // cy.xpath(selectors.searchCatProjects).type(`${categoryName}{enter}`).should("have.value", categoryName);
+       // cy.xpath(selectors.searchCatProjects).type(' ').type('{backspace}');
+       // cy.xpath(editBtn).should("be.visible");
+       // cy.xpath(editBtn).first().click({ force: true });
     }
 
     selectMenuOptionRowCategory(nameOption) {

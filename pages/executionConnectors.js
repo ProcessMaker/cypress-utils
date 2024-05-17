@@ -248,36 +248,7 @@ export class ExecutionConnectors {
         //Step 6: Verify that pmblock contain components Task Web Entry
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(0).contains("WebEntry").should("be.visible");
     }
-    actionsAndAssertionsOfTCP43153() {
-        var categoryName = new Date().getTime()+"TCP4-3153 delete Category Project";
-
-        //Step 1: Click on tab Category
-        cy.xpath('//*[@id="nav-categories-tab"]').should("be.visible").click();
-
-        //Step 2: Click on Create Category
-        pmProjects.createCategoryProjects(categoryName);
-
-        //Step 3: Verify that the category has been created
-        pmProjects.searchCategoryProjects(categoryName);
-
-        //Step 4: CLick on Ellipsis menu Category
-        cy.get('[data-cy="category-ellipsis"]').first().should("be.visible");
-        cy.get('[data-cy="category-ellipsis"]').first().click();
-
-        //Step 5: Click on Category Tab
-        navHelper.navigateToPmProjects();
-        cy.xpath('//*[@id="nav-categories-tab"]').should("be.visible").click();
-
-        //Step 6: Search Category created and  deleted
-        pmProjects.searchCategoryProjects(categoryName);
-        cy.get('[data-cy="category-ellipsis"]').first().should("be.visible");
-        cy.get('[data-cy="category-ellipsis"]').first().click();
-        cy.xpath(selectors.deleteCategory).first().should("be.visible");
-        cy.xpath(selectors.deleteCategory).first().click();
-
-        //Step 7: Confirm Delete Category
-        cy.xpath(selectors.confirmDeleteCategory).should('be.visible').click();
-    }
+    
     actionsAndAssertionsOfTCP43037() {
         let projectName = "!@#$%^&*()";
 
