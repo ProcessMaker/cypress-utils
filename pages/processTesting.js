@@ -418,7 +418,7 @@ export class ProcessTesting {
                         cy.get(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
                         break;
                     case "As configured in the process":
-                        cy.get(selectors.alternativeField).select('As configured in the process').should('have.value', 'A');
+                        cy.get(selectors.alternativeField).select('As configured in the process').should('have.value', 'AB');
                         break;
                     default:
                         break;
