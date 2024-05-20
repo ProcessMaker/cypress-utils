@@ -51,7 +51,7 @@ export class NaturalLanguage {
     regenerateProcess(additionalDescriptionData){
         this.setDataOnDescription(additionalDescriptionData);
         this.clickOnGenerate();
-        cy.get('.progress').should('be.visible');
+        cy.get('[class="d-flex justify-content-center h-100 align-items-center spinner"]').should('be.visible');
         cy.get(selectors.aiIcon).should('not.exist');
         cy.get('.spinner-border').should('exist');        
         this.waitUntilUseModalIsVisible('selector', '[data-test="use-model-button"]');
@@ -122,15 +122,15 @@ export class NaturalLanguage {
         cy.get('input[type="file"]').attachFile(file,{timeout: 5000});
         cy.get('[class="image-action"] [class="fas fa-redo p-2"]').should('exist');
         cy.get('[class="image-action mr-1"] [class="fas fa-search-plus p-2"]').should('be.visible');
-        cy.get('.preview-file-img > img').should('be.visible');
-        cy.wait(1000);
+        cy.get('.preview-file-img > img').should('be.visible',{timeout: 5000});
+        cy.wait(2000);
     }
 
     generateProcessFromImage(){
         cy.get('[class="icon-wrapper p-1 mx-3"]').should('exist');
         cy.get('.btn-outline-secondary').should('be.visible',{timeout: 1000});
-        cy.xpath("//button[contains(text(),'Generate')]").should('be.visible').click({timeout: 1000});
-        cy.get('[role="progressbar"]').should('exist');
+        cy.xpath("//button[contains(text(),'Generate')]").should('be.visible').click({timeout: 5000});
+        cy.get('[role="progressbar"]').should('be.visible');
         this.waitUntilUseModalIsVisible('selector', '[data-test="textarea-prompt"]'); 
         this.waitUntilUseModalIsVisible('selector', '[class="d-flex"]');
         cy.get('.prev-btn').should('be.visible');
