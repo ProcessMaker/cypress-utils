@@ -4,6 +4,7 @@ export default{
     recentlyDropedEvent: '[data-type="processmaker.components.nodes.eventName.Shape"]',
     zoomOutBtn: '[data-test="zoom-out"]',
     saveBtn: '//a[@data-cy="publish-btn"]',
+    alertSaveProcess:'[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]',
     saveBtnInPopUp: '//button[text()="Save"]',
     saveChangesModal: '//h5[text()="Commit Changes"]',
     addProcessBtn: '[aria-label="Create Process"]',
@@ -83,7 +84,9 @@ export default{
     importingBtn: "//button[@type='button']//span[contains(text(),'Importing')]",
     loadingProcessSpinner: "[class='fas fa-circle-notch fa-spin']",
     processRailBottomXpath: '//div[@data-cy="rail-bottom"]',
-    inspectorBtnXpath: '//div[@data-test="body-container"]//button[@data-cy="inspector-button"]',
+    //inspectorBtnXpath: '//div[@data-test="body-container"]//button[@data-cy="inspector-button"]',
+    inspectorBtnXpath2: '//div[@data-test="body-container"]//button[@data-cy="inspector-button"]',
+    inspectorBtnXpath: '//*[@id="accordion-button-permissions-accordion"]',
     inspectorPanel: '//div[@data-test="body-container"]//div[@id="inspector"]',
     closeInspectoPanel: '//div[@data-test="body-container"]//div[@id="inspector"]//button[@data-cy="inspector-close-button"]',
 

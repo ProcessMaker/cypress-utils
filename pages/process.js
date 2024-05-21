@@ -768,6 +768,8 @@ export class Process {
     }
     saveProcessWithoutVersion() {
         this.clickOnSave();
+        //cy.xpath(selectors.saveBtnInPopUp).should('be.visible').click();
+        //cy.get(selectors.alertSaveProcess).should('be.visible');
         cy.xpath('//button[@data-test="btn-save-publish"]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
     }
@@ -1082,25 +1084,28 @@ export class Process {
     // to group: permissionObject = {type="Group", groupName="group 1"}
     // to process manager: permissionObject = {type="Process Manager"}
     verifyConfigOfStartEventAndConfig(elementName, permissionObject, defaultAlternative= "A") {
-        const elementStartEventXpath = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
+        //const elementStartEventXpath = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
+        const elementStartEventXpath = "(//*[@data-type='processmaker.components.nodes.startEvent.Shape'])[1]";
         const startPemrissionsBtnSelector = "[id='accordion-button-permissions-accordion']";
         const startPemrissions_typeSelector = "[id='select_type']";
         const startPemrissions_opSelectListSelector = "//label[text()='nameType']/parent::div//div[@class='multiselect__tags']";
         const startPemrissions_opInputSelector = "//label[text()='nameType']/parent::div//input";
         const OptionSelected = "//label[text()='nameType']/parent::div//div[@class='multiselect__tags']//span";
         const alternative = "[id='alternative_a']";
-
-
-        cy.get(alternative).should('exist');
+           
+        cy.get(alternative).should("exist");
         cy.url().then(url => {
             cy.visit(url+'/alternative/'+defaultAlternative);
             cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click({force:true});
             cy.wait(2000);
+            cy.get("[data-cy='inspector-button']").should('be.visible').click();
+            cy.get('#accordion-button-permissions-accordion').should('be.visible').click();
             //Open hamburger menu if not is open
             cy.xpath('//body')
                 .then($body => {
                     if ($body.find('[data-cy=inspector-button]').length > 0) {
-                        cy.xpath(selectors.inspectorBtnXpath).click();
+                        cy.get('#accordion-button-permissions-accordion').should('be.visible').click();
+                        //cy.xpath(selectors.inspectorBtnXpath).click();
                     }
                 });
             cy.get(startPemrissionsBtnSelector).should('be.visible').click();
@@ -1134,7 +1139,7 @@ export class Process {
                     break;
                 case 'Group':
                     let groupName = permissionObject.groupName;
-                    let ligroup = "//li[@aria-label='" + groupName + ". ']";
+                    //let ligroup = "//li[@aria-label='" + groupName + ". ']";
                     cy.get(startPemrissions_typeSelector).select('Group').should('have.value', 'group');
                     // Verify if the start event was configured with the correct group
                     cy.xpath(OptionSelected.replace('nameType', 'group')).should('be.visible');
@@ -1142,11 +1147,8 @@ export class Process {
                         .then(text => {
                             if (text !== groupName) {
                                 cy.xpath(startPemrissions_opSelectListSelector.replace('nameType', 'group')).click();
-                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'group')).type(groupName + " ")
-                                cy.xpath('//div[@class="multiselect__content-wrapper"]//li[1]')
-                                    .should('have.attr', 'aria-label') // yields the "href" attribute
-                                    .and('equal', groupName + ". ");
-                                cy.xpath(ligroup).click();
+                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'group')).type(groupName);
+                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'group')).type('{enter}');
                             }
                         });
                     break;
