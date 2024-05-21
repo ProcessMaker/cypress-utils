@@ -263,13 +263,44 @@ export class ABTesting {
                 })
         }
     }
-    load() {
-        cy.wait(3000);
-    }
 
     //Close modal Run test in AB testing
     closeModal(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         cy.iframe(iframeSelector).find('[class="modal-content"]').find(selectors.closeModalPublish).click();
+    }
+
+    clickOnStartEvent(nameElement, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        const elementLocator = '[data-type="processmaker.components.nodes.startEvent.Shape"]'
+        cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible').click({ force: true });
+    }
+
+    clickOnEndEvent(nameElement, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        const elementLocator = '[data-type="processmaker.components.nodes.endEvent.Shape"]'
+        cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible').click({ force: true });
+    }
+
+    deleteElement(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.deleteIcon).should('be.visible').click({ force: true });
+    }
+
+    discardChanges(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath('//div[@data-cy="ellipsis-menu"]//button').should('be.visible').click({ force: true });
+        cy.iframe(iframeSelector).contains('Discard Draft').click({ force: true });
+        cy.iframe(iframeSelector).xpath(selectors.discardBtn).click({ force: true });
+    }
+
+    changeNameOfProcess(newName) {
+        cy.get('[id="name"]').clear().type(newName).should('have.value', newName);
+        cy.xpath('//div[@id="nav-config"]//button[contains(text(),"Save")]').should('be.visible')
+        cy.xpath('//div[@id="nav-config"]//button[contains(text(),"Save")]').click();
+    }
+
+    load() {
+        cy.wait(3000);
     }
 }
