@@ -138,7 +138,7 @@ export class SmartInbox {
 
     searchInboxRule(name) {
         cy.get(selectors.searchInboxRule).as("search").should("be.visible");
-        cy.get("@search").clear().type(name, { delay: 200 });
+        cy.get("@search").clear().type(name, { delay: 400 });
         cy.get("@search").should("have.value", name);
     }
 
