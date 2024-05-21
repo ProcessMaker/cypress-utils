@@ -1318,9 +1318,10 @@ export class Admin {
     }
     createGroupIfNotExist(nameGroup,description) {
         //search group
-        cy.get('[placeholder="Search"]').should("be.visible").click()
-            .type(nameGroup).should('have.value',nameGroup);
-            cy.wait(5000)
+        cy.get('[placeholder="Search"]').should("be.visible").click().type(nameGroup).should('have.value',nameGroup);
+        cy.wait(5000)
+        //cy.get('[placeholder="Search"]').should("be.visible").click().type(nameGroup).should('have.value',nameGroup);
+        //    cy.wait(5000)
         cy.xpath('//div[@class="data-table"]//tbody//tr')
             .find('td')
             .then((loadedTable) => {
