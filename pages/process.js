@@ -1297,35 +1297,38 @@ export class Process {
         cy.readFile(path).its("type").should("eq", "process_package");
         cy.readFile(path).its("version").should("eq", "2");
     }
-    openScreenofElementFromModeler(typeName, elementName) {
+    openScreenofElementFromModeler(typeName, elementName, defaultAlternative="A") {
         const elementStartEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
         const elementTaskEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
         const weBtnSelector = "[id='accordion-button-webentry']";
         const linkScreenAssociatedXpath = "//label[text()='Screen For Completed']/parent::div//a";
-
-        cy.get('[data-cy="inspector-button"]').click();
-        switch (typeName) {
-            case 'Start Event':
-                cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click();
-                //click on WE
-                cy.get(weBtnSelector).click();
-                //Open screen Associate
-                cy.xpath(linkScreenAssociatedXpath)
-                    .should('have.attr', 'href')
-                    .then((href) => {
-                        cy.visit(href)
-                    });
-                break;
-            case 'Form Task':
-                cy.xpath(elementTaskEventXpath.replace('nameElem', elementName)).first().should('be.visible').click();
-                //Open screen for Input
-                cy.xpath("//label[text()='Screen for Input']/parent::div//a[contains(text(),'Open Screen')]")
-                    .should('have.attr', 'href')
-                    .then((href) => {
-                        cy.visit(href)
-                    });
-                break;
-        }
+        cy.get(selectors.alternativeA).should('exist');
+        cy.url().then(url => {
+            cy.visit(url + '/alternative/' + defaultAlternative);
+            cy.get('[data-cy="inspector-button"]').click();
+            switch (typeName) {
+                case 'Start Event':
+                    cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click();
+                    //click on WE
+                    cy.get(weBtnSelector).click();
+                    //Open screen Associate
+                    cy.xpath(linkScreenAssociatedXpath)
+                        .should('have.attr', 'href')
+                        .then((href) => {
+                            cy.visit(href)
+                        });
+                    break;
+                case 'Form Task':
+                    cy.xpath(elementTaskEventXpath.replace('nameElem', elementName)).first().should('be.visible').click();
+                    //Open screen for Input
+                    cy.xpath("//label[text()='Screen for Input']/parent::div//a[contains(text(),'Open Screen')]")
+                        .should('have.attr', 'href')
+                        .then((href) => {
+                            cy.visit(href)
+                        });
+                    break;
+            }
+        });
 
     }
 

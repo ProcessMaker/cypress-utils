@@ -262,5 +262,8 @@ export default{
     buttonWebEntryOption: '//button/span[text()="Web Entry"]',
     webEntryModeSelect: '//div/label[text()="Mode"]/ancestor::div[".form-group"]/select["#webentry-mode"]',
     copyWebEntryURL: '//label[text()="Web Entry URL"]/ancestor::div/div[".d-flex mt-1"]/button[text()=" Copy"]',
-    spanAnonymousWebLinkCopied: '//span/p/b[text()="Anonymous Web Link Copied"]'
+    spanAnonymousWebLinkCopied: '//span/p/b[text()="Anonymous Web Link Copied"]',
+
+    //alternatives
+    alternativeA: '[id="alternative_a"]'
 }

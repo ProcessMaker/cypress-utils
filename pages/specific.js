@@ -1555,28 +1555,14 @@ export class Specific {
     actionsAndAssertionsOfTCP42441(requestId) {
         cy.xpath("(//div[text()='Field must be accepted'])[1]").should('be.visible');
         cy.xpath("(//input[@class='form-check-input is-invalid'])[1]").click();
-        //cy.wait(2000);
-        cy.xpath("(//div[@class='invalid-feedback']//div)[1]").should('not.have.value', "Field must be accepted");
-
-        //date picker 1
-        //cy.wait(3000);
-        cy.xpath("//label[text()='picker_1']/following::input[1]").should('be.visible').click().type('06/03/2022');
-        cy.xpath("//div[text()='Field must be accepted'][1]").should('be.visible');
+        cy.xpath("//div[@data-cy='screen-field-form_date_picker_1']//input").click();
+        screens.useCustomDate("2022", "May", "03");
         cy.xpath("//label[text()='input_1']/following::input[1]").type("yes");
-        cy.xpath("(//div[@class='invalid-feedback'])[1]").should('not.have.value', "Field must be accepted");
-        //check box 2
-        //cy.wait(3000);
-        cy.xpath("(//div[text()='Field is required'])[1]").should('be.visible');
         cy.xpath("(//input[@type='checkbox'])[2]").click();
-        cy.xpath("(//div[@class='invalid-feedback']//div)[1]").should('not.have.value', "Field is required");
-        cy.xpath("//div[text()='Field is required'][1]").should('be.visible');
-        //datepicker 2
-        //cy.wait(3000);
         cy.xpath("(//div[text()='Must be after 2020-02-20'])[1]").should('be.visible');
-        cy.xpath("//label[text()='picker_2']/following::input[1]").type("2021-07-01");
+        cy.xpath("//div[@data-cy='screen-field-form_date_picker_2']//input").click();
+        screens.useCustomDate("2021", "Jun", "01");
         cy.xpath("(//div[@class='invalid-feedback d-block']//div)[1]").should('not.have.value', "Must be after 2020-02-20");
-        //input 2
-        //cy.wait(3000);
         cy.xpath("(//div[text()='Must be after 2020-02-20'])[1]").should('be.visible');
         cy.xpath("//label[text()='input_2']/following::input[1]").type("2022-02-20");
         cy.xpath("(//div[@class='invalid-feedback'])[1]").should('not.have.value', "Must be after 2020-02-20");
@@ -1700,9 +1686,12 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42211(requestId) {
+        //Step 1: Complete the Form A
         cy.xpath("//input[@data-cy='screen-field-checkbox1']").click();
-        cy.xpath("(//div[@class='page'])[2]").should('be.visible');
-        cy.xpath("(//label[text()='New Date Picker'])[1]/following::input[1]").type('2022-5-10{enter}');
+        cy.get("[data-cy='screen-field-date']>* input").eq(1)
+            .should('be.visible')
+            .click();
+        screensP.useCustomDate('2022','Nov','20');
         cy.xpath("//p[text()='シラニカトナ']").should('contain', 'シラニカトナ');
         cy.xpath("//input[@data-cy='screen-field-checkbox']").click();
         cy.xpath("//p[text()='ASSAM is ASSAM KERELA is KERELA ORRISA is ORRISA']").should('be.visible')

@@ -110,24 +110,16 @@ export class Screens {
 		}
 	}
 
-	saveTheChanges(type) {
-		if (type == 'Conversational') {
-			this.clickOnSaveScreen();
-			cy.xpath(Selectors.sucessToastMsg).should('be.visible');
-			cy.xpath(Selectors.sucessToastMsg).should('not.exist');
-		} else {
-			this.clickOnSaveVersions();
-			this.clickOnSave();
-			cy.xpath(Selectors.sucessToastMsg).should('be.visible');
-			cy.xpath(Selectors.sucessToastMsg).should('not.exist');
-			//cy.wait(2000);
-		}
-	}
-
 	saveTheChangesWithVersioning(versionName, additionalDetails) {
 		this.clickOnSaveVersions();
 		cy.get(Selectors.versionNameTxtBx).type(versionName).should('have.value', versionName);
 		cy.get(Selectors.aditionalDetailsTxtArea).type(additionalDetails);
+		this.clickOnPublishSave();
+		cy.get(Selectors.alertSuccess).should('be.visible');
+		cy.get(Selectors.alertSuccess).should('not.exist');
+	}
+	saveTheChangesWithoutVersioning() {
+		this.clickOnSaveVersions();
 		this.clickOnPublishSave();
 		cy.get(Selectors.alertSuccess).should('be.visible');
 		cy.get(Selectors.alertSuccess).should('not.exist');
@@ -977,6 +969,30 @@ export class Screens {
 			cy.get(Selectors.valueTxtBx).clear();
 			cy.get(Selectors.valueTxtBx).type(value).should('have.value', value);
 		}
+	}
+	/**
+	 * This method is responsible to change the page in a Screen
+	 * @param selectList: control to config with data connector
+	 * @param dataSource: Data source to config select list
+	 * @param API: End Point to sue of Data Source
+	 * @return nothing returns
+	 */
+	verifyConfigDataSourceOfSelectListAndConfig(selectList,dataSource,API){
+		cy.xpath('//div[contains(@id,"'+selectList+'")]').click({force:true});
+		this.clickOnDataSource();
+		this.selectDataConnector(dataSource);
+		this.selectTheEndPoint("ListAll");
+	}
+	/**
+	 * This method is responsible to change the page in a Screen
+	 * @param nroPage: Num of page to chnage type of value number Ej: "1"
+	 * @return nothing returns
+	 */
+	changePageInScreen(nroPage){
+		cy.get(Selectors.screensSelectionBtn).click();
+		cy.xpath('//a[@data-cy="page-'+nroPage+'"]')
+			.should('exist')
+			.click({force:true});
 	}
     changeDataConnectorForSelectList(pageName, collectionName, endPointVal, type) {
         cy.get(Selectors.navPageBtn).select(pageName);
