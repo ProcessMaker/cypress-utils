@@ -69,33 +69,33 @@ export class ExecutionConnectors {
         let pmblockName = `TCP4-2929 PM Block for Edit ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2929";
 
-        //Step 3: Got to Designer
+        //Step 1: Got to Designer
         navHelper.navigateToProcessPage();
 
-        //Step 4: Search
+        //Step 2: Search
         process.searchProcessAndSelectOptions(processName, "pmBlock");
 
-        // Step 5: Create a PMBlock
+        // Step 3: Create a PMBlock
         pmBlock.createPMBlock(pmblockName, pmblockDescription);
 
-        // Step 6: Go to tab Pm Block
+        // Step 4: Go to tab Pm Block
         navHelper.navigateToPmBlock();
 
-        // Step 7. Search the  pmblock created
+        // Step 5. Search the  pmblock created
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
-        //Step 8: Pmblock pmblock layout has been edited
+        //Step 6: Pmblock pmblock layout has been edited
         process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("FormTaskForEdit").click();
         cy.xpath('//*[@id="delete-button"]').should('be.visible').click();
         
-        //Step 9: Save the PMBlock
+        //Step 7: Save the PMBlock
         process.clickOnSave();
         cy.get('[data-test="btn-save-publish"]').click();
         cy.wait(2000);
         cy.get('.alert-wrapper > .alert').should("be.visible");
 
-        // 10: Verifies that the Pmblock has  been edited 
+        //Step 8: Verifies that the Pmblock has  been edited 
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).should("not.be.visible");
 
     }
