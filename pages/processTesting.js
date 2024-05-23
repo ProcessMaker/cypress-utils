@@ -105,7 +105,7 @@ export class ProcessTesting {
         cy.iframe(iframeSelector).find(selectors.typeOfRun).select(option);
     }
 
-    //1D. Modal to Run Test
+    //1D. Modal to Run Test in modeler
 
     /**
      * This method is responsible to run test in modeler
@@ -178,6 +178,7 @@ export class ProcessTesting {
     //2A. Go to Test Run / Scenarios
     //Go to TestRun/ScenariosTab
     clickOnTestRun_ScenariosTab() {
+        cy.get(selectors.testRun_ScenariosTab).should('be.visible');
         cy.get(selectors.testRun_ScenariosTab).click();
     }
 
@@ -343,7 +344,6 @@ export class ProcessTesting {
         }
         this.saveCreateScenario();
     }
-
 
     //2D Modal to create scenario 
     createScenarioByProcess(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
