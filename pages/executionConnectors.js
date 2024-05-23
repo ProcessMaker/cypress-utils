@@ -66,7 +66,7 @@ export class ExecutionConnectors {
     }
     actionsAndAssertionsOfTCP42929(processName) {
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2929 PM Block for Edit`;
+        let pmblockName = `TCP4-2929 PM Block for Edit ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2929";
 
         //Step 3: Got to Designer
@@ -84,10 +84,19 @@ export class ExecutionConnectors {
         // Step 7. Search the  pmblock created
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
-        //Step 8: Verifies that the pmblock layout has been edited
+        //Step 8: Pmblock pmblock layout has been edited
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("FormTaskForEdit").click();
         cy.xpath('//*[@id="delete-button"]').should('be.visible').click();
-        //cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("FormTask").should('be.visible');
+        
+        //Step 9: Save the PMBlock
+        process.clickOnSave();
+        cy.get('[data-test="btn-save-publish"]').click();
+        cy.wait(2000);
+        cy.get('.alert-wrapper > .alert').should("be.visible");
+
+        // 10: Verifies that the Pmblock has  been edited 
+        cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).should("not.be.visible");
 
     }
     actionsAndAssertionsOfTCP43036() {
