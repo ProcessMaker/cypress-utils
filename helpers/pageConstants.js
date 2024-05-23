@@ -16,7 +16,8 @@ export default {
       "data_connector_event": "Data Connector",
       "data_connector_event": "Data Connector",
       "gateway_event":'Gateway',
-      "intermediate_event":"Intermediate Event"
+      "intermediate_event":"Intermediate Event",
+      "AI_Generated_event":"AI Generated"
     },
 
     processDropedElements:{
@@ -34,6 +35,7 @@ export default {
         "send_email_event": "sendEmail",
         "data_connector_event": "task",
         "gateway_event":'gateway',
-        "intermediate_event":"intermediateEvent"
+        "intermediate_event":"intermediateEvent",
+        "AI_Generated_event":"AIGenerated"
     }
 }

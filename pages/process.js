@@ -36,6 +36,9 @@ export class Process {
             case 'Intermediate Event':
                 locator = selectors.recentlyDropedEvent.replace('eventName', pageConstants.processDropedElements.intermediate_event);
                 break;
+            case 'AI Generated':
+                locator = selectors.recentlyDropedEvent.replace('eventName', pageConstants.processDropedElements.AI_Generated_event);
+                break;
         }
         // const id = await promisify(cy.get(locator).then($elems => {
         const id = cy.iframe('[id="alternative_a"]').find(locator).then($elems => {
@@ -88,6 +91,9 @@ export class Process {
             case 'Gateway':
                 this.draggatewayEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.gateway_event), offsetX, offsetY);
                 break;
+            case 'AI Generated':
+                this.dragAIGeneratedEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.AI_Generated_event), offsetX, offsetY);
+                break;
             case 'Intermediate Event':
                 this.dragintermediateEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.intermediate_event), offsetX, offsetY);
                 break;
@@ -135,6 +141,16 @@ export class Process {
             })
         cy.xpath("(//span[text()='Data Connector'])[2]")
             .trigger('mouseup');
+    }
+
+    dragAIGeneratedEvent(selector, offsetX, offsetY) {
+        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(17) > span').trigger('mousedown')
+            .trigger('mousemove', {
+                pageX: offsetX,
+                pageY: offsetY,
+                force: true
+            });
+        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     draggatewayEvent(selector, offsetX, offsetY) {
