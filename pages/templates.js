@@ -37,7 +37,7 @@ export class Templates {
         cy.xpath('//*[@id="templatesIndex"]').should('be.visible');
         
         cy.xpath(selectors.searchBoxTemplate)
-            .type(`${templateName}`,{delay: 100})
+            .type(`${templateName}`,{delay: 500})
             .should("have.value", templateName);
         cy.xpath(selectors.searchBoxTemplate).type('{enter}');
             cy.get('[id="nav-templates"]>* [class="jumbotron jumbotron-fluid"]').should("not.be.visible");
