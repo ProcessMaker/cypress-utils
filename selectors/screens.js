@@ -1,6 +1,7 @@
 export default{
     screenPreviewBtn: "button[title='Preview Screen']",
     screenDesignBtn: "button[title='Design Screen']",
+    screensSelectionBtn: "[class='fa fa-file']",
     threePointsBtn: "//div[@id='screenIndex']//table/tbody/tr//button[@aria-haspopup='menu']",
     addScreenButton: 'button[aria-label="Create Screen"]',
     newAssetButton: '[data-cy="asset-search-menu"] button.btn.addBtn',
@@ -15,6 +16,7 @@ export default{
     saveBtn: '[data-cy="create_screen_save_btn"]',
     savePublishBtn: '//button[text()="Publish"]',
     varaibleNameTxtBx: '[name="Variable Name"]',
+    //Data Source configuration
     dataSourceDropDown: 'select#data-sources',
     allowMultipleSelections: '//div[text()[normalize-space()="Allow Multiple Selections"]]/input',
     typeOfReturnedValue: 'select#value-type-returded',
