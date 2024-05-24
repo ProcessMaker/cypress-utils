@@ -1101,7 +1101,7 @@ export class Process {
     // to process manager: permissionObject = {type="Process Manager"}
     verifyConfigOfStartEventAndConfig(elementName, permissionObject, defaultAlternative= "A") {
         //const elementStartEventXpath = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
-        const elementStartEventXpath = "(//*[@data-type='processmaker.components.nodes.startEvent.Shape'])[1]";
+        const elementStartEventXpath = "(//*[@data-type='processmaker.components.nodes.startEvent.Shape']//*[contains(text(),'nameElem')])[1]";
         const startPemrissionsBtnSelector = "[id='accordion-button-permissions-accordion']";
         const startPemrissions_typeSelector = "[id='select_type']";
         const startPemrissions_opSelectListSelector = "//label[text()='nameType']/parent::div//div[@class='multiselect__tags']";
