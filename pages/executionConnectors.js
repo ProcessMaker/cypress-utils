@@ -42,7 +42,7 @@ const selectorTemplates = new Templates();
 export class ExecutionConnectors {
     actionsAndAssertionsOfTCP42961(processName){
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2961 PM Block with Send Email`;
+        let pmblockName = `TCP4-2961 PM Block with Send Email ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2961";
 
         //Step 1: Got to Designer
@@ -61,6 +61,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components Send Emails
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("ComponentSendEmail").should("be.visible");
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(2).contains("Send Email").should("be.visible");
     }
