@@ -207,6 +207,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components Send Emails
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("ActionsByEmail").should("be.visible");
     }
     actionsAndAssertionsOfTCP42967(processName){
@@ -515,7 +516,7 @@ export class ExecutionConnectors {
      }
     actionsAndAssertionsOfTCP42963(processName){
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2963 PM Block with PDF`;
+        let pmblockName = `TCP4-2963 PM Block with PDF ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2963";
 
         //Step 1: Got to Designer
@@ -534,6 +535,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components PDF Generated
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("PDF Generator").should("be.visible");
     }
     actionsAndAssertionsOfTCP42964(processName){
