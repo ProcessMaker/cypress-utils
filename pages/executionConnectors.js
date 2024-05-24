@@ -424,7 +424,8 @@ export class ExecutionConnectors {
         //Step 3: Open the PMBlock  Imported
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
-        //Step 4: verify fortm task in PM Block
+        //Step 4: verify form task in PM Block
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(0).contains("Form Task").should("be.visible");
     }
     actionsAndAssertionsOfTCP43160() {
