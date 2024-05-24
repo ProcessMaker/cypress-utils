@@ -212,7 +212,7 @@ export class ExecutionConnectors {
     }
     actionsAndAssertionsOfTCP42967(processName){
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2967 PM Block with Slack Connectors`;
+        let pmblockName = `TCP4-2967 PM Block with Slack Connectors ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2967";
 
         //Step 1: Got to Designer
@@ -231,6 +231,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components Slack Notification
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]')
             .eq(1)
             .contains("SlackNotification")
@@ -238,7 +239,7 @@ export class ExecutionConnectors {
     }
     actionsAndAssertionsOfTCP42965(processName){
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2965 PM Block with Web Entry`;
+        let pmblockName = `TCP4-2965 PM Block with Web Entry ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2965";
 
         //Step 1: Got to Designer
@@ -257,6 +258,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components Task Web Entry
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(0).contains("WebEntry").should("be.visible");
     }
     
@@ -564,7 +566,7 @@ export class ExecutionConnectors {
     }
     actionsAndAssertionsOfTCP42966(processName){
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2966 PM Block with Decision Table`;
+        let pmblockName = `TCP4-2966 PM Block with Decision Table ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2966";
 
         //Step 1: Got to Designer
@@ -583,6 +585,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components IDP
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("DecisionTask").should("be.visible");
     }
     actionsAndAssertionsOfTCP43103(name) {
