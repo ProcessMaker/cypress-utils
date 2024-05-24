@@ -437,9 +437,10 @@ export class ExecutionConnectors {
         let pmblockPath = "pmblocks/tcp4-3160_pmblock_with_manual_task.json";
 
         //Step 1: Import PM Block
-        pmBlock.importPMBlock(pmblockName, pmblockPath);
-        cy.get(selectorsPB.savePMBlock).click();
-
+        pmBlock.importPMBlock(pmblockPath);
+        cy.wait(2000);
+        cy.get('.btn-primary > span').click();
+        
         //Step 2: CLick on PM Block
         navHelper.navigateToPmBlock(pmblockName);
 
@@ -447,6 +448,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 4: verify fortm task in Pm Block
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(0).contains("ManualTask1").should("be.visible");
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("ManualTask2").should("be.visible");
     }
