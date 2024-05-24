@@ -165,11 +165,14 @@ export class ProcessLaunchpad {
         cy.wait(2000);
     }
 
-    searchProcess(nameProcess){
+    searchProcess(nameProcess,findProcess=true){
         cy.get(selectors.launch_searchProcess).should("be.visible");
         cy.get(selectors.launch_searchProcess).type(nameProcess).should("have.value",nameProcess);
         cy.get(selectors.launch_searchProcessButton).click();
-        cy.xpath(selectors.launch_cardProcess.replace("processName",nameProcess)).should("be.visible");
+        if(findProcess)
+            cy.xpath(selectors.launch_cardProcess.replace("processName",nameProcess)).should("be.visible");
+        else
+            cy.xpath(selectors.launch_cardProcess.replace("processName",nameProcess)).should("not.exist");
     }
 
     unBookmarkIconSelect(process){
