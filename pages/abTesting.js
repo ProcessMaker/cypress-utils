@@ -209,7 +209,7 @@ export class ABTesting {
 
     fillExpression(expression, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).find(selectors.expressionInput).click().type(expression, { ðelay: 60 });
+        cy.iframe(iframeSelector).find(selectors.expressionInput).click().type('{movetostart}').clear().type(expression, { ðelay: 60 });
     }
 
     goToseeProcessABTestingConfiguration() {
