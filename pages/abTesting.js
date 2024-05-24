@@ -209,7 +209,7 @@ export class ABTesting {
 
     fillExpression(expression, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).find(selectors.expressionInput).click().type('{movetostart}').clear().type(expression, { ðelay: 60 });
+        cy.iframe(iframeSelector).find(selectors.expressionInput).click().clear().type(expression, { ðelay: 60 });
     }
 
     goToseeProcessABTestingConfiguration() {
@@ -308,5 +308,19 @@ export class ABTesting {
 
     load() {
         cy.wait(3000);
+    }
+
+    openWebEntryinABtesting(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().should('be.visible');
+        cy.iframe(iframeSelector).find('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().click({ force: true });
+        cy.iframe(iframeSelector).xpath('//button[@data-cy="inspector-button"]').should("be.visible").click();
+        cy.iframe(iframeSelector).find("[id='accordion-button-webentry']").click();
+        cy.iframe(iframeSelector).find("[id='webentry-entry-url']").invoke('val').then(urlValue => {
+            const url = urlValue;
+            cy.visit('/logout');
+            cy.title().should('eq', 'Login - ProcessMaker');
+            cy.visit(url);
+        });
     }
 }
