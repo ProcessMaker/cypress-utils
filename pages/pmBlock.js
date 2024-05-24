@@ -183,21 +183,17 @@ export class PMBlock {
         cy.xpath(optionXpath).first().click();
     }
 
-    importPMBlock(pmblockName, pmblockPath) {
+    importPMBlock(pmblockPath) {
         cy.xpath(selectors.importButtonPMBlocks).first().click();
-        cy.xpath(selectors.tittleImportPMBlocks)
-            .first()
-            .should("have.text", "Import PM Block")
-            .should("be.visible");
+        cy.xpath(selectors.tittleImportPMBlocks).first().should("have.text", "Import PM Block").should("be.visible");
         cy.xpath(selectors.inputToFileUploadPMBlocks).attachFile(pmblockPath);
-        cy.xpath(selectors.importBtnPMBlocks)
-            .parent()
-            .should("have.attr", "disabled", "disabled");
-        cy.xpath(selectors.importBtnPMBlocks)
-            .parent()
-            .should("not.have.attr", "disabled", "disabled");
+        cy.xpath(selectors.importBtnPMBlocks).parent().should("not.have.attr", "disabled", "disabled");
         cy.xpath(selectors.importBtnPMBlocks).click();
         cy.get(selectors.loadingPMBlockSpinner).should("not.exist");
+    }
+    clickOnImportButton() {
+        cy.get(selectors.importProcessBtn).click();
+        cy.get(selectors.browseBtn).should("be.visible");
     }
 
     
