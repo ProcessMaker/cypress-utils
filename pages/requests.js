@@ -135,10 +135,10 @@ export class Requests {
         const processRow = "//span[text()='processName']/parent::div/parent::div[@class='row']";
 
         cy.get('button[id="navbar-request-button"]').click();
-        cy.get(selectors.request_processList).scrollIntoView();
-        cy.get('input[data-test="new-request-modal-search-input"]').type(processName).should('have.value',processName);
-        cy.get(".loading").should("not.exist");
-        
+        cy.get('[id="requests-modal"]>* [class="process-list"]').should('exist');
+        cy.get('input[class="form-control"]').type(processName).should('have.value',processName);
+        cy.wait(3000);
+        cy.get('[id="requests-modal"]>* [class="process-list"]').should('exist');
         cy.xpath(selectors.request_searchProcessRow.replace('processName',processName), { timeout: 10000 })
             .then(() => {
                 this.pressStartBTN(processName, nroButton);
