@@ -168,42 +168,48 @@ export class ABTesting {
     }
 
 
-    selectSimpleOrAdvanced(option, expression) {
+    selectSimpleOrAdvanced(option, expression, iframeOption) {
         switch (option) {
             case 'simple':
                 this.moveScrollbar();
                 break;
             case 'advanced':
-                this.clickOnAdvanced();
-                this.fillExpression(expression);
-                this.moveScrollbar();
+                this.clickOnAdvanced(iframeOption);
+                this.fillExpression(expression, iframeOption);
+                //this.moveScrollbar();
                 break;
             default:
                 break;
         }
     }
 
-    configureABsettingsFromModeler(option, expression) {
-        this.clickOnPublishBtn();
-        this.clickOnAbSettings();
-        this.selectSimpleOrAdvanced(option, expression);
-        this.clickOnSaveAndPublish();
+    configureABsettingsFromModeler(option, expression, iframeOption) {
+        this.clickOnPublishBtn(iframeOption);
+        this.selectAlternative('Alternative A+B', iframeOption);
+        cy.wait(1000);
+        this.clickOnAbSettings(iframeOption);
+        this.selectSimpleOrAdvanced(option, expression, iframeOption);
+        this.clickOnSaveAndPublish(iframeOption);
     }
 
-    clickOnAbSettings() {
-        cy.iframe(selectors.iframeA).find(selectors.ABsettingsBtn).click();
+    clickOnAbSettings(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.ABsettingsBtn).click();
     }
 
-    moveScrollbar() {
-        cy.iframe(selectors.iframeA).find(selectors.scrollBar).as('range').invoke('val', 25).trigger('change');
+    moveScrollbar(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.scrollBar).as('range').invoke('val', 25).trigger('change');
     }
 
-    clickOnAdvanced() {
-        cy.iframe(selectors.iframeA).find(selectors.advancedBtn).click();
+    clickOnAdvanced(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.advancedBtn).click();
     }
 
-    fillExpression(expression) {
-        cy.iframe(selectors.iframeA).find(selectors.expressionInput).click().type(expression, { ðelay: 60 });
+    fillExpression(expression, iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.expressionInput).click().type(expression, { ðelay: 60 });
     }
 
     goToseeProcessABTestingConfiguration() {
