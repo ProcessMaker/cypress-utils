@@ -136,9 +136,9 @@ export class Requests {
 
         cy.get('button[id="navbar-request-button"]').click();
         cy.get(selectors.request_processList).scrollIntoView();
-        cy.get(selectors.request_processList).should('be.visible');
-        cy.get('input[class="form-control"]').type(processName).should('have.value',processName);
-
+        cy.get('input[data-test="new-request-modal-search-input"]').type(processName).should('have.value',processName);
+        cy.get(".loading").should("not.exist");
+        
         cy.xpath(selectors.request_searchProcessRow.replace('processName',processName), { timeout: 10000 })
             .then(() => {
                 this.pressStartBTN(processName, nroButton);
