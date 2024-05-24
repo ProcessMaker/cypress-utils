@@ -359,7 +359,7 @@ export class ExecutionConnectors {
     }
     actionsAndAssertionsOfTCP42930(processName){
         const timeStamp = new Date().getTime();
-        let pmblockName = `${timeStamp}TCP4-2930 Verify that PMBlock configuration`;
+        let pmblockName = `TCP4-2930 Verify that PMBlock conf ${timeStamp}`;
         let pmblockDescription = "Description for  Test Case TCP4-2930";
 
         //Step 1: Go to Designer
