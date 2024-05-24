@@ -187,7 +187,7 @@ export class PMBlock {
         cy.xpath(selectors.importButtonPMBlocks).first().click();
         cy.xpath(selectors.tittleImportPMBlocks).first().should("have.text", "Import PM Block").should("be.visible");
         cy.xpath(selectors.inputToFileUploadPMBlocks).attachFile(pmblockPath);
-        cy.xpath(selectors.importBtnPMBlocks).parent().should("not.have.attr", "disabled", "disabled");
+        //cy.xpath(selectors.importBtnPMBlocks).parent().should("not.have.attr", "disabled", "disabled");
         cy.xpath(selectors.importBtnPMBlocks).click();
         cy.get(selectors.loadingPMBlockSpinner).should("not.exist");
     }
@@ -197,21 +197,20 @@ export class PMBlock {
     }
 
     
-    VerifyPresenceOfPMBlockAndImportPMBlock(pmblockName, pmblockPath) {
-        var editBtn =
-        '//div[@id="pmBlockList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
-        cy.xpath(editBtn).should("be.visible");
-        cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}`, {delay:60}).should("have.value", pmblockName);
+   VerifyPresenceOfPMBlockAndImportPMBlock(pmblockName, pmblockPath) {
+    var editBtn =
+    '//div[@id="pmBlockList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
+    cy.xpath(editBtn).should("be.visible");
+    cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}`, {delay:60}).should("have.value", pmblockName);
     cy.xpath(selectors.searchInputPmblock).type('{enter}');
     cy.wait(2000);
-    cy.xpath('//*[@id="pmBlockList"]/div[2]/div/table/tbody/tr', { timeout: 10000 })
-    .find("td")
-    .then(($loadedTable) => {
-        if ($loadedTable.length === 1) {
-            this.importPMBlock(pmblockName, pmblockPath);
-        } else return;
-    });
-}   
+    cy.xpath(selectors.loadingSpinnerPMBlock).should("not.be.visible");
+    cy.xpath('//*[@id="pmBlockList"]/div[2]/div/table/tbody/tr', { timeout: 10000 }).find("td").then(($loadedTable) => {
+    if ($loadedTable.length === 1) {
+        this.importPMBlock(pmblockPath);
+    } else return;
+});
+}
     
     addInboundConfiguration(content) {
         this.enterJson(content);

@@ -477,9 +477,8 @@ export class ExecutionConnectors {
         let pmblockPath = "pmblocks/tcp4-3162_pmblock_with_thread.json";
 
         //Step 1: Import PM Block
-        pmBlock.importPMBlock(pmblockName, pmblockPath);
-        cy.get(selectorsPB.savePMBlock).click();
-
+        pmBlock.VerifyPresenceOfPMBlockAndImportPMBlock(pmblockName, pmblockPath);
+        
         //Step 2: CLick on PM Block
         navHelper.navigateToPmBlock(pmblockName);
 
@@ -487,6 +486,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 4: verify fortm task in Pm Block
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(0).contains("Sub Process").should("be.visible");
     }
     actionsAndAssertionsOfTCP43183(name) {
