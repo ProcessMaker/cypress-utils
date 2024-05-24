@@ -559,6 +559,7 @@ export class ExecutionConnectors {
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 6: Verify that pmblock contain components IDP
+        process.openAlternativeModeler();
         cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("IntelligentDocumentProcessing").should("be.visible");
     }
     actionsAndAssertionsOfTCP42966(processName){
