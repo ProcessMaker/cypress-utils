@@ -108,6 +108,7 @@ export default{
     associatedScreenInputTxtBx:'//label[text()="Screen Associated"]//following-sibling::div//div//input[@type="text"]',
     completedScreenForInput:'//label[text()="Screen For Completed"]//following-sibling::div//div[@class="multiselect__select"]',
     completedScreenInputTxtBx:'//label[text()="Screen For Completed"]//following-sibling::div//div//input[@type="text"]',
+    advancedConfigBtn: '//button[@id="accordion-button-advanced-accordion"]',
     //process manager
     clickonProcess: "[data-cy='Processes'] > .nav-link > .fas",
     ProcessPgVerify: "#nav-sources-tab",
