@@ -31,6 +31,7 @@ export default {
     modalLaunchpad: '[id="launchpadSettingsModal___BV_modal_content_"]',
     labelLaunchpad: '[id="launchpadSettingsModal___BV_modal_title_"]',
     closeModalPublish: '[aria-label="Close"]',
+    tooltipAB_Btn: '//div[@class="tooltip-inner"]',
 
     //AB Settings 
     simpleBtn: '[data-test="btn-simple-mode"]',
