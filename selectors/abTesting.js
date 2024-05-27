@@ -11,6 +11,8 @@ export default {
     confirmEnableBtn: 'button[data-test="ab-enable-alternative-ok"]',
     confirmDeleteBtn: 'button[data-test="ab-delete-alternative-ok"]',
 
+    menuInspectorBtn: '[data-cy="inspector-button"]',
+
     //Replace alternative
     replaceAlternativeBtn: '[data-test="tab-replace"]',
     ABsettingsBtn: '[data-test="btn-switch-version-info"]',
