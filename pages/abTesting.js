@@ -76,6 +76,11 @@ export class ABTesting {
         })
     }
 
+    clickOnInspectorBtn(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).click();
+    }
+
     //Publish New Version
     publishNewVersion(option, iframeOption, alternative, version, description) {
         this.clickOnPublishBtn(iframeOption);
