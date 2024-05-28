@@ -10,7 +10,9 @@ export default {
     deleteAltB_Btn: '[id="tab-B-remove"]',
     confirmEnableBtn: 'button[data-test="ab-enable-alternative-ok"]',
     confirmDeleteBtn: 'button[data-test="ab-delete-alternative-ok"]',
-
+    confirmReplaceAlt: '[data-test="ab-replace-alternative-ok"]',
+    colorTagA: '[class="rounded px-1 mr-1 bg-secondary text-white"]',
+    colorTagB: '[class="rounded px-1 mr-1 bg-success text-white"]',
     menuInspectorBtn: '[data-cy="inspector-button"]',
 
     //Replace alternative
