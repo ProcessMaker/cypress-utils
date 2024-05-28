@@ -329,7 +329,7 @@ export class ABTesting {
         });
     }
 
-    renameStartEventName(newName,iframeOption = 'a'){
+    renameStartEventName(nameElement,newName,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         this.clickOnInspectorBtn(iframeOption);
         this.clickOnStartEvent(nameElement, iframeOption);
