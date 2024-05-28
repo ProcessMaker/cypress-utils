@@ -151,4 +151,9 @@ export class NaturalLanguage {
         }
 
     }
+    clickUseModelFromModeler(processName){
+        cy.get(selectors.useModelBtn).click();
+        cy.get('textarea[class="m-0 border-0 form-control"]').should('be.visible').type(processName, {delay:50});
+        cy.get('button[class="px-4 btn btn-primary text-uppercase"]').should('be.visible').click();
+    }
 }
