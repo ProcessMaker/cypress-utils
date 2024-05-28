@@ -328,4 +328,12 @@ export class ABTesting {
             cy.visit(url);
         });
     }
+
+    renameStartEventName(newName,iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        this.clickOnInspectorBtn(iframeOption);
+        this.clickOnStartEvent(nameElement, iframeOption);
+        cy.iframe(iframeSelector).xpath('//div[@id="collapse-inspector-accordion-start-event"]//input[@name="name"]').clear().type(newName);
+    }
+   
 }
