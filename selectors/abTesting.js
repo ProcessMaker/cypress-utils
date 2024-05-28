@@ -47,4 +47,8 @@ export default {
 
     //Modeler Elements
     addBtn: '[title="Add"]',
+    
+    //Corona elements
+    deleteIcon: '[title="Delete"]',
+
 }
