@@ -84,6 +84,7 @@ export class ABTesting {
     //Publish New Version
     publishNewVersion(option, iframeOption, alternative, version, description) {
         this.clickOnPublishBtn(iframeOption);
+        this.load();
         switch (option) {
             case 'withoutAB':
                 break;
@@ -98,8 +99,7 @@ export class ABTesting {
             default:
                 break;
         }
-        this.load();
-        this.clickOnPublishBtnInModal();
+        this.clickOnPublishBtnInModal(iframeOption);
     }
 
     alert(iframeOption = 'a') {
@@ -124,21 +124,25 @@ export class ABTesting {
 
     selectAlternativeA(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.alternativeA_Btn).should('be.visible');
         cy.iframe(iframeSelector).find(selectors.alternativeA_Btn).click();
     }
 
     selectAlternativeB(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.alternativeB_Btn).should('be.visible');
         cy.iframe(iframeSelector).find(selectors.alternativeB_Btn).click();
     }
 
     selectAlternativeAB(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.alternativeAB_Btn).should('be.visible');
         cy.iframe(iframeSelector).find(selectors.alternativeAB_Btn).click();
     }
 
-    clickOnPublishBtnInModal() {
-        cy.iframe(selectors.iframeA).find(selectors.publishBtnInModal).click({ force: true });
+    clickOnPublishBtnInModal(iframeOption) {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.publishBtnInModal).click({ force: true });
     }
 
     clickOnSaveAndPublish(iframeOption = 'a') {
