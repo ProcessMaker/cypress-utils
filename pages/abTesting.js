@@ -78,7 +78,7 @@ export class ABTesting {
 
     clickOnInspectorBtn(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).click();
+        cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).click({ force:true });
     }
 
     //Publish New Version
@@ -99,6 +99,7 @@ export class ABTesting {
             default:
                 break;
         }
+        this.load();
         this.clickOnSaveAndPublish(iframeOption);
     }
 
@@ -337,7 +338,6 @@ export class ABTesting {
 
     renameStartEventName(nameElement,newName,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        this.clickOnInspectorBtn(iframeOption);
         this.clickOnStartEvent(nameElement, iframeOption);
         cy.iframe(iframeSelector).xpath('//div[@id="collapse-inspector-accordion-start-event"]//input[@name="name"]').clear().type(newName);
     }
