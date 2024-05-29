@@ -89,12 +89,12 @@ export class ABTesting {
                 this.clickOnPublishBtnInModal();
                 break;
             case 'onlySelectAlternative':
-                this.selectAlternative(alternative, iframeOption)
+                this.selectAlternative(alternative, iframeOption);
                 break;
             case 'versionDescriptionAndAlternative':
                 this.fillVersion(version);
                 this.fillDescription(description);
-                this.selectAlternative(alternative)
+                this.selectAlternative(alternative, iframeOption);
                 break;
             default:
                 break;
