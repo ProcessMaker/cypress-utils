@@ -287,6 +287,12 @@ export class ABTesting {
         cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible').click({ force: true });
     }
 
+    clickOnTask(nameElement, iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        const elementLocator = '[data-type="processmaker.components.nodes.task.Shape"]'
+        cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible').click({ force: true });
+    }
+
     clickOnEndEvent(nameElement, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         const elementLocator = '[data-type="processmaker.components.nodes.endEvent.Shape"]'
@@ -334,6 +340,25 @@ export class ABTesting {
         this.clickOnInspectorBtn(iframeOption);
         this.clickOnStartEvent(nameElement, iframeOption);
         cy.iframe(iframeSelector).xpath('//div[@id="collapse-inspector-accordion-start-event"]//input[@name="name"]').clear().type(newName);
+    }
+
+    remaneTaskName(nameElement,newName,taskType,iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        let formTask = '//div[@id="collapse-inspector-accordion-task"]//input[@name="name"]'
+        let manualTask = '//div[@id="collapse-inspector-accordion-manual-task"]//input[@name="name"]'
+        this.clickOnTask(nameElement, iframeOption);
+        switch (taskType) {
+            case 'Form':
+                cy.iframe(iframeSelector).xpath(formTask).clear();
+                cy.iframe(iframeSelector).xpath(formTask).type(newName);
+                break;
+            case 'Manual':
+                cy.iframe(iframeSelector).xpath(manualTask).clear();
+                cy.iframe(iframeSelector).xpath(manualTask).type(newName);
+                break;
+            default:
+                break;
+        }
     }
    
 }
