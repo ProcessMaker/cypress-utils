@@ -86,7 +86,6 @@ export class ABTesting {
         this.clickOnPublishBtn(iframeOption);
         switch (option) {
             case 'withoutAB':
-                this.clickOnPublishBtnInModal();
                 break;
             case 'onlySelectAlternative':
                 this.selectAlternative(alternative, iframeOption);
@@ -100,7 +99,7 @@ export class ABTesting {
                 break;
         }
         this.load();
-        this.clickOnSaveAndPublish(iframeOption);
+        this.clickOnPublishBtnInModal();
     }
 
     alert(iframeOption = 'a') {
