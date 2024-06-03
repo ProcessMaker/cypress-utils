@@ -38,7 +38,7 @@ export class Screens {
 		this.selectTypeScreen(type);
 		this.clickOnSave();
 		cy.get(Selectors.savePublishVersionsBtn).should('be.visible');
-		
+	
 	}
 
 	selectTypeScreen(
@@ -302,11 +302,28 @@ export class Screens {
 				case 'Photo/Video':
 					this.addPhotoVideo(controllsData[i]);
 					break;
+				case 'AI Generated':
+					this.addAIGenerated(controllsData[i]);
+					break;
 
 			}
 		}
 	}
 
+	addAIGenerated(description) {
+		//this.addControl(data.name);
+		cy.get('[aria-controls="collapse-1"]').should('be.visible').click();
+		cy.get('[data-cy="controls-AiSection"]').drag('[data-cy="editor-content"]', 'bottom');
+		cy.get('[data-cy=screen-element-container]').eq(0).click();
+
+		
+		cy.get('[data-test="prompt-area"]').clear().type(description,{delay:100});
+		cy.xpath('[data-test="generate-prompt-button"]').click();
+		cy.xpath('//div[@class="modal-footer"]/button[@class="btn btn-primary"]').click();
+		//this.setVariableName(data.varaible_name);
+		//this.setLabelName(data.label_name);
+		
+	}
 
 	addSubmitButtonControl(data) {
 		this.addControl(data.name);
@@ -1186,5 +1203,35 @@ export class Screens {
 		cy.get('button[title="Publish"]').click();
 		cy.xpath('//div[@class="modal-dialog modal-md"]//button[contains(text(),"Publish")]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
+	}
+
+	addAIGenerated(description) {
+		cy.get('[aria-controls="collapse-1"]').should('be.visible').click();
+		cy.get('[data-cy="controls-AiSection"]').drag('[data-cy="editor-content"]');
+		cy.get('[data-cy=screen-element-container]').eq(1).click();
+		this.setDescriptionAIGenerated(description);		
+	}
+	
+	setDescriptionAIGenerated(description) {		
+		cy.get('[data-test="prompt-area"]').clear().type(description,{delay:500});
+		cy.wait(2000);
+		cy.get('.selected > [data-cy="screen-element-container"] > .card-body').should('be.visible');
+		cy.get('[data-test="generate-prompt-button"]').should('be.visible');
+		cy.get('[data-test="generate-prompt-button"]').click();		
+	}
+
+	verifyPresenceOfAIGeneratedAndAdd(description) {
+		cy.get('[data-cy="editor-content"]')
+			.find('[class="control-item mt-4 mb-4"]')
+			.then(($controlAI) => {
+				if ($controlAI.length > 1) {
+					cy.get('[class="control-item mt-4 mb-4"]').eq(1).click();
+					cy.get('[data-test="delete-control-btn"]').click();
+					this.addAIGenerated(description);
+				} 
+				else {
+					this.addAIGenerated(description);
+				}
+		})
 	}
 }
