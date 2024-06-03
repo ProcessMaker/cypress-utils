@@ -140,7 +140,7 @@ export class ABTesting {
         cy.iframe(iframeSelector).find(selectors.alternativeAB_Btn).click();
     }
 
-    clickOnPublishBtnInModal(iframeOption) {
+    clickOnPublishBtnInModal(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         cy.iframe(iframeSelector).find(selectors.publishBtnInModal).click({ force: true });
     }
