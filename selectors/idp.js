@@ -14,6 +14,7 @@ export default {
     useRequestVariableDocumentType:'//div[text()[normalize-space()=""]]/parent::div//input[@name="document-type-request-variable"]',
     userRequestVariableSelectDestination:'[name="destination-request-variable"]',
     inputDocumentType:'//input[@name="documentType"]',
+    splitDocument: '//input[@name="splitDocument"]',
 
 
 }
