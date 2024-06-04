@@ -71,11 +71,7 @@ export class DecisionTable {
     searchDecisionTableAndSelectOptions(decisionTableName, option) {
         cy.xpath(selectors.tableDT).should('be.visible');
         cy.xpath(selectors.menuDT).should('be.visible');
-        cy.xpath(selectors.searchDTinput)
-            .type(decisionTableName, { delay: 51 })
-            .should("have.value", decisionTableName);
-        cy.get(selectors.loadingSpinnerDT).should('be.visible');
-        cy.get(selectors.loadingSpinnerDT).should('not.be.visible');
+        this.searchDecisionTable(decisionTableName);
         cy.xpath(selectors.menuDT).first().click();
         switch (option) {
             case "edit":
