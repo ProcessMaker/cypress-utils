@@ -72,6 +72,7 @@ export class DecisionTable {
         cy.xpath(selectors.tableDT).should('be.visible');
         cy.xpath(selectors.menuDT).should('be.visible');
         this.searchDecisionTable(decisionTableName);
+        this.loadJumbotron();
         cy.xpath(selectors.menuDT).first().click();
         switch (option) {
             case "edit":
