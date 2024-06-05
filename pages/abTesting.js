@@ -46,7 +46,12 @@ export class ABTesting {
 
     replaceAlternativeBWithDataOfAlternativeA(iframeOption) {
         this.clickOnAlternativeB(iframeOption);
-        this.clickOnReplaceAlternative();
+        this.clickOnReplaceAlternative(iframeOption);
+    }
+
+    confirmReplaceAlternative(iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.confirmReplaceAlt).click();
     }
 
     clickOnAlternativeA(iframeOption = 'a') {
@@ -59,8 +64,10 @@ export class ABTesting {
         cy.iframe(iframeSelector).find(selectors.alternativeB_Tab).click();
     }
 
-    clickOnReplaceAlternative() {
-        cy.iframe(selectors.iframeA).find(selectors.replaceAlternativeBtn).first().click();
+    clickOnReplaceAlternative(iframeOption = 'a') {
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.replaceAlternativeBtn).first().click();
+        this.confirmReplaceAlternative(iframeOption);
     }
 
     deleteAlternativeB() {
