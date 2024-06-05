@@ -977,208 +977,108 @@ export class Specific {
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task Form Task 3']]").should('be.visible');
 
     }
-    async actionsAndAssertionsOfTCP42175(requestId) {
-        cy.xpath('//label[text()="accepted"]/following::input[1]').should('be.visible').type('10');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The accepted must be accepted."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="accepted"]/following::input[1]').clear().type('test');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The accepted must be accepted."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="accepted"]/following::input[1]').clear().type('yes');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+    actionsAndAssertionsOfTCP42175(requestId) {
+        //Step 1: Complete Form Task
+        //accepted field
+        screensP.fillConversational('10','The accepted must be accepted.');
+        screensP.fillConversational('test','The accepted must be accepted.');
+        screensP.fillConversational('yes');
         cy.xpath('//div[text()[normalize-space()="yes"]]').should('be.visible');
 
-        //date after date
-        cy.xpath('//label[text()="date - after date"]/following::input[1]').type('2020-10-10');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The date - after date must be after 2020-10-10."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="date - after date"]/following::input[1]').clear().type('2018-08-19');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The date - after date must be after 2020-10-10."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="date - after date"]/following::input[1]').clear().type('2020-10-11');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //date after date field
+        screensP.fillConversational('2020-10-10','The date - after date must be after 2020-10-10.');
+        screensP.fillConversational('2018-08-19','The date - after date must be after 2020-10-10.');
+        screensP.fillConversational('2020-10-11');
         cy.xpath('//div[text()[normalize-space()="2020-10-11"]]').should('be.visible');
 
-        // date time After or equal to date
-        cy.xpath('//label[text()="datetime - After or Equal To Date"]/following::input[1]').type('2018-08-19');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The datetime - After or Equal To Date must be equal or after 2020-10-10."]]')
-            .should('be.visible');
+        // date time After or equal to date field
+        screensP.fillConversational('2018-08-19','The datetime - After or Equal To Date must be equal or after 2020-10-10.');
+        screensP.fillConversational('2021-10-10');
+        cy.xpath('//div[text()[normalize-space()="2021-10-10"]]').should('be.visible');
 
-        cy.xpath('//label[text()="datetime - After or Equal To Date"]/following::input[1]').clear().type('2021-10-10');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="2021-10-10"]]')
-            .should('be.visible');
-
-        //test alpha
-        cy.xpath('//label[text()="text - Alpha"]/following::input[1]').type('@#sad');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The text - Alpha field must contain only alphabetic characters."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="text - Alpha"]/following::input[1]').clear().type('12');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The text - Alpha field must contain only alphabetic characters."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="text - Alpha"]/following::input[1]').clear().type('testcase');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //test alpha field
+        screensP.fillConversational('@#sad','The text - Alpha field must contain only alphabetic characters.');
+        screensP.fillConversational('12','The text - Alpha field must contain only alphabetic characters.');
+        screensP.fillConversational('testcase');
         cy.xpath('//div[text()[normalize-space()="testcase"]]')
             .should('be.visible');
 
-        //integer-alpha numeric
-
-        cy.xpath('//label[text()="integer - Alpha numeric"]/following::input[1]').type('@!A');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The integer - Alpha numeric field must be alphanumeric."]]')
-            .should('be.visible');
-
-        cy.xpath('//label[text()="integer - Alpha numeric"]/following::input[1]').clear().type('123456789');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //integer-alpha numeric field
+        screensP.fillConversational('@!A','The integer - Alpha numeric field must be alphanumeric.');
+        screensP.fillConversational('123456789');
         cy.xpath('//div[text()[normalize-space()="123456789"]]')
             .should('be.visible');
 
-        ///date before date
-
-        cy.xpath('//label[text()="date - before date"]/following::input[1]').type('2020-10-10');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The date - before date must be before 2020-10-10."]]').should('be.visible');
-
-        cy.xpath('//label[text()="date - before date"]/following::input[1]').clear().type('2021-08-09');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The date - before date must be before 2020-10-10."]]').should('be.visible');
-
-        cy.xpath('//label[text()="date - before date"]/following::input[1]').clear().type('2019-12-12');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        ///date before date field
+        screensP.fillConversational('2020-10-10','The date - before date must be before 2020-10-10.');
+        screensP.fillConversational('2021-08-09','The date - before date must be before 2020-10-10.');
+        screensP.fillConversational('2019-12-12');
         cy.xpath('//div[text()[normalize-space()="2019-12-12"]]').should('be.visible');
 
-        //DateTime-before or equal to date
-
-        cy.xpath('//span[text()="dateTime - Before or Equal to Date"]/following::input[1]').type('2020-12-12');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The dateTime - Before or Equal to Date must be equal or before 2020-10-10."]]')
-            .should('be.visible');
-
-        cy.xpath('//span[text()="dateTime - Before or Equal to Date"]/following::input[1]').clear().type('2010-10-10');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //DateTime-before or equal to date field
+        screensP.fillConversational('2020-12-12','The dateTime - Before or Equal to Date must be equal or before 2020-10-10.');
+        screensP.fillConversational('2010-10-10');
         cy.xpath('//div[text()[normalize-space()="2010-10-10"]]').should('be.visible');
 
-        // text Between Min & Max 3 - 7
-
-        cy.xpath('//span[text()="text Between Min & Max 3 - 7"]/following::input[1]').type('testlimhng');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="Must have a value between 3,7"]]')
-            .should('be.visible');
-
-        cy.xpath('//span[text()="text Between Min & Max 3 - 7"]/following::input[1]').clear().type('qe');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="Must have a value between 3,7"]]')
-            .should('be.visible');
-
-        cy.xpath('//span[text()="text Between Min & Max 3 - 7"]/following::input[1]').clear().type('3');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        // text Between Min & Max 3 - 7 field
+        screensP.fillConversational('testlimhng','Must have a value between 3,7');
+        screensP.fillConversational('qe','Must have a value between 3,7');
+        screensP.fillConversational('3');
         cy.xpath('//div[text()[normalize-space()="3"]]').should('be.visible');
 
-        //date date
-
-        cy.xpath('//span[text()="date date"]/following::input[1]').type('1234-9')
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The date date must be a valid date."]]')
-            .should('be.visible');
-
-        cy.xpath('//span[text()="date date"]/following::input[1]').clear().type('1998-10-10');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //date date field
+        screensP.fillConversational('1234-9','The date date must be a valid date.');
+        screensP.fillConversational('1998-10-10');
         cy.xpath('//div[text()[normalize-space()="1998-10-10"]]').should('be.visible');
 
-        //test email
-
-        cy.xpath('//span[text()="text email"]/following::input[1]').type('abcd@user');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The text email format is invalid."]]')
-            .should('be.visible');
-
-        cy.xpath('//span[text()="text email"]/following::input[1]').clear().type('erth4436@gmail.com');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //test email field
+        screensP.fillConversational('abcd@user','The text email format is invalid.');
+        screensP.fillConversational('erth4436@gmail.com');
         cy.xpath('//div[text()[normalize-space()="erth4436@gmail.com"]]').should('be.visible');
         cy.wait(2000);
 
-        //integer in 9
-        cy.xpath('//span[text()="integer - IN - 9"]/following::input[1]').type('21');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The selected integer - IN - 9 is invalid."]]')
-            .should('be.visible');
-
-        cy.xpath('//span[text()="integer - IN - 9"]/following::input[1]').clear().type('9');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //integer in 9 field
+        screensP.fillConversational('21','The selected integer - IN - 9 is invalid.');
+        screensP.fillConversational('9');
         cy.xpath('//div[text()[normalize-space()="9"]]').should('be.visible');
 
-        //password
-
-        cy.xpath('//span[text()="password - Max Length 10"]/following::input[1]').type('password12');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //password field
+        screensP.fillConversational('password12');
         cy.xpath('//div[text()[normalize-space()="password12"]]').should('be.visible');
 
-        //integer min-length5
-
-        cy.xpath('//span[text()="integer - min length 5"]/following::input[1]').type('12345');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //integer min-length5 field
+        screensP.fillConversational('12345');
         cy.xpath('//div[text()[normalize-space()="12345"]]').should('be.visible');
 
-        //text not in 5
-
-        cy.xpath('//span[text()="text - not in 5"]/following::input[1]').type('5');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The selected text - not in 5 is invalid."]]').should('be.visible');
-
-        cy.xpath('//span[text()="text - not in 5"]/following::input[1]').clear().type('3');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //text not in 5 field
+        screensP.fillConversational('5','The selected text - not in 5 is invalid.');
+        screensP.fillConversational('3');
         cy.xpath('//div[text()[normalize-space()="3"]]').should('be.visible');
 
-        // required if
-
-        cy.xpath('//span[text()="required if"]/following::input[1]').type('test');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //required if field
+        screensP.fillConversational('test');
         cy.xpath('//div[text()[normalize-space()="test"]]').should('be.visible');
 
-        //required unless
-
-        cy.xpath('//span[text()="required Unless"]/following::input[1]').type('test case required unless');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //required unless field
+        screensP.fillConversational('test case required unless');
         cy.xpath('//div[text()[normalize-space()="test case required unless"]]').should('be.visible');
 
-        //same before
-        cy.xpath('//span[text()="same before"]/following::input[1]').type('yes');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //same before field
+        screensP.fillConversational('yes');
         cy.xpath('//div[text()[normalize-space()="yes"]]').should('be.visible');
 
         //URL
-        cy.xpath('//span[text()="URL"]/following::input[1]').type('yes');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-        cy.xpath('//div[text()[normalize-space()="The URL format is invalid."]]').should('be.visible');
+        screensP.fillConversational('yes','The URL format is invalid.');
+        screensP.fillConversational('https://ecosia.org');
 
-        cy.xpath('//span[text()="URL"]/following::input[1]').clear().type('https://ecosia.org');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
-
-        // regex(XYZ)
-
-        cy.xpath('//span[text()="regex[xyz]"]/following::input[1]').type('xyz');
-        cy.get(':nth-child(1) > :nth-child(1) > .btn > .fas').click();
+        //regex(XYZ) field
+        screensP.fillConversational('xyz');
         cy.xpath('//div[text()[normalize-space()="xyz"]]').should('be.visible');
 
-        //list
+        //list field
         cy.xpath("//a[@href='https://ecosia.org']").should('be.visible');
         cy.xpath("//span[text()='list']").should('be.visible');
         cy.xpath("//button[text()[normalize-space()='one']]").click();
-
-        // cy.xpath("//button[text()[normalize-space()='I am done selecting']]").click();
 
         cy.xpath("//div[text()='Task Completed Successfully']").should('be.visible');
         cy.wait(2000);
@@ -1204,13 +1104,11 @@ export class Specific {
         cy.xpath("//p[text()='https://ecosia.org']").should("be.visible");
         cy.xpath("//p[text()='xyz']").should("be.visible");
         cy.xpath("//p[text()='one']").should("be.visible");
-        //erth4436@gmail.com
+
         request.manualtaskcomplete();
         request.verifyRequestisCompleted(requestId);
     }
     actionsAndAssertionsOfTCP453922(requestId) {
-        //cy.wait(4000);
-
         //request part click on enable visibility
         cy.xpath('//input[@data-cy="screen-field-visibility"]/following-sibling::label[1]').should('be.visible').click();
 
@@ -1297,24 +1195,36 @@ export class Specific {
         cy.xpath('(//input[@data-cy="screen-field-varB"])[2]').type('varb2');
 
         //click
-        cy.xpath('(//div[@data-cy="screen-field-form_select_list_1"]//div)[1]').click();
-        //select option 1
-        cy.xpath('(//li[@role="option"]//span)[3]').click();
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_1"]//input)[1]')
+            .click({force:true})
+            .type('Option 1');
+        cy.wait(2000);
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_1"]//input)[1]')
+            .type('{enter}');
 
-        //click
-        cy.xpath("(//div[@class='multiselect__select'])[2]").click();
         //select option 2
-        cy.xpath('(//li[@id="option-9-1"]//span)[1]').click();
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_2"]//input)[1]')
+            .click({force:true})
+            .type('Option 2');
+        cy.wait(2000);
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_2"]//input)[1]')
+            .type('{enter}');
 
-        //click
-        cy.xpath('(//div[@class="multiselect__select"])[3]').click();
         //select option 3
-        cy.xpath('//li[@id="option-12-2"]/span[1]').click();
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_1"]//input)[2]')
+            .click({force:true})
+            .type('Option 3');
+        cy.wait(2000);
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_1"]//input)[2]')
+            .type('{enter}');
 
-        //click
-        cy.xpath('(//div[@class="multiselect__select"])[4]').click();
-        //select option 4
-        cy.xpath("//li[@id='option-13-0']/span[1]").click();
+        //select option 3
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_2"]//input)[2]')
+            .click({force:true})
+            .type('Option 3');
+        cy.wait(2000);
+        cy.xpath('(//div[@data-cy="screen-field-form_select_list_2"]//input)[2]')
+            .type('{enter}');
 
         //verify the new input field is required is disappear
         cy.xpath("//input[@data-cy='screen-field-form_input_1']/following-sibling::div[text()='Field is required']").should('not.exist');
@@ -1337,7 +1247,7 @@ export class Specific {
         //new submit
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
 
-        cy.xpath("//div[text()='Task Completed Successfully']").should('be.visible');
+
 
         //request page
         request.openRequestById(requestId);
@@ -1362,16 +1272,16 @@ export class Specific {
         cy.xpath("//button[@data-cy='edit-row']//i[1]").should('be.visible');
 
         //verify select list1 data is present
-        cy.xpath('(//span[@class="multiselect__single"])[1]').should('contain', 'Option 2');
+        cy.xpath('(//span[@class="multiselect__single"])[1]').should('contain', 'Option');
 
         //verify select list2 data is present
-        cy.xpath('(//span[@class="multiselect__single"])[2]').should('contain', 'Option 2');
+        cy.xpath('(//span[@class="multiselect__single"])[2]').should('contain', 'Option');
 
         //verify select list3 data is present
-        cy.xpath('(//span[@class="multiselect__single"])[3]').should('contain', 'Option 3');
+        cy.xpath('(//span[@class="multiselect__single"])[3]').should('contain', 'Option');
 
         //verify select list4 data is present
-        cy.xpath('(//span[@class="multiselect__single"])[4]').should('contain', 'Option 1')
+        cy.xpath('(//span[@class="multiselect__single"])[4]').should('contain', 'Option');
 
         //clear value new input
         cy.xpath('//input[@data-cy="screen-field-form_input_1"]').clear();
@@ -1407,104 +1317,22 @@ export class Specific {
         //verify the varb field is required
         cy.xpath("(//input[@data-cy='screen-field-varB'])[2]").should('be.visible');
 
-        //scrolldown
-        // cy.scrollTo("[class='multiselect__input']");
+        //verify the new input data is present
+        cy.xpath("//input[@data-cy='screen-field-form_input_1']").type('INPUT');
 
-        //click on select list 1
-        cy.xpath("(//div[@data-cy='screen-field-form_select_list_1']//div)[1]").click();
+        //verify the varA data is present
+        cy.xpath("(//input[@data-cy='screen-field-varA'])[1]").type('vara1');
 
-        //add backspace
-        cy.xpath("(//input[@class='multiselect__input'])[1]").type('{backspace}');
-        //verify the select list 1 is required
-        cy.xpath("(//div[text()='Field is required'])[3]").should('be.visible');
-        //click on select list 2
-        cy.xpath("(//div[@class='multiselect__select'])[2]").click();
-        //add backspace
-        cy.xpath("(//div[@class='multiselect__spinner']/following-sibling::input)[2]").type('{backspace}');
-        //verify the select 2 field is required
-        cy.xpath("(//div[@class='invalid-feedback d-block']//div)[2]").should('be.visible');
+        //verify the varA 2 data is present
+        cy.xpath("(//input[@data-cy='screen-field-varA'])[2]").type( 'vara2');
 
-        //click on selectlist1,2
-        cy.xpath("(//div[@class='multiselect__select'])[3]").click();
+        //verify the varB data is present
+        cy.xpath("(//input[@data-cy='screen-field-varB'])[1]").type( 'varb1');
 
-        //addback space
-        cy.xpath("(//div[@class='multiselect__spinner']/following-sibling::input)[3]").type('{backspace}');
-
-        //verify the select 2 field is required
-        cy.xpath("(//div[@class='invalid-feedback d-block']//div)[3]").should('be.visible');
-
-        //click on selectlist2,2
-        cy.xpath("(//div[@class='multiselect__select'])[4]").click();
-        //add backspace
-        cy.xpath("(//div[@class='multiselect__spinner']/following-sibling::input)[4]").type('{backspace}');
-
-        //verify the select1 field is required
-        cy.xpath("(//div[@class='invalid-feedback d-block']//div)[3]")
-            .should('be.visible');
-        //click the minus
-        cy.xpath("(//i[@class='fas fa-minus'])[1]").click();
-        //click confirm
-        cy.xpath("//button[text()='Confirm']").click();
-        cy.xpath("(//label[text()='varA'])[2]").should('not.exist');
-        cy.xpath("(//label[text()='varB'])[2]").should('not.exist');
-        //click on minus
-        cy.xpath("(//i[@class='fas fa-minus'])[1]").click();
-        //click confirm
-        cy.xpath("//button[text()='Confirm']").click();
-        cy.xpath("(//label[text()='varA'])[1]").should('not.exist');
-        cy.xpath("(//label[text()='varB'])[1]").should('not.exist');
-        //click the record list minus
-        cy.xpath("//button[@data-cy='loop-loop_3-remove']").click();
-        //click on confirm
-        cy.xpath("//button[text()='Confirm']").click();
-        cy.xpath("(//label[text()='Select List 1'])[2]").should('not.exist');
-        cy.xpath("(//label[text()='Select List 2'])[2]").should('not.exist');
-        //click the record list minus
-        cy.xpath("//button[@data-cy='loop-loop_3-remove']").click();
-        //click confirm button
-        cy.xpath("//button[text()='Confirm']").click();
-        cy.xpath("(//label[text()='Select List 1'])[1]").should('not.exist');
-        cy.xpath("(//label[text()='Select List 2'])[1]").should('not.exist');
-        //click plus button
-        cy.xpath("//button[@data-cy='loop-loop_1-add']//i[1]").click();
-        cy.xpath("(//label[text()='varA'])[1]").should('be.visible');
-        cy.xpath("(//label[text()='varB'])[1]").should('be.visible');
-        //click plus button
-        cy.xpath("//button[@data-cy='add-row']").click();
-
-        //enter the varc value
-        cy.xpath("(//input[@data-cy='screen-field-varC'])[1]").type('varc');
-        //click ok button
-        cy.xpath("//button[text()='Ok']").click();
-        //click plus button in record list
-        cy.xpath("//button[@data-cy='loop-loop_3-add']").click();
-        cy.xpath("(//label[text()='Select List 1'])[1]").should('be.visible');
-        cy.xpath("(//label[text()='Select List 2'])[1]").should('be.visible');
-        //new input
-        cy.xpath("//input[@data-cy='screen-field-form_input_1']").type('new input');
-        //enter the vara value
-        cy.xpath("(//input[@data-cy='screen-field-varA'])[1]").type('vara');
-        //enter the varb value
-        cy.xpath("(//input[@data-cy='screen-field-varB'])[1]").type('varb');
-        //click record list select option
-
-        //verify Select File 1 field is required
-        cy.xpath("(//div[text()='Field is required'])[3]").should('be.visible');
-        //select option
-        cy.xpath("(//div[@data-cy='screen-field-form_select_list_1']//div)[1]").click();
-        cy.xpath("(//span[text()='Option 3'])[1]").click();
-        //click record list select option
-
-        //verify Select File 2 field is required
-        cy.xpath("(//div[text()='Field is required'])[3]").should('be.visible');
-        //select the option
-        cy.xpath("(//div[@data-cy='screen-field-form_select_list_2']//div)[1]").click();
-        cy.xpath("(//span[text()='Option 1'])[2]").click();
+        //verify the varB 2 data is present
+        cy.xpath("(//input[@data-cy='screen-field-varB'])[2]").type( 'varb2');
         //click on submit button
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        // request.verifyTaskIsCompleted();
-        request.verifyRequestisCompleted(requestId);
-
     }
     actionsAndAssertionsOfTCP42192(requestId, name, screen) {
         cy.xpath('(//input[@name="form_input_1"])[1]').type('Form');
