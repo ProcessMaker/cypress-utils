@@ -1234,4 +1234,10 @@ export class Screens {
 				}
 		})
 	}
+	fillConversational(value,response){
+		cy.xpath(Selectors.inputConversational).clear().type(value);
+		cy.xpath(Selectors.submitConversational).click();
+		if(response)
+			cy.xpath('//div[text()[normalize-space()="'+response+'"]]').should('be.visible');
+	}
 }

@@ -205,4 +205,8 @@ export default{
     
     // projects
     addProjectModel: '//div[@class="modal-body"]',
+
+    //Conversional Form
+    inputConversational: '//*[@class="user-input"]//input',
+    submitConversational: '//*[@aria-label="Submit"]'
 }
