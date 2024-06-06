@@ -374,8 +374,9 @@ export class ABTesting {
     }
 
     goToEndPage(){
+        cy.get(selectors.bodyPageInSummary).should('be.visible');
         cy.get(selectors.bodyPageInSummary)
         .click({ force: true })
-        .type("{meta+downarrow}");
+        .type("{meta+downarrow}",{force:true});
     }
 }
