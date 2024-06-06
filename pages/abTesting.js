@@ -372,5 +372,10 @@ export class ABTesting {
                 break;
         }
     }
-   
+
+    goToEndPage(){
+        cy.get('[data-cy="editorViewFrame"]')
+        .click({ force: true })
+        .type("{meta+downarrow}");
+    }
 }
