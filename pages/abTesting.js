@@ -374,7 +374,7 @@ export class ABTesting {
     }
 
     goToEndPage(){
-        cy.get('[data-cy="editorViewFrame"]')
+        cy.get(selectors.bodyPageInSummary)
         .click({ force: true })
         .type("{meta+downarrow}");
     }
