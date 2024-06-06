@@ -51,4 +51,6 @@ export default {
     //Corona elements
     deleteIcon: '[title="Delete"]',
 
+    bodyPageInSummary:'[class="view-lines monaco-mouse-cursor-text"]',
+
 }
