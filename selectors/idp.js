@@ -15,6 +15,10 @@ export default {
     userRequestVariableSelectDestination:'[name="destination-request-variable"]',
     inputDocumentType:'//input[@name="documentType"]',
     splitDocument: '//input[@name="splitDocument"]',
+    usernameTxtBx: '#username',
+    passwordTxtBx: '#password',
+    loginBtn: '[type="submit"]',
+    Dossier1: '//div[@id="app"]//*[contains(text(),"TCP4-3881")]',
 
 
 }
