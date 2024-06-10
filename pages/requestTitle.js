@@ -13,7 +13,7 @@ export class RequestTitle {
         cy.get(selectors.caseTitleField).should('be.visible').click().clear();
         cy.get(selectors.caseTitleField).type(caseTitle);
         cy.xpath('//div[@aria-label="Category"]//span[text()="Uncategorized"]').should('be.visible');
-        cy.xpath('//div[@id="nav-config"]//button[text()="Save"]').should('be.visible').click({force: true});
+        cy.xpath('//div[@id="nav-config"]//button[text()="Save and publish"]').should('be.visible').click({force: true});
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
     }
 
