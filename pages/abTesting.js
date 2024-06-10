@@ -192,7 +192,6 @@ export class ABTesting {
             case 'advanced':
                 this.clickOnAdvanced(iframeOption);
                 this.fillExpression(expression, iframeOption);
-                //this.moveScrollbar();
                 break;
             default:
                 break;
