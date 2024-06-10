@@ -143,7 +143,6 @@ export class ProcessTesting {
         }
 
         this.clickOnRunTestBtnFromModeler();
-        //cy.get('div[class="modal-content"]').should('not.exist');
     }
 
     runTestFromModeler(runTestConfig, iframeOption, optionInAlternative, typeOfRun, expression) {
