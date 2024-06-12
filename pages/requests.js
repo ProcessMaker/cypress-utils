@@ -260,7 +260,7 @@ export class Requests {
      * @param attempts: it is not change
      * @return nothing returns
      */
-    waitUntilElementIsVisible(type,selectorXPath,maxAttempts=10, attempts=0){
+    waitUntilElementIsVisible(type,selectorXPath,maxAttempts=15, attempts=0){
         if (attempts > maxAttempts) {
             throw new Error("Timed out waiting for report to be generated");
         }
