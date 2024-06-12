@@ -18,7 +18,6 @@ export default {
     usernameTxtBx: '#username',
     passwordTxtBx: '#password',
     loginBtn: '[type="submit"]',
-    Dossier1: '//div[@id="app"]//*[contains(text(),"TCP4-3881")]',
     tabSummaryProcess: '//div[@id="request"]//ul[@id="requestTab"]//a[@id="summary-tab"]',
     cellAtributes: '//*[@class="table b-table"]//*[contains(text(),"data.attributes.fullText")]',
 
