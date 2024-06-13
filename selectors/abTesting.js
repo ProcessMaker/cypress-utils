@@ -44,7 +44,10 @@ export default {
 
     //AB Testing from configuration of process
     ABTestingTab: '[id="testing-configuration-tab"]',
-
+    nameInput:'[id="name"]',
+    saveConfiguration:'//div[@id="nav-config"]//button[contains(text(),"Save and publish")]',
+    confirmSaveConfiguration:'[data-test="confirm-btn-ok"]', 
+    
     //Modeler Elements
     addBtn: '[title="Add"]',
     
