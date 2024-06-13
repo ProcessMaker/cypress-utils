@@ -324,10 +324,11 @@ export class ABTesting {
     }
 
     changeNameOfProcess(newName) {
-        cy.get('[id="name"]').clear().type(newName).should('have.value', newName);
-        cy.xpath('//div[@id="nav-config"]//button[contains(text(),"Save and publish")]').should('be.visible')
-        cy.xpath('//div[@id="nav-config"]//button[contains(text(),"Save and publish")]').click();
-        cy.get('[data-test="confirm-btn-ok"]').click();
+        cy.get(selectors.nameInput).clear().type(newName).should('have.value', newName);
+        cy.xpath(selectors.saveConfiguration).should('be.visible');
+        cy.xpath(selectors.saveConfiguration).click();
+        cy.get(selectors.confirmSaveConfiguration).should('be.visible');
+        cy.get(selectors.confirmSaveConfiguration).click();
     }
 
     load() {
