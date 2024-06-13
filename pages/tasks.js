@@ -72,4 +72,28 @@ export class Tasks {
         cy.xpath(selectors.dataTab).click();
     }
 
+    obtainAllTasksAPI(requestId) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get(
+                "/tasks?process_request_id="+requestId+"&status=ACTIVE"
+            ).then(response => {
+                cy.wrap(response.data.data);
+            });
+        })
+    }
+
+    completeTaskAPI(taskId, bodyData){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.put(
+                "/tasks/"+taskId,
+                {
+                    "status": "COMPLETED",
+                    data: bodyData
+                }
+            ).then(response => {
+                cy.wrap(response.data);
+            });
+        })
+    }
+
 }

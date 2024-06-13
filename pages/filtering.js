@@ -97,4 +97,8 @@ export class Filtering {
         cy.get('[data-cy="value0"]').type(val).should("have.value", val);
         this.table_selectOptionBtnFilter("Apply");
     }
+    clearColumnFilter(col = 3) {
+        this.table_openFilterByColumn(col);
+        this.table_selectOptionBtnFilter("Clear");
+    }
 }
