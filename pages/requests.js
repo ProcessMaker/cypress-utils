@@ -260,7 +260,7 @@ export class Requests {
      * @param attempts: it is not change
      * @return nothing returns
      */
-    waitUntilElementIsVisible(type,selectorXPath,maxAttempts=15, attempts=0){
+    waitUntilElementIsVisible(type,selectorXPath,maxAttempts=18, attempts=0){
         if (attempts > maxAttempts) {
             throw new Error("Timed out waiting for report to be generated");
         }
@@ -282,10 +282,16 @@ export class Requests {
         // cy.xpath(selectors.requestInputOption.replace('processName', processName)).click();
         // cy.xpath(selectors.completedTxt).should('be.visible');
     }
+    openInPogressProcessInInProgress(processName){
+        navHelper.navigateToInprogressRequests();
+        this.addRequestNameToSelectList(processName);
+        cy.xpath(selectors.requestInputOption.replace('processName', processName)).click({force:true});
+    }
+
     openInPogressProcessInAllRequests(processName){
         navHelper.navigateToAllRequests();
         this.addRequestNameToSelectList(processName);
-        cy.xpath(selectors.requestInputOption.replace('processName', processName)).click();
+        cy.xpath(selectors.requestInputOption.replace('processName', processName)).click({force:true});
     }
     openAllRequestByName(processName) {
         navHelper.navigateToInprogressRequests();
