@@ -1,12 +1,20 @@
 import selectors from "#selectors/modelerElementDestinationRedirect";
-
+import selectorsAB from "#selectors/abTesting";
 import { NavigationHelper } from "#helpers/navigationHelper";
+
 
 const navHelper = new NavigationHelper();
 
 export class ModelerElementDestinationRedirect {
 
-    selectOptionInElementDestination(option,iframe){
+    /**
+     * This method selects an option in Element destination field in TASK control
+     * @param option: name of option (Example: Task Source,Task List,Process Launchpad,Welcome Screen,Custom Dashboard,External URL)
+     * @param iframe: (iframe A: 'a', iframe B: 'b')
+     * @return nothing returns
+    */
+
+    selectOptionInTask(option,iframe){
         //cy.iframe(iframeSelector).xpath(labelElementDestination).should('be.visible');
         switch (option) {
             case 'Task Source':
@@ -27,10 +35,46 @@ export class ModelerElementDestinationRedirect {
             case 'External URL':
                 this.selectElementDestination(iframe,'External URL');
                 break;
+            default:
+                break;
+        }
+    }
+
+
+    selectDashboard(){
+
+    }
+
+    /**
+     * This method selects an option in Element destination field END EVENT control
+     * @param option: name of option (Example: Summary Screen,Task List,Process Launchpad,Welcome Screen,Dashboard,External URL,'Another Process')
+     * @param iframe: iframe (iframe A: 'a', iframe B: 'b')
+     * @return nothing returns
+    */
+    selectOptionInEndEvent(option,iframe){
+        //cy.iframe(iframeSelector).xpath(labelElementDestination).should('be.visible');
+        switch (option) {
             case 'Summary Screen':
                 this.selectElementDestination(iframe,'Summary Screen');
                 break;
-            
+            case 'Task List':
+                this.selectElementDestination(iframe,'Task List');
+                break;
+            case 'Process Launchpad':
+                this.selectElementDestination(iframe,'Process Launchpad');
+                break;
+            case 'Welcome Screen':
+                this.selectElementDestination(iframe,'Welcome Screen');
+                    break;
+            case 'Dashboard':
+                this.selectElementDestination(iframe,'Dashboard');
+                break;
+            case 'External URL':
+                this.selectElementDestination(iframe,'External URL');
+                break;
+            case 'Another Process':
+                this.selectElementDestination(iframe,'Another Process');
+                break;
             default:
                 break;
         }
@@ -38,14 +82,12 @@ export class ModelerElementDestinationRedirect {
     }
 
     selectElementDestination(iframe,option){
-        let iframeA = '[id="alternative_a"]'
-        let iframeB = '[id="alternative_b"]'
         switch (iframe) {
             case 'a':
-                this.selectOption(option,iframeA)
+                this.selectOption(option,selectorsAB.iframeA)
                 break;
             case 'b':
-                this.selectOption(option,iframeB)
+                this.selectOption(option,selectorsAB.iframeB)
                 break;
             default:
                 break;
@@ -78,4 +120,6 @@ export class ModelerElementDestinationRedirect {
                 break;
         }
     }
+
+
 }
