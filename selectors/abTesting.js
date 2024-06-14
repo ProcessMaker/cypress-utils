@@ -50,6 +50,8 @@ export default {
     
     //Modeler Elements
     addBtn: '[title="Add"]',
+    formTaskName:'//div[@id="collapse-inspector-accordion-task"]//input[@name="name"]',
+    manualTaskName: '//div[@id="collapse-inspector-accordion-manual-task"]//input[@name="name"]',
     
     //Corona elements
     deleteIcon: '[title="Delete"]',

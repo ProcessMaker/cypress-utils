@@ -357,17 +357,15 @@ export class ABTesting {
 
     remaneTaskName(nameElement,newName,taskType,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        let formTask = '//div[@id="collapse-inspector-accordion-task"]//input[@name="name"]'
-        let manualTask = '//div[@id="collapse-inspector-accordion-manual-task"]//input[@name="name"]'
         this.clickOnTask(nameElement, iframeOption);
         switch (taskType) {
             case 'Form':
-                cy.iframe(iframeSelector).xpath(formTask).clear();
-                cy.iframe(iframeSelector).xpath(formTask).type(newName);
+                cy.iframe(iframeSelector).xpath(selectors.formTaskName).clear();
+                cy.iframe(iframeSelector).xpath(selectors.formTaskName).type(newName);
                 break;
             case 'Manual':
-                cy.iframe(iframeSelector).xpath(manualTask).clear();
-                cy.iframe(iframeSelector).xpath(manualTask).type(newName);
+                cy.iframe(iframeSelector).xpath(selectors.manualTaskName).clear();
+                cy.iframe(iframeSelector).xpath(selectors.manualTaskName).type(newName);
                 break;
             default:
                 break;
