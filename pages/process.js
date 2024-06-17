@@ -102,7 +102,7 @@ export class Process {
     }
 
     dragStartEvent(selector, offsetX, offsetY) {
-        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(2) > span').trigger('mousedown')
+        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(2) > span').first().trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,

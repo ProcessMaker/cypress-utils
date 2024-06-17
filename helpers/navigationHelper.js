@@ -210,4 +210,9 @@ export class NavigationHelper {
         cy.xpath(selectors.inputLaunchScreen).type(screen).should('have.value', screen);
         cy.xpath(selectors.inputLaunchScreen).type('{enter}');
     }
+
+    navigateToFlowGenie(){
+        cy.visit('/designer/flow-genies');
+        cy.title().should('eq','Flow Genies - ProcessMaker');
+    }
 }
