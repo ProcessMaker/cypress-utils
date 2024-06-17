@@ -379,9 +379,86 @@ export class ABTesting {
         .type("{meta+downarrow}",{force:true});
     }
     
-    fillProcessVariable(variableName,value,iframeOption = 'a'){
-        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        switch (variableName) {
+    
+    /**
+    * This method configures assignment rules for task control in the process modeler
+    * @param elementName: element
+    * @param assignmentConfig: type to assign rules like: User/Group, Previous Task Assignee, Requester Started, Process Variable,Rule Expression, Process Manager
+    * for example:
+    *   abTesting.verifyAssignmentRulesInTask({
+            elementName: "Form task",
+            assignmentType: "User/Groups",
+            userGroup: 'Group1',
+            variableName: "Groups",
+            value: "value",
+        });
+     */
+
+        verifyAssignmentRulesInTask(assignmentConfig,iframeOption = 'a') {
+            const { elementName, assignmentType, userGroup, variableName,value } = assignmentConfig
+            let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+            const elementTaskXapth = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
+            cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible');
+            cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().click();
+            this.clickOnAssignmentRules();
+            switch (assignmentType) {
+                case 'Users/Groups':
+                    cy.iframe(iframeSelector).find(selectors.selectList).select('Users / Groups').should('have.value',"user_group");
+                    this.selectUserOrGroup('Assigned Users/Groups',userGroup,iframeOption);
+                    break;
+                case 'Previous Task Assignee':
+                    cy.iframe(iframeSelector).find(selectors.selectList).select('Previous Task Assignee').should('have.value',"previous_task_assignee");
+                    break;
+                case 'Requester Started':
+                    cy.iframe(iframeSelector).find(selectors.selectList).select('Request Starter').should('have.value',"requester");
+                    break;
+                case 'Process Variable':
+                    cy.iframe(iframeSelector).find(selectors.selectList).select('Process Variable').should('have.value',"process_variable");
+                    this.fillProcessVariable(variableName,value,iframeOption)
+                    break;
+                case 'Rule Expression':
+                    cy.iframe(iframeSelector).find(selectors.selectList).select('Rule Expression').should('have.value',"rule_expression");
+                    this.selectUserOrGroup('Default Assignment',userGroup,iframeOption);
+                    break;
+                    break;
+                case 'Process Manager':
+                    cy.iframe(iframeSelector).find(selectors.selectList).select('Process Manager').should('have.value',"process_manager");
+                     break;
+                default:
+                    break;
+            }
+            this.publishNewVersion('withoutAB');
+        }
+    
+        clickOnAssignmentRules(iframeOption = 'a'){
+            let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+            cy.iframe(iframeSelector).find(selectors.asssignmentRuleAcordion).first().should('be.visible');
+            cy.iframe(iframeSelector).find(selectors.asssignmentRuleAcordion).first().click();
+        }
+        
+    
+        selectUserOrGroup(label,userGroup,iframeOption = 'a'){
+            let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+            const userGroupSelected = `//label[text()="${label}"]/parent::div//div[@class='multiselect__tags']//span`;
+            cy.iframe(iframeSelector).xpath(userGroupSelected).invoke('text')
+                    .then(text => {
+                        if (text !== userGroup) {
+                            cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//div[@class="multiselect__tags"]`).click();
+                            this.load();
+                            cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).clear();
+                            let len = (userGroup.length)-1;
+                            cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.substring(0,len)).should('have.value', userGroup.substring(0,len));
+                            this.load();
+                            cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.charAt(len)).should('have.value', userGroup);
+                            this.load();
+                            cy.iframe(iframeSelector).xpath(`(//span[contains(text(),"userGroup")]/ancestor::div[@class="multiselect__content-wrapper"])[1]`.replace("userGroup",userGroup)).click();
+                        }
+                    });
+        }
+    
+        fillProcessVariable(variableName,value,iframeOption = 'a'){
+            let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+            switch (variableName) {
                 case 'Users':
                     cy.iframe(iframeSelector).xpath(selectors.variableNameUsers).click();
                     cy.iframe(iframeSelector).xpath(selectors.variableNameUsers).type(value,{delay:80}).should('have.value',value);
