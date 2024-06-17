@@ -378,4 +378,20 @@ export class ABTesting {
         .click({ force: true })
         .type("{meta+downarrow}",{force:true});
     }
+
+    fillProcessVariable(variableName,value,iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        switch (variableName) {
+            case 'Users':
+                cy.iframe(iframeSelector).xpath(selectors.variableNameUsers).click();
+                cy.iframe(iframeSelector).xpath(selectors.variableNameUsers).type(value,{delay:80}).should('have.value',value);
+                break;
+            case 'Groups':
+                cy.iframe(iframeSelector).xpath(selectors.variableNameGroups).click();
+                cy.iframe(iframeSelector).xpath(selectors.variableNameGroups).type(value,{delay:80}).should('have.value',value);
+                break;
+            default:
+                break;
+        }
+    }
 }
