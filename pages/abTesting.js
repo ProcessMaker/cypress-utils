@@ -379,6 +379,7 @@ export class ABTesting {
         .type("{meta+downarrow}",{force:true});
     }
 
+    
     fillProcessVariable(variableName,value,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         switch (variableName) {
