@@ -393,13 +393,14 @@ export class ABTesting {
         });
     */
 
-    verifyAssignmentRulesInTask(assignmentConfig,iframeOption = 'a') {
+    configureAssignmentRulesInTask(assignmentConfig,iframeOption = 'a') {
         const { elementName, assignmentType, userGroup, variableName,value } = assignmentConfig
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         const elementTaskXapth = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
         cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible');
         cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().click();
-        this.clickOnAssignmentRules();
+        this.clickOnInspectorBtn(iframeOption);
+        this.clickOnAssignmentRules(iframeOption);
         switch (assignmentType) {
             case 'Users/Groups':
                 cy.iframe(iframeSelector).find(selectors.selectList).select('Users / Groups').should('have.value',"user_group");

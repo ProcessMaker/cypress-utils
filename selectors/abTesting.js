@@ -55,7 +55,12 @@ export default {
     
     //Corona elements
     deleteIcon: '[title="Delete"]',
-
     bodyPageInSummary:'[class="view-lines monaco-mouse-cursor-text"]',
+    
+    //AssignmentRule
+    asssignmentRuleAcordion:'[id="accordion-button-assignments-accordion"]',
+    selectList:'[id="assignmentsDropDownList"]',
+    variableNameUsers:'(//label[text()="Variable Name (Users)"]/parent::div//input)[1]',
+    variableNameGroups:'(//label[text()="Variable Name (Groups)"]/parent::div//input)[1]',
 
 }
