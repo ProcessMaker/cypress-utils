@@ -196,7 +196,9 @@ export class Process {
     }
 
     clickOnSave() {
-        cy.xpath(selectors.saveBtn).click({force:true});
+        //cy.xpath(selectors.saveBtn).first().click({force:true});
+        cy.iframe('[id="alternative_a"]').find('[data-test="tab-plus"]').should('be.visible');
+        cy.iframe('[id="alternative_a"]').find('[data-test="tab-plus"]').click({ force: true});
     }
 
     saveTheProcess(name) {
