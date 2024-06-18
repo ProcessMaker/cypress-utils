@@ -475,7 +475,8 @@ export class Admin {
 	}
 
     openUserSignalTab(){
-        cy.xpath("//a[contains(text(),'User Signals')]").click();
+        cy.xpath("//span[contains(text(),'User Settings')]").should('be.visible').click();
+        cy.xpath("//div[contains(text(),'User Signals')]").should('be.visible').click();
     }
 
     setCreateSignal(){
