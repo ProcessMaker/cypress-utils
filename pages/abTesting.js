@@ -378,6 +378,25 @@ export class ABTesting {
         .click({ force: true })
         .type("{meta+downarrow}",{force:true});
     }
+
+    selectUserOrGroup(label,userGroup,iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        const userGroupSelected = `//label[text()="${label}"]/parent::div//div[@class='multiselect__tags']//span`;
+        cy.iframe(iframeSelector).xpath(userGroupSelected).invoke('text')
+                .then(text => {
+                    if (text !== userGroup) {
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//div[@class="multiselect__tags"]`).click();
+                        this.load();
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).clear();
+                        let len = (userGroup.length)-1;
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.substring(0,len)).should('have.value', userGroup.substring(0,len));
+                        this.load();
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.charAt(len)).should('have.value', userGroup);
+                        this.load();
+                        cy.iframe(iframeSelector).xpath(`(//span[contains(text(),"userGroup")]/ancestor::div[@class="multiselect__content-wrapper"])[1]`.replace("userGroup",userGroup)).click();
+                    }
+                });
+    }
     
     fillProcessVariable(variableName,value,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
