@@ -5,7 +5,7 @@ export class NavigationHelper {
     }
 
     navigateToRequestsPage(){
-        cy.visit('/requests');
+        cy.visit('/cases');
         cy.title().should('eq', 'My Requests - ProcessMaker');
     }
 

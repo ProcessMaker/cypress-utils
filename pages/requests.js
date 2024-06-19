@@ -365,4 +365,14 @@ export class Requests {
                 cy.url().should("include", "/tasks/");
             });
     }
+    /**
+     * This method is responsible for click on card of Cases
+     * @param cardName: name card ("My Cases","In Progress","Completed","All Cases")
+     * @return nothing returns
+     */
+    clickOnMyCasesCard(cardName){
+        cy.xpath(selectors.cardRequests.replace("name",cardName))
+            .should('be.visible')
+            .click();
+    }
 }
