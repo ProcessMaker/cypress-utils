@@ -96,4 +96,25 @@ export class Tasks {
         })
     }
 
+    pressButtonDetailsTaskOpened(option = "Priority") {
+        let opt = 1;
+        let buttonList = "[id='details'] button";
+        cy.get(buttonList).should("be.visible");
+        switch(option) {
+            case "Create Rule":
+                opt = 0;
+                break;
+            case "Quick Fill":
+                opt = 2;
+                break;
+            case "Reassign":
+                opt = 3;
+                break;
+            case "Clear Draft":
+                    opt = 4;
+                break;
+        }
+        cy.get(buttonList).eq(opt).click();
+    }
+
 }
