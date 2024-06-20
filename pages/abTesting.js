@@ -299,13 +299,14 @@ export class ABTesting {
 
     clickOnTask(nameElement, iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        const elementLocator = '[data-type="processmaker.components.nodes.task.Shape"]'
-        cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible').click({ force: true });
+        const elementLocator = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
+        cy.iframe(iframeSelector).xpath(elementLocator.replace('nameElem', nameElement)).first().should('be.visible');
+        cy.iframe(iframeSelector).xpath(elementLocator.replace('nameElem', nameElement)).first().click({ force: true });
     }
 
     clickOnEndEvent(nameElement, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        const elementLocator = '[data-type="processmaker.components.nodes.endEvent.Shape"]'
+        const elementLocator = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.endEvent.Shape']"
         cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible');
         cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().click({ force: true });
     }
