@@ -7,10 +7,10 @@ const abTesting = new ABTesting();
 
 export class ModelerElementDestinationRedirect {
     //Element Destination for TASKS
-    configureElementDestinationInTask(nameElement, iframeOption = 'a'){
+    configureElementDestinationInTask(nameElement,optionConfig, iframeOption = 'a'){
         abTesting.clickOnTask(nameElement, iframeOption);
         abTesting.clickOnInspectorBtn(iframeOption);
-        this.selectOptionInTask(option,iframeOption);
+        this.selectOptionInTask(optionConfig,iframeOption);
         abTesting.publishNewVersion('withoutAB', iframeOption);
     }
   
@@ -20,24 +20,25 @@ export class ModelerElementDestinationRedirect {
      * @param iframe: (iframe A: 'a', iframe B: 'b')
     */
 
-    selectOptionInTask(option,iframeOption = 'a'){
+    selectOptionInTask(optionConfig,iframeOption = 'a'){
+        const { option, dashboardName, url } = optionConfig
         let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
         cy.iframe(iframeSelector).xpath(selectors.labelElementDestination).should('be.visible');
         switch (option) {
             case 'Task Source':
-                this.selectElementDestination(iframe,'Task Source');
+                this.selectElementDestination('Task Source',iframeOption);
                 break;
             case 'Task List':
-                this.selectElementDestination(iframe,'Task List');
+                this.selectElementDestination('Task List',iframeOption);
                 break;
             case 'Process Launchpad':
-                this.selectElementDestination(iframe,'Process Launchpad');
+                this.selectElementDestination('Process Launchpad',iframeOption);
                 break;
             case 'Welcome Screen':
-                this.selectElementDestination(iframe,'Welcome Screen');
+                this.selectElementDestination('Welcome Screen',iframeOption);
                     break;
             case 'Custom Dashboard':
-                this.selectElementDestination(iframe,'Custom Dashboard');
+                this.selectElementDestination('Custom Dashboard');
                 this.selectDashboardInModeler(dashboardName,iframeOption);
                 break;
             case 'External URL':
@@ -51,14 +52,13 @@ export class ModelerElementDestinationRedirect {
 
     selectDashboardInModeler(dashboardName,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
-        //cy.iframe(iframeSelector).xpath(selectors.labelDashboard).should('be.visible');
-        cy.iframe(iframeSelector).find(selectors.dashboardInput).should('be.visible');
-        cy.iframe(iframeSelector).find(selectors.dashboardInput).click();
+        cy.iframe(iframeSelector).xpath(selectors.labelDashboard).should('be.visible');
+        cy.iframe(iframeSelector).find(selectors.dashboardInput).click({force:true});
         cy.iframe(iframeSelector).find(selectors.dashboardInput).type(dashboardName,{delay:60}).should('have.value',dashboardName);
 		cy.iframe(iframeSelector).xpath(selectors.wrapperDashboard)
 			.should('have.attr', 'aria-label')
 			.and('contain', dashboardName+ '. ');
-		cy.iframe(iframeSelector).xpath(selectors.dashboardInput).type('{enter}');
+		cy.iframe(iframeSelector).find(selectors.dashboardInput).type('{enter}');
     }
 
     selectExternalURLInModeler(url,iframeOption = 'a'){
@@ -128,8 +128,8 @@ export class ModelerElementDestinationRedirect {
 		cy.iframe(iframeSelector).xpath(selectors.processInput).type('{enter}');
     }
 
-    selectElementDestination(iframe,option){
-        switch (iframe) {
+    selectElementDestination(option,iframeOption = 'a'){
+        switch (iframeOption) {
             case 'a':
                 this.selectOption(option,selectorsAB.iframeA)
                 break;

@@ -2,7 +2,7 @@ export default {
     labelElementDestination:'//label[text()="Element Destination"]',
     elementDestinationList:'[data-test="element-destination-type"]',
     labelDashboard:'//label[text()="Dashboard"]',
-    dashboardInput:'[name="Dashboard"]',
+    dashboardInput:'input[name="Dashboard"]',
     selectDashboard:'//label[text()="Dashboard"]/following-sibling::div//div[@class="multiselect__select"]',
     wrapperDashboard:'//label[text()="Dashboard"]/following-sibling::div//div[@class="multiselect__content-wrapper"]//li[1]',
     labelURL:'//label[text()="URL"]',
