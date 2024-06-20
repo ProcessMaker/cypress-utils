@@ -15,10 +15,6 @@ export class Login {
     this.enterUsername(username);
     this.enterPassword(password);
     this.clickOnLogin();
-    //BUG FOUR-14572
-    cy.get(selectors.loginBtn).should('not.exist');
-      cy.visit("/requests");
-    //BUG FOUR-14572
     cy.xpath('//*[@id="navbar1"]').should('be.visible');
     cy.get(headerSelectors.userAvatarBtn).should('be.visible');
   }
