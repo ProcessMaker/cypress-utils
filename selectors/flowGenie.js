@@ -16,6 +16,7 @@ buttonOptions: 'button[class="btn dropdown-toggle btn-outlined-secondary static-
 editFlowGenie: "//span[contains(text(),'Edit')]",
 copyFlowGenie: "//span[contains(text(),'Copy')]",
 exportFlowGenie: "//span[contains(text(),'Export')]",
+deleteFlowGenie:"//span[contains(text(),'Delete')]",
 searchBox: 'input[id="search-box"]',
 modalCopy:"//h5[contains(text(),'Copy Flow Genie')]",
 tableBody:'//div[@class="data-table"]//div[2]//tbody',

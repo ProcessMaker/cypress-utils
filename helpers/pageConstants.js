@@ -17,7 +17,8 @@ export default {
       "data_connector_event": "Data Connector",
       "gateway_event":'Gateway',
       "intermediate_event":"Intermediate Event",
-      "AI_Generated_event":"AI Generated"
+      "AI_Generated_event":"AI Generated",
+      "Flow_Genie_event":"Flow Genie",
     },
 
     processDropedElements:{
@@ -36,6 +37,7 @@ export default {
         "data_connector_event": "task",
         "gateway_event":'gateway',
         "intermediate_event":"intermediateEvent",
-        "AI_Generated_event":"AIGenerated"
+        "AI_Generated_event":"AIGenerated",
+        "Flow_Genie_event":"FlowGenie",
     }
 }

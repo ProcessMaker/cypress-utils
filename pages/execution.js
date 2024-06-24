@@ -4100,20 +4100,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         request.openTaskByTaskName(taskName);
         cy.get('[class="card card-body border-top-0 h-100 display-screen"]').should('be.visible');
         cy.get('[class="btn btn-primary"]').should('be.visible').click();
-    }
-    async reviewDataOfTCP42298(){
-        navHelper.navigateToInprogressRequests();
-        cy.xpath('//span[text()="TCP4-2298 Check the functionality of Intermediate Event with nested screen tasks"]/ancestor::tr//a[@title="Open Request"]').first().should('be.visible').click();
-        //Review Summary
-        cy.get('[id="summary-tab"]').should('be.visible').click();
-        cy.get('[class="card-body"]').should('be.visible');
-        cy.get('[id="completed-tab"]').should('be.visible').click();
-        //Review File Manager
-        cy.get('[id="file-manager-tab"]').should('be.visible').click();
-        request.waitUntilElementIsVisible('selector','[title="View"]');
-        cy.get('[title="View"]').should('be.visible').click();
-        cy.wait(5000);
-        cy.get('iframe').should('be.visible');
+        cy.wait(2000);
     }
 
     async completeFormTCP42292(requestId){
