@@ -215,4 +215,9 @@ export class NavigationHelper {
         cy.visit('/designer/flow-genies');
         cy.title().should('eq','Flow Genies - ProcessMaker');
     }
+
+    navigateToProcessesPage(){
+        cy.visit('/process-browser');
+        cy.title().should('eq','Processes Catalogue - ProcessMaker');
+    }
 }
