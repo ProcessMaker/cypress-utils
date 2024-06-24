@@ -97,6 +97,9 @@ export class Process {
             case 'Intermediate Event':
                 this.dragintermediateEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.intermediate_event), offsetX, offsetY);
                 break;
+            case 'Flow Genie':
+                this.dragFlowGenieEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.Flow_Genie_event), offsetX, offsetY);
+                break;
 
         }
     }
@@ -145,6 +148,16 @@ export class Process {
 
     dragAIGeneratedEvent(selector, offsetX, offsetY) {
         cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(17) > span').trigger('mousedown')
+            .trigger('mousemove', {
+                pageX: offsetX,
+                pageY: offsetY,
+                force: true
+            });
+        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+    }
+
+    dragFlowGenieEvent(selector, offsetX, offsetY) {
+        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(18) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,

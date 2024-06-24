@@ -54,6 +54,9 @@ export class FlowGenie {
             case "export":
                 this.clickOnExportFlowGenie();
                 break;
+            case "delete":
+                this.clickOnDeleteFlowGenie();
+                break;
         }
     }
     //Option Edit
@@ -66,7 +69,9 @@ export class FlowGenie {
         cy.xpath(selectors.copyFlowGenie).first().should('be.visible').click();
     }
     //Option Delete
-
+    clickOnDeleteFlowGenie(){
+        cy.xpath(selectors.deleteFlowGenie).first().should('be.visible').click();
+    }
     //Option Export
     clickOnExportFlowGenie(){
         cy.xpath(selectors.exportFlowGenie).first().should('be.visible').click();
@@ -102,6 +107,15 @@ export class FlowGenie {
     //Create Category FlowGenie
 
     //From modeler
+    //Create New FlowGenie form modeler
+    CreateFlowGenieFromModeler(nameFlowGenie, description) {        
+        cy.get(selectors.modalNewFlowGenie).should('be.visible');
+        cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie);
+        cy.get(selectors.textareaDescription).type(description);
+        this.ClickSaveFlowGenie();
+        cy.contains(selectors.flowGenieStudio,'Flow Genie Studio').should('be.visible');
+    }
+
     //Configuration task FlowGenie
 
 }    
