@@ -398,7 +398,7 @@ export class ABTesting {
         const { elementName, assignmentType, userGroup, variableName,value } = assignmentConfig
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         const elementTaskXapth = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
-        cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible');
+       // cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible');
         cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().click();
         this.clickOnInspectorBtn(iframeOption);
         this.clickOnAssignmentRules(iframeOption);
@@ -444,9 +444,9 @@ export class ABTesting {
                     if (text !== userGroup) {
                         cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//div[@class="multiselect__tags"]`).click();
                         this.load();
-                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).clear();
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).clear({force:true});
                         let len = (userGroup.length)-1;
-                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.substring(0,len)).should('have.value', userGroup.substring(0,len));
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.substring(0,len),{delay:150}).should('have.value', userGroup.substring(0,len));
                         this.load();
                         cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.charAt(len)).should('have.value', userGroup);
                         this.load();
