@@ -7,7 +7,10 @@ const request = new Requests();
 
 export class Utility {
     fillLineInput(label, position, value){
-        cy.xpath('(//label[contains(text(),"'+label+'")]/following-sibling::input)['+position+']').clear().type(value)
+        cy.xpath('(//label[contains(text(),"'+label+'")]/following-sibling::input)['+position+']').clear().type(value);
+    }
+    fillTextArea(label, position, value){
+        cy.xpath('(//label[contains(text(),"'+label+'")]/following-sibling::textarea)['+position+']').clear().type(value);
     }
     fillSelectList(label, position, value){
         cy.xpath('(//label[contains(text(),"'+label+'")]/parent::div//div[@class="multiselect__tags"])['+position+']').click();
