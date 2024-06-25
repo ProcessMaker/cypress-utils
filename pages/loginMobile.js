@@ -1,4 +1,4 @@
-//import { NavigationHelper } from "#helpers/navigationHelper";
+import selectors from "../selectors/loginMobile";
 export class LoginMobile {
     /**
      * method to login with credentials, by default uses admin user.
@@ -10,9 +10,9 @@ export class LoginMobile {
         cy.get("form")
             .scrollIntoView()
             .within(() => {
-                cy.get('input[id="username"]').type(username);
-                cy.get('input[id="password"]').type(password);
-                cy.get('button[type="submit"]').click();
+                cy.get(selectors.usernameTxt).type(username);
+                cy.get(selectors.passwordTxt).type(password);
+                cy.get(selectors.loginBtn).click();
             });
     }
 
