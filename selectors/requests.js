@@ -46,5 +46,8 @@ export default{
     openTheProcess:"(//td[@class='vuetable-slot']//a)[1]",
 
     //header completed requests/in porgress
-    headerCompleted:'.list-group > .card-header'
+    headerCompleted:'.list-group > .card-header',
+
+    //Cases page
+    cardRequests:'//*[contains(@class,"card flex-row")]//*[contains(text(),"name")]'
 };
