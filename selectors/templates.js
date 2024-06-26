@@ -5,7 +5,7 @@ export default {
     importBtnTemplates: "//button[@type='button']/span[text()='Import']",
     addTemplates: '//button[@class="btn mb-3 mb-md-0 ml-md-2 btn-secondary"]',
     tabTemplates: '//*[@id="nav-templates-tab"]',
-    threePointsBtnXpathTemplate:'//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="nav-templates"]//table/tbody/tr//button[@aria-haspopup="menu"]',
+    threePointsBtnXpathTemplate:'//*[@data-cy="processes-template-table"]//button[@aria-haspopup="menu"]',
     searchBoxTemplate:'//div[@id="templatesIndex"]//input[@aria-label="Search"]',
     nameTemplate:'//*[@id="name"]',
     templateTableBody:'//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="templatesIndex"]//tbody', 
