@@ -604,9 +604,9 @@ export class Process {
         cy.get(selectors.browseBtn).should('be.visible');
     }
 
-    goToWebEntry() {
-        cy.get('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().should('be.visible');
-        cy.get('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().click({ force: true });
+    goToWebEntry(numWE=0) {
+        cy.get('[data-type="processmaker.components.nodes.startEvent.Shape"]').eq(numWE).should('be.visible');
+        cy.get('[data-type="processmaker.components.nodes.startEvent.Shape"]').eq(numWE).click({ force: true });
         this.clickOnWeTabSettign();
         this.openWe();
     }
