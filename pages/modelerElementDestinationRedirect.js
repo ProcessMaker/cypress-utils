@@ -38,11 +38,11 @@ export class ModelerElementDestinationRedirect {
                 this.selectElementDestination('Welcome Screen',iframeOption);
                     break;
             case 'Custom Dashboard':
-                this.selectElementDestination('Custom Dashboard');
+                this.selectElementDestination('Custom Dashboard',iframeOption);
                 this.selectDashboardInModeler(dashboardName,iframeOption);
                 break;
             case 'External URL':
-                this.selectElementDestination(iframe,'External URL');
+                this.selectElementDestination('External URL',iframeOption);
                 this.selectExternalURLInModeler(url,iframeOption);
                 break;
             default:
@@ -69,10 +69,10 @@ export class ModelerElementDestinationRedirect {
     }
 
     //Element Destination for END EVENT
-    configureElementDestinationInEndEvent(nameElement, iframeOption = 'a'){
+    configureElementDestinationInEndEvent(nameElement, optionConfig, iframeOption = 'a'){
         abTesting.clickOnEndEvent(nameElement, iframeOption);
         abTesting.clickOnInspectorBtn(iframeOption);
-        this.selectOptionInEndEvent(option,iframeOption);
+        this.selectOptionInEndEvent(optionConfig,iframeOption);
         abTesting.publishNewVersion('withoutAB', iframeOption);
     }
 
@@ -82,32 +82,33 @@ export class ModelerElementDestinationRedirect {
      * @param iframe: iframe (iframe A: 'a', iframe B: 'b')
     */
 
-    selectOptionInEndEvent(option,iframeOption = 'a'){
+    selectOptionInEndEvent(optionConfig,iframeOption = 'a'){
+        const { option, dashboardName, url } = optionConfig
         let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
-        cy.iframe(iframeSelector).xpath(labelElementDestination).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.labelElementDestination).should('be.visible');
         switch (option) {
             case 'Summary Screen':
-                this.selectElementDestination(iframe,'Summary Screen');
+                this.selectElementDestination('Summary Screen',iframeOption);
                 break;
             case 'Task List':
-                this.selectElementDestination(iframe,'Task List');
+                this.selectElementDestination('Task List',iframeOption);
                 break;
             case 'Process Launchpad':
-                this.selectElementDestination(iframe,'Process Launchpad');
+                this.selectElementDestination('Process Launchpad',iframeOption);
                 break;
             case 'Welcome Screen':
-                this.selectElementDestination(iframe,'Welcome Screen');
+                this.selectElementDestination('Welcome Screen',iframeOption);
                     break;
-            case 'Dashboard':
-                this.selectElementDestination(iframe,'Dashboard');
+            case 'Custom Dashboard':
+                this.selectElementDestination('Custom Dashboard',iframeOption);
                 this.selectDashboardInModeler(dashboardName,iframeOption);
                 break;
             case 'External URL':
-                this.selectElementDestination(iframe,'External URL');
+                this.selectElementDestination('External URL',iframeOption);
                 this.selectExternalURLInModeler(url,iframeOption);
                 break;
             case 'Another Process':
-                this.selectElementDestination(iframe,'Another Process');
+                this.selectElementDestination('Another Process',iframeOption);
                 this.selectAnotherProcessInModeler(ProcessName,iframeOption)
                 break;
             default:
