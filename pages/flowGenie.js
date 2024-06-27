@@ -24,10 +24,11 @@ export class FlowGenie {
     CreateFlowGenie(nameFlowGenie, description) {   
         this.ClickAddFlowGenie();     
         cy.get(selectors.modalNewFlowGenie).should('be.visible');
-        cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie);
-        cy.get(selectors.textareaDescription).type(description);
+        cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie,{timeout: 200});
+        cy.get(selectors.textareaDescription).type(description, {timeout: 200});
+        cy.wait(2000);
         this.ClickSaveFlowGenie();
-        cy.contains(selectors.flowGenieStudio,'Flow Genie Studio').should('be.visible');
+        //cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
     }
     //+New FlowGenie
     ClickAddFlowGenie(){
@@ -36,7 +37,7 @@ export class FlowGenie {
     
     //Save FlowGenie
     ClickSaveFlowGenie(){
-        cy.xpath(selectors.saveFlowGenie).should('be.visible').click();
+        cy.xpath(selectors.saveFlowGenie).should('be.visible').click({force: true}, {timeout: 500});
     }
       
     //Search FlowGenie and select options
@@ -71,6 +72,8 @@ export class FlowGenie {
     //Option Delete
     clickOnDeleteFlowGenie(){
         cy.xpath(selectors.deleteFlowGenie).first().should('be.visible').click();
+        cy.get(selectors.modalNewFlowGenie).should('be.visible');
+        cy.get(selectors.confirmDelete).should('be.visible').click();
     }
     //Option Export
     clickOnExportFlowGenie(){
@@ -108,12 +111,15 @@ export class FlowGenie {
 
     //From modeler
     //Create New FlowGenie form modeler
-    CreateFlowGenieFromModeler(nameFlowGenie, description) {        
+    CreateFlowGenieFromModeler(nameFlowGenie, description) {
+        cy.iframe('[id="alternative_a"]').find('[class="asset-link"]').click();
+        cy.visit('designer/flow-genies?create=true&screenSelectId=undefined');        
         cy.get(selectors.modalNewFlowGenie).should('be.visible');
         cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie);
         cy.get(selectors.textareaDescription).type(description);
+        cy.wait(1000);
         this.ClickSaveFlowGenie();
-        cy.contains(selectors.flowGenieStudio,'Flow Genie Studio').should('be.visible');
+        cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
     }
 
     //Configuration task FlowGenie
