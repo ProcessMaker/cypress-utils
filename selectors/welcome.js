@@ -28,5 +28,12 @@ export default {
     loadingSpinnerProject: "(//div['.icon-container']/h3[contains(text(),'Loading')])[1]",
     projectList: "//tbody['.vuetable-body']/tr",
     optionButtonDesigner: "//button['.btn custom-button mb-2 btn-secondary btn-sm btn-block']/p[contains(text(),'option')]",
-    assetVerification: "//td/a[contains(text(),'asset')]"
+    assetVerification: "//td/a[contains(text(),'asset')]",
+    cardWelcomeScreen: "[class='card']",
+    headerCard: "//*[@class='card']//thead//*[contains(text(),'textHeader')]",
+    dropdownMyCases: "//*[contains(text(),'My Cases')]/parent::div//*[@aria-haspopup='menu']",
+    dropdownItem: "//*[@class='dropdown-item']/*[contains(text(),'itemName')]",
+    viewAllWelcome: "//*[contains(text(),'View All')]/parent::button[@aria-haspopup='menu']",
+    searchBtn: "//*[@class='fas fa-search']/parent::button",
+    searchInput: "[class='form-control narrow-input']"
  };

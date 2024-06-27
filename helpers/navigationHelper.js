@@ -1,4 +1,8 @@
 export class NavigationHelper {
+    navigateToHome(){
+        cy.visit('/');
+        cy.title().should('eq', 'Welcome - ProcessMaker');
+    }
     navigateToProcessPage(){
         cy.visit('/processes');
         cy.title().should('eq', 'Processes - ProcessMaker');

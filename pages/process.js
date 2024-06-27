@@ -209,9 +209,7 @@ export class Process {
     }
 
     clickOnSave() {
-        //cy.xpath(selectors.saveBtn).first().click({force:true});
-        cy.iframe('[id="alternative_a"]').find('[data-test="tab-plus"]').should('be.visible');
-        cy.iframe('[id="alternative_a"]').find('[data-test="tab-plus"]').click({ force: true});
+        cy.xpath(selectors.saveBtn).first().click({force:true});
     }
 
     saveTheProcess(name) {
@@ -1763,38 +1761,69 @@ export class Process {
      * @param elementName: name of task in the modeler. Ej: task1
      * @param assignmentType: type to assign rules like: User/Group, Self Service, Process Manger
      * @param userGroup: fullName| nameGroup
+     * @param nameFullUser: In case that will be an user assigned to task form Ej: (Admin User (admin))
      * @return nothing returns
      * process.verifyConfigOfTaskAndConfig("Form1",'User/Group','name_group' );
      */
 
-    verifyConfigOfTaskAndConfig(elementName, assignmentType, userGroup) {
+    verifyConfigOfTaskAndConfig(elementName, assignmentType, userGroup, nameFullUser="") {
         const elementTaskXapth = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
         const userGroupSelected = "//label[text()='Assigned Users/Groups']/parent::div//div[@class='multiselect__tags']//span";
         const resourceSelected = "//label[text()='Select a Resource']/parent::div//div[@class='multiselect__tags']//span";
+        const spninnerUserGroup = "//label[text()='Assigned Users/Groups']/parent::div//div[@class='multiselect__spinner']";
+        const inputUserGroup = "//label[text()='Assigned Users/Groups']/parent::div//input";
+        let compareUserGroup = "";
+
         cy.xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible');
         cy.xpath(elementTaskXapth.replace('nameElem', elementName)).first().click();
-        cy.xpath('(//*[@data-type="processmaker.components.nodes.startEvent.Shape"])[1]').click((err, runnable) => {
-            cy.wait(3000);
-            return false;
-        });
-        cy.xpath(elementTaskXapth.replace('nameElem', elementName)).first().click((err, runnable) => {
-            return false
-        });
         cy.get('[id="accordion-button-assignments-accordion"]').click();
         cy.get('[id="assignmentsDropDownList"]').select('user_group');
-        cy.xpath(userGroupSelected).invoke('text')
-            .then(text => {
-                if (text !== userGroup) {
-                    // Set data connector
-                    cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//div[@class="multiselect__tags"]').click();
-                    cy.wait(3000);
-                    cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//input').clear();
-                    let len = (userGroup.length)-1;
-                    cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//input').type(userGroup.substring(0,len)).should('have.value', userGroup.substring(0,len));
-                    cy.wait(4000);
-                    cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//input').type(userGroup.charAt(len)).should('have.value', userGroup);
-                    cy.wait(4000);
-                    cy.xpath('(//span[contains(text(),"userGroup")]/ancestor::div[@class="multiselect__content-wrapper"])[1]'.replace("userGroup",userGroup)).click();
+
+        if(nameFullUser !== ""){
+            compareUserGroup=nameFullUser
+        }else {
+            compareUserGroup=userGroup;
+        }
+        let flag=false;
+        cy.xpath(spninnerUserGroup).should('not.be.visible');
+        cy.xpath(userGroupSelected).its('length')
+            .then(length => {
+                cy.log('this is the ANANA LENGTH',length);
+                if (length>0){
+                    if(length===1){
+                        cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//div[@class="multiselect__tags"]').click();
+                        cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//li/span[contains(text(),"No Data Available")]')
+                            .should('not.be.visible');
+                        cy.wait(5000);
+                        cy.xpath(inputUserGroup).type(userGroup,{delay:700});
+                        cy.wait(5000);
+                        cy.xpath('//li[@aria-label="userGroup. "]'.replace("userGroup",compareUserGroup)).first().should('be.visible')
+                            .click();
+                        cy.wait(5000);
+                    }
+                    else{
+                        for (let i = 0; i <(length/2) ; i++) {
+                            cy.xpath(userGroupSelected+'/span').eq(i).invoke('text')
+                                .then(text => {
+                                    if (text === compareUserGroup){
+                                        cy.log('this is the ANANA TEXT',text);
+                                        flag = true;
+                                        i=(length/2);
+                                    }
+                                    if(!flag && i === (length/2)){
+                                        cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//div[@class="multiselect__tags"]').click();
+                                        cy.xpath('//label[text()="Assigned Users/Groups"]/parent::div//li/span[contains(text(),"No Data Available")]')
+                                            .should('not.be.visible');
+                                        cy.wait(5000);
+                                        cy.xpath(inputUserGroup).type(userGroup,{delay:700});
+                                        cy.wait(5000);
+                                        cy.xpath('//li[@aria-label="userGroup. "]'.replace("userGroup",compareUserGroup)).first().should('be.visible')
+                                            .click();
+                                        cy.wait(5000);
+                                    }
+                                })
+                        }
+                    }
                 }
             });
     }
