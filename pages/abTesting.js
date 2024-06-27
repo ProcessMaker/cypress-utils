@@ -307,8 +307,8 @@ export class ABTesting {
     clickOnEndEvent(nameElement, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         const elementLocator = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.endEvent.Shape']"
-        cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().should('be.visible');
-        cy.iframe(iframeSelector).find(elementLocator.replace('nameElem', nameElement)).first().click({ force: true });
+        cy.iframe(iframeSelector).xpath(elementLocator.replace('nameElem', nameElement)).first().should('be.visible');
+        cy.iframe(iframeSelector).xpath(elementLocator.replace('nameElem', nameElement)).first().click({ force: true });
     }
 
     deleteElement(iframeOption = 'a') {
