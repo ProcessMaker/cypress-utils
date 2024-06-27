@@ -213,7 +213,7 @@ export class NavigationHelper {
 
     navigateToFlowGenie(){
         cy.visit('/designer/flow-genies');
-        cy.title().should('eq','Flow Genies - ProcessMaker');
+        cy.title().should('eq','Genies - ProcessMaker');
     }
 
     navigateToProcessesPage(){
