@@ -14,7 +14,7 @@ export default {
     publishSuccessAlert: '[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]',
 
     launch_category: '//*[@class="menu"]//*[contains(text(),"category")]',
-    launch_searchProcess: '[id="search-box"][placeholder="Search Processes"]',
+    launch_searchProcess: '[class="processes-info"]>* [class="search"]>* input',
     launch_searchProcessButton: '[title="Search Processes"]',
     launch_cardProcess: '//*[contains(text(),"processName")]',
     launch_startProcessButton: '//*[contains(text(),"Start this")]',
