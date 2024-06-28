@@ -83,7 +83,7 @@ export class ModelerElementDestinationRedirect {
     */
 
     selectOptionInEndEvent(optionConfig,iframeOption = 'a'){
-        const { option, dashboardName, url } = optionConfig
+        const { option, dashboardName, url,processName } = optionConfig
         let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
         cy.iframe(iframeSelector).xpath(selectors.labelElementDestination).should('be.visible');
         switch (option) {
@@ -109,7 +109,7 @@ export class ModelerElementDestinationRedirect {
                 break;
             case 'Another Process':
                 this.selectElementDestination('Another Process',iframeOption);
-                this.selectAnotherProcessInModeler(ProcessName,iframeOption)
+                this.selectAnotherProcessInModeler(processName,iframeOption)
                 break;
             default:
                 break;
