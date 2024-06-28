@@ -1,6 +1,7 @@
 
 export default {
 
-iconAccesibility: '//*[@id="userwayAccessibilityIcon"]',    
+iconAccesibility: '//*[@id="userwayAccessibilityIcon"]',
+frameAccesibility: '//*[@class="uwaw-app"]',    
 
 }
