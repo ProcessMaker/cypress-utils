@@ -8,7 +8,7 @@ export default {
     labelURL:'//label[text()="URL"]',
     urlInput:'[data-test="external-url"]',
     labelProcess:'//label[text()="Process"]',
-    processInput:'[name="Process"]',
+    processInput:'input[name="Process"]',
     selectProcess:'//label[text()="Process"]/following-sibling::div//div[@class="multiselect__select"]',
     wrapperProcess:'//label[text()="Process"]/following-sibling::div//div[@class="multiselect__content-wrapper"]//li[1]',
 }
