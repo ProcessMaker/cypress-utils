@@ -116,17 +116,15 @@ export class ModelerElementDestinationRedirect {
         }
     }
 
-    selectAnotherProcessInModeler(ProcessName,iframeOption = 'a'){
+    selectAnotherProcessInModeler(processName,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
         cy.iframe(iframeSelector).xpath(selectors.labelProcess).should('be.visible');
-        cy.iframe(iframeSelector).find(selectors.processInput).should('be.visible');
-        cy.iframe(iframeSelector).find(selectors.dashboardInput).click();
-        cy.iframe(iframeSelector).find(selectors.processInput).type(ProcessName,{delay:60}).should('have.value',ProcessName);
-        cy.iframe(iframeSelector).xpath(selectors.selectProcess).click();
+        cy.iframe(iframeSelector).find(selectors.processInput).click({force:true});
+        cy.iframe(iframeSelector).find(selectors.processInput).type(processName,{delay:80}).should('have.value',processName);
 		cy.iframe(iframeSelector).xpath(selectors.wrapperProcess)
 			.should('have.attr', 'aria-label')
-			.and('contain', ProcessName+ '. ');
-		cy.iframe(iframeSelector).xpath(selectors.processInput).type('{enter}');
+			.and('contain', processName+ '. ');
+		cy.iframe(iframeSelector).find(selectors.processInput).type('{enter}');
     }
 
     selectElementDestination(option,iframeOption = 'a'){
