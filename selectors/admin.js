@@ -210,8 +210,15 @@ export default{
     viewOtherUsersProfilePermission: '[for="permission_view-other-users-profiles"]',
     viewUsersPermission: '[for="permission_view-users"]',
     //CRUD Processes:
+    archiveProcessesPermission:'[for="permission_archive-processes"]',
+    createProcessCategoriesPermission:'[for="permission_create-process-categories"]',
     createProcessesPermission: '[for="permission_create-processes"]',
+    deleteProcessCategoriesPermission:'[for="permission_delete-process-categories"]',
+    editProcessCategoriesPermission:'[for="permission_edit-process-categories"]',
     editProcessesPermission: '[for="permission_edit-processes"]',
+    exportProcessesPermission:'[for="permission_export-processes"]',
+    importProcessesPermission:'[for="permission_import-processes"]',
+    viewProcessCategoriesPermission: '[for="permission_view-process-categories"]',
     viewProcessesPermission: '[for="permission_view-processes"]',
     
     //Authentication Client
