@@ -209,6 +209,11 @@ export default{
     editUsersPermission: '[for="permission_edit-users"]',
     viewOtherUsersProfilePermission: '[for="permission_view-other-users-profiles"]',
     viewUsersPermission: '[for="permission_view-users"]',
+    //CRUD Processes:
+    createProcessesPermission: '[for="permission_create-processes"]',
+    editProcessesPermission: '[for="permission_edit-processes"]',
+    viewProcessesPermission: '[for="permission_view-processes"]',
+    
     //Authentication Client
     authClientButton: '//button[@aria-label="Create Auth Client"]',
     AuthName: '//input[@id="name"]',
