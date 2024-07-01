@@ -46,5 +46,6 @@ export default{
     RTLoopAllow3:'(//div[contains(text(),"add")])[3]',
     RTLoopAllow4:'(//div[contains(text(),"add")])[4]',
     RTLoopAllow5:'(//div[contains(text(),"add")])[5]',
+    uploadPhotoCamara: '//*[@class="btn btn-upload"]',
 
 }
