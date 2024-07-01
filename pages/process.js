@@ -41,7 +41,7 @@ export class Process {
                 break;
         }
         // const id = await promisify(cy.get(locator).then($elems => {
-        const id = cy.iframe('[id="alternative_a"]').find(locator).then($elems => {
+        const id = cy.get(locator).then($elems => {
             var index = 0;
             var max_id = 0;
             for (let i = 0; i < $elems.length; i++) {
@@ -105,23 +105,23 @@ export class Process {
     }
 
     dragStartEvent(selector, offsetX, offsetY) {
-        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(2) > span').first().trigger('mousedown')
+        cy.get('[class="node-types__container"]').find('#nodeTypesList > div > div:nth-child(2) > span').first().trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
             });
-        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     dragEndEvent(selector, offsetX, offsetY) {
-        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(4) > span').trigger('mousedown')
+        cy.get('[class="node-types__container"]').find('#nodeTypesList > div > div:nth-child(4) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
             });
-        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     dragPdfGeneratorEvent(selector, offsetX, offsetY) {
@@ -189,12 +189,12 @@ export class Process {
     }
 
     dragEventByOffSet(selector, offsetX, offsetY) {
-        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(5) > span').trigger('mousedown')
+        cy.get('[class="node-types__container"]').find('#nodeTypesList > div > div:nth-child(5) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY
             });
-        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     clickOnZoomOut() {
@@ -202,10 +202,10 @@ export class Process {
     }
 
     connectToEvents(event1Locator, event2Locator) {
-        cy.iframe('[id="alternative_a"]').find('#'+event1Locator).click();
-        cy.iframe('[id="alternative_a"]').find('[class="crown-config"]').should('be.visible')
-        cy.iframe('[id="alternative_a"]').find('#generic-flow-button').click();
-        cy.iframe('[id="alternative_a"]').find('#'+event2Locator).click();
+        cy.get('#'+event1Locator).click();
+        cy.get('[class="crown-config"]').should('be.visible')
+        cy.get('#generic-flow-button').click();
+        cy.get('#'+event2Locator).click();
     }
 
     clickOnSave() {

@@ -142,7 +142,7 @@ export class NaturalLanguage {
         }
         if (type === 'selector') {
             cy.wait(4000);
-            cy.iframe('[id="alternative_a"]')
+            cy.get('body')
                 .then($body => {
                     if ($body.find(selectorXPath).length <= 0) {
                         this.waitUntilElementIsVisible(type, selectorXPath, maxAttempts, attempts + 1);
