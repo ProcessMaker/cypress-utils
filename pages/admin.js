@@ -1090,6 +1090,28 @@ export class Admin {
                     element.view &&
                         cy.get(selectors.viewUsersPermission).click();
                     break;
+                case "Processes":
+                    element.archiveProcesses &&
+                        cy.get(selectors.archiveProcessesPermission).click();
+                    element.createProcessCategories &&
+                        cy.get(selectors.createProcessCategoriesPermission).click();
+                    element.createProcesses &&
+                        cy.get(selectors.createProcessesPermission).click();
+                    element.deleteProcessCategories &&
+                        cy.get(selectors.deleteProcessCategoriesPermission).click();
+                    element.editProcessCategories &&
+                        cy.get(selectors.editProcessCategoriesPermission).click();
+                    element.editProcesses &&
+                        cy.get(selectors.editProcessesPermission).click();
+                    element.exportProcesses &&
+                        cy.get(selectors.exportProcessesPermission).click();
+                    element.importProcesses &&
+                        cy.get(selectors.importProcessesPermission).click();
+                    element.viewProcessCategories&&
+                        cy.get(selectors.viewProcessCategoriesPermission).click();
+                    element.viewProcesses &&
+                        cy.get(selectors.viewProcessesPermission).click();
+                    break;
                 default:
                     break;
             }
