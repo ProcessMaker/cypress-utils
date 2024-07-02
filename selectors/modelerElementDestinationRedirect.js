@@ -11,4 +11,5 @@ export default {
     processInput:'input[name="Process"]',
     selectProcess:'//label[text()="Process"]/following-sibling::div//div[@class="multiselect__select"]',
     wrapperProcess:'//label[text()="Process"]/following-sibling::div//div[@class="multiselect__content-wrapper"]//li[1]',
+    optionsInElementDestination:'//div[@data-test="element-destination-type"]//ul//li[@role="option"]',
 }
