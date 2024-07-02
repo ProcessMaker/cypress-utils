@@ -139,6 +139,7 @@ export class ModelerElementDestinationRedirect {
                 break;
         }
     }
+
     selectOption(option,iframe) {
         cy.iframe(iframe)
             .find(selectors.elementDestinationList)
@@ -146,5 +147,24 @@ export class ModelerElementDestinationRedirect {
         cy.iframe(iframe)
             .contains(option)
             .click();
+    }
+
+    clickOnElementDestination(iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
+        cy.iframe(iframeSelector).find(selectors.elementDestinationList).click(); 
+    }
+
+    /**
+    * This method verify options in element destination field
+    * @param expectedContentList
+    * for example:
+    * expectedContent = ["Task Source (Default)","Task List","Process Launchpad","Welcome Screen","Custom Dashboard","External URL"]
+    */
+    validateOptionsInElementDestinationList(expectedContentList,iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
+        this.clickOnElementDestination(iframeOption);
+        cy.iframe(iframeSelector).xpath(selectors.optionsInElementDestination).each(element => {
+            expect(expectedContentList).to.contain(element.text());
+        });
     }
 }
