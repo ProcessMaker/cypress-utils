@@ -147,23 +147,23 @@ export class Process {
     }
 
     dragAIGeneratedEvent(selector, offsetX, offsetY) {
-        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(17) > span').trigger('mousedown')
+        cy.get('#nodeTypesList > div > div:nth-child(17) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
             });
-        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     dragFlowGenieEvent(selector, offsetX, offsetY) {
-        cy.iframe('[id="alternative_a"]').find('#nodeTypesList > div > div:nth-child(18) > span').trigger('mousedown')
+        cy.get('#nodeTypesList > div > div:nth-child(18) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
             });
-        cy.iframe('[id="alternative_a"]').find('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
     draggatewayEvent(selector, offsetX, offsetY) {
