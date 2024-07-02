@@ -1092,25 +1092,25 @@ export class Admin {
                     break;
                 case "Processes":
                     element.archiveProcesses &&
-                        cy.get(selectors.archiveProcessesPermission).click();
+                        cy.get(selectors.archiveProcessesPermission).check({force:true});
                     element.createProcessCategories &&
-                        cy.get(selectors.createProcessCategoriesPermission).click();
+                        cy.get(selectors.createProcessCategoriesPermission).check({force:true});
                     element.createProcesses &&
-                        cy.get(selectors.createProcessesPermission).click();
+                        cy.get(selectors.createProcessesPermission).check({force:true});
                     element.deleteProcessCategories &&
-                        cy.get(selectors.deleteProcessCategoriesPermission).click();
+                        cy.get(selectors.deleteProcessCategoriesPermission).check({force:true});
                     element.editProcessCategories &&
-                        cy.get(selectors.editProcessCategoriesPermission).click();
+                        cy.get(selectors.editProcessCategoriesPermission).check({force:true});
                     element.editProcesses &&
-                        cy.get(selectors.editProcessesPermission).click();
+                        cy.get(selectors.editProcessesPermission).check({force:true});
                     element.exportProcesses &&
-                        cy.get(selectors.exportProcessesPermission).click();
+                        cy.get(selectors.exportProcessesPermission).check({force:true});
                     element.importProcesses &&
-                        cy.get(selectors.importProcessesPermission).click();
+                        cy.get(selectors.importProcessesPermission).check({force:true});
                     element.viewProcessCategories&&
-                        cy.get(selectors.viewProcessCategoriesPermission).click();
+                        cy.get(selectors.viewProcessCategoriesPermission).check({force:true});
                     element.viewProcesses &&
-                        cy.get(selectors.viewProcessesPermission).click();
+                        cy.get(selectors.viewProcessesPermission).check({force:true});
                     break;
                 default:
                     break;
