@@ -13,4 +13,5 @@ export default {
     notificationList:'[class="notification-popover"]',
     lastNotification:'//div[@class="notification-popover"]//ul//li[1]',
     labelLastNotification:'//div[@class="notification-popover"]//ul//li[1]//div//div//a',
+    saveBtnInProfile:'[id="saveUser"]',
 }

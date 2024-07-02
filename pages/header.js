@@ -41,9 +41,10 @@ export class Header {
 
     choseLanguage(language) {
         cy.get('#language').select(language).should('have.value', language);
-        cy.get('.btn.btn-secondary.ml-3').click();
+        cy.get(selectors.saveBtnInProfile).click();
         cy.reload();
     }
+
     viewNotifications(){
         cy.wait(5000);
         cy.get(selectors.notification).click();
