@@ -355,8 +355,7 @@ export class Requests {
     openNewRequestInterstitial(processname) {
         cy.get('button[id="navbar-request-button"]').click();
         cy.get(selectors.request_processList).should("be.visible");
-        cy.get('input[class="form-control"]').type(processname).should('have.value',processname);
-
+        cy.get(selectors.request_search_input).type(processname).should('have.value',processname);
         cy.xpath(selectors.request_searchProcessRow.replace("processName", processname),{ timeout: 10000 })
             .then(() => {
                 cy.xpath(selectors.request_startButtonRow.replace('processName',processname)).should('be.visible');

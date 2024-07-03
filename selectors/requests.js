@@ -33,6 +33,7 @@ export default{
     taskNameLink:'tr > :nth-child(2) > a',
     taskOption: '//ul[@id="requestTab"]/li/a[text()="Tasks"]',
     request_processList: '[class="process-list"]',
+    request_search_input:'[data-test="new-request-modal-search-input"]',
     request_searchProcessRow: "//*[@class='modal-content']//*[contains(text(),'processName')]/ancestor::div[@class='card-body']/div",
     request_startButtonRow: "//*[@class='modal-content']//*[contains(text(),'processName')]/ancestor::div[@class='card']//button[contains(text(),'Start')]",
     searchProcessList: 'div[class="process-list"] > div[class="mt-3"] > div[class="mt-3"] > div[class="card"] > div[class="card-body"] > div[class="row"]',
@@ -45,7 +46,7 @@ export default{
     searchTaskNameTxtBx:"(//div[@class='multiselect__tags'])[2]",
     openTheProcess:"(//td[@class='vuetable-slot']//a)[1]",
 
-    //header completed requests/in porgress
+    //header completed requests/in progress
     headerCompleted:'.list-group > .card-header',
 
     //Cases page
