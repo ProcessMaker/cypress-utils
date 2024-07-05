@@ -175,11 +175,9 @@ export class Requests {
      */
     openNewRequest(processname) {
         //Click on +CASE
-        cy.get('button[id="navbar-request-button"]')
-            .should('be.visible')
-            .click();
-        cy.xpath('//div[@id="requests-modal"]//*[contains(@class,"modal-content")]')
-            .should('be.visible');
+        cy.get('button[id="navbar-request-button"]').should("be.visible");
+        cy.get('button[id="navbar-request-button"]').click();
+        cy.xpath('//div[@id="requests-modal"]//*[contains(@class,"modal-content")]').should('be.visible');
         //Verify that list finish to load
         cy.get('[id="requests-modal"]>* [class="process-list"]').should('exist');
         //Write the Process name
