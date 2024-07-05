@@ -817,7 +817,7 @@ export class Process {
         cy.get(selectors.loadingSpinnerProcess).should("be.visible");
         cy.xpath(selectors.threePointsBtnXpath).should("be.visible");
         cy.xpath(selectors.threePointsBtnXpath).first().should("be.visible");
-        cy.xpath(selectors.threePointsBtnXpath).first().click();
+        cy.xpath(selectors.threePointsBtnXpath).first().click({force:true});
 
         switch (option) {
             case "edit":
