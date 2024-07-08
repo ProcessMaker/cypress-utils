@@ -238,4 +238,12 @@ export class ProcessLaunchpad {
         cy.xpath(selectors.inputLaunchScreen).type(screen).should('have.value', screen);
         cy.xpath(selectors.inputLaunchScreen).type('{enter}');
     } 
+
+    click_accordeonProcessBrowser(name){
+        cy.xpath('//div[contains(text(), "' + name + '")]').should("be.visible").click();
+    }
+
+    click_optionInsideAccordeonProcessBrowser(option){
+        cy.xpath('//div[@class="list-group"]//div[contains(text(),"' + option + '")]').should("be.visible").click();
+    }
 } 

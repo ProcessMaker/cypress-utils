@@ -185,4 +185,43 @@ export class Templates {
         cy.xpath('//div[@class="card template-select-card"]').should("be.visible",{delay:300}).click();
         cy.xpath('//span[@class="badge category-badge mb-2 mr-1 badge-secondary badge-pill"]').should("be.visible");
 	}
+    
+    /**
+     * 
+     * @param {string} path - template file path
+     * @param {string} mode - `copy` or `update` options can be assigned
+     */
+    importTemplateAPI(path, mode = "copy") {
+        let formData = new FormData();
+        let win;
+        return cy.fixture(path, null)
+            .then(Cypress.Blob.arrayBufferToBlob)
+            .then((fileBlob) => {
+                formData.append("file", fileBlob);
+                return cy.window();
+            })
+            .then((cyWin) => {
+                win = cyWin;
+                return win.ProcessMaker.apiClient.post('/templates/process/import/validation', formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+            })
+            .then((response) => {
+                const options = {};
+                Object.keys(response.data.manifest).forEach(uuid => {
+                    options[uuid] = {"mode": mode,"discardedByParent":false,"saveAssetsMode":"saveAllAssets"}
+                });
+                const optionsBlob = new Blob([JSON.stringify(options)], {
+                    type: "application/json",
+                });
+                formData.append("options", optionsBlob);
+                return win.ProcessMaker.apiClient.post('/template/process/do-import', formData);
+            })
+            .then(response => {
+                return response.data.processId;
+            });
+    }
 }
