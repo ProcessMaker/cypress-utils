@@ -562,12 +562,11 @@ export class Screens {
 
 	verifyPresenceOfScreenAndImportScreen(screenName, filePath) {
 		this.searchForAScreen(screenName);
-		cy.get(Selectors.screenTabelBx)
-			.find("td")
-			.then(($loadedTable) => {
-				if ($loadedTable.length === 1) {
+		cy.xpath(Selectors.screenContainer).invoke('text')
+			.then(($loadedContent) => {
+				if ($loadedContent.includes('No Data Available')){
 					this.importScreen(filePath);
-				} else return;
+				}
 		})
 	}
  

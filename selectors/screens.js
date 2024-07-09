@@ -79,6 +79,7 @@ export default{
     listScreensBtn:'[data-cy="button-list-screen"]',
     varaibleNameTxtBxFD:'[data-cy="inspector-name"]',
     screenTabelBx:'[data-cy="screens-table"]',
+    screenContainer:'//div[@id="screenIndex"]//div[@class="container text-center"]',
     screenPresenceVal:'[id="nav-sources"] [data-cy="no-results-message"]',
     noDataAvaiable: '[class="vuetable-empty-result"]',
     LoadingIcon:'[class="container-fluid"] [class="lds-gear"]',
