@@ -1,4 +1,4 @@
-import selectors from "#selectors/calcsAndWatcher";
+import selectors from "#selectors/calcsAndWatchers";
 import { NavigationHelper } from "#helpers/navigationHelper";
 const navHelper = new NavigationHelper();
 
@@ -25,10 +25,11 @@ export class CalcsAndWatchers {
         this.searchCalcs(calcsName);
     }
 
-    createCalc(calcName,description) {
+    createCalc(calcName,description,option,value) {
         this.clickOnAddCalcsBtn();
         this.fillPropertyNameInCalcs(calcName);
         this.fillDescriptionInCalcs(description);
+        this.fillFormula(option,value);
         this.clickOnSaveCalcsBtn();
     }
 
@@ -36,7 +37,7 @@ export class CalcsAndWatchers {
         cy.get(selectors.propertyNameField).should('be.visible');
         cy.get(selectors.propertyNameField).type(propertyName).should('have.value',propertyName);
     }    
-    
+
     fillDescriptionInCalcs(description) {
         cy.get(selectors.descriptionField).should('be.visible');
         cy.get(selectors.descriptionField).type(description).should('have.value',description);
@@ -49,8 +50,8 @@ export class CalcsAndWatchers {
                 cy.get(selectors.formulaField).type(value).should('have.value',value);
                 break;
             case "javascript":
-                cy.get(selectors.JavaScriptBtn).click();
-                cy.get(selectors.JjavaScriptField).type(value).should('have.value',value);
+                cy.get(selectors.javaScriptBtn).click();
+                cy.get(selectors.javaScriptField).type(value);
                 break;
             default:
                 break;
@@ -108,18 +109,26 @@ export class CalcsAndWatchers {
     }
 
     enableBypassInCalcs(){
-        this.clickBypassCalcBtn();
+        cy.get(selectors.bypassCalcsBtn).should('be.visible')
+        cy.get(selectors.bypassCalcsBtn).check({force:true});
     }
 
+    disableBypassInCalcs(){
+        cy.get(selectors.bypassCalcsBtn).should('be.visible')
+        cy.get(selectors.bypassCalcsBtn).uncheck({force:true});
+    }
 
     searchCalcAndSelectOption(calcName, option, optionConfig) {
-        this.searchPage(calcName);
+        this.searchCalcs(calcName);
         switch (option) {
             case "edit":
                 this.editCalcInModal(optionConfig);
                 break;
-            case "bypass":
+            case "Enablebypass":
                 this.enableBypassInCalcs();
+                break;
+            case "Disablebypass":
+                this.disableBypassInCalcs();
                 break;
             case "delete":
                 this.clickDeleteCalcBtn();
@@ -253,7 +262,7 @@ export class CalcsAndWatchers {
     fillScriptConfiguration(script){
         cy.get(selectors.scriptConfigurationField).type('{backspace}').type('{backspace}').type(`{{}${script}}`).should('contain', `{${script}}`);
     }
-    
+
 
     clickOnOutputAccordion(){
         cy.get(selectors.outputAccordion).click();

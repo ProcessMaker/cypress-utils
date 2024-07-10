@@ -13,10 +13,10 @@ export default{
     formulaField:'[data-cy="calcs-property-formula"]',
     javaScriptField:'[data-cy="calcs-property-javascript"]',
     formulaBtn:'[data-cy="calcs-switch-formula"]',
-    JavaScriptBtn:'[data-cy="calcs-switch-javascript"]',
+    javaScriptBtn:'[data-cy="calcs-switch-javascript"]',
     cancelCalcsBtn:'[data-cy="calcs-button-cancel"]',
     saveCalcsBtn:'[data-cy="calcs-button-save"]',
-    
+
     //WATCHERS
     watchersBtn:'[data-test="search"]',
     //Modal watchers list
