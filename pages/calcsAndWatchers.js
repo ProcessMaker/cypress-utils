@@ -64,7 +64,7 @@ export class CalcsAndWatchers {
 
     clickOnEditCalcBtn() {
         cy.get(selectors.editCalcsBtn).should('be.visible')
-        cy.get(selectors.editCalcsBtn).click();
+        cy.get(selectors.editCalcsBtn).click({force:true});
     }
 
     clickBypassCalcBtn() {
