@@ -28,7 +28,7 @@ export class FlowGenie {
         cy.get(selectors.textareaDescription).type(description, {timeout: 200});
         cy.wait(2000);
         this.ClickSaveFlowGenie();
-        //cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
+        cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
     }
     //+New FlowGenie
     ClickAddFlowGenie(){
@@ -81,8 +81,8 @@ export class FlowGenie {
     }
     //Search FlowGenie
     SearchFlowGenie(nameFlowGenie){
-        cy.get(selectors.searchBox).should('be.visible').click();
-        cy.get(selectors.searchBox).type(nameFlowGenie,{delay: 100}).should('have.value',nameFlowGenie);
+        cy.get(selectors.searchBox).first().should('be.visible').click();
+        cy.get(selectors.searchBox).first().type(nameFlowGenie,{delay: 100}).should('have.value',nameFlowGenie);
     }
 
     copyFlowGenie(nameFlowGenie, newNameFlowGenie) {
@@ -112,7 +112,7 @@ export class FlowGenie {
     //From modeler
     //Create New FlowGenie form modeler
     CreateFlowGenieFromModeler(nameFlowGenie, description) {
-        cy.iframe('[id="alternative_a"]').find('[class="asset-link"]').click();
+        cy.get('[class="asset-link"]').click();
         cy.visit('designer/flow-genies?create=true&screenSelectId=undefined');        
         cy.get(selectors.modalNewFlowGenie).should('be.visible');
         cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie);
