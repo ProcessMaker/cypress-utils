@@ -16,4 +16,14 @@ export default{
     javaScriptBtn:'[data-cy="calcs-switch-javascript"]',
     cancelCalcsBtn:'[data-cy="calcs-button-cancel"]',
     saveCalcsBtn:'[data-cy="calcs-button-save"]',
+    //WATCHERS
+    watchersBtn:'[data-test="search"]',
+    //Modal watchers list
+    searchWatchers: '[data-test="search"]',
+    addWacthersBtn: '[data-cy="watchers-add-watcher"]',
+    editWatchersBtn: 'button[data-cy="watchers-table-edit"]',
+    bypassWatchersBtn:'button[data-test="watchers-bypass"]',
+    deleteWatchersBtn: 'button[data-cy="watchers-table-remove"]',
+    cancelDeleteBtn:'button[data-test="confirm-btn-close"]',
+    confirmDeleteBtn:'button[data-test="confirm-btn-ok"]',
 }
