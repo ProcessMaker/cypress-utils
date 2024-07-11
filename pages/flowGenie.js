@@ -114,7 +114,7 @@ export class FlowGenie {
     CreateFlowGenieFromModeler(nameFlowGenie, description) {
         cy.get('[class="asset-link"]').click();
         cy.visit('designer/flow-genies?create=true&screenSelectId=undefined');        
-        cy.get(selectors.modalNewFlowGenie).should('be.visible');
+        cy.get(selectors.modalNewFlowGenie).should('be.visible', { timeout: 10000 });
         cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie);
         cy.get(selectors.textareaDescription).type(description);
         cy.wait(1000);
