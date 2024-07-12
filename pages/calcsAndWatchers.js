@@ -153,4 +153,64 @@ export class CalcsAndWatchers {
     closeModal(){
         cy.get(selectors.closeModal).click();
     }
+
+      //WATCHERS
+      clickOnWatchersBtn() {
+        cy.get(selectors.watchersBtn).click();
+    } 
+
+    clickOnAddWatchersBtn() {
+        cy.get(selectors.addWacthersBtn).should('be.visible');
+        cy.get(selectors.addWacthersBtn).click({ force: true });
+    }
+
+    //Modal watchers list
+    searchWatcher(watcherName) {
+        cy.get(selectors.searchWatchers).should('be.visible');
+        cy.get(selectors.searchWatchers).clear();
+        cy.get(selectors.searchWatchers).type(watcherName, { delay: 60 }).type('{enter}').should('have.value', watcherName);
+    }
+
+    searchWatcherInList(watcherName) {
+        this.clickOnWatchersBtn();
+        this.searchWatcher(watcherName);
+    }
+
+    createWatcher(watcherName,variableToWatch,option,source,data,script,output) {
+        //Configuration
+        this.clickOnConfigurationAccordion();
+        this.clickOnAddWatchersBtn();
+        this.fillWatcherName(watcherName);
+        this.selectVariableToWatch(variableToWatch);
+        this.enableButtonInConfiguration(option);
+        //Source
+        this.clickOnSourceAccordion();
+        this.selectSource(source);
+        this.fillInputData(data);
+        this.fillScriptConfiguration(script);
+        //Output
+        this.clickOnOutputAccordion();
+        this.fillOutputVariable(output);
+        this.saveWatcherModal();
+    }
+
+    clickOnConfigurationAccordion(){
+        cy.get(selectors.configurationAccordion).click();
+    }
+
+    fillWatcherName(watcherName){
+        cy.get(selectors.watcherName).should('be.visible');
+        cy.get(selectors.watcherName).type(watcherName).should('have.value',watcherName);
+    }
+
+    selectVariableToWatch(variableToWatch){
+        cy.xpath(selectors.variableToWatchlabel).should('be.visible');
+        cy.get(selectors.variableToWatchInput).click({force:true});
+        cy.get(selectors.variableToWatchInput).type(variableToWatch,{delay:80}).should('have.value',variableToWatch);
+		cy.xpath(selectors.variableToWatchWrapper)
+			.should('have.attr', 'aria-label')
+			.and('contain', `${variableToWatch}. `);
+		cy.get(selectors.variableToWatchInput).type('{enter}');
+    }
+
 }
