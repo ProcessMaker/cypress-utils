@@ -100,6 +100,9 @@ export class Process {
             case 'Flow Genie':
                 this.dragFlowGenieEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.Flow_Genie_event), offsetX, offsetY);
                 break;
+            case 'RPA':
+                    this.dragRPA(selectors.prrocessEvent.replace('eventName', pageConstants.process.RPA_event), offsetX, offsetY);
+                    break;    
 
         }
     }
@@ -158,6 +161,16 @@ export class Process {
 
     dragFlowGenieEvent(selector, offsetX, offsetY) {
         cy.get('#nodeTypesList > div > div:nth-child(18) > span').trigger('mousedown')
+            .trigger('mousemove', {
+                pageX: offsetX,
+                pageY: offsetY,
+                force: true
+            });
+        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+    }
+
+    dragRPA(selector, offsetX, offsetY) {
+        cy.get('#nodeTypesList > div > div:nth-child(21) > span').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
