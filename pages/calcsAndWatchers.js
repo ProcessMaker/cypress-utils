@@ -178,7 +178,6 @@ export class CalcsAndWatchers {
 
     createWatcher(watcherName,variableToWatch,option,source,data,script,output) {
         //Configuration
-        this.clickOnConfigurationAccordion();
         this.clickOnAddWatchersBtn();
         this.fillWatcherName(watcherName);
         this.selectVariableToWatch(variableToWatch);
@@ -213,4 +212,35 @@ export class CalcsAndWatchers {
 		cy.get(selectors.variableToWatchInput).type('{enter}');
     }
 
+    enableButtonInConfiguration(option){
+        switch (option) {
+            case "Run Synchronously":
+                this.enableRunSynchronously();
+                break;
+            case "Show message while loading remote data":
+                this.enableshowMessageWhileLoadingRemoteData();
+                break;
+            case "Run watcher on Screen Load":
+                this.enablerunWatcherOnScreenLoad();
+                break;
+            default:
+                break;
+        }
+    }
+
+    enableRunSynchronously(){
+        cy.get(selectors.runSynchronouslyBtn).click({force:true});
+    }
+
+    enableshowMessageWhileLoadingRemoteData(){
+        cy.get(selectors.showMessageWhileLoadingRemoteDataBtn).click({force:true});
+    }
+
+    enablerunWatcherOnScreenLoad(){
+        cy.get(selectors.runWatcherOnScreenLoadBtn).click({force:true});
+    }
+
+    clickOnSourceAccordion(){
+        cy.get(selectors.sourceAccordion).click();
+    }
 }
