@@ -169,6 +169,7 @@ export class CalcsAndWatchers {
         cy.get(selectors.searchWatchers).should('be.visible');
         cy.get(selectors.searchWatchers).clear();
         cy.get(selectors.searchWatchers).type(watcherName, { delay: 60 }).type('{enter}').should('have.value', watcherName);
+        cy.get(selectors.searchWatchers).clear();
     }
 
     searchWatcherInList(watcherName) {
@@ -242,5 +243,56 @@ export class CalcsAndWatchers {
 
     clickOnSourceAccordion(){
         cy.get(selectors.sourceAccordion).click();
+    }
+
+    selectSource(source){
+        cy.xpath(selectors.sourcelabel).should('be.visible');
+        cy.get(selectors.sourceInput).click({force:true});
+        cy.get(selectors.sourceInput).type(source,{delay:80}).should('have.value',source);
+		cy.xpath(selectors.sourceWrapper)
+			.should('have.attr', 'aria-label')
+			.and('contain', `${source}. `);
+		cy.get(selectors.sourceInput).type('{enter}');
+    }
+
+    fillInputData(data){
+        cy.get(selectors.inputDataField).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
+    }
+
+    fillScriptConfiguration(script){
+        cy.get(selectors.scriptConfigurationField).type('{backspace}').type('{backspace}').type(`{{}${script}}`).should('contain', `{${script}}`);
+    }
+
+
+    clickOnOutputAccordion(){
+        cy.get(selectors.outputAccordion).click();
+    }
+
+    fillOutputVariable(output){
+        cy.get(selectors.outputVariableField).type(output).should('have.value',output);
+    }
+
+    saveWatcherModal(){
+        cy.get(selectors.saveWatchersBtn).click();
+    }
+
+    clickOnEditWatcherBtn() {
+        cy.get(selectors.editWatchersBtn).should('be.visible')
+        cy.get(selectors.editWatchersBtn).click();
+    }
+
+    clickBypassWatcherBtn() {
+        cy.get(selectors.bypassWatchersBtn).should('be.visible')
+        cy.get(selectors.bypassWatchersBtn).click();
+    }
+
+    clickDeleteWatcherBtn() {
+        cy.get(selectors.deleteWatchersBtn).should('be.visible')
+        cy.get(selectors.deleteWatchersBtn).click();
+    }
+
+    confirmDeleteWatcherBtn() {
+        cy.xpath(selectors.confirmDeleteBtn).should('be.visible')
+        cy.xpath(selectors.confirmDeleteBtn).click();
     }
 }
