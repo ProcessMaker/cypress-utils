@@ -1808,60 +1808,73 @@ createIDPIfNotConfigured(serverIDPType){
 
         
 }
+ 
 
-createRPAIfNotConfigured(serverRPAType){
-    var ServerRPA = Cypress.env("defaultRPASettings").tenantId;
-  
-    cy.get('[data-target="#collapseOne2"]').click();
-    cy.xpath('//div[contains(text(),"Robotic Process Automation")]').should('be.visible');
-    cy.xpath('//div[contains(text(),"Robotic Process Automation")]').click();
-    cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Tenant ID")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text').then(elem => {
-            if(elem.trim() === ServerRPA){
-                cy.log(' configuration exists: '+ serverRPAType);
-            }else{
-                var organizationName = Cypress.env("defaultRPASettings").organizationName;
-                var clientIDTxt = Cypress.env("defaultRPASettings").clientID;
-                var clientSecretTxt = Cypress.env("defaultRPASettings").clientSecret;
-                var tenantIDTxt = Cypress.env("defaultRPASettings").tenantId;
-                 
-                let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
-                let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
-  
-                //edit Organization Name
-                cy.xpath(optionConfigXpath.replace('optionName','Organization Name')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(organizationName);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                cy.xpath('//div[@role="alert"]').should('exist');
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                cy.xpath(optionColumnXpath.replace('optionColumn','Organization Name')).should('have.contain',organizationName);
-  
-                //edit client ID
-                cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientIDTxt).should('have.value',clientIDTxt).type(" ");
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
-                cy.xpath('//div[@role="alert"]').should('exist');
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
-          
-                //edit Client Secret
-                cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-  
-                //edit Tenant ID
-                cy.xpath(optionConfigXpath.replace('optionName','Tenant ID')).click();
-                cy.xpath('//div[@class="modal-content"]').should('be.visible');
-                cy.xpath('//div[@class="modal-content"]//div/input').clear().type(tenantIDTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-                        
-                }
-            });
-    }
+            createRPAIfNotConfigured(serverRPAType){
+                var ServerRPA = Cypress.env("defaultRPASettings").tenantID;
+            
+                cy.get('[data-target="#collapseOne2"]').click();
+                cy.xpath('//div[contains(text(),"Robotic Process Automation")]').should('be.visible');
+                cy.xpath('//div[contains(text(),"Robotic Process Automation")]').click();
+                cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Tenant ID")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
+                    .then(elem => {
+                        if(elem.trim() === ServerRPA){
+                            cy.log('RPA configuration exists: '+ serverRPAType);
+                        }else{
+                            var organizationName = Cypress.env("defaultRPASettings").organizationName;
+                            var clientIDTxt = Cypress.env("defaultRPASettings").clientIDRPA;
+                            var clientSecretTxt = Cypress.env("defaultRPASettings").clientSecretRPA;
+                            var tenantIDTxt = Cypress.env("defaultRPASettings").tenantID; 
+                            
+                            let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
+                            let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
+            
+                            //edit organization name
+                            cy.xpath(optionConfigXpath.replace('optionName','Organization Name')).click();
+                            cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                            cy.xpath('//div[@class="modal-content"]//div/input').clear().type(organizationName).should('have.value',organizationName);
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@role="alert"]').should('exist');
+                            cy.xpath('//div[@role="alert"]').should('not.exist');
+                            cy.xpath(optionColumnXpath.replace('optionColumn','Organization Name')).should('have.contain',organizationName);
+                    
+                            
+                            //edit client ID
+                            cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
+                            cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                            cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientIDTxt).should('have.value',clientIDTxt).type(" ",{force:true});
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@role="alert"]').should('exist');
+                            cy.xpath('//div[@role="alert"]').should('not.exist');
+                            cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
+                       
+                            //edit Client Secret
+                            cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
+                            cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                            cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
+                            cy.xpath('//div[@role="alert"]').should('not.exist');
+            
+            
+                            //edit Tenant ID
+                            cy.xpath(optionConfigXpath.replace('optionName','Tenant ID')).click();
+                            cy.xpath('//div[@class="modal-content"]').should('be.visible');
+                            cy.xpath('//div[@class="modal-content"]//div/input').clear().type(tenantIDTxt);
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@role="alert"]').should('exist');
+                            cy.xpath('//div[@role="alert"]').should('not.exist');
+                            cy.xpath(optionColumnXpath.replace('optionColumn','Tenant ID')).should('have.contain',tenantIDTxt);
+            
+            
+                            
+                                            
+                            }
+                       
+                                        
+                    });
+            
+                    
+            }        
 
 	assignSpecificPemrissionToUser(permission){
     	let permissionCategoryXPATH = '//button[contains(@data-target,"category")]';

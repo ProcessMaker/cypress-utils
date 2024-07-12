@@ -179,7 +179,7 @@ export class Templates {
             .click();
     }
     searchTemplateFromProcess(templateName) {
-        cy.xpath('//*[@class="w-100 d-block"]').should('be.visible');
+        cy.xpath('//*[@aria-controls="nav-templates"]').should('be.visible');
         cy.xpath('//input[@class="pl-0 form-control"]').should("be.visible").type(templateName,{delay:300});
         cy.xpath('//input[@class="pl-0 form-control"]').type('{backspace}');
         cy.xpath('//div[@class="card template-select-card"]').should("be.visible",{delay:300}).click();

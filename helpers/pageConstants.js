@@ -19,6 +19,7 @@ export default {
       "intermediate_event":"Intermediate Event",
       "AI_Generated_event":"AI Generated",
       "Flow_Genie_event":"Flow Genie",
+      "RPA_event":"RPA",
     },
 
     processDropedElements:{
