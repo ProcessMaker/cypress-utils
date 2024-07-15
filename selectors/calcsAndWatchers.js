@@ -4,6 +4,7 @@ export default{
        //Modal calcs list
        searchCalcs: '[data-test="search"]',
        addCalcsBtn: '[data-cy="calcs-add-property"]',
+       //CRUD calcs
        editCalcsBtn: 'button[data-cy="calcs-table-edit"]',
        bypassCalcsBtn:'button[data-test="calcs-bypass"]',
        deleteCalcsBtn: 'button[data-cy="calcs-table-remove"]',
@@ -21,11 +22,12 @@ export default{
        //Modal watchers list
        searchWatchers: '[data-test="search"]',
        addWacthersBtn: '[data-cy="watchers-add-watcher"]',
+       cancelDeleteBtn:'button[data-test="confirm-btn-close"]',
+       confirmDeleteBtn:'button[data-test="confirm-btn-ok"]',
+       //CRUD watchers
        editWatchersBtn: 'button[data-cy="watchers-table-edit"]',
        bypassWatchersBtn:'button[data-test="watchers-bypass"]',
        deleteWatchersBtn: 'button[data-cy="watchers-table-remove"]',
-       cancelDeleteBtn:'button[data-test="confirm-btn-close"]',
-       confirmDeleteBtn:'button[data-test="confirm-btn-ok"]',
        //Modal create watchers
        //Configuration
        configurationAccordion:'button[data-cy="watchers-accordion-configuration"]',

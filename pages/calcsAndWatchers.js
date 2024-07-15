@@ -63,18 +63,23 @@ export class CalcsAndWatchers {
     }
 
     clickOnEditCalcBtn() {
-        cy.get(selectors.editCalcsBtn).should('be.visible')
+        cy.get(selectors.editCalcsBtn).should('be.visible');
         cy.get(selectors.editCalcsBtn).click({force:true});
     }
 
     clickBypassCalcBtn() {
-        cy.get(selectors.bypassCalcsBtn).should('be.visible')
+        cy.get(selectors.bypassCalcsBtn).should('be.visible');
         cy.get(selectors.bypassCalcsBtn).check({force:true});
     }
 
     clickDeleteCalcBtn() {
-        cy.get(selectors.deleteCalcsBtn).should('be.visible')
+        cy.get(selectors.deleteCalcsBtn).should('be.visible');
         cy.get(selectors.deleteCalcsBtn).click();
+    }
+
+    clickOnConfirmBtn(){
+        cy.get(selectors.confirmDeleteBtn).should('be.visible');
+        cy.get(selectors.confirmDeleteBtn).click();
     }
 
     editCalcName(newCalcName) {
@@ -118,6 +123,11 @@ export class CalcsAndWatchers {
         cy.get(selectors.bypassCalcsBtn).uncheck({force:true});
     }
 
+    deleteCalc(){
+        this.clickDeleteCalcBtn();
+        this.clickOnConfirmBtn();
+    }
+
     searchCalcAndSelectOption(calcName, option, optionConfig) {
         this.searchCalcs(calcName);
         switch (option) {
@@ -131,7 +141,7 @@ export class CalcsAndWatchers {
                 this.disableBypassInCalcs();
                 break;
             case "delete":
-                this.clickDeleteCalcBtn();
+                this.deleteCalc();
                 break;
             default:
                 break;
@@ -323,7 +333,7 @@ export class CalcsAndWatchers {
         cy.get(selectors.outputVariableField).type(output).should('have.value',output);
     }
 
-    //output in Dataconnector
+    //output in Data connector
     clickOnAddProperty(){
         cy.xpath(selectors.propertyBtn).click({force:true});
     }
@@ -351,4 +361,5 @@ export class CalcsAndWatchers {
         cy.xpath(selectors.confirmDeleteBtn).should('be.visible')
         cy.xpath(selectors.confirmDeleteBtn).click();
     }
+
 }
