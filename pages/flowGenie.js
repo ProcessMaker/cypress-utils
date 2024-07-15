@@ -21,11 +21,12 @@ export class FlowGenie {
     }
 
     //Create New FlowGenie from list
-    CreateFlowGenie(nameFlowGenie,description) {   
+    CreateFlowGenie(nameFlowGenie,description, category = "") {   
         this.ClickAddFlowGenie();     
         cy.get(selectors.modalNewFlowGenie).should('be.visible');
         cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie,{timeout: 200});
         cy.get(selectors.textareaDescription).type(description, {timeout: 200});
+        if (category != "") this.enterFlowGenieCategory(category);
         cy.wait(2000);
         this.ClickSaveFlowGenie();
         cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
@@ -202,7 +203,39 @@ export class FlowGenie {
 
     //Verify and import FlowGenie
 
+    //Categories
+    enterFlowGenieCategory(nameCat) {
+        cy.xpath(selectors.genieCategoryFieldXpath).click();
+        cy.xpath(selectors.genieCategoryInputXpath).type(nameCat, {delay: 200,});
+        cy.xpath(selectors.selectCategoryListXpath.replace("categoryName", nameCat)).should("be.visible").click();
+    }
+
     //Create Category FlowGenie
+    createCategory(nameCat, status){
+        cy.xpath("//a[contains(@href,'categories')]").click();
+        this.clickOnNewCategory();
+        cy.get('[name="name"]').type(nameCat).should("have.value", nameCat);
+        if(status === "Inactive" || status === "inactive" || status === "INACTIVE")
+            cy.get['[name="status"]'].select("INACTIVE");
+        cy.xpath(selectors.saveCatBtn).click();
+    }
+
+    //New Category btn
+    clickOnNewCategory(){
+        cy.get(selectors.NewCategoryBtn).click();
+    }
+
+    //Delete Category FlowGenie
+    deleteCategory(nameCat){
+        let categoryXpath = "//*[contains(text(),'categoryName')]/ancestor::tr//*[@data-cy='category-ellipsis']/button";
+        cy.xpath("//a[contains(@href,'categories')]").click();
+        cy.xpath(selectors.searchInputCategories).type(nameCat).should("have.value",nameCat);
+        cy.wait(2000);
+        cy.xpath(categoryXpath.replace("categoryName",nameCat)).should('be.visible');
+        cy.xpath(categoryXpath.replace("categoryName",nameCat)).first().click();
+        cy.xpath("//*[contains(text(),'Delete Category')]").click();
+        cy.xpath("//button[contains(text(),'Confirm')]").click();
+    }
 
     //From modeler
     //Create New FlowGenie form modeler

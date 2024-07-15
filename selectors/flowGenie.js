@@ -25,6 +25,14 @@ searchBox: 'input[id="search-box"]',
 modalCopy:"//h5[contains(text(),'Copy Genie')]",
 tableBody:'//div[@class="data-table"]//div[2]//tbody',
 
+//Categorie
+NewCategoryBtn: "[aria-label='Create Category']",
+saveCatBtn: "//*[contains(text(),'Save')]",
+searchInputCategories: "//*[@id='nav-categories']//input[@id='search-box']",
+genieCategoryFieldXpath:'//div[@class="modal-body"]/div[@name="category"]',
+genieCategoryInputXpath:'//div[@class="modal-body"]/div[@name="category"]//input',
+selectCategoryListXpath:'//div[@class="modal-body"]/div[@name="category"]//ul[@role="listbox"]/li//span[text()="categoryName"]',
+
 //Inside FlowGenie
 flowGenieStudio: '[class="card-header bg-white text-primary py-3 h5 font-weight-bold d-flex align-items-center"]',
 systemMessage: 'textarea[class="message-textarea system-message"]',
