@@ -357,9 +357,44 @@ export class CalcsAndWatchers {
         cy.get(selectors.deleteWatchersBtn).click();
     }
 
-    confirmDeleteWatcherBtn() {
-        cy.xpath(selectors.confirmDeleteBtn).should('be.visible')
-        cy.xpath(selectors.confirmDeleteBtn).click();
+    editWatcherNameInModal(){
+        //Configuration
+        cy.get('[data-cy="watchers-watcher-name"]').clear();
+        this.fillWatcherName();
     }
 
+    enableBypassInWatchers(){
+        cy.get(selectors.bypassWatchersBtn).should('be.visible')
+        cy.get(selectors.bypassWatchersBtn).check({force:true});
+    }
+
+    disableBypassInWatchers(){
+        cy.get(selectors.bypassWatchersBtn).should('be.visible')
+        cy.get(selectors.bypassWatchersBtn).uncheck({force:true});
+    }
+
+    deleteWatcher(){
+        this.clickDeleteWatcherBtn();
+        this.clickOnConfirmBtn();
+    }
+
+    searchWatcherAndSelectOption(watcherName, option, optionConfig) {
+        this.searchWatcher(watcherName);
+        switch (option) {
+            case "edit":
+                this.editWatcherNameInModal();
+                break;
+            case "Enablebypass":
+                this.enableBypassInWatchers();
+                break;
+            case "Disablebypass":
+                this.disableBypassInWatchers();
+                break;
+            case "delete":
+                this.deleteWatcher();
+                break;
+            default:
+                break;
+        }
+    }
 }
