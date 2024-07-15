@@ -143,7 +143,7 @@ export class FlowGenie {
         this.addMessageSystem(messageS);
         this.addUserText(messageU);
         this.ClickAddBtn();
-        cy.get('textarea[class="message-textarea"]').should('be.visible');
+        cy.get(selectors.textAreaInsideChat).should('be.visible');
     }
     //Funtion for Attach Menu
     attachMenuFile(option,file) {
@@ -156,10 +156,10 @@ export class FlowGenie {
                 this.attachPdf(file);
                 break;
             case "csv":
-                this.attachCsv();
+                this.attachCsv(file);
                 break;
             case "url":
-                this.attachUrl();
+                this.attachUrl(file);
                 break;
         }
     }
@@ -167,24 +167,37 @@ export class FlowGenie {
     //Option Image
     attachImage(file){
         cy.xpath("//span[contains(text(),'Image')]").should('exist');
-        cy.get('[class="custom-file b-form-file mr-1"] input').eq(0).attachFile(file,{timeout: 10000});
+        cy.get(selectors.fileOption).eq(0).attachFile(file,{timeout: 10000});
         cy.wait(1000);
         this.ClickAddBtn();
     }
     //Option Pdf
     attachPdf(file){
         cy.xpath("//span[contains(text(),'PDF')]").should('exist');
-        cy.get('[class="custom-file b-form-file mr-1"] input').eq(1).attachFile(file,{timeout: 10000});
+        cy.get(selectors.fileOption).eq(1).attachFile(file,{timeout: 10000});
         cy.wait(2000);
         this.ClickAddBtn();
     }
     //Option CSV
-    attachCsv(){
-        cy.xpath(selectors.editFlowGenie).first().should('be.visible').click();
+    attachCsv(file){
+        cy.xpath("//span[contains(text(),'CSV')]").should('exist');
+        cy.get(selectors.fileOption).eq(2).attachFile(file,{timeout: 15000});
+        cy.wait(1000);
+        this.ClickAddBtn();
     }
+
     //Option Url Link
-    attachUrl(){
-        cy.xpath(selectors.editFlowGenie).first().should('be.visible').click();
+    attachUrl(file){
+        cy.xpath("//button[contains(text(),'URL Link')]").should('exist').click();
+        cy.get(selectors.urlInput).type(file,{timeout: 50});
+        cy.wait(2000);
+        this.ClickAddBtn();
+    }
+
+    //Delete nessages
+    deleteMessage(){
+        cy.wait(1000);
+        cy.get(selectors.deleteMessage).first().should('be.visible').click();
     }
 
     //Verify and import FlowGenie

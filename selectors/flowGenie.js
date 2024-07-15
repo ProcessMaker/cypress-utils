@@ -30,7 +30,10 @@ flowGenieStudio: '[class="card-header bg-white text-primary py-3 h5 font-weight-
 systemMessage: 'textarea[class="message-textarea system-message"]',
 usertext: 'textarea[class="add-message-textarea"]',
 attachFileBtn: 'button[class="btn btn-sm btn-outline-light-blue"]', 
-
+fileOption: '[class="custom-file b-form-file mr-1"] input',
+urlInput: 'input[placeholder="Enter a valid URL here"]',
+deleteMessage: '[class="remove-button d-flex justify-content-center align-items-center"]', 
+textAreaInsideChat: 'textarea[class="message-textarea"]',
 //Modeler
 
 }
