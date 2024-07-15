@@ -103,7 +103,7 @@ export class CalcsAndWatchers {
                 this.editCalcDescription(calcDescription);
                 break;
             case "formula":
-                this.editCalcFormula(option,newValue) 
+                this.editCalcFormula(option,newValue);
                 break;
         }
     }
@@ -138,7 +138,7 @@ export class CalcsAndWatchers {
         }
     }
 
-   dragItem(idSource, IdTarget) {
+    dragItem(idSource, IdTarget) {
         const dataTransfer = new DataTransfer;
         cy.get(`[data-test="item-${idSource}"]`)
             .trigger('dragstart', { dataTransfer })
@@ -154,8 +154,8 @@ export class CalcsAndWatchers {
         cy.get(selectors.closeModal).click();
     }
 
-      //WATCHERS
-      clickOnWatchersBtn() {
+    //WATCHERS
+    clickOnWatchersBtn() {
         cy.get(selectors.watchersBtn).click();
     } 
 
@@ -168,7 +168,7 @@ export class CalcsAndWatchers {
     searchWatcher(watcherName) {
         cy.get(selectors.searchWatchers).should('be.visible');
         cy.get(selectors.searchWatchers).clear();
-        cy.get(selectors.searchWatchers).type(watcherName, { delay: 60 }).type('{enter}').should('have.value', watcherName);
+        cy.get(selectors.searchWatchers).type(watcherName, { delay: 80 }).type('{enter}').should('have.value', watcherName);
         cy.get(selectors.searchWatchers).clear();
     }
 
@@ -177,20 +177,53 @@ export class CalcsAndWatchers {
         this.searchWatcher(watcherName);
     }
 
-    createWatcher(watcherName,variableToWatch,option,source,data,script,output) {
-        //Configuration
-        this.clickOnAddWatchersBtn();
+    configurationInWatchers(watcherName,variableToWatch,optionBtn){
         this.fillWatcherName(watcherName);
         this.selectVariableToWatch(variableToWatch);
-        this.enableButtonInConfiguration(option);
-        //Source
+        this.enableButtonInConfiguration(optionBtn);
+    }
+
+    sourceInWatchers(source,sourceConfig){
+        const { sourceName, data, script, resource } = sourceConfig
         this.clickOnSourceAccordion();
-        this.selectSource(source);
-        this.fillInputData(data);
-        this.fillScriptConfiguration(script);
-        //Output
+        switch (source) {
+            case "script":
+                this.selectSource(sourceName);
+                this.fillInputData(data);
+                this.fillScriptConfiguration(script);
+                break;
+            case "data connector":
+                this.selectSource(sourceName);
+                this.selectResource(resource);
+                break;
+            default:
+                break;
+        }
+    }
+
+    outputInWatchers(source,output){
         this.clickOnOutputAccordion();
-        this.fillOutputVariable(output);
+        switch (source) {
+            case "script":
+                this.fillOutputVariable(output);
+                break;
+            case "data connector":
+                this.clickOnAddProperty();
+                break;
+            default:
+                break;
+        }
+    }
+
+    createWatcher(watcherConfig) {
+        const { watcherName, variableToWatch, optionBtn, source, sourceConfig, output} = watcherConfig
+        this.clickOnAddWatchersBtn();
+        //Configuration
+        this.configurationInWatchers(watcherName,variableToWatch,optionBtn);
+        //Source
+        this.sourceInWatchers(source,sourceConfig);
+        //Output
+        this.outputInWatchers(source,output);
         this.saveWatcherModal();
     }
 
@@ -245,16 +278,18 @@ export class CalcsAndWatchers {
         cy.get(selectors.sourceAccordion).click();
     }
 
-    selectSource(source){
-        cy.xpath(selectors.sourcelabel).should('be.visible');
+    //Source
+    selectSource(sourceName){
+        cy.xpath(selectors.sourceLabel).should('be.visible');
         cy.get(selectors.sourceInput).click({force:true});
-        cy.get(selectors.sourceInput).type(source,{delay:80}).should('have.value',source);
+        cy.get(selectors.sourceInput).type(sourceName,{delay:80}).should('have.value',sourceName);
 		cy.xpath(selectors.sourceWrapper)
 			.should('have.attr', 'aria-label')
-			.and('contain', `${source}. `);
+			.and('contain', `${sourceName}. `);
 		cy.get(selectors.sourceInput).type('{enter}');
     }
 
+    //Script in watchers
     fillInputData(data){
         cy.get(selectors.inputDataField).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
     }
@@ -263,13 +298,34 @@ export class CalcsAndWatchers {
         cy.get(selectors.scriptConfigurationField).type('{backspace}').type('{backspace}').type(`{{}${script}}`).should('contain', `{${script}}`);
     }
 
+    //Data connectors in watchers
+    /**
+     * This method selects a resource to create a watcher
+     * @param resource: for example: ListAll, GetRecord, CreateRecord, DeleteRecord,UpdateRecord,TruncateCollection
+    */
 
+    selectResource(resource){
+        cy.xpath(selectors.resourceLabel).should('be.visible');
+        cy.get(selectors.resourceInput).click({force:true});
+        cy.get(selectors.resourceInput).type(resource,{delay:80}).should('have.value',resource);
+		cy.xpath(selectors.resourceWrapper)
+			.should('have.attr', 'aria-label')
+			.and('contain', `${resource}. `);
+		cy.get(selectors.resourceInput).type('{enter}');
+    }
+    //Output in Watchers
     clickOnOutputAccordion(){
-        cy.get(selectors.outputAccordion).click();
+        cy.get(selectors.outputAccordion).click({force:true});
     }
 
+    //output in Script
     fillOutputVariable(output){
         cy.get(selectors.outputVariableField).type(output).should('have.value',output);
+    }
+
+    //output in Dataconnector
+    clickOnAddProperty(){
+        cy.xpath(selectors.propertyBtn).click({force:true});
     }
 
     saveWatcherModal(){
