@@ -1125,7 +1125,7 @@ export class Process {
     // to users: permissionObject = {type="User", user="admin", firstName="Admin", lastName="User"}
     // to group: permissionObject = {type="Group", groupName="group 1"}
     // to process manager: permissionObject = {type="Process Manager"}
-    verifyConfigOfStartEventAndConfig(elementName, permissionObject, defaultAlternative= "A") {
+    verifyConfigOfStartEventAndConfig(elementName, permissionObject) {
         //const elementStartEventXpath = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
         const elementStartEventXpath = "(//*[@data-type='processmaker.components.nodes.startEvent.Shape']//*[contains(text(),'nameElem')])[1]";
         const startPemrissionsBtnSelector = "[id='accordion-button-permissions-accordion']";
@@ -1133,11 +1133,8 @@ export class Process {
         const startPemrissions_opSelectListSelector = "//label[text()='nameType']/parent::div//div[@class='multiselect__tags']";
         const startPemrissions_opInputSelector = "//label[text()='nameType']/parent::div//input";
         const OptionSelected = "//label[text()='nameType']/parent::div//div[@class='multiselect__tags']//span";
-        const alternative = "[id='alternative_a']";
-           
-        cy.get(alternative).should("exist");
-        cy.url().then(url => {
-            cy.visit(url+'/alternative/'+defaultAlternative);
+
+
             cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click({force:true});
             cy.wait(2000);
             cy.get("[data-cy='inspector-button']").should('be.visible').click();
@@ -1199,7 +1196,7 @@ export class Process {
                     break;
             }
             cy.get('[data-cy="inspector-close-button"]').click();
-        });
+
     }
 
     changepdfFileNameToDynamicVariable(input) {
@@ -2248,7 +2245,17 @@ export class Process {
         cy.xpath(selectors.spanAnonymousWebLinkCopied).should('be.visible');
         cy.xpath("//span").contains("Please use this link when you are not logged into ProcessMaker");
     }
-     
+
+    /**
+     * This method is responsible to open hamburguer buttton in the modeler
+     * @return nothing returns
+     */
+    openInspectorModeler() {
+        cy.xpath(selectors.inspectorBtnXpath2)
+            .should('visible')
+            .click();
+        cy.get('[data-test="inspector-column"]').should('visible');
+    }
     openAlternativeModeler(alternative = "A") {
         cy.url().then(($url) => {
             let processID = $url.split("/")[4].trim();
@@ -2283,4 +2290,5 @@ export class Process {
                         }
                     });
                 }
+
 }
