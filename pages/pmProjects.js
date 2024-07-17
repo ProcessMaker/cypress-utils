@@ -184,7 +184,7 @@ export class PMProjects {
             //cy.get(selectors.loadingSpinnerProcess).should("be.visible");
             cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
             cy.xpath(selectors.threePointsBtnXpathProjects).first().should("be.visible");
-            cy.xpath(selectors.threePointsBtnXpathProjects).first().click();
+            cy.xpath(selectors.threePointsBtnXpathProjects).first().click({force:true});
         
         }
         //cy.xpath('//td//a[contains(text(),"'+projectName+'")]').should("be.visible");
