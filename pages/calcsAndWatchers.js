@@ -378,6 +378,10 @@ export class CalcsAndWatchers {
         this.clickOnConfirmBtn();
     }
 
+    clickOnDoneBtn(){
+        cy.get(selectors.doneBtn).click();
+    }
+
     searchWatcherAndSelectOption(watcherName, option, optionConfig) {
         this.searchWatcher(watcherName);
         switch (option) {

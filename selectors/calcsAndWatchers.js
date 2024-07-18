@@ -60,4 +60,5 @@ export default{
        cancelWatchersBtn:'[data-cy="watchers-button-cancel"]',
        saveWatchersBtn:'[data-cy="watchers-button-save"]',
        closeModal:'[aria-label="Close"]',
+       doneBtn:'[data-cy="calcs-button-close"]'
    }
