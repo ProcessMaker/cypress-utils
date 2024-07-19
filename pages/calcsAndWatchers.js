@@ -179,7 +179,6 @@ export class CalcsAndWatchers {
         cy.get(selectors.searchWatchers).should('be.visible');
         cy.get(selectors.searchWatchers).clear();
         cy.get(selectors.searchWatchers).type(watcherName, { delay: 80 }).type('{enter}').should('have.value', watcherName);
-        cy.get(selectors.searchWatchers).clear();
     }
 
     searchWatcherInList(watcherName) {
@@ -328,12 +327,12 @@ export class CalcsAndWatchers {
         cy.get(selectors.outputAccordion).click({force:true});
     }
 
-    //output in Script
+    //Output in Script
     fillOutputVariable(output){
         cy.get(selectors.outputVariableField).type(output).should('have.value',output);
     }
 
-    //output in Data connector
+    //Output in Data connector
     clickOnAddProperty(){
         cy.xpath(selectors.propertyBtn).click({force:true});
     }
@@ -358,7 +357,6 @@ export class CalcsAndWatchers {
     }
 
     editWatcherNameInModal(){
-        //Configuration
         cy.get('[data-cy="watchers-watcher-name"]').clear();
         this.fillWatcherName();
     }
@@ -382,7 +380,7 @@ export class CalcsAndWatchers {
         cy.get(selectors.doneBtn).click();
     }
 
-    searchWatcherAndSelectOption(watcherName, option, optionConfig) {
+    searchWatcherAndSelectOption(watcherName, option) {
         this.searchWatcher(watcherName);
         switch (option) {
             case "edit":
