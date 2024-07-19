@@ -114,13 +114,22 @@ export class CalcsAndWatchers {
     }
 
     enableBypassInCalcs(){
-        cy.get(selectors.bypassCalcsBtn).should('be.visible')
-        cy.get(selectors.bypassCalcsBtn).check({force:true});
+        cy.get(selectors.bypassCalcsBtn).should('be.visible');
+        cy.get(selectors.bypassCalcsBtn).invoke('attr', 'title').then(($BypassBtn)=>{
+            cy.log($BypassBtn);
+            if($BypassBtn=='Unbypass Calc'){
+                cy.get(selectors.bypassCalcsBtn).click({force:true});
+            }
+        })
     }
 
     disableBypassInCalcs(){
-        cy.get(selectors.bypassCalcsBtn).should('be.visible')
-        cy.get(selectors.bypassCalcsBtn).uncheck({force:true});
+        cy.get(selectors.bypassCalcsBtn).should('be.visible');
+        cy.get(selectors.bypassCalcsBtn).invoke('attr', 'title').then(($BypassBtn)=>{
+            if($BypassBtn=='Bypass Calc'){
+                cy.get(selectors.bypassCalcsBtn).click({force:true});
+            }
+        })
     }
 
     deleteCalc(){
@@ -364,12 +373,22 @@ export class CalcsAndWatchers {
 
     enableBypassInWatchers(){
         cy.get(selectors.bypassWatchersBtn).should('be.visible')
-        cy.get(selectors.bypassWatchersBtn).check({force:true});
+        cy.get(selectors.bypassWatchersBtn).invoke('attr', 'title').then(($BypassBtn)=>{
+            cy.log($BypassBtn);
+            if($BypassBtn=='Unbypass Watcher'){
+               cy.get(selectors.bypassWatchersBtn).click({force:true});
+            }
+        })
     }
 
     disableBypassInWatchers(){
         cy.get(selectors.bypassWatchersBtn).should('be.visible')
-        cy.get(selectors.bypassWatchersBtn).uncheck({force:true});
+        cy.get(selectors.bypassWatchersBtn).invoke('attr', 'title').then(($BypassBtn)=>{
+            cy.log($BypassBtn);
+            if($BypassBtn=='Bypass Watcher'){
+               cy.get(selectors.bypassWatchersBtn).click({force:true});
+            }
+        })
     }
 
     deleteWatcher(){
