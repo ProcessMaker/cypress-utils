@@ -172,6 +172,7 @@ export class CalcsAndWatchers {
     clickOnAddWatchersBtn() {
         cy.get(selectors.addWacthersBtn).should('be.visible');
         cy.get(selectors.addWacthersBtn).click({ force: true });
+        cy.wait(1000);
     }
 
     //Modal watchers list
@@ -242,7 +243,7 @@ export class CalcsAndWatchers {
 
     fillWatcherName(watcherName){
         cy.get(selectors.watcherName).should('be.visible');
-        cy.get(selectors.watcherName).type(watcherName).should('have.value',watcherName);
+        cy.get(selectors.watcherName).type(watcherName,{delay:100}).should('have.value',watcherName);
     }
 
     selectVariableToWatch(variableToWatch){
