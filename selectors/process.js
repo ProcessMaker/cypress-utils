@@ -27,6 +27,7 @@ export default{
     loopModeDropdown: '//legend[text()="Loop Mode"]/following-sibling::div/select',
     requestVarArrayTxtBx: '//label[text()="Request Variable Array"]/following-sibling::div/input',
     addManualTask: '[data-test="switch-to-manual-task"]',
+    addTaskForm: '[data-test="switch-to-user-task"]',
     iterationTextBox: '//*[@data-cy="loopMaximum"]',
     conditionTextBox:'//*[@data-cy="loopCondition"]',
     searchInputProcess: '(//input[@placeholder="Search"])[1]',
@@ -266,5 +267,9 @@ export default{
     spanAnonymousWebLinkCopied: '//span/p/b[text()="Anonymous Web Link Copied"]',
 
     //alternatives
-    alternativeA: '[id="alternative_a"]'
+    alternativeA: '[id="alternative_a"]',
+
+    //modeler
+    optionsMenu: '//*[contains(text(),"Options")]/ancestor::button',
+    options_discardDraft: '//*[contains(text(),"Discard Draft")]'
 }
