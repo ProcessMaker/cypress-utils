@@ -395,14 +395,28 @@ export class Process {
         }
     }
 
+    clickOnSettingsTask(){
+        cy.get('[data-test="select-type-dropdown"]').click();
+    }
+    clickOnConfirmChange(){
+        cy.xpath('//button[contains(text(),"Confirm")]')
+            .should('be.visible')
+            .click();
+    }
 
     changeToManualTask() {
         cy.get(selectors.addManualTask).click();
+        this.clickOnConfirmChange();
     }
 
+    changeToTaskForm() {
+        cy.get(selectors.addTaskForm).click();
+        this.clickOnConfirmChange();
+    }
 
     changetoscripttask() {
         cy.get(selectors.scripttaskBtn).click();
+        this.clickOnConfirmChange();
     }
 
 
@@ -815,6 +829,11 @@ export class Process {
         cy.xpath('//button[@data-test="btn-save-publish"]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
     }
+    discardDraft() {
+        cy.xpath(selectors.optionsMenu).click({force:true});
+        cy.xpath(selectors.options_discardDraft).click({force:true});
+        cy.xpath('//button[contains(text(),"Discard")]').click();
+    }
 
     searchProcessAndSelectOptions(
         processName,
@@ -867,6 +886,9 @@ export class Process {
             case "archive":
                 this.archiveProcess();
                 break;
+            case "editAlternative":
+                this.editAlternativeProcess();
+                break;
         }
     }
     viewProcess(){
@@ -878,6 +900,13 @@ export class Process {
     editProcess() {
         cy.xpath("(//a[contains(@href,'/modeler')])[1]").should('be.visible');
         cy.xpath("(//a[contains(@href,'/modeler')])[1]").click({force:true});
+    }
+    editAlternativeProcess() {
+        cy.xpath("(//a[contains(@href,'/modeler')])[1]").should('be.visible');
+        cy.xpath("(//a[contains(@href,'/modeler')])[1]").should('have.attr', 'href')
+            .then((href) => {
+                cy.visit(href+'/alternative/A')
+            });
     }
     addProject() {
         this.selectMenuOptionRow("Add to Project");
@@ -2252,9 +2281,9 @@ export class Process {
      */
     openInspectorModeler() {
         cy.xpath(selectors.inspectorBtnXpath2)
-            .should('visible')
+            .should('be.visible')
             .click();
-        cy.get('[data-test="inspector-column"]').should('visible');
+        cy.get('[data-test="inspector-column"]').should('be.visible');
     }
     openAlternativeModeler(alternative = "A") {
         cy.url().then(($url) => {
