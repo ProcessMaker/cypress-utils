@@ -138,7 +138,7 @@ export class SlideShow {
         cy.get('[id="selectAlternatives"]').should('have.value', 'A');
     }
     clickOnCopyLink(){
-        cy.xpath(selectors.modal_copyLink).should('be.visible').click();
+        cy.xpath(selectors.modal_copyLink).should('be.visible').click({force:true});
     }
     typeEmailToSendLink(email){
         cy.xpath(selectors.modal_sendEmailInput)
