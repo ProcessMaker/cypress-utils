@@ -510,5 +510,17 @@ export class Scripts {
         cy.xpath(Selectors.categoryLabel).should('be.visible');
         cy.xpath(Selectors.categoryInput).click({force: true}).type(category + '{enter}', {delay:250});
         cy.xpath(Selectors.categoryTag.replace('category', category)).should('be.visible');     
-    } 
+    }
+    
+    assignUserToRunScriptAs(scriptName,userName){
+        this.searchScript(scriptName);
+        cy.xpath('//label[text()="Category"]//parent::div//span[@class="multiselect__tag"]').should("contain","Uncategorized")
+        cy.xpath(Selectors.runScriptAslabel).should('be.visible');
+        cy.xpath(Selectors.runScriptAsInput).click({force:true});
+        cy.xpath(Selectors.runScriptAsInput).type(userName,{delay:80}).should('have.value',userName);
+		cy.xpath(Selectors.runScriptAsWrapper)
+			.should('have.attr', 'aria-label')
+			.and('contain', `${userName}. `);
+		cy.xpath(Selectors.runScriptAsInput).type('{enter}');
+    }
 }

@@ -68,5 +68,9 @@ export default {
     categoryInput: '//label[text()="Category"]/ancestor::div[@name="script_category_id"]//input',
     categoryTag: "//div/span/span[contains(text(),'category')]",
     deleteOption: '//div/span[text()="Delete"]',
-    confirmButton: '//button[text()="Confirm"]'
+    confirmButton: '//button[text()="Confirm"]',
+    //Configure script
+    runScriptAslabel:'//label[text()="Run Script As"]',
+    runScriptAsInput:'//label[text()="Run Script As"]//parent::div//input',
+    runScriptAsWrapper:'//label[text()="Run Script As"]//parent::div//div[@class="multiselect__content-wrapper"]//li[1]',
 };
