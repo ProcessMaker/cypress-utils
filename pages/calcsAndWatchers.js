@@ -197,6 +197,7 @@ export class CalcsAndWatchers {
     }
 
     configurationInWatchers(watcherName,variableToWatch,optionBtn){
+        cy.get('[data-cy="watchers-watcher-name"]').clear();
         this.fillWatcherName(watcherName);
         this.selectVariableToWatch(variableToWatch);
         this.enableButtonInConfiguration(optionBtn);
@@ -366,9 +367,9 @@ export class CalcsAndWatchers {
         cy.get(selectors.deleteWatchersBtn).click();
     }
 
-    editWatcherNameInModal(){
+    editWatcherNameInModal(watcherName){
         cy.get('[data-cy="watchers-watcher-name"]').clear();
-        this.fillWatcherName();
+        this.fillWatcherName(watcherName);
     }
 
     enableBypassInWatchers(){
@@ -400,11 +401,48 @@ export class CalcsAndWatchers {
         cy.get(selectors.doneBtn).click();
     }
 
-    searchWatcherAndSelectOption(watcherName, option) {
+    editWatcher(optionToEdit,optionConfig){
+        const {watcherName, variableToWatch,optionBtn,sourceName ,resourceName} = optionConfig
+        switch (optionToEdit) {
+            case "configuration":
+                this.configurationInWatchers(watcherName,variableToWatch,optionBtn);
+                break;
+            case "source":
+                //Source
+                this.clickOnSourceAccordion();
+                cy.xpath('//input[@name="Source"]//following-sibling::span').invoke('text').then($sourceField=>{
+                    cy.log($sourceField)
+                    cy.log(sourceName)
+                    if($sourceField.includes(sourceName)){
+                        this.selectSource(sourceName);
+                        this.selectSource(sourceName);
+                    }else{
+                        this.selectSource(sourceName);
+                    }
+                })
+                //Resource
+                cy.xpath('//input[@name="Resource"]//following-sibling::span').invoke('text').then($resourceField=>{
+                    cy.log($resourceField)
+                    cy.log(resourceName)
+                    if($resourceField.includes(resourceName)){
+                        return
+                    }else{
+                        this.selectResource(resourceName);
+                    }
+                })
+                break;
+            default:
+                break;
+        }
+        this.saveWatcherModal();
+    }
+
+    searchWatcherAndSelectOption(watcherName, option,optionToEdit,optionConfig) {
         this.searchWatcher(watcherName);
         switch (option) {
             case "edit":
-                this.editWatcherNameInModal();
+                this.clickOnEditWatcherBtn();
+                this.editWatcher(optionToEdit,optionConfig);
                 break;
             case "Enablebypass":
                 this.enableBypassInWatchers();
