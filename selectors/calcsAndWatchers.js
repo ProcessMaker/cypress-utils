@@ -53,12 +53,15 @@ export default{
        resourceSelect:'//div[@data-cy="watchers-watcher-endpoint"]//div[@class="multiselect__select"]',
        resourceWrapper:'//div[@data-cy="watchers-watcher-endpoint"]//div[@class="multiselect__content-wrapper"]//li[1]',
        //Output
-       outputAccordion:'[id="watcherOutput"]',
+       outputAccordion:'button[data-cy="watchers-accordion-output"]',
        outputVariableField:'input[data-cy="watchers-watcher-output_variable"]',
        propertyBtn:'//button[text()="+ Property "]',
-       
        cancelWatchersBtn:'[data-cy="watchers-button-cancel"]',
        saveWatchersBtn:'[data-cy="watchers-button-save"]',
        closeModal:'[aria-label="Close"]',
-       doneBtn:'[data-cy="calcs-button-close"]'
-   }
+       doneBtn:'[data-cy="calcs-button-close"]',
+       alert:'.alert-wrapper > .alert',
+       //Output in data connector
+       sourceOutputDC:'input[name="value"]',
+       formVariableOutputDC:'input[name="key"]',
+}
