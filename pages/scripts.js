@@ -514,13 +514,19 @@ export class Scripts {
     
     assignUserToRunScriptAs(scriptName,userName){
         this.searchScript(scriptName);
-        cy.xpath(Selectors.runScriptAslabel).should('be.visible');
-        cy.xpath(Selectors.runScriptAsInput).click({force:true});
-        cy.xpath(Selectors.runScriptAsInput).type(userName,{delay:80}).should('have.value',userName);
-		cy.xpath(Selectors.runScriptAsWrapper)
-			.should('have.attr', 'aria-label')
-			.and('contain', `${userName}. `);
-		cy.xpath(Selectors.runScriptAsInput).type('{enter}');
-        cy.xpath('//button[contains(text(),"Save")]').click();
+        cy.xpath('//label[contains(text(),"Run Script As")]//parent::div//input//following-sibling::span').invoke('text').then($User=>{
+            if($User.includes(userName)){
+                return
+            }else{
+                cy.xpath(Selectors.runScriptAslabel).should('be.visible');
+                cy.xpath(Selectors.runScriptAsInput).click({force:true});
+                cy.xpath(Selectors.runScriptAsInput).type(userName,{delay:80}).should('have.value',userName);
+                cy.xpath(Selectors.runScriptAsWrapper)
+                    .should('have.attr', 'aria-label')
+                    .and('contain', `${userName}. `);
+                cy.xpath(Selectors.runScriptAsInput).type('{enter}');
+            }
+            cy.xpath('//button[contains(text(),"Save")]').click();
+        });
     }
 }
