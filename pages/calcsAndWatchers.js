@@ -221,14 +221,17 @@ export class CalcsAndWatchers {
         }
     }
 
-    outputInWatchers(source,output){
+    outputInWatchers(source,outputConfig){
+        const {output,value,key} = outputConfig
         this.clickOnOutputAccordion();
+        cy.xpath('//label[text()="Output Variable Property Mapping"]').should('be.visible');
         switch (source) {
             case "script":
                 this.fillOutputVariable(output);
                 break;
             case "data connector":
                 this.clickOnAddProperty();
+                this.fillOutputInProperty(value,key);
                 break;
             default:
                 break;
@@ -348,6 +351,11 @@ export class CalcsAndWatchers {
         cy.xpath(selectors.propertyBtn).click({force:true});
     }
 
+    fillOutputInProperty(value,key){
+        cy.get(selectors.sourceOutputDC).type(value).should('have.value',value);
+        cy.get(selectors.formVariableOutputDC).type(key).should('have.value',key);
+    }
+
     saveWatcherModal(){
         cy.get(selectors.saveWatchersBtn).click();
     }
@@ -402,34 +410,32 @@ export class CalcsAndWatchers {
     }
 
     editWatcher(optionToEdit,optionConfig){
-        const {watcherName, variableToWatch,optionBtn,sourceName ,resourceName} = optionConfig
+        const {watcherName, variableToWatch,optionBtn,sourceNameByDataConector ,resourceName,outputConfig} = optionConfig
         switch (optionToEdit) {
             case "configuration":
                 this.configurationInWatchers(watcherName,variableToWatch,optionBtn);
                 break;
-            case "source":
-                //Source
+            case "sourceDataConnector":
+                //Source by data connector
                 this.clickOnSourceAccordion();
                 cy.xpath('//input[@name="Source"]//following-sibling::span').invoke('text').then($sourceField=>{
-                    cy.log($sourceField)
-                    cy.log(sourceName)
-                    if($sourceField.includes(sourceName)){
-                        this.selectSource(sourceName);
-                        this.selectSource(sourceName);
+                    if($sourceField.includes(sourceNameByDataConector)){
+                        this.selectSource(sourceNameByDataConector);
+                        this.selectSource(sourceNameByDataConector);
                     }else{
-                        this.selectSource(sourceName);
+                        this.selectSource(sourceNameByDataConector);
                     }
-                })
+                });
                 //Resource
                 cy.xpath('//input[@name="Resource"]//following-sibling::span').invoke('text').then($resourceField=>{
-                    cy.log($resourceField)
-                    cy.log(resourceName)
                     if($resourceField.includes(resourceName)){
                         return
                     }else{
                         this.selectResource(resourceName);
                     }
-                })
+                });
+                //Output by data connector
+                this.outputInWatchers("data connector",outputConfig);
                 break;
             default:
                 break;
@@ -437,7 +443,7 @@ export class CalcsAndWatchers {
         this.saveWatcherModal();
     }
 
-    searchWatcherAndSelectOption(watcherName, option,optionToEdit,optionConfig) {
+    searchWatcherAndSelectOption(watcherName, option, optionToEdit, optionConfig) {
         this.searchWatcher(watcherName);
         switch (option) {
             case "edit":
