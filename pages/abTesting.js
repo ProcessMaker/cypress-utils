@@ -405,6 +405,7 @@ export class ABTesting {
         switch (assignmentType) {
             case 'Users/Groups':
                 cy.iframe(iframeSelector).find(selectors.selectList).select('Users / Groups').should('have.value',"user_group");
+                cy.iframe(iframeSelector).xpath(selectors.spinnerUserGroups).should('not.be.visible');
                 this.selectUserOrGroup('Assigned Users/Groups',userGroup,iframeOption);
                 break;
             case 'Previous Task Assignee':
@@ -439,16 +440,20 @@ export class ABTesting {
     selectUserOrGroup(label,userGroup,iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         const userGroupSelected = `//label[text()="${label}"]/parent::div//div[@class='multiselect__tags']//span`;
+        this.load();
         cy.iframe(iframeSelector).xpath(userGroupSelected).invoke('text')
-                .then(text => {
-                    if (text !== userGroup) {
+                .then($text => {
+                    if (!$text.includes(userGroup)) {
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//div[@class="multiselect__tags"]`).should('be.visible');
                         cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//div[@class="multiselect__tags"]`).click();
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//li/span[contains(text(),"No Data Available")]`)
+                            .should('not.be.visible');
                         this.load();
                         cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).clear({force:true});
                         let len = (userGroup.length)-1;
-                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.substring(0,len),{delay:150}).should('have.value', userGroup.substring(0,len));
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.substring(0,len),{delay:250}).should('have.value', userGroup.substring(0,len));
                         this.load();
-                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.charAt(len)).should('have.value', userGroup);
+                        cy.iframe(iframeSelector).xpath(`//label[text()="${label}"]/parent::div//input`).type(userGroup.charAt(len),{delay:300}).should('have.value', userGroup);
                         this.load();
                         cy.iframe(iframeSelector).xpath(`(//span[contains(text(),"userGroup")]/ancestor::div[@class="multiselect__content-wrapper"])[1]`.replace("userGroup",userGroup)).click();
                     }
