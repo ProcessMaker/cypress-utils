@@ -62,5 +62,6 @@ export default {
     selectList:'[id="assignmentsDropDownList"]',
     variableNameUsers:'(//label[text()="Variable Name (Users)"]/parent::div//input)[1]',
     variableNameGroups:'(//label[text()="Variable Name (Groups)"]/parent::div//input)[1]',
+    spinnerUserGroups:'//label[text()="Assigned Users/Groups"]/parent::div//div[@class="multiselect__spinner"]',
 
 }
