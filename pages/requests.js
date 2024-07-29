@@ -351,16 +351,23 @@ export class Requests {
     * @return nothing returns
     */
     openNewRequestInterstitial(processname) {
-        cy.get('button[id="navbar-request-button"]').click();
-        cy.get(selectors.request_processList).should("be.visible");
-        cy.get(selectors.request_search_input).type(processname).should('have.value',processname);
-        cy.xpath(selectors.request_searchProcessRow.replace("processName", processname),{ timeout: 10000 })
-            .then(() => {
-                cy.xpath(selectors.request_startButtonRow.replace('processName',processname)).should('be.visible');
-                cy.wait(2000);
-                cy.xpath(selectors.request_startButtonRow.replace('processName',processname)).click();
-                cy.url().should("include", "/tasks/");
-            });
+       //Click on +CASE
+       cy.get('button[id="navbar-request-button"]').click();
+       cy.xpath('//div[@id="requests-modal"]//*[contains(@class,"modal-content")]').should('be.visible');
+       //Verify that list finish to load
+       cy.get('[id="requests-modal"]>* [class="process-list"]').should('exist');
+       //Write the Process name
+       cy.get(selectors.request_search_input).type(processname).should('have.value',processname);
+       cy.wait(3000);
+       cy.get('[id="requests-modal"]>* [class="process-list"]').should('exist');
+       //Click on the Start Button
+       cy.xpath(selectors.request_searchProcessRow.replace("processName", processname),{ timeout: 10000 })
+           .then(() => {
+               cy.xpath(selectors.request_startButtonRow.replace('processName',processname)).should('be.visible');
+               cy.wait(2000);
+               cy.xpath(selectors.request_startButtonRow.replace('processName',processname)).click();
+               cy.url().should("include", "/tasks/");
+           });
     }
     /**
      * This method is responsible for click on card of Cases
