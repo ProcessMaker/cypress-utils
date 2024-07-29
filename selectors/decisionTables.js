@@ -46,6 +46,7 @@ export default{
     importBtn:'//button[contains(text(),"Import")]',
     inputToFileUpload: "[type='file']",
     selectFileFromComputer: '//label[normalize-space()="Select file from computer"]//input',
+    tableContainer:'//div[@id="decisionTableIndex"]//div[@class="container text-center"]',
     //Main Category
     tabCategory:'a[id="nav-categories-tab"]',
     addCategoryButton: 'button[aria-label="Create Category"]',
