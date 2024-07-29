@@ -582,13 +582,13 @@ export class DecisionTable {
     }
 
     clickOnLastPage() {
-        cy.xpath('(//i[@class="fas fa-angle-double-right"])[1]').scrollIntoView().should('be.visible').click({ force: true });
+        cy.get('[class="btn pagination-button btn-light"]').eq(1).scrollIntoView().should('be.visible').click({ force: true });
         cy.get(selectors.loadingSpinnerDT).should('be.visible');
         cy.get(selectors.loadingSpinnerDT).should('not.be.visible');
     }
 
     clickOnFirstPage() {
-        cy.xpath('(//i[@class="fas fa-angle-double-left"])[1]').should('be.visible').click();
+        cy.get('[class="btn pagination-button btn-light"]').eq(0).should('be.visible').click();
     }
 
 
