@@ -524,14 +524,13 @@ export class DecisionTable {
     verifyPresenceOfDecisionTableAndImportDT(decisionTableName, filePath) {
         this.searchDecisionTable(decisionTableName);
         cy.wait(2000);
-        cy.xpath(selectors.tableDT)
-            .find('td')
-            .then(($loadedTable) => {
-                if ($loadedTable.length === 1) {
-                    this.importDecisionTable(filePath);
-                }
-                else return;
-            });
+        cy.xpath(selectors.tableContainer).invoke('text')
+        .then(($loadedContent) => {
+            cy.log($loadedContent)
+            if ($loadedContent.includes('No Data Available')){
+                this.importDecisionTable(filePath);
+            }
+        })
     }
 
     //1.5 Pagination Decision tables
