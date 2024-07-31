@@ -1864,17 +1864,15 @@ createIDPIfNotConfigured(serverIDPType){
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                             cy.xpath(optionColumnXpath.replace('optionColumn','Tenant ID')).should('have.contain',tenantIDTxt);
-            
-            
-                            
-                                            
-                            }
-                       
-                                        
+                   
+                                  
+}
+        
+                                 
                     });
-            
-                    
-            }        
+     
+                 
+    }        
 
 	assignSpecificPemrissionToUser(permission){
     	let permissionCategoryXPATH = '//button[contains(@data-target,"category")]';
