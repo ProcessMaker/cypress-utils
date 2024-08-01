@@ -239,14 +239,14 @@ export class CalcsAndWatchers {
     }
 
     createWatcher(watcherConfig) {
-        const { watcherName, variableToWatch, optionBtn, source, sourceConfig, output} = watcherConfig
+        const { watcherName, variableToWatch, optionBtn, source, sourceConfig, outputConfig} = watcherConfig
         this.clickOnAddWatchersBtn();
         //Configuration
         this.configurationInWatchers(watcherName,variableToWatch,optionBtn);
         //Source
         this.sourceInWatchers(source,sourceConfig);
         //Output
-        this.outputInWatchers(source,output);
+        this.outputInWatchers(source,outputConfig);
         this.saveWatcherModal();
     }
 
