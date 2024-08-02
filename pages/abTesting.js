@@ -326,8 +326,8 @@ export class ABTesting {
 
     changeNameOfProcess(newName) {
         cy.get(selectors.nameInput).clear().type(newName).should('have.value', newName);
-        cy.xpath(selectors.saveConfiguration).should('be.visible');
-        cy.xpath(selectors.saveConfiguration).click();
+        cy.get(selectors.saveConfiguration).should('be.visible');
+        cy.get(selectors.saveConfiguration).click();
         cy.get(selectors.confirmSaveConfiguration).should('be.visible');
         cy.get(selectors.confirmSaveConfiguration).click();
     }
