@@ -121,10 +121,12 @@ export class Dataconnectors {
             .should('have.value', name);
         cy.xpath('//div[@id="dataSourceIndex"]//div[@class="jumbotron jumbotron-fluid"]//h3[text()="Loading"]').should('be.visible');
         cy.wait(2000);
-        cy.xpath('//div[@id="dataSourceIndex"]//tbody/tr', { timeout: 10000 })
-            .find('td')
+        cy.xpath('//div[@id="dataSourceIndex"]//div[@class="datasources-table-card"]', { timeout: 10000 })
+            .invoke("show")
+            .find('[data-cy="datasource-pagination"] [class="pagination-total"]')
+            .eq(1)
             .then(($loadedTable) => {
-                if ($loadedTable.length === 1) {
+                if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0) {
                     this.createADataConnectorWithBearerToken(name, description, connectorType,type, token);
                     cy.wait(5000);
                     cy.xpath('//li[@role="presentation"]/a[text()="Resources"]').click({force:true});
@@ -142,7 +144,7 @@ export class Dataconnectors {
         this.selectConnectorType(connectorType);
         this.selectAuthType(type);
         this.ClickSaveBtn();
-        cy.xpath('//textarea[@id="token"]').type(token);
+        cy.xpath('//textarea[@id="tokenInput"]').type(token, {force: true});
         cy.xpath('//input[@type="checkbox"]').uncheck({force:true});
         cy.xpath('//button[@class="btn btn-secondary ml-3"]').click({force:true});
     }
@@ -165,7 +167,7 @@ export class Dataconnectors {
      * @return nothing returns
      */
     searchDataConnectorAndSelectAction(dataConnectorName, action) {
-        cy.xpath("//div[@id='dataSourceIndex']//tbody/tr/td").should(
+        cy.xpath("//div[@id='dataSourceIndex']").should(
             "be.visible"
         );
         cy.xpath(
@@ -179,10 +181,12 @@ export class Dataconnectors {
             '//div[@id="dataSourceIndex"]//div[@class="jumbotron jumbotron-fluid"]//h3[text()="Loading"]'
         ).should("be.visible");
         cy.wait(2000);
-        cy.xpath('//div[@id="dataSourceIndex"]//tbody/tr', { timeout: 10000 })
-            .find("td")
+        cy.xpath('//div[@id="dataSourceIndex"]//div[@class="datasources-table-card"]', { timeout: 10000 })
+            .invoke("show")
+            .find('[data-cy="datasource-pagination"] [class="pagination-total"]')
+            .eq(1)
             .then(($loadedTable) => {
-                if ($loadedTable.length === 1) {
+                if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0) {
                     cy.log(
                         "The Data Connector was not found: " + dataConnectorName
                     );
