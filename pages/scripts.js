@@ -515,6 +515,7 @@ export class Scripts {
     
     assignUserToRunScriptAs(scriptName,userName){
         this.searchScript(scriptName);
+        cy.wait(2000);
         cy.xpath('//label[contains(text(),"Run Script As")]//parent::div//input//following-sibling::span').invoke('text').then($User=>{
             if($User.includes(userName)){
                 return
