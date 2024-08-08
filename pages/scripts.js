@@ -411,7 +411,6 @@ export class Scripts {
             .invoke("show")
             .find('[class="pagination"] [class="pagination-total"]')
             .then(($loadedTable) => {
-                cy.log("......" + $loadedTable.text().trim().replace(/[^0-9]/g, ""));
                 if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0) {
                     this.createScript(
                         scriptName,
