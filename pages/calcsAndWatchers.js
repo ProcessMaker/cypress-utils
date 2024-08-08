@@ -420,8 +420,7 @@ export class CalcsAndWatchers {
                 this.clickOnSourceAccordion();
                 cy.xpath('//input[@name="Source"]//following-sibling::span').invoke('text').then($sourceField=>{
                     if($sourceField.includes(sourceNameByDataConector)){
-                        this.selectSource(sourceNameByDataConector);
-                        this.selectSource(sourceNameByDataConector);
+                        return;
                     }else{
                         this.selectSource(sourceNameByDataConector);
                     }
@@ -429,13 +428,19 @@ export class CalcsAndWatchers {
                 //Resource
                 cy.xpath('//input[@name="Resource"]//following-sibling::span').invoke('text').then($resourceField=>{
                     if($resourceField.includes(resourceName)){
-                        return
+                        return;
                     }else{
                         this.selectResource(resourceName);
                     }
                 });
                 //Output by data connector
-                this.outputInWatchers("data connector",outputConfig);
+                cy.get('[id="watcherOutput"]').find('[name="value"]').then($value=>{
+                    if($value.length>=1){
+                        return;
+                    }else{
+                        this.outputInWatchers("data connector",outputConfig);
+                    }
+                });
                 break;
             default:
                 break;
