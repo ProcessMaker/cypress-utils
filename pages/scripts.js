@@ -328,14 +328,6 @@ export class Scripts {
         cy.get(Selectors.searchField)
             .type(scriptName, { delay: 500 })
             .should("have.value", scriptName);
-            /*
-            cy.xpath('//div[@id="dataSourceIndex"]//div[@class="datasources-table-card"]', { timeout: 10000 })
-            .invoke("show")
-            .find('[data-cy="datasource-pagination"] [class="pagination-total"]')
-            .eq(1)
-            .then(($loadedTable) => {
-                if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0)
-            */
         cy.xpath(Selectors.scriptTable, { timeout: 10000 }).then(
             ($loadedTable) => {
                 if ($loadedTable.length === 1) {
