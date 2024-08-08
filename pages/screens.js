@@ -494,7 +494,7 @@ export class Screens {
 	searchForAScreen(screenName) {
 		cy.get(Selectors.screenIndex).should('be.visible');
 		cy.get(Selectors.noDataAvaiable).should('not.exist');
-		cy.get(Selectors.searchScreen).type(screenName, { delay: 100 }).should('have.value', screenName);
+		cy.get(Selectors.searchScreen).type(screenName, { delay: 200}).type(" ").type("{backspace}").should('have.value', screenName);
 		cy.wait(1500);
 	}
 
