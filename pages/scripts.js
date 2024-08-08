@@ -328,6 +328,14 @@ export class Scripts {
         cy.get(Selectors.searchField)
             .type(scriptName, { delay: 500 })
             .should("have.value", scriptName);
+            /*
+            cy.xpath('//div[@id="dataSourceIndex"]//div[@class="datasources-table-card"]', { timeout: 10000 })
+            .invoke("show")
+            .find('[data-cy="datasource-pagination"] [class="pagination-total"]')
+            .eq(1)
+            .then(($loadedTable) => {
+                if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0)
+            */
         cy.xpath(Selectors.scriptTable, { timeout: 10000 }).then(
             ($loadedTable) => {
                 if ($loadedTable.length === 1) {
@@ -404,13 +412,15 @@ export class Scripts {
             "//div[@id='scriptIndex']//div[@class='jumbotron jumbotron-fluid']//i";
         cy.get(Selectors.searchField)
             .should("be.visible")
-            .type(scriptName)
+            .type(scriptName, { delay:300 })
             .should("have.value", scriptName)
-            .type("{enter}", { delay: 1000 });
+            cy.wait(2000);
         cy.xpath(Selectors.scriptTable, { timeout: 10000 })
-            .find("td")
+            .invoke("show")
+            .find('[class="pagination"] [class="pagination-total"]')
             .then(($loadedTable) => {
-                if ($loadedTable.length === 1) {
+                cy.log("......" + $loadedTable.text().trim().replace(/[^0-9]/g, ""));
+                if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0) {
                     this.createScript(
                         scriptName,
                         scriptDescription,
