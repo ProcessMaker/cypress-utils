@@ -53,7 +53,7 @@ export default {
         "//label[contains(text(),'Enable Direct API access')]/ancestor::div[@class='form-group']//input[@type='checkbox']",
     searchField:
         "#scriptIndex > #search-bar > :nth-child(1) > .flex-grow-1 > #search > .input-group > #search-box",
-    scriptTable: "//div[@data-cy='scripts-table']//table//tbody/tr",
+    scriptTable: "//div[@data-cy='scripts-table']",
     // projects
     addProjectModel: '//div[@class="modal-body"]',
     modalScript: '//div[@class="modal-body"]',

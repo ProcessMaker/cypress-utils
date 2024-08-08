@@ -404,13 +404,14 @@ export class Scripts {
             "//div[@id='scriptIndex']//div[@class='jumbotron jumbotron-fluid']//i";
         cy.get(Selectors.searchField)
             .should("be.visible")
-            .type(scriptName)
+            .type(scriptName, { delay:300 })
             .should("have.value", scriptName)
-            .type("{enter}", { delay: 1000 });
+            cy.wait(2000);
         cy.xpath(Selectors.scriptTable, { timeout: 10000 })
-            .find("td")
+            .invoke("show")
+            .find('[class="pagination"] [class="pagination-total"]')
             .then(($loadedTable) => {
-                if ($loadedTable.length === 1) {
+                if ($loadedTable.text().trim().replace(/[^0-9]/g, "") == 0) {
                     this.createScript(
                         scriptName,
                         scriptDescription,
