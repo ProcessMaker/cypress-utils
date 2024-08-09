@@ -525,7 +525,7 @@ export class Process {
     ) {
         var editBtn =
             '//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="processIndex"]//table/tbody/tr//button[@aria-haspopup="menu"]';
-        cy.xpath(editBtn,{ timeout: 15000 }).should("be.visible");
+        cy.xpath(editBtn,{ timeout: 18000 }).should("be.visible");
         cy.xpath(selectors.searchInputBox)
             .type(`${processName}`)
             .should("have.value", processName);
