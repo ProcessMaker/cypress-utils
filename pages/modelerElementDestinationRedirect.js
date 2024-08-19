@@ -86,6 +86,7 @@ export class ModelerElementDestinationRedirect {
         const { option, dashboardName, url,processName } = optionConfig
         let iframeSelector = iframeOption === 'a' ? selectorsAB.iframeA : selectorsAB.iframeB
         cy.iframe(iframeSelector).xpath(selectors.labelElementDestination).should('be.visible');
+
         switch (option) {
             case 'Summary Screen':
                 this.selectElementDestination('Summary Screen',iframeOption);
@@ -144,9 +145,9 @@ export class ModelerElementDestinationRedirect {
         cy.iframe(iframe)
             .find(selectors.elementDestinationList)
             .click();
-        cy.iframe(iframe)
+        cy.iframe(iframe).find(selectors.multiselectWrapper)
             .contains(option)
-            .click();
+            .click({force:true});
     }
 
     clickOnElementDestination(iframeOption = 'a'){
