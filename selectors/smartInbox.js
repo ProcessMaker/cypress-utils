@@ -17,7 +17,7 @@ export default {
         '//img[@alt="Create Rule"]/ancestor::button[contains(text(),"Create Rule")]',
     optionNroBtn: '[id="inbox-rules"] [class="pm-panel-wch filters"] button',
     optionSaveSearch: '[id="inbox-rules"] [class="pm-panel-wch filters"] ul[role="menu"] li',
-    pagination: '[class="pm-panel-wch-content"] [class="pagination"]',
+    pagination: '[class="pagination"]',
     ruleNameField: 'input[placeholder="Enter your name"]',
     desactivationDateField: 'input[placeholder="YYYY-MM-DD"]',
     saveBtnRuleConfiguration: 'fieldset button[class="btn btn-primary"]',
