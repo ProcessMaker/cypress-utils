@@ -145,6 +145,7 @@ export class SmartInbox {
     searchInboxRuleAndAction(inboxRuleName, action) {
         this.searchInboxRule(inboxRuleName);
         cy.get(selectors.totalPaginationInboxRule)
+            .eq(1)
             .invoke("text")
             .then(($el) => {
                 if ($el.trim() == "0 items") {
@@ -191,7 +192,7 @@ export class SmartInbox {
     verifyIfExistRule(inboxName, message, saveSearchName) {
         this.searchInboxRule(inboxName);
         cy.get(selectors.totalPaginationInboxRule)
-            .first()
+            .eq(1)
             .scrollIntoView()
             .invoke("text")
             .then(($el) => {
