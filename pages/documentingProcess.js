@@ -54,6 +54,43 @@ export class DocumentingProcess {
     cancelBtn(){
         cy.get(selectors.cancelBtn).should('be.visible').click();
     }
+
+    //Edit description on card before and after use AI document
+
+    //Click on Apply changes
+    applyChanges(){
+        cy.get(selectors.applyChangesBtn).should('be.visible').click();
+    }
+
+    //Click on cancel Suggestion
+    cancelSuggestion(){
+        cy.get(selectors.cancelSuggestionBtn).should('be.visible').click();
+    }
+
+    //Confirm action
+    confirmAction(){
+        cy.get(selectors.confirmActionBtn).should('be.visible').click();
+    }
+
+    //Generate Documentation Apply and Confirm
+    generateDocApplyAndConfirm(){
+        this.applyChanges();
+        cy.get('[class="modal-body"]').should('be.visible');
+        this.confirmAction();
+
+    }
+
+    //Click on Complete Documentation
+    completeDoc(){
+        cy.get(selectors.confirmActionBtn).should('be.visible').click();
+    }
+
+    //Loading...
+    loadingDoc(){
+        cy.get(selectors.loading).should("be.visible");
+        cy.wait(5000);
+        cy.get(selectors.loading).should("not.be.visible");
+    }
         
         
 }    

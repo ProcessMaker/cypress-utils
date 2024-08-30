@@ -12,5 +12,11 @@ export default{
     generateDocBtn: "//button[contains(text(),'Generate Documentation from Scratch')]",
     useCurrentDocBtn:"//button[contains(text(),'Use current Documentation')]",
     cancelBtn: '[class="btn btn-outline-secondary"]',
+    applyChangesBtn:'[class="btn btn-primary"]',
+    cancelSuggestionBtn: '[class="btn btn-light"]',
+    confirmActionBtn: '[data-test="confirm-btn-ok"]',
+    cancelActionBtn: '[data-test="confirm-btn-close"]',
+    loading: '[class="progress-circle-inner"]',
+
 
     }
