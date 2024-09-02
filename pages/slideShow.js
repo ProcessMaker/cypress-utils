@@ -33,8 +33,13 @@ export class SlideShow {
                     // input was found, do something else here
                     cy.log('ewwwwwwww');
                     this.uploadImageToSlideShow(image);
-                    if (valid)
+                    if (valid){
+                        cy.xpath('//div[@label="Image Slide Show"]//*[contains(@class,"justify-center items-center")]')
+                            .should('be.visible');
+                        cy.xpath('//div[@label="Image Slide Show"]//*[contains(@class,"justify-center items-center")]')
+                            .should('not.be.visible');
                         this.verifyImageInSlideShow();
+                    }
                 }
             });
     }
@@ -58,7 +63,7 @@ export class SlideShow {
      * @return nothing returns
      */
     deleteImageInSlideShowIfExits(){
-        cy.get(selectors.settigns_fotoLabel).should('exist');
+        cy.get('[label="Image Slide Show"]').should('exist');
 
         cy.get('body')
             .then(($body) => {

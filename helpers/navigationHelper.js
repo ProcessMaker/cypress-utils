@@ -196,7 +196,7 @@ export class NavigationHelper {
     }
 
     navigateToProcessLaunch(){
-        cy.visit('/processes-catalogue');
+        cy.visit('//process-browser');
         cy.title().should('eq','Processes Catalogue - ProcessMaker');
     }
     navigateToProcessesCatalogue(){

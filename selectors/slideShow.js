@@ -7,7 +7,7 @@ export default {
     settings_uploadImage: '//input[@type="file"]',
     settings_image: '[role="list"]>* img',
     settings_deleteImage: '[role="list"]>* [fill="none"]',
-    settigns_fotoLabel: 'label[for="cover-photo"]',
+    settigns_fotoLabel: 'label[for="file-upload"]',
 
     //slide show modal
     slideShowButton: '[title="Slideshow"]',
