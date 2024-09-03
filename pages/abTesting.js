@@ -336,17 +336,19 @@ export class ABTesting {
         cy.wait(3000);
     }
 
-    openWebEntryinABtesting(iframeOption = 'a') {
+    openWebEntryInABtesting(iframeOption = 'a', isAuth = false) {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         cy.iframe(iframeSelector).find('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().should('be.visible');
         cy.iframe(iframeSelector).find('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().click({ force: true });
         cy.iframe(iframeSelector).xpath('//button[@data-cy="inspector-button"]').should("be.visible").click();
         cy.iframe(iframeSelector).find("[id='accordion-button-webentry']").click();
         cy.iframe(iframeSelector).find("[id='webentry-entry-url']").invoke('val').then(urlValue => {
-            const url = urlValue;
+          if (!isAuth) {
             cy.visit('/logout');
             cy.title().should('eq', 'Login - ProcessMaker');
-            cy.visit(url);
+          }
+  
+          cy.visit(urlValue);
         });
     }
 
