@@ -336,19 +336,36 @@ export class ABTesting {
         cy.wait(3000);
     }
 
-    openWebEntryInABtesting(iframeOption = 'a', isAuth = false) {
-        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).find('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().should('be.visible');
-        cy.iframe(iframeSelector).find('[data-type="processmaker.components.nodes.startEvent.Shape"]').first().click({ force: true });
-        cy.iframe(iframeSelector).xpath('//button[@data-cy="inspector-button"]').should("be.visible").click();
+     /**
+     * Opens a Web Entry in A/B testing environment.
+     *
+     * @param {string} iframeOption - The iframe option to select. Defaults to 'a'.
+     * @param {boolean} isAuth - Determines if authentication is required before visiting the Web Entry URL. Defaults to false.
+     * @param {string|null} name - The specific name of the Web Entry to select. If null, the first available Web Entry is selected. Defaults to null.
+     */
+     openWebEntryInABtesting(iframeOption = 'a', isAuth = false, name = null) {
+        const iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB;
+
+        // Select the Web Entry shape based on the provided name or the first available one
+        const webEntryShape = cy.iframe(iframeSelector)
+            .find('[data-type="processmaker.components.nodes.startEvent.Shape"]')
+            .contains(name || '')
+            .should('be.visible');
+
+        webEntryShape.click({ force: true });
+
+        // Open the inspector and access the Web Entry URL
+        cy.iframe(iframeSelector).xpath('//button[@data-cy="inspector-button"]')
+            .should("be.visible").click();
         cy.iframe(iframeSelector).find("[id='accordion-button-webentry']").click();
+
+        // Retrieve the Web Entry URL and handle authentication if necessary
         cy.iframe(iframeSelector).find("[id='webentry-entry-url']").invoke('val').then(urlValue => {
-          if (!isAuth) {
-            cy.visit('/logout');
-            cy.title().should('eq', 'Login - ProcessMaker');
-          }
-  
-          cy.visit(urlValue);
+            if (!isAuth) {
+                cy.visit('/logout');
+                cy.title().should('eq', 'Login - ProcessMaker');
+            }
+            cy.visit(urlValue);
         });
     }
 
