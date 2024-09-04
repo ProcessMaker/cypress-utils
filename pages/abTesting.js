@@ -349,7 +349,7 @@ export class ABTesting {
         // Select the Web Entry shape based on the provided name or the first available one
         const webEntryShape = cy.iframe(iframeSelector)
             .find('[data-type="processmaker.components.nodes.startEvent.Shape"]')
-            .contains(name || '')
+            .contains(name || 'Start Event')
             .should('be.visible');
 
         webEntryShape.click({ force: true });
