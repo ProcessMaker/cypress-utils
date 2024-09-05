@@ -1321,11 +1321,11 @@ export class Admin {
      */
     createEmailServerIfNotExist(serverEmailType){
         var senderEmail = Cypress.env("defaultMailTrap.senderEmail");
-        cy.xpath('//div[@id="settings"]//ul[@role="tablist"]//li//a[contains(text(),"Email")]').then((elem)=>{
+        cy.xpath('//div[@id="collapseOne1"]/div[".list-group"]/div[".list-group-item list-item"]').then((elem)=>{
             const nroTabs = elem.length;
             for(let $i=1;$i<nroTabs;$i++){
-                cy.xpath('//div[@id="settings"]//ul[@role="tablist"]//li//a[contains(text(),"Email")]').eq($i).click();
-                cy.xpath('//div[@aria-hidden="false"]//div[contains(text(),"Sender Email")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
+                cy.xpath('//div[@id="collapseOne1"]/div[".list-group"]/div[contains(text(),"Email")]').eq($i).click();
+                cy.xpath('//tr/td/div[contains(text(),"Sender Email")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
                     .then(elem => {
                         if(elem.trim() === senderEmail){
                             $i = nroTabs;
