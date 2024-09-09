@@ -85,6 +85,7 @@ export class ABTesting {
 
     clickOnInspectorBtn(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).should('be.visible');
         cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).click({ force:true });
     }
 
@@ -343,7 +344,7 @@ export class ABTesting {
      * @param {boolean} isAuth - Determines if authentication is required before visiting the Web Entry URL. Defaults to false.
      * @param {string|null} name - The specific name of the Web Entry to select. If null, the first available Web Entry is selected. Defaults to null.
      */
-     openWebEntryInABtesting(iframeOption = 'a', isAuth = false, name = null) {
+    openWebEntryInABtesting(iframeOption = 'a', isAuth = false, name = null) {
         const iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB;
 
         // Select the Web Entry shape based on the provided name or the first available one
@@ -448,7 +449,7 @@ export class ABTesting {
                 break;
             }
         this.publishNewVersion('withoutAB');
-        }
+    }
     
     clickOnAssignmentRules(iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
@@ -493,5 +494,11 @@ export class ABTesting {
                 default:
                     break;
             }
-        }
     }
+
+    loadSpinner(iframeOption = 'a'){
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).find(selectors.spinner)
+        .should("have.attr", "style", "display: none;");
+    }
+}
