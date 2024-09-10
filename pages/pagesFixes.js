@@ -93,6 +93,10 @@ export class PagesFix {
         cy.xpath(selectors.confirmEditBtn).should('be.visible').click();
     }
 
+    clickOnCloseModal(){    
+        cy.get(selectors.closeModalBtn).first().click({ force: true });
+    }
+
     editPageName(newPageName) {
         this.clickOnEditPageBtn();
         cy.xpath(selectors.editPageName).click();
