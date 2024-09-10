@@ -8,7 +8,7 @@ export default {
     searchPages: '[data-test="search"]',
     editBtn: '//div[@class="border rounded-lg sortable-item-action"]//i[@class="fas fa-edit"]//parent::button',
     deleteBtn: '//div[@class="border rounded-lg sortable-item-action"]//i[@class="fas fa-trash-alt"]//parent::button',
-    editPageName: '//div[@class="rounded sortable-item-name"]//input',
+    editPageName: '//div[@data-test="sortable-table-box"]//input',
     pageNameInput: '[data-cy="add-page-name"]',
     saveBtn: '//button[contains(text(),"SAVE")]',
     addPageInModal: '//i[@class="fa fa-plus"]//parent::button',
