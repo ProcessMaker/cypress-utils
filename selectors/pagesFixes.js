@@ -14,4 +14,5 @@ export default {
     addPageInModal: '//i[@class="fa fa-plus"]//parent::button',
     confirmEditBtn: '//button[contains(text(),"DONE")]',
     confirmDeleteBtn: '//div[contains(text(),"Delete")]//parent::button',
+    closeModalBtn:'button[aria-label="Close"]'
 }
