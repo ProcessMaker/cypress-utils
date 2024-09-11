@@ -595,7 +595,7 @@ export class DecisionTable {
     //3.Basic to MODALS
     typeField(locator, value) {
         cy.xpath(locator).should("be.visible");
-        cy.xpath(locator).type(value).should('have.value', value);
+        cy.xpath(locator).type(value, { delay: 100 }).should('have.value', value);
     }
 
     updateField(locator, value) {
@@ -603,7 +603,7 @@ export class DecisionTable {
     }
 
     clickOnSave() {
-        cy.xpath(selectors.addDTsaveButton).click();
+        cy.xpath(selectors.addDTsaveButton).click({ force: true });
     }
 
     clickOnCancel() {
