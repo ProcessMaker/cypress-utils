@@ -85,7 +85,7 @@ export class ABTesting {
 
     clickOnInspectorBtn(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).should('be.visible');
+        this.load();
         cy.iframe(iframeSelector).find(selectors.menuInspectorBtn).click({ force:true });
     }
 
