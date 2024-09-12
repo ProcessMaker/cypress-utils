@@ -271,6 +271,7 @@ export class DecisionTable {
 
     saveInEditDecisionTable() {
         cy.get(selectors.saveButtonInEditDT).click();
+        this.loadPreview() 
     }
 
     closeInEditDecisionTable() {
