@@ -18,7 +18,7 @@ export default {
     launch_searchProcessButton: '[title="Search Processes"]',
     launch_cardProcess: '//*[contains(text(),"processName")]',
     launch_startProcessButton: '//*[contains(text(),"Start this")]',
-    launch_elipsis: '//*[contains(@class,"ellipsis")]//button',
+    launch_elipsis: '//*[contains(@class,"header")]//*[contains(@class,"ellipsis")]//button',
     processCategoryLabel: "//div['.list-group']/div[contains(text(),'element')]",
     processLabel: "//div['.card-info']/span[contains(text(),'label')]",
     bookmarkSelection: "//div['.card-info']/span[contains(text(),'label')]/ancestor::p/div['.card-bookmark']/i",
@@ -40,6 +40,7 @@ export default {
     trashIcon: '//div/i[@class="fas fa-trash-alt custom-trash-icon"]',
     deleteVideo: '//div/button[@class="btn btn-delete-embed btns-popover"]',
     embedMediaDeleteAlert: '//span[contains(text(), "The embed media was deleted")]',
-    inputLaunchScreen: '//div/input[@placeholder="Type to search Screen"]'
+    inputLaunchScreen: '//div/input[@placeholder="Type to search Screen"]',
+    cardLaunchProcess: '[class="card-text"]'
 }
 
