@@ -195,6 +195,7 @@ export class ProcessTesting {
 
     //I.Search scenario
     searchScenario(scenarioName) {
+        cy.wait(1000);
         cy.get(selectors.searchScenario).first().clear().type(scenarioName, { delay: 80, force: true });
         cy.get(selectors.searchScenario).first().type('  ', { force: true });
         cy.get(selectors.searchScenario).first().type('{backspace}{backspace}', { force: true })
@@ -298,7 +299,6 @@ export class ProcessTesting {
     //IV. Delete scenario
     deleteScenario() {
         cy.get('a[data-test="delete-scenario-btn"]').click();
-        //cy.xpath(selectors.deleteScenarioBtn).first().click();
         cy.wait(1500)
         cy.xpath(selectors.confirmDeleteScenario).click();
     }
@@ -324,7 +324,8 @@ export class ProcessTesting {
         this.clickOnTestRunTab();
     }
 
-    createScenario(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+    createScenario(createScenarioConfig) {
+        const { scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath } = createScenarioConfig
         this.clickOnPlusScenario();
         this.fillName(scenarioName);
         this.fillDescription(scenarioDescription);
@@ -345,19 +346,21 @@ export class ProcessTesting {
     }
 
     //2D Modal to create scenario 
-    createScenarioByProcess(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+    createScenarioByProcess(createScenarioConfig) {
         this.goToScenariosTab();
-        this.createScenario(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath)
+        this.createScenario(createScenarioConfig)
+        cy.get('.alert-wrapper > .alert').should("be.visible");
+        cy.get('.alert-wrapper > .alert').should("contain","The process test scenario was created.");
     }
 
-    createScenarioIfNotExist(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+    createScenarioIfNotExist(scenarioName,createScenarioConfig) {
         this.goToScenariosTab();
         this.searchScenario(scenarioName);
         this.load();
         cy.xpath('//div[@id="scenarios-edit-tab"]//div[@class="data-table"]').invoke('text').then($element => {
             cy.log($element)
             if ($element.includes('No Data Available')) {
-                this.createScenario(scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
+                this.createScenario(createScenarioConfig);
             } else {
                 cy.log('brenda')
             }
