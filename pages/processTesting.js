@@ -39,6 +39,7 @@ export class ProcessTesting {
         cy.iframe(iframeSelector).xpath(selectors.containerSP).click();
         cy.iframe(iframeSelector).find(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
         cy.iframe(iframeSelector).xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
+        cy.wait(1000);
         cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}');
     }
 
@@ -85,7 +86,7 @@ export class ProcessTesting {
     //Cancel button in modal Run Test from Modeler
     clickOnCancelBtnFromModeler(iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).xpath(selectors.cancelBtn).click();
+        cy.iframe(iframeSelector).xpath(selectors.cancelBtn).click({force:true});
     }
     //1C. Modal Run Test (A+B alternatives)
 
