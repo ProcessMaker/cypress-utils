@@ -27,7 +27,7 @@ export default {
     //Additional data
     additionalData: '.view-lines',
     runTestBtn: '//button[contains(text(),"Run")]',
-    cancelBtn: '//footer//button[text()="Cancel"]',
+    cancelBtn: '//footer//button[text()[normalize-space()="Cancel"]]',
     //Check to bypass Script tasks and Data Connectors
     bypassCheckbox: '//input[@type="checkbox"]',
 
