@@ -4,7 +4,7 @@ const navHelper = new NavigationHelper();
 
 export class DocumentingProcess {
 
-    //Form modeler add documentation
+    //From modeler add documentation
     objectDocumentation(elementName,elementXpath,documentation){
         cy.xpath(elementXpath.replace('nameElem',elementName)).first().should('be.visible').click();
         cy.get('[data-cy="inspector-button"]').should('be.visible').click();
@@ -34,7 +34,7 @@ export class DocumentingProcess {
         cy.get(selectors.opDumentation).should('be.visible').click();
     }
 
-    //Click on Document with AI
+    //Click on Document with AI button
     documentWithAI(){
         cy.get(selectors.docWithAI).first().should('exist').click();
         cy.xpath(selectors.modalGenerate).should('be.visible');
