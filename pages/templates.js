@@ -45,7 +45,7 @@ export class Templates {
 
         switch (option) {
             case "documentation":
-                this.documentationTemplate();
+                this.goTodocumentationTemplate();
                 break;
             case "edit":
                 this.goToEditTemplate();
@@ -60,6 +60,9 @@ export class Templates {
                 this.goToDeleteTemplate();
                 break;
         }
+    }
+    goTodocumentationTemplate(){
+        this.selectMenuOptionRow("Template Documentation");
     }
     goToEditTemplate() {
         this.selectMenuOptionRow("Edit Template");

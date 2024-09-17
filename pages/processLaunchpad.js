@@ -57,7 +57,7 @@ export class ProcessLaunchpad {
         cy.xpath(selectors.launch_startProcessButton).should("be.visible");
     }
     clikOnElipsisMenu(){
-        cy.xpath(selectors.launch_elipsis).should('be.visible').click();
+        cy.xpath(selectors.launch_elipsis).first().should('be.visible').click();
     }
     selectOptionOfElipsis(option="Edit Launchpad"){
         cy.xpath(selectors.optionLaunchPad.replace("option",option)).click();
