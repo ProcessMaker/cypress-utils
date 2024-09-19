@@ -1423,7 +1423,7 @@ export class Process {
         const resourceSelected = "//label[text()='Start Event']/parent::div//div[@class='multiselect__tags']//span";
 
         cy.xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible').click();
-        cy.wait(2000);
+        cy.get('[class="multiselect__spinner"]').eq(0).should('not.be.visible');
         cy.xpath(subProcessSelected).invoke('text')
             .then(text => {
                 if (text !== subProcessName) {
