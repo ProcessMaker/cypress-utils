@@ -8,7 +8,7 @@ const taskPreview = new taskPreviewPane();
 export class taskPreviewPaneExecution{       
     ExecutionTCP43112TaskA(){
        navHelper.navigateToTasksPage();
-       searchForTaskAndProcessFilterOneStatus('Self Service');
+       taskPreviewPane.searchForTaskAndProcessFilterOneStatus('Self Service');
        cy.xpath(selectors.eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
        cy.xpath(selectors.eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();      
        cy.frameLoaded(".iframe");
@@ -17,7 +17,7 @@ export class taskPreviewPaneExecution{
            .should('be.visible')
            .click({force:true});
        navHelper.navigateToTasksPage();
-       searchForTaskAndProcessFilterOneStatus('In Progress');
+       taskPreviewPane.searchForTaskAndProcessFilterOneStatus('In Progress');
        cy.xpath(selectors.eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
        cy.xpath(selectors.eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();       
        cy.frameLoaded(".iframe");
@@ -40,7 +40,7 @@ export class taskPreviewPaneExecution{
     
     ExecutionTCP43112TaskB(){
         navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus('Task Preview Pane Data Connector','In Progress');
+        taskPreview.searchForTaskAndProcessFilterOneStatus('In Progress');
         cy.iframe('.iframe')
             .find('.multiselect__single').eq(0)
             .should('have.text', 'Bolivia');
