@@ -6,70 +6,62 @@ const taskPreview = new taskPreviewPane();
 
 export class taskPreviewPaneExecution{       
     ExecutionTCP43112TaskA(){
-        navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus('Task Preview Pane Data Connector','Self Service');
-        cy.xpath('(//td[contains(text(),"Self Service")])[1]').should('be.visible');
-        cy.xpath('(//a[contains(text(),"A")]/ancestor::tr/td/span/i)[1]')
-            .should('be.visible');
-        cy.xpath('(//a[contains(text(),"A")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false
-        });
-        cy.frameLoaded('#tasksFrame1');
-        cy.iframe('#tasksFrame1')
-            .find('button').eq(0)
-            .should('be.visible')
-            .click({force:true});
-        navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus('Task Preview Pane Data Connector','In Progress');
-        cy.xpath('(//a[contains(text(),"A")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false
-        });
-        cy.frameLoaded('#tasksFrame1');
-        cy.iframe('#tasksFrame1')
-            .find('button').eq(0)
-            .should('be.visible')
-            .click({force:true});
-        cy.iframe('#tasksFrame1')
-            .find('input').eq(0).type('Bolivia',{force:true})
-            .should('have.value', 'Bolivia').type('{enter}',{force:true});
-        cy.iframe('#tasksFrame1')
-            .find('input').eq(1).type('Chile',{force:true})
-            .should('have.value', 'Chile').type('{enter}', {force:true});
-        cy.iframe('#tasksFrame1')
-            .find('button').eq(2)
-            .should('be.visible')
-            .click({force:true});
-        cy.reload();
+       navHelper.navigateToTasksPage();
+       searchForTaskAndProcessFilterOneStatus('Self Service');
+       cy.xpath(eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+       cy.xpath(eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();      
+       cy.frameLoaded(".iframe");
+       cy.iframe(".iframe")
+           .find('button').eq(0)
+           .should('be.visible')
+           .click({force:true});
+       navHelper.navigateToTasksPage();
+       searchForTaskAndProcessFilterOneStatus('In Progress');
+       cy.xpath(eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+       cy.xpath(eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();       
+       cy.frameLoaded(".iframe");
+       cy.iframe(".iframe")
+           .find('button').eq(0)
+           .should('be.visible')
+           .click({force:true});
+       cy.iframe(".iframe")
+           .find('input').eq(0).type('Bolivia',{force:true})
+           .should('have.value', 'Bolivia').type('{enter}',{force:true});
+       cy.iframe('.iframe')
+           .find('input').eq(1).type('Chile',{force:true})
+           .should('have.value', 'Chile').type('{enter}', {force:true});
+       cy.iframe('.iframe')
+           .find('button').eq(2)
+           .should('be.visible')
+           .click({force:true});
+       cy.reload();    
     }
     
     ExecutionTCP43112TaskB(){
         navHelper.navigateToTasksPage();
         taskPreview.searchForTaskAndProcessFilterOneStatus('Task Preview Pane Data Connector','In Progress');
-        cy.xpath('(//a[contains(text(),"B")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false
-        });
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('.multiselect__single').eq(0)
             .should('have.text', 'Bolivia');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('.multiselect__single').eq(1)
             .should('have.text', 'Chile');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('.multiselect__single').eq(2)
             .should('have.text', 'Bolivia');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('p').eq(0)
             .should('have.text', 'BOL');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('p').eq(1)
             .should('have.text', 'Bolivia');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('p').eq(2)
             .should('contain.text', 'Latin America & Caribbean');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('p').eq(3)
             .should('have.text', 'La Paz');
-        cy.iframe('#tasksFrame1')
+        cy.iframe('.iframe')
             .find('button').eq(5)
             .should('be.visible')
             .click({force:true});
