@@ -8,7 +8,7 @@ const taskPreview = new taskPreviewPane();
 export class taskPreviewPaneExecution{       
     ExecutionTCP43112TaskA(){
        navHelper.navigateToTasksPage();
-       taskPreviewPane.searchForTaskAndProcessFilterOneStatus('Self Service'); 
+       taskPreview.searchForTaskAndProcessFilterOneStatus('Self Service');
        cy.xpath(selectors.eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
        cy.xpath(selectors.eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();      
        cy.frameLoaded(".iframe");
@@ -17,7 +17,7 @@ export class taskPreviewPaneExecution{
            .should('be.visible')
            .click({force:true});
        navHelper.navigateToTasksPage();
-       taskPreviewPane.searchForTaskAndProcessFilterOneStatus('In Progress');
+       taskPreview.searchForTaskAndProcessFilterOneStatus('In Progress');
        cy.xpath(selectors.eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
        cy.xpath(selectors.eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();       
        cy.frameLoaded(".iframe");
