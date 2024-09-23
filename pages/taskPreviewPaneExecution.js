@@ -1,5 +1,6 @@
 import {NavigationHelper} from "#helpers/navigationHelper";
 import {taskPreviewPane} from "#pages/taskPreviewPane";
+import selectors from "#selectors/taskPreviewPane";
 
 const navHelper = new NavigationHelper();
 const taskPreview = new taskPreviewPane();
@@ -8,8 +9,8 @@ export class taskPreviewPaneExecution{
     ExecutionTCP43112TaskA(){
        navHelper.navigateToTasksPage();
        searchForTaskAndProcessFilterOneStatus('Self Service');
-       cy.xpath(eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
-       cy.xpath(eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();      
+       cy.xpath(selectors.eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+       cy.xpath(selectors.eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();      
        cy.frameLoaded(".iframe");
        cy.iframe(".iframe")
            .find('button').eq(0)
@@ -17,8 +18,8 @@ export class taskPreviewPaneExecution{
            .click({force:true});
        navHelper.navigateToTasksPage();
        searchForTaskAndProcessFilterOneStatus('In Progress');
-       cy.xpath(eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
-       cy.xpath(eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();       
+       cy.xpath(selectors.eyeTaskPreview.replace('task','Task Preview Pane A')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+       cy.xpath(selectors.eyeButton.replace('task','Task Preview Pane A')).eq(0).should('be.visible').click();       
        cy.frameLoaded(".iframe");
        cy.iframe(".iframe")
            .find('button').eq(0)
