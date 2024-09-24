@@ -227,4 +227,12 @@ export class Templates {
                 return response.data.processId;
             });
     }
+
+    //Create a template from a process
+    createTemplatefromProcess(templateName,Description, version){
+        cy.get(selectors.nameTxtBx).should('be.visible').type(templateName, {delay:200});
+        cy.get(selectors.descriptionTemp).should('be.visible').type(Description, {delay:200});
+        cy.get(selectors.versionTemp).should('be.visible').type(version);
+        cy.get(selectors.saveTemp).should('be.visible').click();
+    }
 }

@@ -28,6 +28,13 @@ export class DocumentingProcess {
         });
     }
 
+    openAlternativeInDocumentingFromTemplate(alternative = "A") {
+        cy.url().then(($url) => {
+            let processID = $url.split("/")[5].trim();
+            cy.visit("/modeler/" + processID + "/documentation/" + alternative + "?generated=false");
+        });
+    }
+
     //Go to Documentation from modeler
     goToDocumentationFromModeler() {
         cy.get(selectors.options).first().should('exist').click();

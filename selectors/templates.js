@@ -17,6 +17,10 @@ export default {
     addProcessBtn:'[aria-label="Create Process"]',
     useTemplate:':nth-child(2) > .d-flex > .btn',
     saveBtnInPopUp: '//button[text()="Save"]',
+    //Template from a process
     nameTxtBx: '[name="name"]',
+    descriptionTemp: '[name="description"]',
+    versionTemp:'[name="version"]',
+    saveTemp: 'button[class="btn ml-2 btn-primary"]',
 
 }
