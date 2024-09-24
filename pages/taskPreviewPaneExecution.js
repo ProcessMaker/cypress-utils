@@ -92,49 +92,39 @@ export class taskPreviewPaneExecution{
             .click({force:true});
     }
 
-    ExecutionTCP43198TaskA(processName){
+    ExecutionTCP43198TaskA(){
         navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus(processName,'In Progress');
-        cy.xpath('(//td[contains(text(),"In Progress")])[1]').should('be.visible');
-        cy.xpath('(//a[contains(text(),"FormTaskA")]/ancestor::tr/td/span/i)[1]')
-            .should('be.visible');
-        cy.xpath('(//a[contains(text(),"FormTaskA")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false
-        });
-
-        cy.frameLoaded('#tasksFrame1');
-        cy.iframe('#tasksFrame1')
+        taskPreview.searchForTaskAndProcessFilterOneStatus('In Progress');
+        cy.xpath(selectors.eyeTaskPreview.replace('task','FormTaskA')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+        cy.xpath(selectors.eyeButton.replace('task','FormTaskA')).eq(0).should('be.visible').click();    
+        cy.frameLoaded(".iframe");
+        cy.iframe(".iframe")
             .find('input').eq(1)
             .should('be.visible')
             .type("test", { force: true })
             .should('have.value', 'test')
             .type("{enter}", { force: true });
-        cy.iframe('#tasksFrame1')
+        cy.iframe(".iframe")
             .find('textarea').eq(0)
             .should('be.visible')
             .type('test123',{force:true})
             .should('have.value', 'test123')
-        cy.iframe('#tasksFrame1')
+        cy.iframe(".iframe")
             .find('button').eq(0)
             .should('be.visible')
             .click({ force: true });
     }
 
-    ExecutionTCP43198TaskManual(processName){
+    ExecutionTCP43198TaskManual(){
         navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus(processName,'In Progress');
-        cy.xpath('(//td[contains(text(),"In Progress")])[1]').should('be.visible');
-        cy.xpath('(//a[contains(text(),"ManualTaskA")]/ancestor::tr/td/span/i)[1]')
-            .should('be.visible');
-        cy.xpath('(//a[contains(text(),"ManualTaskA")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false
-        });
-
-        cy.frameLoaded('#tasksFrame1');
-        cy.iframe('#tasksFrame1')
-            .find('button').eq(0)
-            .should('be.visible')
-            .click({ force: true });
+        taskPreview.searchForTaskAndProcessFilterOneStatus('In Progress');
+        cy.xpath(selectors.eyeTaskPreview.replace('task','ManualTaskA')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+        cy.xpath(selectors.eyeButton.replace('task','ManualTaskA')).eq(0).should('be.visible').click();    
+        cy.frameLoaded(".iframe");
+        cy.iframe(".iframe")
+               .find('button').eq(0)
+               .should('be.visible')
+               .click({ force: true });
     }
 
     ExecutionTCP43197TaskA(){
