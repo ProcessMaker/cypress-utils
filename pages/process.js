@@ -2125,7 +2125,7 @@ export class Process {
         cy.xpath(selectors.processRailBottomXpath).should("be.visible");
     }
 
-    importProcessAPI(path, mode = 'copy') {
+    importProcessAPI(path, mode = 'copy', pass = "") {
         let formData = new FormData();
         let win;
         return cy.fixture(path, null)
@@ -2136,6 +2136,9 @@ export class Process {
             })
             .then(cyWin => {
                 win = cyWin;
+                if(pass != ""){
+                    formData.append('password', pass);
+                }
                 return win.ProcessMaker.apiClient.post('/processes/import/validation', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -2319,5 +2322,4 @@ export class Process {
                         }
                     });
                 }
-
 }
