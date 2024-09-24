@@ -2034,16 +2034,6 @@ export class Process {
         cy.xpath(selectors.inspectorPanel).should("have.css", "display", "none");
     }
     
-    publishTemplate(templateName,Description, version){
-        var nameXpath = '//div[@id="createTemplate"]//div[@class="modal-body"]//legend[text()="Template Name"]/ancestor::fieldset//div /input';
-        var descriptionXpath = '//div[@id="createTemplate"]//div[@class="modal-body"]//legend[text()="Description"]/ancestor::fieldset//div /textarea';
-        var versionXpath = '//div[@id="createTemplate"]//div[@class="modal-body"]//legend[text()="Version"]/ancestor::fieldset//div /input[@name="version"]';
-        var saveXpath='//div[@id="createTemplate"]//footer//button[normalize-space()="Save"]';
-        cy.xpath(nameXpath).should('be.visible').type(templateName);
-        cy.xpath(descriptionXpath).should('be.visible').type(Description);
-        cy.xpath(versionXpath).should('be.visible').type(version);
-        cy.xpath(saveXpath).should('be.visible').click();
-    }
     searchTemplate(templateName) {
         cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
         cy.xpath("(//div[@id='search']//input[@aria-label='Search'])[1]")
