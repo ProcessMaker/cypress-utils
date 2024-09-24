@@ -137,36 +137,34 @@ export class taskPreviewPaneExecution{
             .click({ force: true });
     }
 
-    ExecutionTCP43197TaskA(processName){
+    ExecutionTCP43197TaskA(){
         navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus(processName,'In Progress');
-        cy.xpath('(//a[contains(text(),"FormTaskA")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false;
-        });
-        cy.frameLoaded('#tasksFrame1');
-        cy.iframe('#tasksFrame1')
-            .find('input').eq(0)
-            .type('test input',{force:true})
-            .should('have.value', 'test input')
-            .type('{enter}',{force:true});
-        cy.iframe('#tasksFrame1')
-            .find('button').eq(0)
-            .should('be.visible')
-            .click({force:true});
+        taskPreview.searchForTaskAndProcessFilterOneStatus('In Progress');
+        cy.xpath(selectors.eyeTaskPreview.replace('task','FormTaskA')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+        cy.xpath(selectors.eyeButton.replace('task','FormTaskA')).eq(0).should('be.visible').click();     
+        cy.frameLoaded(".iframe");
+        cy.iframe(".iframe")
+          .find('input').eq(0)
+          .type('test input',{force:true})
+          .should('have.value', 'test input')
+          .type('{enter}',{force:true});
+        cy.iframe('.iframe')
+          .find('button').eq(0)
+          .should('be.visible')
+          .click({force:true});
     }
                
-    ExecutionTCP43197TaskB(processName){
+    ExecutionTCP43197TaskB(){
         navHelper.navigateToTasksPage();
-        taskPreview.searchForTaskAndProcessFilterOneStatus(processName,'In Progress');
-        cy.xpath('(//a[contains(text(),"FormTaskB")]/ancestor::tr/td/span/i)[1]').click((err, runnable) => {
-            return false
-        });
-        cy.frameLoaded('#tasksFrame1');
-        cy.iframe('#tasksFrame1')
+        taskPreview.searchForTaskAndProcessFilterOneStatus('In Progress');
+        cy.xpath(selectors.eyeTaskPreview.replace('task','FormTaskB')).eq(0).trigger('mouseover', {force:true}).invoke('show');
+        cy.xpath(selectors.eyeButton.replace('task','FormTaskB')).eq(0).should('be.visible').click();     
+        cy.frameLoaded(".iframe");
+        cy.iframe(".iframe")
           .find('input').eq(0)
           .should('have.value', 'test input')
           .type('{enter}',{force:true});
-        cy.iframe('#tasksFrame1')
+        cy.iframe(".iframe")
           .find('button').eq(0)
           .should('be.visible')
           .click({force:true});
