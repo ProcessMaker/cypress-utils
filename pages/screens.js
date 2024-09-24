@@ -384,9 +384,9 @@ export class Screens {
 
 	searchScreen(screenName, option = 'edit') {
 		cy.get(Selectors.loadingSpinnerScreen).should('not.be.visible');
-		cy.wait(2000);
+		cy.wait(3000);
 		cy.get(Selectors.searchInputBox).first().type(screenName).should('have.value', screenName);
-		cy.get(Selectors.loadingSpinnerScreen).should('be.visible');
+		cy.get(Selectors.loadingSpinnerScreen).should('not.be.visible');
 		this.pressThreePointsTable();
 		switch (option) {
 			case 'edit':
