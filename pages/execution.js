@@ -8593,10 +8593,11 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     actionsAndAssertionsTCP42977(nameProcess, version){
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(nameProcess,"Template");
-        var templateName = new Date().getTime()+"New template";
-        var Description = new Date().getTime()+"Description test";
-        //Step 1: Create process as a Template
-        process.publishTemplate(templateName,Description, version);
+        let timeStamp = new Date().getTime();
+        var templateName = "TCP4-2977 Template"+timeStamp;
+        var Description = "Verify that a template is created after importing a BPMN";
+        //Step 1: Create template form a process
+        template.createTemplatefromProcess(templateName,Description, version);
         //Step 2: Review template created
         navHelper.navigateToProcessPage();
         cy.get("#nav-templates-tab").click();
@@ -8712,7 +8713,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.wait(1000);
         cy.get("div > span").first().should('be.visible');
     }
-    actionsAndAssertionsTC42983(processName){
+    actionsAndAssertionsTC42983(processName, IdProcess){
         //Step1: Review nested screen
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(processName,"edit");
@@ -8743,6 +8744,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.readFile(path).its("name").should("eq", processName);
         cy.readFile(path).its("type").should("eq", "process_package");
     }
+
     verifyConfigurationTCP43114(processName){
         process.searchProcessAndSelectOptions(processName,"edit");
         cy.get('[data-cy="inspector-button"]').should('be.visible').click();
