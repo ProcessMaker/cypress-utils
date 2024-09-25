@@ -29,7 +29,8 @@ export class PMBlock {
         if (category != "") this.enterPMBlockCategory(category);
         if (username != "") this.enterPMBlockManager(username);
         if (icon != "") this.enterIcon(icon);
-        this.clickOnSaveInAddPublish();
+        his.clickOnSaveInAddPublish();
+        cy.wait(4000);
 
 
     }
