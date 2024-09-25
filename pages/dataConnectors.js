@@ -99,10 +99,9 @@ export class Dataconnectors {
             .should('have.value', name);
         cy.xpath(selectors.dataSourceIndexLoading).should('be.visible');
         cy.wait(2000);
-        cy.xpath(selectors.firstRowDataConnector, { timeout: 10000 })
-            .find('td')
-            .then(($loadedTable) => {
-                if ($loadedTable.length === 1) {
+        cy.xpath(selectors.dataSourceIndexLoading, { timeout: 10000 })
+            .then(($message) => {
+                if ($message.length === 1) {
                     this.createADataConnector(name, description, type);
                     cy.xpath(selectors.resourcesTitle).should('be.visible');
                     cy.xpath(selectors.resourcesTitle).click();
