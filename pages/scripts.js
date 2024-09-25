@@ -522,7 +522,7 @@ export class Scripts {
             }else{
                 cy.xpath(Selectors.runScriptAslabel).should('be.visible');
                 cy.xpath(Selectors.runScriptAsInput).click({force:true});
-                cy.xpath(Selectors.runScriptAsInput).type(userName,{delay:80}).should('have.value',userName);
+                cy.xpath(Selectors.runScriptAsInput).type(userName,{delay:150}).type(" ").type("{backspace}").should('have.value',userName);
                 cy.xpath(Selectors.runScriptAsWrapper)
                     .should('have.attr', 'aria-label')
                     .and('contain', `${userName}. `);
