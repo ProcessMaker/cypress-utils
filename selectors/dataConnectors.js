@@ -26,7 +26,7 @@ export default {
     resourceNmeTxt:'[name="purpose"]',
     CategoryTxt: '[class="multiselect__tag"] span',
     dataSourceIndex: '//div[@id="dataSourceIndex"]//div[@id="search"]//input',
-    dataSourceIndexLoading: '//div[@id="dataSourceIndex"]//div[@class="jumbotron jumbotron-fluid"]//h3[text()="Loading"]',
+    dataSourceIndexLoading: '//div[@id="dataSourceIndex"]//div[@class="jumbotron jumbotron-fluid"]//h3',
     dataSourceEllipsis: '//*[@id="dataSourceIndex"]/div[2]/div[2]/table/tbody/tr/td[7]/div/button',
     dataSourceEditButtonForSpecificUser: '//*[@id="dataSourceIndex"]/div[2]/div[2]/table/tbody/tr/td[7]/div/ul/div/li[1]/a',
     dataSourceRemoveButtonForSpecificUser: '//*[@id="dataSourceIndex"]/div[2]/div[2]/table/tbody/tr/td[7]/div/ul/div/li[4]/a',
