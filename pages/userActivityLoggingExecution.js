@@ -141,9 +141,10 @@ export class userActivityLoggingExecution{
         userActivity.checkLabelsSecurityLogsLabels(["Name:", "Deleted At:"]);
         userActivity.checkLabelsSecurityLogsSpan([newGroupname]);
     }
+
     securityLogsDataConnectorResourceActionCheck(name){
         userActivity.accessToSecurityLogs();
-        userActivity.searchByEvent("ConnectorResourceAction");
+        userActivity.searchByEvent("DataConnectorResourceAction");
         userActivity.accessToSpecificSecurityLog('DataConnectorResourceAction');
         userActivity.checkLabelsSecurityLogsLabels(["Name:","Created At:","Description:", "Action:", "Method:", "DataConnector:"]);
         userActivity.checkLabelsSecurityLogsSpan(["test QA", "Resource Created", "GET", name]);
@@ -154,11 +155,10 @@ export class userActivityLoggingExecution{
 
     securityLogsDataConnectorVerifyResource(resourceName, labels, span) {
         userActivity.accessToSecurityLogs();
-        userActivity.searchByEvent("ConnectorResourceAction");
+        userActivity.searchByEvent("DataConnectorResourceAction");
         userActivity.accessToSpecificSecurityLog(resourceName);
         userActivity.checkLabelsSecurityLogsLabels(labels);
         userActivity.checkLabelsSecurityLogsSpan(span);
-        // userActivity.checkLabelsSecurityLogsHref(["list"]);
     }
 
     securityLogsDataCustomizeUiUpdated() {
