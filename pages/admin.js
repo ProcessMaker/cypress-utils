@@ -1402,7 +1402,7 @@ export class Admin {
 
     searchAuthClient(name,optionEdit=true){
         let searchUserAuthXpath = '//input[@id="search-box"]';
-        let optionButtonXpath = '//*[contains(text(),"name")]/ancestor::tr//*[contains(text(),"Options")]';
+        let optionButtonXpath = '//*[contains(text(),"name")]/ancestor::tr//button[@aria-haspopup="menu"]';
         let editAuthXpath = '//a//*[contains(text(),"Edit Auth Client")]';
         cy.xpath(searchUserAuthXpath).should('be.visible')
             .type(name)
@@ -1414,7 +1414,7 @@ export class Admin {
         if(optionEdit){
             cy.xpath(editAuthXpath)
                 .should('be.visible')
-                .click();
+                .click({force:true});
         }
     }
     
