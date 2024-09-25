@@ -35,7 +35,8 @@ export class userActivityLogging{
    accessToSpecificSecurityLog(log){
        const xpath = selectors.securityLog.replace('log', log);
        cy.xpath(xpath).should('be.visible');
-       cy.xpath((selectors.securityLog.replace('log', log))[1]).click();
+       cy.xpath((selectors.securityLog.replace('log', log))).should('be.visible');
+       cy.xpath((selectors.securityLog.replace('log', log))).click({force:true});
    }
 
    /**
