@@ -8637,8 +8637,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         process.searchProcessAndSelectOptions(processName,"config");
         cy.get('[class="nav-item nav-link active"]').should('be.visible');
         let timeStamp = new Date().getTime();
-        var newName= timeStamp+"newName TCP43031";
-        var description = timeStamp+"Description test";
+        var newName= "TCP4-3031 NewName"+timeStamp;
+        var description = "TCP4-3031 NewDescription"+timeStamp;
         cy.xpath('//input[@name="name"]').clear().type(newName);
         cy.xpath('//textarea[@name="description"]').clear().type(description);
         cy.xpath('(//button[contains(text(),"Save")])[1]').first().
@@ -8652,29 +8652,28 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         navHelper.navigateToAdminPage();
 
         //Step 3: Verify that the process was exported with new name
-        var nameProcess = timeStamp+"newname_tcp43031";
+        var nameProcess = "tcp4-3031_newname"+timeStamp;
         var path = "cypress/downloads/" + nameProcess + ".json";
         cy.log(path);
         cy.readFile(path).should("exist");
         cy.readFile(path).its("name").should("eq", processName);
         cy.readFile(path).its("type").should("eq", "process_package");
     }
-    actionsAndAssertionsTC42986(processName){
-        //Step1: Review task-screen
+    actionsAndAssertionsTC42986(processName,IdProcess){
+        //Step 1: Review task-screen
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(processName,"edit");
         process.openScreenofElementFromModeler("Form Task", "Form");
 
         //Step 2: Open and Review configuration Email Notification
-        navHelper.navigateToProcessPage();
-        process.searchProcessAndSelectOptions(processName,"edit");
+        cy.visit("/modeler/"+IdProcess+"/alternative/A");
         cy.get('[data-cy="inspector-button"]').click();
         cy.xpath("(//*[contains(text(),'Form')]/ancestor::*[@data-type='processmaker.components.nodes.task.Shape'])[1]").should('be.visible').click();
         cy.xpath("//span[text()='Email Notifications']").should("be.visible").click();
         cy.get('[aria-label="edit"] > .fas').should("be.visible").click();
         cy.xpath('//i[@class="fas fa-grip-vertical mr-1"]/ancestor::div[@class="col-9 pr-0 col"]//span').scrollIntoView().should("be.visible");
         cy.xpath('(//button[@class="btn p-0 btn-link btn-sm"])[1]').click();
-        cy.xpath('(//input[@class="form-control"])[6]').should('have.value', 'automation.pm4@gmail.com');
+        cy.xpath("//label[contains(text(),'Email Address ')]/parent::div//input").should('have.value', 'automation.pm4@gmail.com');
         process.openScreenEmailNotificationofElementFromModeler("Form Task", "Form");
         cy.xpath('//div[@class="form-group card-body m-0 pb-4 pt-4"]//p').should(($p) => {
             expect($p.first()).to.contain('This is a test to review email notification');
