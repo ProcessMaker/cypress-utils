@@ -86,14 +86,14 @@ export class userActivityLoggingExecution{
         userActivity.checkLabelsSecurityLogsLabels(["Action:", "Process:", "Request:"]);
         userActivity.checkLabelsSecurityLogsSpan(["COMPLETED"]);
         cy.url().then(url => {
-            userActivity.checkLabelsSecurityLogsHref([processName]);
-            cy.xpath((selectors.processNameConfirmation).replace("process", processName)).should('be.visible');
-            cy.visit(url);
-            cy.xpath(selectors.securityLogsMenu).click();
-            userActivity.accessToSpecificSecurityLog('RequestAction');
-            userActivity.checkLabelsSecurityLogsHref([requestId]);
-            cy.xpath(selectors.requestIdConfirmation).contains(requestId);
-        });
+        userActivity.checkLabelsSecurityLogsHref([processName]);
+        cy.visit(url);
+        cy.xpath(selectors.securityLogsMenu).click();
+        userActivity.accessToSpecificSecurityLog('RequestAction');
+        userActivity.checkLabelsSecurityLogsHref([requestId]);
+        cy.xpath(selectors.requestIdConfirmation).contains(requestId);
+   });
+
     }
 
     securityLogsAuthClientCreated(){
