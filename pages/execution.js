@@ -8680,9 +8680,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         })
         //Step 3: Export Process
         navHelper.navigateToProcessPage();
-        var exportType = "basic";
-        var passwordOption = "no";
-        process.searchProcessAndSelectOptions(processName,"export", exportType, passwordOption);
+        process.exportProcessById(processName,"basic","no",[],IdProcess);
         navHelper.navigateToAdminPage();
 
         //Step 4: Verify that the process was exported
@@ -8728,11 +8726,13 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //Step 2: Export Process
         navHelper.navigateToProcessPage();
+
         var exportType = "basic";
         var passwordOption = "yes";
         var password = "12345678";
         cy.reload();
-        process.searchProcessAndSelectOptions(processName,"export", exportType, passwordOption, password);
+        process.searchProcessAndSelectOptions(processName,exportType, passwordOption, password);
+
         navHelper.navigateToAdminPage();
 
         //Step 3: Verify that the process was exported

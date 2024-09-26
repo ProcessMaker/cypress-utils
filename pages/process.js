@@ -2312,4 +2312,46 @@ export class Process {
                         }
                     });
                 }
+    exportProcessById(
+        processName,
+        exportType = "basic",
+        passwordOption = "no",
+        password,
+        IdProcess
+    ) {
+        //this.selectMenuOptionRow("Export");
+        cy.visit('processes/'+IdProcess+'/export');
+        cy.xpath(selectors.menuSidebarXpath).should("be.visible");
+        var process = processName + ".";
+        cy.xpath(selectors.exportTitleProcessXpath).should(
+            "have.text",
+            process
+        );
+        if (exportType === "basic") {
+            //basic export
+            cy.xpath(selectors.downloadBtn).click();
+            cy.xpath(selectors.exportTitleSetPasswordXpath).should(
+                "be.visible"
+            );
+            if (passwordOption === "no") {
+                cy.xpath(selectors.passwordProtectFieldXpath).uncheck({
+                    force: true,
+                });
+            } else {
+                cy.xpath(selectors.setPasswordFieldXpath).type(password, {
+                    delay: 50,
+                });
+                cy.xpath(selectors.confirmPasswordFieldXpath).type(password, {
+                    delay: 50,
+                });
+            }
+            cy.xpath(selectors.exportBtnXpath).click();
+            cy.xpath(selectors.messageExportSuccessfulXpath).should(
+                "be.visible"
+            );
+            cy.xpath(selectors.exportCloseBtnXpath).click();
+        } else {
+            //custom export
+        }
+    }
 }
