@@ -15,12 +15,10 @@
   },
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.5",
+    "@processmaker/cypress-utils": "^1.0.245",
     "cypress-downloadfile": "^1.2.3",
     "cypress-file-upload": "^5.0.8",
     "cypress-promise": "^1.1.0",
     "date-fns": "^3.6.0"
-  },
-  "dependencies": {
-    "@processmaker/cypress-utils": "^1.0.244"
   }
 }
