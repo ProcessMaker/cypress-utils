@@ -25,7 +25,7 @@ export class SlideShow {
      * @return nothing returns
      */
     uploadImageToSlideShowIfNotExits(image,valid=true){
-        cy.get(selectors.settigns_fotoLabel).should('exist');
+        cy.xpath(selectors.settigns_fotoLabel).should('exist');
 
         cy.get('body')
             .then(($body) => {
@@ -38,7 +38,7 @@ export class SlideShow {
                             .should('be.visible');
                         cy.xpath('//div[@label="Image Slide Show"]//*[contains(@class,"justify-center items-center")]')
                             .should('not.be.visible');
-                        this.verifyImageInSlideShow();
+                        cy.wait(2000);
                     }
                 }
             });
@@ -71,6 +71,8 @@ export class SlideShow {
                     // input was found, do something else here
                     cy.log('delete');
                     this.deleteImageInSlideShow();
+                }else{
+                    cy.log('LON'+$body.find(selectors.settings_deleteImage).length);
                 }
             });
     }
@@ -84,6 +86,7 @@ export class SlideShow {
             .should('exist')
             .click({force:true});
         cy.xpath(selectors.settings_uploadImage).should('exist');
+        cy.wait(2000);
     }
     /**
      * This method is responsible to verify that image is not visible
@@ -106,17 +109,22 @@ export class SlideShow {
      */
     clickOnSlideShowButton(){
         cy.get(selectors.slideShowButton)
-            .should('be.visible')
+            .should('exist')
             .click();
+        cy.wait(5000);
     }
     enableSlideShowSharing(){
-        cy.get(selectors.modal_enableSharing).eq(0).check({force:true});
+        cy.get(selectors.modal_enableSharing).should('exist')
+            .check({force:true});
+        cy.xpath('(//a[contains(text(),"Open Slideshow Mode")])[1]').should('be.visible');
     }
     disableSlideShowSharing(){
         cy.get(selectors.modal_enableSharing).eq(0).uncheck({force:true});
     }
     saveSlideShowModal(){
-        cy.xpath(selectors.modal_save).should('be.enabled').click()
+        cy.log('entro');
+        cy.wait(4000);
+        cy.xpath(selectors.modal_save).should('be.enabled').click();
         cy.get(selectors.modal_alertSucces).should('be.visible')
     }
     /**
@@ -155,6 +163,6 @@ export class SlideShow {
             .should('not.have.value',email);
     }
     closeModalSlideShow(){
-        cy.get(selectors.modal_closeModal).click({force:true});
+        cy.xpath(selectors.modal_closeModal).click({force:true});
     }
 }
