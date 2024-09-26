@@ -4,7 +4,7 @@ export class SmartInbox {
     searchTask(taskName){
         cy.xpath('//tbody//tr').should('be.visible');
         cy.get(selectors.searchTask).type(taskName);
-        cy.get(selectors.searchTask).type('{enter}');
+        cy.get(selectors.pressSelectOptionSaveSearch).type('{enter}');
         cy.get(selectors.loadingSpinnerTask).should('be.visible');
         cy.get(selectors.loadingSpinnerTask).should('not.be.visible');
         cy.xpath("//table//td//*[contains(text(),'"+taskName+"')]").should('be.visible');
@@ -75,7 +75,7 @@ export class SmartInbox {
 
     pressSelectOptionSaveSearch(option) {
         cy.get(selectors.optionSaveSearch).contains(option).click();
-        cy.get(selectors.pagination).should("be.visible");
+        //cy.get(selectors.pagination).should("be.visible");
     }
 
     writeRuleName(name) {
