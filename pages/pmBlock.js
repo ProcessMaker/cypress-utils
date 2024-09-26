@@ -24,8 +24,8 @@ export class PMBlock {
 
 
     createPMBlock(name, description, category = "", icon = "", username = "") {
-        this.enterPMBlockName(name);
-        this.enterPMBlockDescription(description);
+        this.enterPMBlockName(name, {delay:200});
+        this.enterPMBlockDescription(description, {delay:200});
         if (category != "") this.enterPMBlockCategory(category);
         if (username != "") this.enterPMBlockManager(username);
         if (icon != "") this.enterIcon(icon);
