@@ -8,7 +8,9 @@ export class Filtering {
      */
     table_openFilterByColumn(column) {
         //this.table_waitForTableData();
-        cy.get(selectors.columnHeader.replace("{col}", column)).trigger(
+        cy.wait(2000);
+        cy.get('[data-cy="tasks-table"]').should("be.visible");
+        cy.get(selectors.columnHeader.replace("{col}", column)).should("be.visible").trigger(
             "mouseover"
         );
         cy.get(selectors.openFilter.replace("{col}", column)).click({
