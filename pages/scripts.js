@@ -514,6 +514,8 @@ export class Scripts {
     }
     
     assignUserToRunScriptAs(scriptName,userName){
+        cy.get(Selectors.loadingSpinnerScript).should("not.be.visible");
+        cy.wait(2000);
         this.searchScript(scriptName);
         cy.wait(2000);
         cy.xpath('//label[contains(text(),"Run Script As")]//parent::div//input//following-sibling::span').invoke('text').then($User=>{
