@@ -13,18 +13,21 @@ export class NaturalLanguage {
     }
 
     setDataOnDescription(descriptionData){
-        cy.get(selectors.descriptionNL).type(descriptionData,{delay:500});
+        cy.get('[class="tox-edit-area__iframe"]').then(($iframe) => {
+            const $body = $iframe.contents().find('body');
+            cy.wrap($body).find('p').type(descriptionData,{delay:500});
+        });
     }
 
     clickOnGenerate(){
-        cy.get(selectors.generateBTtnNL).should('be.visible').click({timeout: 1000});
-        cy.wait(5000);
+        cy.get(selectors.generateBTtnNL).should('be.visible').click({timeout: 5000});
     }
 
     createSimpleProcess(descriptionData){
         cy.get(selectors.aiIcon).should('exist');
         this.clickOnDescription();
         this.setDataOnDescription(descriptionData);
+        cy.wait(500);
         this.clickOnGenerate();
         cy.get(selectors.aiIcon).should('not.exist');
         cy.get('.spinner-border').should('exist');        
@@ -114,7 +117,10 @@ export class NaturalLanguage {
 
     clickOnUseModel(processName){
         cy.get(selectors.useModelBtn).click();
-        cy.get('input[name="name"]').should('be.visible').type(processName, {delay:50});
+        cy.get('[class="modal-header"]').should('be.visible');
+        cy.get('input[name="name"]').click().clear();
+        cy.wait(1000);
+        cy.get('input[name="name"]').should('be.visible').type(processName, {delay:100});
         cy.xpath(selectors.saveBtn).should('be.visible').click();
     }
 
