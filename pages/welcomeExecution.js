@@ -83,13 +83,7 @@ export class welcomeExecution {
             .type(processName)
             .should("have.value", processName)
             .type("{enter}");
-        cy.xpath(
-            selectors.hrefRequestHarcoded.replace("processName", processName)
-        ).should("have.attr", "href");
-        cy.xpath(selectors.menuRequestExpansion).should(
-            "have.class",
-            "fas fa-external-link-alt custom-icon"
-        );
+        cy.xpath('//div/span[contains(text()," In Progress ")]').should('be.visible');
     }
     // Welcome home: START NEW REQUEST
     startNewRequest(processName) {
