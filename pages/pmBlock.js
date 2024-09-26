@@ -110,7 +110,7 @@ export class PMBlock {
         cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}{enter}`,{delay:100}).should("have.value", pmblockName);
         cy.xpath(selectors.searchInputPmblock).type('{enter}');
         cy.wait(2000);
-        //cy.xpath(selectors.threePointsBtnXpathPmblock).should("be.visible");
+        cy.xpath(selectors.threePointsBtnXpathPmblock).should("be.visible");
         cy.xpath(selectors.threePointsBtnXpathPmblock).first().should("be.visible");
         cy.xpath(selectors.threePointsBtnXpathPmblock).first().click();
 
