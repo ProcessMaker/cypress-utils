@@ -1,6 +1,6 @@
 export default{
     aiProcessBtn: '//img[@class="mb-2"]',
-    descriptionNL: '[data-test="textarea-prompt"]',
+    descriptionNL: '[class="tox-edit-area"]',
     generateBTtnNL: '[data-test="generate-button"]',
     processDetailsTab: '[data-test="details-button"]',
     historyTab: '[data-test="history-button"]',

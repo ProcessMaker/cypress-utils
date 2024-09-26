@@ -13,7 +13,11 @@ export class NaturalLanguage {
     }
 
     setDataOnDescription(descriptionData){
-        cy.get(selectors.descriptionNL).type(descriptionData,{delay:500});
+        cy.get('[class="tox-edit-area__iframe"]').then(($iframe) => {
+            const $body = $iframe.contents().find('body');
+            cy.wrap($body).find('p').type(descriptionData);
+        });
+        //cy.get(selectors.descriptionNL).type(descriptionData,{delay:500});
     }
 
     clickOnGenerate(){
@@ -114,7 +118,10 @@ export class NaturalLanguage {
 
     clickOnUseModel(processName){
         cy.get(selectors.useModelBtn).click();
-        cy.get('input[name="name"]').should('be.visible').type(processName, {delay:50});
+        cy.get('[class="modal-header"]').should('be.visible');
+        cy.get('input[name="name"]').click().clear();
+        cy.wait(1000);
+        cy.get('input[name="name"]').should('be.visible').type(processName, {delay:100});
         cy.xpath(selectors.saveBtn).should('be.visible').click();
     }
 
