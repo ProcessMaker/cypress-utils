@@ -51,11 +51,12 @@ export class welcomeExecution {
     verifyDefaultPageRecentAssetsFromMyProjects() {
         cy.xpath("//span[text()='Recent Assets']").should('be.visible');
     }
+    
     // Welcome home: MY TASKS
     myTasks(processName) {
         cy.xpath(selectors.myTasks).should("be.visible");
         cy.xpath(selectors.tasks).should("be.visible");
-        cy.xpath(selectors.requests).should("be.visible");
+        cy.xpath(selectors.case).should("be.visible");
         cy.xpath(selectors.due).should("be.visible");
         cy.xpath(selectors.menuTaskExpansion).should(
             "have.class",
@@ -68,18 +69,14 @@ export class welcomeExecution {
             .type(processName)
             .should("have.value", processName)
             .type("{enter}");
-        cy.xpath(selectors.eyeHardcoded)
-            .should("be.visible")
-            .click((err, runnable) => {
-                return false;
-            });
     }
+
     // Welcome home: MY REQUESTS
     myRequests(processName) {
-        cy.xpath(selectors.myRequests).should("be.visible");
-        cy.xpath(selectors.numberRequest).should("be.visible");
-        cy.xpath(selectors.nameRequest).should("be.visible");
-        cy.xpath(selectors.statusRequest).should("be.visible");
+        cy.xpath(selectors.myCases).should("be.visible");
+        cy.xpath(selectors.numberCase).should("be.visible");
+        cy.xpath(selectors.nameCase).should("be.visible");
+        cy.xpath(selectors.statusCase).should("be.visible");
         cy.xpath(selectors.searchRequest).should("be.visible").click();
         cy.xpath(selectors.inputRequest)
             .click()

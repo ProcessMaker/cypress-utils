@@ -21,6 +21,6 @@
     "date-fns": "^3.6.0"
   },
   "dependencies": {
-    "@processmaker/cypress-utils": "^1.0.240"
+    "@processmaker/cypress-utils": "^1.0.243"
   }
 }
