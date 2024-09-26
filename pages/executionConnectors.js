@@ -438,13 +438,14 @@ export class ExecutionConnectors {
 
         //Step 1: Import PM Block
         pmBlock.importPMBlock(pmblockPath);
-        cy.wait(2000);
+        cy.wait(4000);
         cy.get('.btn-primary > span').click();
         
         //Step 2: CLick on PM Block
         navHelper.navigateToPmBlock(pmblockName);
 
         //Step 3: Open the PMBlock  Imported
+        cy.wait(4000);
         pmBlock.searchPmblockAndSelectOptions(pmblockName, "edit");
 
         //Step 4: verify fortm task in Pm Block
