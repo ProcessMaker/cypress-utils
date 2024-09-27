@@ -2147,9 +2147,6 @@ export class Process {
                 return win.ProcessMaker.apiClient.post('/import/do-import', formData);
             })
             .then(response => {
-                window.addEventListener('unhandledrejection', (event) => {
-                    throw event.reason
-                });
                 return response.data.processId;
             });
     }
