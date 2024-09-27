@@ -385,8 +385,19 @@ export class Screens {
 	searchScreen(screenName, option = 'edit') {
 		cy.get(Selectors.loadingSpinnerScreen).should('not.be.visible');
 		cy.wait(3000);
-		cy.get(Selectors.searchInputBox).first().type(screenName, { delay: 200}).type(" ").type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
-		cy.get(Selectors.loadingSpinnerScreen).should('not.be.visible');
+		cy.get(Selectors.searchInputBox).first().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
+		cy.wait(1000);
+		cy.get(Selectors.loadingSpinnerScreen).then((el) => {
+			if (el.length > 0) {
+			  cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
+			  }
+			  cy.xpath('//div[@id="screenIndex"]//tbody//tr//td//span').first().then((row)=>{
+				cy.log(row.text());
+				if(!row.text().includes(screenName)){
+					cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
+				}
+			  })
+			});
 		this.pressThreePointsTable();
 		switch (option) {
 			case 'edit':
@@ -401,7 +412,7 @@ export class Screens {
 				this.addProject();
 		}
 	}
-
+	
 	editScreen() {
 		this.selectMenuOptionRow("Edit Screen")
 		cy.get(Selectors.savePublishVersionsBtn).should('be.visible');
