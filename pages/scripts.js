@@ -326,7 +326,7 @@ export class Scripts {
      */
     searchScript(scriptName, action = "config") {
         cy.get(Selectors.searchField)
-            .type(scriptName, { delay: 500 })
+            .type(scriptName, { delay: 500 }).type(" ").type("{backspace}").type(" ").type("{backspace}")
             .should("have.value", scriptName);
         cy.xpath(Selectors.scriptTable, { timeout: 10000 }).then(
             ($loadedTable) => {
