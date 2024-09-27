@@ -162,4 +162,19 @@ export class NaturalLanguage {
         cy.get('textarea[class="m-0 border-0 form-control"]').should('be.visible').type(processName, {delay:50});
         cy.get('button[class="px-4 btn btn-primary text-uppercase"]').should('be.visible').click();
     }
+
+    waitUntilElementIsVisibleIframe(type, selectorXPath, maxAttempts = 15, attempts = 0) {
+        if (attempts > maxAttempts) {
+            throw new Error("Timed out waiting for report to be generated");
+        }
+        if (type === 'selector') {
+            cy.wait(4000);
+            cy.iframe('[id="alternative_a"]')
+                .then($body => {
+                    if ($body.find(selectorXPath).length <= 0) {
+                        this.waitUntilElementIsVisibleIframe(type, selectorXPath, maxAttempts, attempts + 1);
+                    }
+                })
+        }
+    }
 }
