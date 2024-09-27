@@ -392,7 +392,6 @@ export class Screens {
 			  cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
 			  }
 			  cy.xpath('//div[@id="screenIndex"]//tbody//tr//td//span').first().then((row)=>{
-				cy.log(row.text());
 				if(!row.text().includes(screenName)){
 					cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
 				}
