@@ -1835,7 +1835,7 @@ export class Process {
                             .should('not.be.visible');
                         cy.wait(5000);
                         cy.xpath(inputUserGroup).type(userGroup,{delay:700});
-                        cy.wait(5000);
+                        cy.wait(8000);
                         cy.xpath('//li[@aria-label="userGroup. "]'.replace("userGroup",compareUserGroup)).first().should('be.visible')
                             .click();
                         cy.wait(5000);
