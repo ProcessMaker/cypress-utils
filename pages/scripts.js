@@ -325,12 +325,25 @@ export class Scripts {
      * @return nothing returns
      */
     searchScript(scriptName, action = "config") {
+		cy.get(Selectors.loadingSpinnerScript).should('not.be.visible');
+		cy.wait(3000);
         cy.get(Selectors.searchField)
-            .type(scriptName, { delay: 500 }).type(" ").type("{backspace}").type(" ").type("{backspace}")
+            .type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}")
             .should("have.value", scriptName);
         cy.xpath(Selectors.scriptTable, { timeout: 10000 }).then(
             ($loadedTable) => {
                 if ($loadedTable.length === 1) {
+                    cy.get(Selectors.loadingSpinnerScript).then((el) => {
+                        if (el.length > 0) {
+                          cy.get(Selectors.searchField).first().clear().type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}").should('have.value', scriptName);
+                          }
+                          cy.log('Script not found');
+                          cy.xpath('//div[@id="scriptIndex"]//tbody//tr//td//span').first().then((row)=>{
+                            if(!row.text().includes(scriptName)){
+                                cy.get(Selectors.searchField).first().clear().type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}").should('have.value', scriptName);
+                            }
+                          })
+                        });
                     this.pressThreePointsRow();
                     switch (action) {
                         case "edit":
@@ -347,10 +360,7 @@ export class Scripts {
                         case "delete":
                             break;
                     }
-                } else {
-                    cy.log("script not found");
-                    return;
-                }
+                } 
             }
         );
     }
