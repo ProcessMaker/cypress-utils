@@ -98,6 +98,12 @@ export class DocumentingProcess {
         cy.wait(5000);
         cy.get(selectors.loading).should("not.be.visible");
     }
-        
+    
+    //Open documentation by url
+    openDocumentationbyIdprocess(IdProcess){
+        cy.visit("/modeler/"+IdProcess+"/documentation");
+        cy.wait(500);
+    }
+    
         
 }    

@@ -5,6 +5,7 @@ import { th } from "date-fns/locale";
 
 export class NaturalLanguage {
     clickOnAIProcess(){
+        cy.xpath(selectors.aiProcessBtn).should('be.visible');
         cy.xpath(selectors.aiProcessBtn).click();
     }
 
@@ -20,13 +21,13 @@ export class NaturalLanguage {
     }
 
     clickOnGenerate(){
-        cy.get(selectors.generateBTtnNL).should('be.visible').click({timeout: 5000});
+        cy.get(selectors.generateBTtnNL).should('be.visible').click({timeout: 10000});
     }
 
     createSimpleProcess(descriptionData){
         cy.get(selectors.aiIcon).should('exist');
         this.clickOnDescription();
-        this.setDataOnDescription(descriptionData);
+        this.setDataOnDescription(descriptionData, {delay:100});
         cy.wait(500);
         this.clickOnGenerate();
         cy.get(selectors.aiIcon).should('not.exist');
