@@ -383,20 +383,7 @@ export class Screens {
 	}
 
 	searchScreen(screenName, option = 'edit') {
-		cy.get(Selectors.loadingSpinnerScreen).should('not.be.visible');
-		cy.wait(3000);
-		cy.get(Selectors.searchInputBox).first().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
-		cy.wait(1000);
-		cy.get(Selectors.loadingSpinnerScreen).then((el) => {
-			if (el.length > 0) {
-			  cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
-			  }
-			  cy.xpath('//div[@id="screenIndex"]//tbody//tr//td//span').first().then((row)=>{
-				if(!row.text().includes(screenName)){
-					cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
-				}
-			  })
-			});
+		this.searchForAScreen(screenName);
 		this.pressThreePointsTable();
 		switch (option) {
 			case 'edit':
@@ -502,10 +489,22 @@ export class Screens {
 	}
 
 	searchForAScreen(screenName) {
-		cy.get(Selectors.screenIndex).should('be.visible');
-		cy.get(Selectors.noDataAvaiable).should('not.exist');
-		cy.get(Selectors.searchScreen).type(screenName, { delay: 200}).type(" ").type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
-		cy.wait(1500);
+		cy.get(Selectors.loadingSpinnerScreen).should('not.be.visible');
+		cy.wait(3000);
+		cy.get(Selectors.searchInputBox).first().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
+		cy.wait(3500);
+		cy.xpath('//div[@id="screenIndex"]//div[@class="data-table"]').then((el) => {
+			cy.log(el.text());
+			if (el.text().includes("No Data Available")) {
+			    cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
+			  }else{
+				cy.xpath('//div[@id="screenIndex"]//tbody//tr//td//span').first().then((row)=>{
+					if(!(row.text()===screenName)){
+						cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
+					}
+				  })
+			  }
+			});
 	}
 
 	clickOnEditScreen(screenName) {
