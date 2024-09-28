@@ -573,9 +573,19 @@ export class Screens {
 		this.searchForAScreen(screenName);
 		cy.xpath(Selectors.screenContainer).invoke('text')
 			.then(($loadedContent) => {
-				if ($loadedContent.includes('No Data Available')){
-					this.importScreen(filePath);
-				}
+				cy.log($loadedContent)
+				if($loadedContent.includes('Loading Please wait while your content is loaded')){
+					cy.wait(5000);
+					cy.xpath(Selectors.screenContainer).invoke('text')
+						.then(($loadedContent) => {
+							cy.log($loadedContent)
+							if ($loadedContent.includes('No Data Available')){
+								this.importScreen(filePath);
+							}
+						})
+				}else if($loadedContent.includes('No Data Available')){
+						this.importScreen(filePath);
+					}
 		})
 	}
  
