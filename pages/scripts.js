@@ -333,16 +333,17 @@ export class Scripts {
         cy.xpath(Selectors.scriptTable, { timeout: 10000 }).then(
             ($loadedTable) => {
                 if ($loadedTable.length === 1) {
-                    cy.get(Selectors.loadingSpinnerScript).then((el) => {
-                        if (el.length > 0) {
-                          cy.get(Selectors.searchField).first().clear().type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}").should('have.value', scriptName);
-                          }
-                          cy.log('Script not found');
-                          cy.xpath('//div[@id="scriptIndex"]//tbody//tr//td//span').first().then((row)=>{
-                            if(!row.text().includes(scriptName)){
-                                cy.get(Selectors.searchField).first().clear().type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}").should('have.value', scriptName);
-                            }
-                          })
+                    cy.xpath('//div[@id="scriptIndex"]//div[@class="data-table"]').then((el) => {
+                        if (el.text().includes("No Data Available")) {
+                            cy.log('Script not found');
+                            cy.get(Selectors.searchField).first().clear().type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}").should('have.value', scriptName);
+                        }else{
+                            cy.xpath('//div[@id="scriptIndex"]//tbody//tr//td//span').first().then((row)=>{
+                                if(!(row.text()===scriptName)){
+                                    cy.get(Selectors.searchField).first().clear().type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}").should('have.value', scriptName);
+                                }
+                              })
+                        }
                         });
                     this.pressThreePointsRow();
                     switch (action) {
