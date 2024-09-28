@@ -6,10 +6,17 @@ export class Filtering {
      * @param {column} this option must be a number according to column number
      * @return nothing returns
      */
-    table_openFilterByColumn(column) {
-        //this.table_waitForTableData();
+    table_openFilterByColumn(column, page) {
+        let selector
         cy.wait(2000);
-        cy.get('[data-cy="tasks-table"]').should("be.visible");
+        switch(page) {
+            case "requests":
+                selector = '[id="table-container"]';
+                break;
+            default:
+                selector = '[data-cy="tasks-table"]';
+        }
+        cy.get(selector).should("be.visible");
         cy.get(selectors.columnHeader.replace("{col}", column)).should("be.visible").trigger(
             "mouseover"
         );
@@ -93,14 +100,14 @@ export class Filtering {
         cy.get(selector).should("have.value", val);
     }
 
-    fillBasicFilter(col = 3, option = "=", val = 123) {
-        this.table_openFilterByColumn(col);
+    fillBasicFilter(col = 3, option = "=", val = 123, page) {
+        this.table_openFilterByColumn(col, page);
         this.selectOptionFilter(0, option);
         cy.get('[data-cy="value0"]').type(val).should("have.value", val);
         this.table_selectOptionBtnFilter("Apply");
     }
-    clearColumnFilter(col = 3) {
-        this.table_openFilterByColumn(col);
+    clearColumnFilter(col = 3, page) {
+        this.table_openFilterByColumn(col, page);
         this.table_selectOptionBtnFilter("Clear");
     }
 }
