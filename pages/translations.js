@@ -225,7 +225,7 @@ export class Translations {
      */
     deleteTranslation(languageSet){
         cy.get(selectors.optionTranslationBtn).first().should('be.visible').click();
-        cy.get('[class="dropdown-menu dropdown-menu-right show"]').should('be.visible');
+        cy.get('[class="dropdown-menu show"]').should('be.visible');
         cy.xpath(selectors.deleteOption).should('be.visible').click();
         cy.xpath(selectors.confirmDeleteBtn).should('be.visible').click();
         cy.xpath(selectors.translationsSearch).should('be.visible').click();
