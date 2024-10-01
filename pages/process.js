@@ -1398,7 +1398,12 @@ export class Process {
         cy.get(selectors.loadingSpinnerProcess).should("not.be.visible");
         cy.xpath(selectors.threePointsBtnXpath).first().should("be.visible").click();
         this.selectMenuOptionRow("Configure");
+        this.assignUserToProcessManagerInput(processManager,fullNameManager);
+    }
+    assignUserToProcessManagerInput(processManager = "admin", fullNameManager = "Admin User"){
+        cy.get('[class="multiselect__spinner"]').eq(0).should('not.be.visible');
         cy.xpath(selectors.processManagerSpanXpath).invoke('text').then(($manager)=>{
+            cy.log("This is the Process manager user"+ $manager);
             if ($manager !== fullNameManager) {
                 cy.xpath(selectors.processManagerFieldXpath).click();
                 cy.xpath(selectors.processManagerFieldXpath).find("input").type(processManager, {delay: 300});
