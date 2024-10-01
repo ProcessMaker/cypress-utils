@@ -41,7 +41,7 @@ export default{
     processMangerInput: '//label[text()="Process Manager"]/parent::div//div//div//div/following-sibling::input',
     processInputTxt: '(//input[@class="multiselect__input"])[2]',
     processManagerDropdownOption: '//label[text()="Process Manager"]//parent::div//span[text()[normalize-space()="Admin User"]]',
-    processManagerEditSaveBtn: '//label[text()="Status"]/parent::div/following-sibling::div//button[text()="Save"]',
+    processManagerEditSaveBtn: '//*[@id="nav-config"]//*[contains(text(),"Save")]',
     scripttaskBtn: '[data-test="switch-to-script-task"]',
     screenForScriptDropdown:'.multiselect__select',
     dataConnectorDropdown:'//label[text()="Select a Data Connector"]//following-sibling::div/div[@class="multiselect__select"]',
