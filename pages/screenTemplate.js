@@ -179,14 +179,14 @@ export class ScreenTemplate {
 		cy.get(selectors.screenPublicTemplate).should('be.visible');
 		cy.get(selectors.noDataAvailable).should('not.exist');
 		cy.xpath(selectors.searchInputScreenTemplatePublic).type(nameScreenTemplate).should('have.value', nameScreenTemplate).type('{enter}');
-		cy.wait(1500);
+		cy.wait(3500);
 	}
 
     searchForMyTemplateScreen(nameScreenTemplate) {
 		cy.get(selectors.screenMyTemplate).should('be.visible');
 		cy.get(selectors.noDataAvailable).should('not.exist');
 		cy.xpath(selectors.searchInputScreenTemplate).type(nameScreenTemplate).should('have.value', nameScreenTemplate).type('{enter}');
-		cy.wait(1500);
+		cy.wait(3500);
 	}
 
     searchScreenTemplateAndSelectOptionsPublic(
