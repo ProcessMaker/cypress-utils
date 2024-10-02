@@ -6,7 +6,7 @@ import promisify from 'cypress-promise'
 import { NavigationHelper } from "#helpers/navigationHelper";
 import { isThisWeek } from "date-fns";
 import "#support/commands";
-import {Utility} from "./utility";
+import { Utility } from "./utility";
 
 const utility = new Utility();
 
@@ -24,8 +24,8 @@ export class PMBlock {
 
 
     createPMBlock(name, description, category = "", icon = "", username = "") {
-        this.enterPMBlockName(name, {delay:200});
-        this.enterPMBlockDescription(description, {delay:200});
+        this.enterPMBlockName(name, { delay: 200 });
+        this.enterPMBlockDescription(description, { delay: 200 });
         if (category != "") this.enterPMBlockCategory(category);
         if (username != "") this.enterPMBlockManager(username);
         if (icon != "") this.enterIcon(icon);
@@ -88,17 +88,17 @@ export class PMBlock {
             case "archive":
                 this.archivePmblock();
                 break;
-            
-            }
+
+        }
     }
     searchForAPMBlock(pmblockName) {
         cy.get(selectors.PMBlockList).should("be.visible");
         cy.xpath(selectors.tablePMBlocks).should("be.visible");
         cy.xpath(selectors.searchInputPmblock).should("be.visible");
         cy.xpath(selectors.searchInputPmblock).click().clear();
-        cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}`,{delay:100}).type('{enter}').should("have.value", pmblockName);
-        cy.get(".jumbotron.jumbotron-fluid").should("not.be.visible"); 		
-	}
+        cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}`, { delay: 100 }).type('{enter}').should("have.value", pmblockName);
+        cy.get(".jumbotron.jumbotron-fluid").should("not.be.visible");
+    }
     searchPmblockAndSelectOptions(
         pmblockName,
         option = "config",
@@ -107,7 +107,7 @@ export class PMBlock {
         password
     ) {
         cy.xpath(selectors.threePointsBtnXpathPmblock).should("be.visible");
-        cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}{enter}`,{delay:100}).should("have.value", pmblockName);
+        cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}{enter}`, { delay: 100 }).should("have.value", pmblockName);
         cy.xpath(selectors.searchInputPmblock).type('{enter}');
         cy.wait(2000);
         cy.xpath(selectors.threePointsBtnXpathPmblock).should("be.visible");
@@ -124,8 +124,8 @@ export class PMBlock {
             case "archive":
                 this.archivePmblock();
                 break;
-            
-            }
+
+        }
     }
     searchPMBlockModeler(pmblockName) {
         cy.xpath(selectors.searchPMBlockModeler).type(`${pmblockName}{enter}`).should("have.value", pmblockName);
@@ -143,9 +143,9 @@ export class PMBlock {
         this.selectMenuOptionRow("Archive PM Block");
     }
 
-    selectMenuOptionRow(nameOption){
-        var optionXpath = '//li//span[contains(text(),"'+nameOption+'")]'
-         
+    selectMenuOptionRow(nameOption) {
+        var optionXpath = '//li//span[contains(text(),"' + nameOption + '")]'
+
         cy.xpath(optionXpath).should('be.visible');
         cy.xpath(optionXpath).first().click();
     }
@@ -167,7 +167,7 @@ export class PMBlock {
                 this.restorePmblock();
                 break;
 
-            }
+        }
     }
     exportPmblock() {
         this.selectMenuOptionRowArchived("Export PM Block");
@@ -177,8 +177,8 @@ export class PMBlock {
         this.selectMenuOptionRowArchived("Restore PM Block");
     }
 
-    selectMenuOptionRowArchived(nameOption){
-        var optionXpath = '//div[@id="pmCategorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="pmCategorizedList"]/descendant::div[@id="archivedPmBlock"]//table/tbody/tr//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"'+nameOption+'")]'
+    selectMenuOptionRowArchived(nameOption) {
+        var optionXpath = '//div[@id="pmCategorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="pmCategorizedList"]/descendant::div[@id="archivedPmBlock"]//table/tbody/tr//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"' + nameOption + '")]'
 
         cy.xpath(optionXpath).should('be.visible');
         cy.xpath(optionXpath).first().click();
@@ -197,22 +197,22 @@ export class PMBlock {
         cy.get(selectors.browseBtn).should("be.visible");
     }
 
-    
-   VerifyPresenceOfPMBlockAndImportPMBlock(pmblockName, pmblockPath) {
-    var editBtn =
-    '//div[@id="pmBlockList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
-    cy.xpath(editBtn).should("be.visible");
-    cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}`, {delay:60}).should("have.value", pmblockName);
-    cy.xpath(selectors.searchInputPmblock).type('{enter}');
-    cy.wait(2000);
-    cy.xpath(selectors.loadingSpinnerPMBlock).should("not.be.visible");
-    cy.xpath('//*[@id="pmBlockList"]/div[2]/div/table/tbody/tr', { timeout: 10000 }).find("td").then(($loadedTable) => {
-    if ($loadedTable.length === 1) {
-        this.importPMBlock(pmblockPath);
-    } else return;
-});
-}
-    
+
+    VerifyPresenceOfPMBlockAndImportPMBlock(pmblockName, pmblockPath) {
+        var editBtn =
+            '//div[@id="pmBlockList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
+        cy.xpath(editBtn).should("be.visible");
+        cy.xpath(selectors.searchInputPmblock).type(`${pmblockName}`, { delay: 60 }).should("have.value", pmblockName);
+        cy.xpath(selectors.searchInputPmblock).type('{enter}');
+        cy.wait(2000);
+        cy.xpath(selectors.loadingSpinnerPMBlock).should("not.be.visible");
+        cy.xpath('//*[@id="pmBlockList"]/div[2]/div/table/tbody/tr', { timeout: 10000 }).find("td").then(($loadedTable) => {
+            if ($loadedTable.length === 1) {
+                this.importPMBlock(pmblockPath);
+            } else return;
+        });
+    }
+
     addInboundConfiguration(content) {
         this.enterJson(content);
         this.clickOnSaveInAddPublish();
@@ -221,4 +221,66 @@ export class PMBlock {
         cy.get(selectors.contentInbound).should("be.visible").type(content, { delay: 200 }).should("have.value", content);
     }
 
+    /**
+     * 
+     * @param {*} path file path about pm-block
+     * @returns a pm-block ID
+     */
+    importPMBlockAPI(path) {
+        let formData = new FormData();
+        let win;
+        return cy.fixture(path, null)
+            .then(Cypress.Blob.arrayBufferToBlob)
+            .then(fileBlob => {
+                formData.append('file', fileBlob);
+                return cy.window();
+            })
+            .then(cyWin => {
+                win = cyWin;
+                return win.ProcessMaker.apiClient.post('/pm-blocks/import/validation', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+            })
+            .then(response => {
+                const options = {};
+                const optionsBlob = new Blob([JSON.stringify(options)], {
+                    type: 'application/json'
+                });
+                formData.append('options', optionsBlob);
+                return win.ProcessMaker.apiClient.post('/pm-blocks/import/do-import', formData);
+            })
+            .then(response => {
+                return response.data.pmBlockId;
+            });
+    }
+
+    /**
+     * 
+     * @param pmblockID = pmblock id
+     * @returns a Process ID according to pmblock
+     */
+    getProcessIdFromPmBlockAPI(pmblockID) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/pm-blocks', { params: { pmql: "id = " + pmblockID } }).then(response => {
+                const pmblock = response.data.data.find(pmblock => pmblock.id === pmblockID);
+                return pmblock.editing_process_id;
+            });
+        });
+    }
+
+    /**
+     * 
+     * @param pmblockID = pmblock id
+     * @returns a Process ID according to pmblock
+     */
+    deletePmBlockAPI(pmblockID) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/pm-blocks/'+pmblockID).then(response => {
+                console.log(JSON.stringify(response));
+                return "pmblock " + pmblockID + " was archived";
+            });
+        });
+    }
 }
