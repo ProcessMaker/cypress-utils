@@ -81,7 +81,7 @@ export class Welcome {
     openByEyeButton(criteria){
         this.searchMyTaskMyCases(criteria,1);
         cy.xpath("(//table[@class='pm-table-filter']/tbody/tr[1])[1]//a[contains(@href,'/"+criteria+"')]")
-            .trigger('mouseover');
+            .trigger('mouseover',{force:true});
         cy.xpath('//button/*[@class="fas fa-eye"]').should('be.visible').click({force:true});
         cy.wait(5000);
     }
