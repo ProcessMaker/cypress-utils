@@ -176,8 +176,8 @@ export class ScreenTemplate {
     }
 
     searchForPublicScreen(nameScreenTemplate) {
-		cy.get(selectors.screenPublicTemplate).should('be.visible');
-		cy.get(selectors.noDataAvailable).should('not.exist');
+		cy.get(selectors.screenPublicTemplate).should("be.visible");
+		cy.get(selectors.noDataAvailable).should("not.exist");
 		cy.xpath(selectors.searchInputScreenTemplatePublic).type(nameScreenTemplate).should('have.value', nameScreenTemplate).type('{enter}');
 		cy.wait(3500);
 	}
