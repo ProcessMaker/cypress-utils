@@ -1,5 +1,3 @@
-import { Login } from "#pages/login"
-import { Process } from "#pages/process"
 import selectors from "#selectors/process";
 import pageConstants from "#helpers/pageConstants";
 import promisify from 'cypress-promise'
