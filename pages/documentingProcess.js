@@ -49,16 +49,19 @@ export class DocumentingProcess {
 
     //Select Generate Documentation from Scratch button
     optionGenerateDoc(){
+        cy.get('[class="modal-header"]').should('be.visible');
         cy.xpath(selectors.generateDocBtn).should('be.visible').click();
     }
 
     //Select option Use current Documentation button
     optionCurrentDoc(){
+        cy.get('[class="modal-header"]').should('be.visible');
         cy.xpath(selectors.useCurrentDocBtn).should('be.visible').click();
     }
 
     //Select option Cancel button
     cancelBtn(){
+        cy.get('[class="modal-header"]').should('be.visible');
         cy.get(selectors.cancelBtn).should('be.visible').click();
     }
 
@@ -76,6 +79,7 @@ export class DocumentingProcess {
 
     //Confirm action
     confirmAction(){
+        cy.get('[class="modal-header"]').should('be.visible');
         cy.get(selectors.confirmActionBtn).should('be.visible').click();
     }
 
@@ -94,9 +98,9 @@ export class DocumentingProcess {
 
     //Loading...
     loadingDoc(){
-        cy.get(selectors.loading).should("be.visible");
-        cy.wait(5000);
-        cy.get(selectors.loading).should("not.be.visible");
+        cy.get(selectors.loading).first().should("be.visible");
+        cy.wait(3000);
+        cy.get(selectors.loading).first().should("not.be.visible");
     }
     
     //Open documentation by url
