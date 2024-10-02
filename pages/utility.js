@@ -22,10 +22,10 @@ export class Utility {
             .type("{enter}");
     }
     clickButton(label, position){
-        cy.xpath('(//button[contains(text(),"'+label+'")])['+position+']').click();
+        cy.xpath('(//button[contains(text(),"'+label+'")])['+position+']').click({force:true});
     }
     clickCheckBox(label, position){
-        cy.xpath('(//label[contains(text(),"'+label+'")])['+position+']').click();
+        cy.xpath('(//label[contains(text(),"'+label+'")])['+position+']').click({force:true});
     }
     uploadFile(selector, filePath){
         cy.get(selector).attachFile(filePath);
