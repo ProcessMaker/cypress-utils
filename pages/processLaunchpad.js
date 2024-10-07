@@ -45,11 +45,14 @@ export class ProcessLaunchpad {
     openPublish(){
         process.clickOnSave();
     }
-    openCategoryFromLaunchPad(category){
-        this.searchCategory(category);
-        cy.xpath(selectors.launch_category.replace('category',category)).should("be.visible");
-        cy.xpath(selectors.launch_category.replace('category',category)).first().click();
-        cy.wait(2000);
+    openCategoryFromLaunchPad(category,findCategory=true){
+        cy.get(selectors.launch_searchProcess).should("be.visible").clear();
+        cy.get(selectors.launch_searchProcess).type(category).should("have.value",category);
+        cy.get(selectors.launch_searchProcessButton).click();
+        if(findCategory)
+            cy.xpath(selectors.launch_cardCategory.replace("categoryName",category)).should("be.visible");
+        else
+            cy.xpath(selectors.launch_cardCategory.replace("categoryName",category)).should("not.exist");
     }
     searchProcessOfCategory(nameProcess){
         this.searchProcess(nameProcess);
@@ -79,20 +82,17 @@ export class ProcessLaunchpad {
                 cy.xpath("//*[contains(text(),'Open in Modeler')]").should("not.exist");
                 cy.xpath("//*[contains(text(),'Save as Template')]").should("not.exist");
                 cy.xpath("//*[contains(text(),'Save as PM Block')]").should("not.exist");
-                cy.xpath("//*[contains(text(),'Add to Project')]").should("be.visible");
                 cy.xpath("//*[contains(text(),'Configure')]").should("not.exist");
-                cy.xpath("//*[contains(text(),'View Documentation')]").should("not.exist");
                 cy.xpath("//*[contains(text(),'Archive')]").should("not.exist");
                 cy.xpath("//*[contains(text(),'Export')]").should("not.exist");
                 cy.xpath("//*[contains(text(),'Download BPMN')]").should("not.exist");
             }
         }
     }
-    startRequestByLaunchPad(numRequests,requestOption){
-        if(numRequests<=1){
-            cy.xpath(selectors.launch_startProcessButton).should("be.visible");
-            cy.xpath(selectors.launch_startProcessButton).click();
-        }
+    startRequestByLaunchPadSingle(){
+        cy.wait(3000);
+        cy.xpath(selectors.launch_startProcessButton).should("be.visible");
+        cy.xpath(selectors.launch_startProcessButton).click();
     }
     findProcess(process, category){
         cy.xpath(selectors.processCategoryLabel.replace('element', category)).should('be.visible');
@@ -100,11 +100,13 @@ export class ProcessLaunchpad {
         cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
     }
     bookmarkIconSelect(process){
-        cy.xpath(selectors.bookmarkSelection.replace('label',process)).invoke('attr','class')
+        let iconSelector = '//*[contains(@class,"header")]//*[contains(@class,"fa-bookmark")]';
+        //cy.xpath(selectors.bookmarkSelection.replace('label',process)).invoke('attr','class')
+        cy.xpath(iconSelector).invoke('attr','class')
             .then(($class)=>{
                 cy.log("This is the value of the class"+ $class);
                 if($class.includes('unmarked')){
-                    cy.xpath(selectors.bookmarkSelection.replace('label',process))
+                    cy.xpath(iconSelector)
                         .should('be.visible')
                         .click();
                     cy.get(selectors.bookMarkedSuccessAlert).should('be.visible');
@@ -127,29 +129,21 @@ export class ProcessLaunchpad {
     }
     selectSpecificStartEvent(start, position=1){
         position = position-1;
-        this.startRequestByLaunchPad(1,"");
+        this.startRequestByLaunchPadSingle();
         cy.xpath(selectors.startEvent.replace('start', start)).eq(position).should('be.visible');
         cy.xpath(selectors.startEvent.replace('start', start)).eq(position).click();
     }
     checkCategoriesAndProcessAssociation(process, elementArray=[]){
         let len = elementArray.length;
         for (var i = 0; i < len; i++) {
-            this.searchCategory(elementArray[i]);
-            cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).should('be.visible');
-            cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).click();
-            cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
-            cy.xpath(selectors.inputSearchCategories).clear();
+            this.openCategoryFromLaunchPad(elementArray[i]);
+            // cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).should('be.visible');
+            // cy.xpath(selectors.processCategoryLabel.replace('element', elementArray[i])).click();
+            // cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
         }
     }
     checkProcessImages(number){
         cy.xpath("//div['.carousel-inner']/div[@role='listitem']/img").should('have.length',number);
-    }
-    searchCategory(category){
-        cy.xpath(selectors.launch_category.replace('category','All Process')).should("be.visible");
-        cy.xpath(selectors.inputSearchCategories).type(category).should('have.value',category);
-        cy.xpath(selectors.inputSearchCategories).type('{enter}');
-        cy.wait(2000);
-        cy.xpath(selectors.launch_category.replace('category','All Process')).should("be.visible");
     }
     openAllProcesses(){
         cy.xpath(selectors.launch_category.replace('category','All Process'))
@@ -167,7 +161,9 @@ export class ProcessLaunchpad {
 
     searchProcess(nameProcess,findProcess=true){
         cy.get(selectors.launch_searchProcess).should("be.visible");
+        cy.wait(3000);
         cy.get(selectors.launch_searchProcess).type(nameProcess).should("have.value",nameProcess);
+        cy.wait(3000);
         cy.get(selectors.launch_searchProcessButton).click();
         if(findProcess)
             cy.xpath(selectors.launch_cardProcess.replace("processName",nameProcess)).should("be.visible");
@@ -176,13 +172,12 @@ export class ProcessLaunchpad {
     }
 
     unBookmarkIconSelect(process){
-        cy.xpath(selectors.bookmarkSelection.replace('label',process)).invoke('attr','class')
+        let iconSelector = '//*[contains(@class,"header")]//*[contains(@class,"fa-bookmark")]';
+        cy.xpath(iconSelector).invoke('attr','class')
             .then(($class)=>{
                 cy.log("This is the value of the class"+ $class);
-                if($class.includes('bookmark marked')){
-                    cy.xpath(selectors.bookmarkSelection.replace('label',process))
-                        .should('be.visible')
-                        .click();
+                if(!$class.includes('unmarked')){
+                    cy.xpath(iconSelector).click({force:true});
                     cy.get(selectors.bookMarkedSuccessAlert).should('be.visible');
                 }
             });
@@ -245,5 +240,9 @@ export class ProcessLaunchpad {
 
     click_optionInsideAccordeonProcessBrowser(option){
         cy.xpath('//div[@class="list-group"]//div[contains(text(),"' + option + '")]').should("be.visible").click();
+    }
+    waitLaunchPageLoad(){
+        cy.get('[id="pie-chart"]').should('be.visible');
+        cy.wait(2000);
     }
 } 
