@@ -2231,6 +2231,8 @@ export class Process {
     deleteCategory(name){
         let categoryXpath = "//*[contains(text(),'categoryName')]/ancestor::tr//*[@data-cy='category-ellipsis']/button";
         cy.xpath("//a[contains(@href,'categories')]").click();
+        cy.get('[id="categories-listing"]>* [class="jumbotron jumbotron-fluid"]').should('not.be.visible');
+        cy.wait(2000);
         cy.xpath(selectors.searchInputCategories).type(name).should("have.value",name);
         cy.wait(2000);
         cy.xpath(categoryXpath.replace("categoryName",name)).should('be.visible');
