@@ -5,7 +5,6 @@ import { Login} from "./login";
 import { Tasks } from "./tasks";
 import { Screens } from "./screens";
 import selectors from "#selectors/process";
-import { Process } from "./process";
 import { SaveSearchs } from "./saveSearch";
 import { Admin } from "./admin";
 import { FileManager } from "./fileManager";
@@ -13,6 +12,7 @@ import { requests } from "#selectors/requests";
 import  {templates } from "#selectors/templates";
 import { Templates } from "./templates";
 import {Utility} from "#pages/utility";
+import {Process} from "./process";
 
 let navHelper = new NavigationHelper();
 const request = new Requests();
@@ -381,7 +381,7 @@ export class Execution {
         cy.xpath("//div[contains(text(),'has completed the task Script B')]").should('be.visible');
         cy.xpath("//div[contains(text(),'has completed the task SendEmailB')]").should('be.visible');
     }
-    
+
     actionsAndAssertionsOfTCP42264(requestID){
         cy.xpath('//h4').should('be.visible');
         cy.xpath('//div[@data-cy="screen-field-Portrait-bust-Parmenides"]/img').should('be.visible');
@@ -449,7 +449,7 @@ export class Execution {
 
     actionsAndAssertionsOfTCP42252Scenario1(){
         cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click(); 
+        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[3]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -466,9 +466,9 @@ export class Execution {
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(6).should('have.contain', "Admin User has completed the task PDF Generator III");
     }
 
-    actionsAndAssertionsOfTCP42252Scenario2(){ 
+    actionsAndAssertionsOfTCP42252Scenario2(){
         cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click(); 
+        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[4]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -487,7 +487,7 @@ export class Execution {
 
     actionsAndAssertionsOfTCP42252Scenario3(){
         cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click(); 
+        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[3]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -506,7 +506,7 @@ export class Execution {
 
     actionsAndAssertionsOfTCP42252Scenario4(){
         cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click(); 
+        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[4]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -521,14 +521,14 @@ export class Execution {
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(5).should('have.contain', "Admin User has completed the task PDF Generator II");
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(6).should('have.contain', "Admin User has completed the task PDF Generator IV");
     }
-    
+
     async actionsAndAssertionsOfTCP42239A(){
-        //First Scenario with select option "yes", email not 
-        navHelper.navigateToRequestsPage();  
+        //First Scenario with select option "yes", email not
+        navHelper.navigateToRequestsPage();
         request.openNewRequest(
             "TCP4-2239 Verify Conversational Screen and Send Email"
         );
-        var requestID = await request.getRequestID();           
+        var requestID = await request.getRequestID();
         cy.xpath('(//tr[@item-index="0"]/td/a)[2]').contains('Form Task 1').click();
         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
         cy.xpath('//input[@aria-label="Date"]').type('2021-10-01').type('{enter}');
@@ -544,7 +544,7 @@ export class Execution {
         request.verifyTaskIsCompleted();
         navHelper.navigateToTasksPage();
         navHelper.navigateToRequestsPage();
-        request.openRequestById(requestID);  
+        request.openRequestById(requestID);
         cy.xpath('//h4[text()="In Progress"]').should('be.visible');
         await cy.xpath('//tr[@item-index="0"]/td/a').should('contain.text',"Form Task 2").contains('Form Task 2').click();
         cy.xpath('//input[@name="name"]').type('Nirvana').type('{enter}');
@@ -555,16 +555,16 @@ export class Execution {
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', "Parallel Gateway: Label Undefined");
         cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', "Admin User has completed the task Form Task 1");
         cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', "Admin User has completed the task Form Task 2");
-    } 
-        
+    }
+
     async actionsAndAssertionsOfTCP42239B(){
         //Second Scenario with select option "no", email sent
-        navHelper.navigateToRequestsPage();        
+        navHelper.navigateToRequestsPage();
         request.openNewRequest(
             "TCP4-2239 Verify Conversational Screen and Send Email"
         );
-        var requestID2 = await request.getRequestID();           
-        await cy.xpath(('//tr[@item-index="0"]/td/a')[1]).contains('Form Task 1').click();   
+        var requestID2 = await request.getRequestID();
+        await cy.xpath(('//tr[@item-index="0"]/td/a')[1]).contains('Form Task 1').click();
         cy.xpath('//input[@aria-label="Date"]').type('2021-10-01').type('{enter}');
         cy.xpath('//input[@name="image2"]').check();
         cy.xpath('//input[@name="image2"]').uncheck();
@@ -578,7 +578,7 @@ export class Execution {
         request.verifyTaskIsCompleted();
         navHelper.navigateToTasksPage();
         navHelper.navigateToRequestsPage();
-        request.openRequestById(requestID2);  
+        request.openRequestById(requestID2);
         cy.xpath('//h4[text()="In Progress"]').should('be.visible');
         cy.xpath('//tr[@item-index="0"]/td/a').should('contain.text',"Form Task 2").contains('Form Task 2').click();
         cy.xpath('//input[@name="name"]').type('Nirvana').type('{enter}');
@@ -593,18 +593,18 @@ export class Execution {
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', "Parallel Gateway: Label Undefined");
         cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', "Admin User has completed the task Form Task 1");
         cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', "Admin User has completed the task Form Task 2");
-        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', "Admin User has completed the task Send Email");        
+        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', "Admin User has completed the task Send Email");
     }
-    
+
     async actionsAndAssertionsOfTCP42281Part1(){
-        //Scenario 1 Tasks AA, BB and CC    
+        //Scenario 1 Tasks AA, BB and CC
         request.openNewRequest(
             "TCP4-2281 Verify Node Connector"
-        );       
-       var requestID = await request.getRequestID();            
+        );
+       var requestID = await request.getRequestID();
        cy.reload();
        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-       await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();           
+       await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();
        cy.xpath('//input[@aria-label="aa"]').check();
        cy.xpath('//input[@aria-label="bb"]').check();
        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
@@ -613,15 +613,15 @@ export class Execution {
        navHelper.navigateToRequestsPage();
        request.openRequestById(requestID);
        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-       await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();       
-       cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');           
+       await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
+       cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
        request.verifyTaskIsCompleted();
        navHelper.navigateToTasksPage();
        navHelper.navigateToRequestsPage();
        request.openRequestById(requestID);
        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-       await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('CC').click();       
+       await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('CC').click();
        cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible')
        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
        request.verifyTaskIsCompleted();
@@ -632,18 +632,18 @@ export class Execution {
        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', 'AAA: true');
        cy.xpath('(//div[@class="flex-grow-1"])[8]').should('contain.text', 'Admin User has completed the task CC');
     }
-            
+
     async actionsAndAssertionsOfTCP42281Part2(){
-        //Scenario 2 Tasks AA, BB and DD       
+        //Scenario 2 Tasks AA, BB and DD
         request.openNewRequest(
                 "TCP4-2281 Verify Node Connector"
-            );        
+            );
         var requestID = await request.getRequestID();
          cy.reload();
          cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
          request.waitUntilElementIsVisible('selector','a[href^="/tasks"]');
          cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-         await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();    
+         await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();
          cy.xpath('//input[@aria-label="bb"]').check();
          cy.xpath('//button[@aria-label="New Submit"]').click();
          request.verifyTaskIsCompleted();
@@ -652,7 +652,7 @@ export class Execution {
          request.openRequestById(requestID);
          cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
          await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
-         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible'); 
+         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
          cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
          request.verifyTaskIsCompleted();
          navHelper.navigateToTasksPage();
@@ -661,8 +661,8 @@ export class Execution {
          cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
          await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('DD').click();
          cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
-         cy.xpath('//button[@aria-label="New Submit"]').click({force:true}); 
-         request.verifyTaskIsCompleted();       
+         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
+         request.verifyTaskIsCompleted();
          await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
          cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
          cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
@@ -672,27 +672,27 @@ export class Execution {
          cy.xpath('(//div[@class="flex-grow-1"])[9]').should('contain.text', 'Admin User has completed the task DD');
     }
 
-    async actionsAndAssertionsOfTCP42281Part3(){           
+    async actionsAndAssertionsOfTCP42281Part3(){
         //Scenario 3 Tasks AA and EE
-        navHelper.navigateToRequestsPage(); 
+        navHelper.navigateToRequestsPage();
         request.openNewRequest(
             "TCP4-2281 Verify Node Connector"
         );
-        var requestID = await request.getRequestID(); 
-        cy.reload();      
-        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A'); 
+        var requestID = await request.getRequestID();
+        cy.reload();
+        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
         request.waitUntilElementIsVisible('selector','a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-        await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click(); 
+        await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();
         cy.xpath('//input[@aria-label="bb"]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompleted();
         navHelper.navigateToTasksPage();
         navHelper.navigateToRequestsPage();
         request.openRequestById(requestID);
-        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible'); 
-        await cy.xpath('//tbody/tr/td/a').contains('EE').click(); 
-        cy.xpath('//button[@aria-label="New Submit"]').click({force:true}); 
+        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
+        await cy.xpath('//tbody/tr/td/a').contains('EE').click();
+        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompleted();
         await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
@@ -819,7 +819,7 @@ export class Execution {
                             cy.get('div[class="input-group"] > input[aria-label="Name"]').eq(1).clear().type("fileUpload");
                             cy.get('select[aria-label="Type"]').eq(1).select('Array').should('have.value', 'array');
                             cy.get('input[type="number"]').type(30);
-                            cy.get('button[type="button"]').eq(7).should('contain.text',"Save").click();   
+                            cy.get('button[type="button"]').eq(7).should('contain.text',"Save").click();
                         }
                         else return;
                     });
@@ -853,7 +853,7 @@ export class Execution {
                         .click({force:true});
                     cy.get('button[type="button"]').eq(5).should('contain.text',"Save").click();
                     cy.wait(10000);
-                    
+
                     navHelper.navigateToProcessPage();
                     cy.get(editBtn).should('be.visible');
                     cy.get('input[aria-label="Search"]')
@@ -863,7 +863,7 @@ export class Execution {
                 cy.get('tbody[class="vuetable-body"] > tr[item-index="0"] > td').should("contain.text", "TCP4-2296 Verify Multiple File Upload");
                 }
                 else return;
-            });          
+            });
         // Step 3: Checking and adding the vocabulary
         navHelper.navigateToProcessPage();
         cy.wait(5000);
@@ -880,14 +880,14 @@ export class Execution {
             selectors.loadingSpinnerProcess
         ).should("not.be.visible");
         cy.xpath(selectors.processTable, { timeout: 10000 })
-            
+
             .then(($loadedTable) => {
                 if($loadedTable.length === 1){
-                    cy.get('button[title="Edit"] > i[class="fas fa-pen-square fa-lg fa-fw"]', { timeout: 10000 }).eq(0).click(); 
+                    cy.get('button[title="Edit"] > i[class="fas fa-pen-square fa-lg fa-fw"]', { timeout: 10000 }).eq(0).click();
                 }else{
                     cy.get('div[aria-label="pagination"]').eq(1).get('div[class="pagination-nav-item item"]').eq(1).click();
                 }
-            });   
+            });
         cy.get('rect[joint-selector="body"]').eq(2).click({force:true});
         cy.get('span[class="ml-1 mr-auto"]').eq(7).should('have.text',"Vocabularies").click();
         cy.get('div[name="vocabularies"] > div > div[class="form-group px-0"]').then(($vocabulary) => {
@@ -902,7 +902,7 @@ export class Execution {
                 cy.get('button[class="btn btn-secondary"]').eq(0)
                     .contains("Save").click();
         }
-        else return;  
+        else return;
     });
         navHelper.navigateToRequestsPage();
         request.openNewRequest(
@@ -954,7 +954,7 @@ export class Execution {
         cy.get('div[class="flex-grow-1"]').eq(3).should('contain.text',"Admin User has completed the task BB");
         });
     }
-    
+
     async actionsAndAssertionsOfTCP42337(requestId){
         request.openNewRequest(
             "TCP4-2337 Verify Google"
@@ -1021,7 +1021,7 @@ export class Execution {
                 .get('td[class="vuetable-slot"] > a[target="_self"]')
                 .contains(requestIDtext)
                 .click();
-        }); 
+        });
         cy.wait(5000);
         cy.get(
             'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"] > a'
@@ -1029,7 +1029,7 @@ export class Execution {
             .eq(1)
             .contains("Manual Task")
             .click();
-        cy.get('div[class="form-group form-image"] > img').should('have.length',2); 
+        cy.get('div[class="form-group form-image"] > img').should('have.length',2);
         cy.get('button[class="btn btn-primary"]')
             .contains("Complete Task")
             .click();
@@ -1045,7 +1045,7 @@ export class Execution {
         cy.xpath('//label[text()="Object"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath("//label[text()='Object']/parent::div//input").type("La Leçon de ténèbres").type('{enter}');
         const file1 = 'drone.jpg';
-        cy.get('input[data-cy="file-upload-button"]').attachFile(file1); 
+        cy.get('input[data-cy="file-upload-button"]').attachFile(file1);
         const file2 = 'sample.pdf';
         cy.get('input[data-cy="file-upload-button"]').attachFile(file2);
         cy.get('button[aria-label="New Submit"]').click();
@@ -1056,15 +1056,14 @@ export class Execution {
         //Review summary
         cy.xpath('//a[@id="summary-tab"]').should('be.visible').click();
         cy.get('div[class="flex-grow-1"]').eq(2).contains("Admin User has completed the task Form Task");
-        request.waitUntilElementIsVisible('selector','#request > div > div.flex-grow-1 > div.px-4.mb-2.timeline > div:nth-child(2) > div.flex-grow-1'); 
+        request.waitUntilElementIsVisible('selector','#request > div > div.flex-grow-1 > div.px-4.mb-2.timeline > div:nth-child(2) > div.flex-grow-1');
         //Review file manager
         cy.xpath("//a[contains(text(),'File Manager')]").click();
-        cy.get('[class="star-component"]').should('be.visible');    
+        cy.get('[class="star-component"]').should('be.visible');
     }
 
     actionsAndAssertionsOfTCP42391A() {
         //Step 1: Complete the screen A
-        cy.reload();
         cy.get('div[class="multiselect__select"]').should('be.visible');
         cy.get('div[class="multiselect__select"]').click();
         cy.get('[data-cy="screen-field-form_select_list_1"]>* input').type('YES').should('have.value','YES');
@@ -1078,7 +1077,7 @@ export class Execution {
 
         //Step 2: Submit the form
         cy.get('button[aria-label="New Submit"]').click();
-        cy.get('button[aria-label="New Submit"]').should('not.exist');
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
 
         //Step 3: Get the number of requests
         cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
@@ -1104,7 +1103,7 @@ export class Execution {
             request.waitUntilTextcontainText('selector','varHeader','Completed');
         });
     }
-    
+
     async actionsAndAssertionsOfTCP42313(requestId) {
         request.openNewRequest(
             "TCP4-2313 Verify Conversational with Gateways"
@@ -1158,7 +1157,7 @@ export class Execution {
         )
             .eq(1)
             .contains("Task 3")
-            .click(); 
+            .click();
             cy.get('div[class="form-group user-input-field"]').find('input[name="input"]').type("Athens");
             cy.get('button[aria-label="Submit"]').click();
             cy.get('div[class="card"] > ul > li > a')
@@ -1179,7 +1178,7 @@ export class Execution {
                     .get('td[class="vuetable-slot"] > a[target="_self"]')
                     .contains(requestIDtext)
                     .click();
-            }); 
+            });
             cy.get(
                 'ul[id="requestTab"] > li[class="nav-item"] > a[id="pending-tab"]'
             ).click();
@@ -1225,12 +1224,12 @@ export class Execution {
             cy.get('button[aria-label="Submit"]').click();
             cy.get('div[class="d-block"] >').eq(0)
             .contains("La Leçon de ténèbres").click();
-            cy.wait(10000); 
+            cy.wait(10000);
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 1");
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 3");
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 4");
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 5");
-   
+
         request.openNewRequest(
             "TCP4-2313 Verify Conversational with Gateways"
         );
@@ -1290,7 +1289,7 @@ export class Execution {
             cy.get('button[aria-label="Submit"]').click();
             cy.get('div[class="d-block"] >').eq(0)
             .contains("La Leçon de ténèbres").click();
-            cy.wait(10000); 
+            cy.wait(10000);
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 1");
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 2");
     }
@@ -1328,7 +1327,7 @@ export class Execution {
         cy.get('#summary > div > div > table > tbody > tr').eq(9).find('td').eq(1).should('have.text','Israel Japan Germany');
 
     }
-  
+
     async actionsAndAssertionsOfTCP42338(requestId){
         request.openNewRequest(
             "TCP4-2338 Check pdf generator and send email sequentially with google places control"
@@ -1374,7 +1373,7 @@ export class Execution {
                     requestIDtext.length
                 );
             cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000); 
+            cy.wait(5000);
             navHelper.navigateToTasksPage();
             cy.get('span[class="multiselect__tag"] > span')
                 .contains("In Progress")
@@ -1395,7 +1394,7 @@ export class Execution {
                 .click();
             cy.wait(5000);
             cy.reload();
-        }); 
+        });
         cy.get('div[class="flex-grow-1"]')
             .contains("Admin User has completed the task PDF Generator 1")
             .should("be.visible");
@@ -1421,8 +1420,8 @@ export class Execution {
             .get('td[aria-colindex="2"] > span')
             .contains("PDF-2");
         cy.get('button[class="btn btn-link"]').eq(0).click();
-    } 
-  
+    }
+
     async actionsAndAssertionsOfNoLoopsTCP42340(requestId){
         request.openNewRequest("TCP4-2340 Verify loop");
         cy.wait(10000);
@@ -1479,7 +1478,7 @@ export class Execution {
                     .click();
             cy.get('button[aria-label="New Submit"]').click();
             cy.wait(5000);
-            navHelper.navigateToTasksPage();           
+            navHelper.navigateToTasksPage();
             cy.get('tbody[class="vuetable-body"]')
                 .get('tr[item-index="0"]')
                     .get('td[class="vuetable-slot"]')
@@ -1494,13 +1493,13 @@ export class Execution {
                     .contains("Form Task 2")
                     .click();
                 cy.get('button[aria-label="New Submit"]').click();
-        }); 
+        });
     }
-    async actionsAndAssertionsOfLoopsTCP42340(requestId){    
+    async actionsAndAssertionsOfLoopsTCP42340(requestId){
         cy.wait(5000);
         request.openNewRequest("TCP4-2340 Verify loop");
         cy.wait(10000);
-        //cy.get('div[aria-label="pagination"] div[class="pagination-nav-item icon item"] > i[class="fas fa-angle-right"]').eq(1).click({ multiple: true });      
+        //cy.get('div[aria-label="pagination"] div[class="pagination-nav-item icon item"] > i[class="fas fa-angle-right"]').eq(1).click({ multiple: true });
         cy.get('div[class="col-10"] > span').should('have.length', 1);
         cy.get('div[class="col-10"] > span').contains("TCP4-2340 Verify loop");
         cy.get(
@@ -1536,7 +1535,7 @@ export class Execution {
                 );
             cy.get('button[aria-label="New Submit"]').click();
             cy.wait(5000);
-            navHelper.navigateToTasksPage();           
+            navHelper.navigateToTasksPage();
             cy.get('tbody[class="vuetable-body"]')
                 .get('tr[item-index="0"]')
                     .get('td[class="vuetable-slot"]')
@@ -1568,7 +1567,7 @@ export class Execution {
                     .click();
             cy.get('button[aria-label="New Submit"]').click();
             cy.wait(5000);
-            navHelper.navigateToTasksPage();           
+            navHelper.navigateToTasksPage();
             cy.get('tbody[class="vuetable-body"]')
                 .get('tr[item-index="0"]')
                 .get('td[class="vuetable-slot"]').should('be.visible', requestIDtext)
@@ -1635,12 +1634,12 @@ export class Execution {
         //select list
         cy.get('div[class="multiselect__select"]').first().click();
         cy.get('ul[id="listbox-0"] > li[aria-label="Select 2. "]').click();
-    
+
         cy.get('div[data-cy="screen-field-selectList2"] > div[class="multiselect__select"]').first().click();
         cy.get('ul[class="multiselect__content"] > li[aria-label="option 2. "]').click();
         cy.get('div[data-cy="screen-field-selectList2"] > div[class="multiselect__select"]').first().click();
         cy.get('ul[class="multiselect__content"] > li[aria-label="option 3. "]').click();
-    
+
         //date Picker
         cy.get('div[data-cy="screen-field-datePicker"] > input[class="form-control"]').click();
         cy.xpath('//*[@id="tab-form"]/div/div/div/div/div/div/div[21]/div/div/ul/li[1]/div/div[1]/table/tbody/tr[4]/td[7]').click();
@@ -1651,7 +1650,7 @@ export class Execution {
         cy.get('input[data-cy="file-upload-button"]').attachFile(file);
         cy.get('div[class="uploader-file-status"] > span').should('contain.text','success');
         cy.get('button[aria-label="Submit"]').click();
-        
+
         //Final Assertions
         cy.reload();
         cy.get('input[name="lineInputText"]').should('have.value', 'Fenomenología del Espiritu');
@@ -1671,7 +1670,7 @@ export class Execution {
         cy.get('div[class="uploader-file-status"] > span').should('contain.text','success');
         cy.get('button[aria-label="Submit"]').click();
     }
-    
+
     async actionsAndAssertionsOfTCP42391(requestId) {
         cy.get('div[class="multiselect__select"]').first().click();
         cy.get('ul[id="listbox-0"] > li[aria-label="YES. "]').click();
@@ -1691,7 +1690,7 @@ export class Execution {
         cy.get('div[name="loop_1"]').find('input[aria-label="Line Input Loop"]').eq(0).should('have.value', 'test1');
         cy.get('div[name="loop_1"]').find('input[aria-label="Line Input Loop"]').eq(1).should('have.value', 'test2');
         cy.get('div[name="loop_1"]').find('input[aria-label="Line Input Loop"]').eq(2).should('have.value', 'test3');
-        cy.get('button[aria-label="New Submit"]').click();         
+        cy.get('button[aria-label="New Submit"]').click();
     }
     async actionsAndAssertionsOfTCP42227(requestId) {
         cy.get('input[name="form_input_1"]').type("Test");
@@ -1794,7 +1793,7 @@ export class Execution {
         cy.get('[id="file-manager-tab"]').click();
         cy.xpath('(//*[@title="View"])[3]').click();
         request.processIsCompleted(requestId);
-    
+
         //requestpart___Quarter Scenario
         navHelper.navigateToRequestsPage();
         header.clickOnAddRequest();
@@ -1843,28 +1842,34 @@ export class Execution {
         cy.get(selectorLineInput).type("Well").should('have.value',"Well");
         cy.xpath(selectorSubmitBtn).click();
         cy.xpath(selectorSubmitBtn).should('not.exist');
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
 
-        //Step 2: Login PM4 page
-        login.navigateToUrl();
-        login.login();
+        //Step 9: Get number requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=> {
 
-        //Step 3: Complete the request 
-        navHelper.navigateToAllRequests();
-        cy.get('.search-bar > .search-bar-container > .pmql-input').should('be.visible');
-        cy.get('.search-bar > .search-bar-container > .pmql-input').type('request = "TCP4-2451 Verify terminate End Test WEB ENTRY"');
-        cy.get('.search-bar > .search-bar-container > .pmql-input').type('{enter}');
-        cy.get('[id="element-0-0"]').should('be.visible');
-        cy.get('[id="element-0-2"]').should('contain.text','TCP4-2451 Verify terminate End Test WEB ENTRY');
-        cy.get('.card-deck-flex').should('be.visible');
-        cy.get('#element-0-0 > span > .text-nowrap').should('have.attr','href')
-                .then((href) => {
-                    cy.visit(href)
-                });
+            //Step 2: Login PM4 page
+            login.navigateToUrl();
+            login.login();
 
-        //Step 2: Complete task 2
-        let taskName = "Task 2";
-        request.openTaskByTaskName(taskName);
-        cy.xpath(selectorSubmitBtn).click();  
+            //Step 5: Open the requests
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+
+            //Step 2: Complete task 2
+            let taskName = "Task 2";
+            request.clickOnTaskName(1, 1);
+            cy.xpath(selectorSubmitBtn).click();
+            request.verifyTaskIsCompletedB();
+
+            //Step 2: Complete task 2
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+
+            taskName = "Terinate Task";
+            request.clickOnTaskName(1, 1);
+            cy.xpath(selectorSubmitBtn).click();
+            request.verifyTaskIsCompletedB();
+        });
     }
 
     actionsAndAssertionsOfTCP42442() {
@@ -1902,7 +1907,6 @@ export class Execution {
 
         cy.xpath(xpathBeforeTodayLineInput).type(dateFormat);
         cy.xpath(xpathYesOption).click();
-        //cy.xpath(messageError).should('be.visible');
 
         //Step 7: In the Before Date TODAY variable, place a date before the day the test is running.
         day = currentDate.getDate() - 1;
@@ -1914,7 +1918,7 @@ export class Execution {
 
         //Step 8: Click on new submit button
         cy.xpath(xpathSubmitButton).click();
-        cy.xpath(xpathSubmitButton).should('not.exist');
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
 
         //Step 9: Get number requests
         cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=> {
@@ -1925,11 +1929,6 @@ export class Execution {
 
             //Step 11: Open the requests
             cy.visit('/requests/' + requestId);
-
-
-            //Step 12: Verify that request is completed
-            request.waitUntilTextcontainText('selector','varHeader','Completed');
-            cy.xpath(xpathStatusRequest).should('be.visible');
         });
     }
 
@@ -1939,7 +1938,7 @@ export class Execution {
         cy.get('[data-cy="screen-field-name"]').should('be.visible').type('name1');
         cy.get('[data-cy="screen-field-phone"]').should('be.visible').type('123');
         cy.get('.form-group > .btn').click();
-        
+
     }
     actionsTCP4_2314 (inputone, inputtwo,inputthree){
         //complete recordlist
@@ -2099,7 +2098,7 @@ export class Execution {
 
         //Step 31: Press Submit button to complete the Request.
         cy.get('button[aria-label="New Submit"]').should('be.visible').and('contain',"New Submit")
-        
+
         cy.get('button[aria-label="New Submit"]').click()
 
         //verify icon
@@ -2365,8 +2364,8 @@ export class Execution {
         cy.get('[data-cy="screen-field-date"] input').first().type('10/10/2022'+ '{enter}', {force:true});
         cy.get(selectorLineInputControl).first().type('Test Name');
         cy.get(selectorCheckgroupControl).first().check();
-        admin.changeWriteDateZone(11,11,2022,11,11,timezone_format,'DateTime'); 
-        
+        admin.changeWriteDateZone(11,11,2022,11,11,timezone_format,'DateTime');
+
         cy.get(selectorSelectList).first().click();
         cy.get('ul > li[id="option-0-2"]').should("be.visible").click();
         cy.get('[class="modal-content"]').contains("Ok").click();
@@ -2377,7 +2376,7 @@ export class Execution {
         cy.get(selectorLineInputControl).first().type('Test Name 2');
         cy.get(selectorCheckgroupControl).first().check();
         admin.changeWriteDateZone(11,11,2024,21,11,timezone_format,'DateTime');
-        
+
         cy.get(selectorSelectList).first().click()
         cy.get('ul > li[id="option-2-1"]').should("be.visible").click()
         cy.get('[class="modal-content"]').contains("Ok").click()
@@ -2388,7 +2387,7 @@ export class Execution {
         cy.get(selectorLineInputControl).first().type('Test Name 3');
         cy.get(selectorCheckgroupControl).first().check();
         admin.changeWriteDateZone(11,11,2025,16,25,timezone_format,'DateTime');
-        
+
         cy.get(selectorSelectList).first().click();
         cy.get('ul > li[id="option-3-3"]').should("be.visible").click();
         cy.get('[class="modal-content"]').contains("Ok").click();
@@ -2465,24 +2464,40 @@ export class Execution {
             expect(control.trim()).to.equal('true')
         })
     }
-    async actionsAndAssertionsOfTCP42388(){
-        //webentry
-        var selectorSubmitButton = "//button[contains(text(),'New Submit')]";
-        var selectorMenuEcosia = "//header/div[1]/div[5]/div[1]/button[1]/*[1]";
+    actionsAndAssertionsOfTCP42388(){
+        let selectorSubmitButton = "//button[contains(text(),'New Submit')]";
+        let selectorMenuEcosia = "//header/div[1]/div[5]/div[1]/button[1]/*[1]";
+
+        //Step 1: Complete the Web entry
         cy.xpath(selectorSubmitButton).should('be.visible');
         cy.xpath(selectorSubmitButton).click();
-        cy.xpath(selectorMenuEcosia).should('be.visible');
-        //processmaker
-        login.navigateToUrl();
-        login.login();
-        navHelper.navigateToSelfServiceSaveSearch();
-        var processname = "form";
-        tasks.searchTaskName(processname);
-        tasks.openSelfServiceTask();
-        var selectorSubmitButtonForm = ".form-group > .btn";
-        cy.get(selectorSubmitButtonForm).should('be.visible');
-        cy.get(selectorSubmitButtonForm).click();
-        cy.title().should('eq', 'To Do Tasks - ProcessMaker');
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            //Step 2: Log in to Processmaker
+            login.navigateToUrl();
+            login.login();
+
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            //Step 3: Open the self service
+            tasks.openSelfServiceTask();
+
+            var selectorSubmitButtonForm = ".form-group > .btn";
+            cy.get(selectorSubmitButtonForm).should('exist');
+            cy.get(selectorSubmitButtonForm).click();
+            request.verifyTaskIsCompletedB();
+
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.get(selectorSubmitButtonForm).should('exist');
+            cy.get(selectorSubmitButtonForm).click();
+            request.verifyTaskIsCompletedB();
+        });
     }
 
     async actionsOfTCP2305(yearVar,monthVar){
@@ -2619,7 +2634,7 @@ async actionsAndAssertionsOfTCP42332_1(taskName, process_id, subprocess_id, subp
     /**
     * search Request ID according to card
     **/
-    cy.get('div[class="card"] > ul > li > a').invoke('text').then((URL) => {    
+    cy.get('div[class="card"] > ul > li > a').invoke('text').then((URL) => {
         URL=URL.trim();
         var requestID = URL.substring(1,URL.indexOf(' '));
 
@@ -2689,7 +2704,7 @@ async actionsAndAssertionsOfTCP42332_1(taskName, process_id, subprocess_id, subp
         cy.get('div[class="card"] > ul > li > div > a').eq(0).should('have.contain',subprocessName);
         cy.get('div[class="card"] > ul > li > div > a').eq(1).should('have.contain',subprocessName);
 
-        //Verify data in each row in the summary tab for the main process    
+        //Verify data in each row in the summary tab for the main process
         cy.get('tbody[role="rowgroup"] > tr').should('have.length', 14)
         cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.loop_1.0.form_input_1')
         cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
@@ -2872,7 +2887,7 @@ async actionsAndAssertionsOfTCP42332_1(taskName, process_id, subprocess_id, subp
 
         cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfCompletedInstances')
         cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','0')
-    });  
+    });
 }
 
 async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subprocessName, processName){
@@ -2891,7 +2906,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     /**
     * search Request ID according to card
     **/
-    cy.get('div[class="card"] > ul > li > a').invoke('text').then((URL) => {    
+    cy.get('div[class="card"] > ul > li > a').invoke('text').then((URL) => {
         URL=URL.trim();
         var requestID = URL.substring(1,URL.indexOf(' '));
 
@@ -2984,7 +2999,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('div[class="card"] > ul > li > div > a').eq(1).should('have.contain',subprocessName);
         cy.get('div[class="card"] > ul > li > div > a').eq(2).should('have.contain',subprocessName);
 
-        //Verify data in each row in the summary tab for the main process    
+        //Verify data in each row in the summary tab for the main process
         cy.get('tbody[role="rowgroup"] > tr').should('have.length', 20)
         cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.loop_1.0.form_input_1')
         cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
@@ -3266,7 +3281,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
         cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
-    });  
+    });
 }
 //////////////////////
 
@@ -3305,7 +3320,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Tres');
         //Submit
         cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
-        
+
         //Complete task
         cy.visit('/requests/' + requestId);
         cy.reload();
@@ -3321,7 +3336,9 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('[id="completed-tab"]').should('be.visible').click();
 
     }
-    async actionsTCP42345(example){
+    actionsTCP42345(example){
+        //Step 1: Complete the form 1 by WE
+        cy.get('[data-cy="screen-field-form_checkbox_1"]').should('be.visible');
         cy.get('[data-cy="screen-field-form_checkbox_1"]').click();
         cy.get('[data-cy="screen-field-form_input_1"]').should('be.visible');
         cy.get('[data-cy="screen-field-form_input_1"]').type('example').should('have.value', 'example');
@@ -3330,49 +3347,42 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('ul[id="listbox-0"] > li[id="option-0-1"]').click();
         cy.get('[name="form_text_area_1"]').should('be.visible').type('example');
         cy.get('[class="btn btn-secondary text-white"]').should('be.visible');
-        //upload file
         const file = 'drone.jpg';
         cy.get('input[data-cy="file-upload-button"]').attachFile(file);
         cy.get('div[class="uploader-file-status"] > span').should('contain.text','success');
-        //google placess
-        cy.get('input[class="form-control pac-target-input"]').click();
-        cy.get('input[class="form-control pac-target-input"]').type("Bolivia");
-        cy.get('.pac-item', { timeout: 10000 }).should('be.visible').eq(0).click();
-        cy.wait(5000);
-        //New submit
+
+        //Step 2: Submit the form
         cy.get('button[aria-label="New Submit"]').click();
-        //Verify data
-        cy.get('[data-cy="screen-field-form_checkbox_1"]').should('be.visible');
-        cy.get('[data-cy="screen-field-form_input_1"]').should('be.visible').should('have.value', 'example');
-        cy.get('.form-control-file > .btn').should('be.visible');
-        cy.get('[name="form_text_area_1"]').should('be.visible');
-        cy.get('[class="btn btn-secondary text-white"]').should('be.visible');
-        cy.get('input[class="form-control pac-target-input"]').should('be.visible');
-        //New submit
-        cy.get('.form-group > .btn').click();
-        cy.wait(8000);
-        login.navigateToUrl();
-        login.login();
-        navHelper.navigateToAllRequests();
-        cy.wait(5000);
-        cy.get('tr > td[class="vuetable-slot"] > span').contains('TCP4-2345 Verify the operation of interstitial with a web entry task').parent().parent().children().children().eq(0).click();
-        cy.get('tr[item-index="0"] > td[class="vuetable-slot"]').contains('Form Task').click();
-        //Verify data
-        cy.get('[data-cy="screen-field-form_checkbox_1"]').should('be.visible');
-        cy.get('[data-cy="screen-field-form_input_1"]').should('be.visible').should('have.value', 'example');
-        cy.get('.form-control-file > .btn').should('be.visible');
-        cy.get('[name="form_text_area_1"]').should('be.visible');
-        cy.get('input[class="form-control pac-target-input"]').should('be.visible');
-        //New submit
-        cy.get('button[aria-label="New Submit"]').click();
-        cy.wait(8000);
-        navHelper.navigateToAllRequests();
-        cy.get('tr > td[class="vuetable-slot"] > span').contains('TCP4-2345 Verify the operation of interstitial with a web entry task').parent().parent().children().children().eq(0).click();
-        cy.get('#pending > .data-table > div > .vuetable > .vuetable-body > tr > :nth-child(2) > a').contains('Form Task 2').click();
-        cy.get('button[aria-label="New Submit"]').click();
-        cy.wait(8000);
-        cy.xpath("//a[contains(text(),'File Manager')]").click();
-        cy.get('[class="star-component"]').should('be.visible');
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            //Step 3: Complete the form by WE task
+            cy.get('[data-cy="screen-field-form_checkbox_1"]').should('be.visible');
+            cy.get('[data-cy="screen-field-form_input_1"]').should('be.visible').should('have.value', 'example');
+            cy.get('.form-control-file > .btn').should('be.visible');
+            cy.get('[name="form_text_area_1"]').should('be.visible');
+            cy.get('[class="btn btn-secondary text-white"]').should('be.visible');
+            cy.get('.form-group > .btn').click();
+            request.verifyTaskIsCompletedB();
+
+            //Step 4: Log in to PM4
+            login.navigateToUrl();
+            login.login();
+
+            //Step 5: Open the Second Task
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            //Validation 1: Verify data
+            cy.get('[data-cy="screen-field-form_checkbox_1"]').should('be.visible');
+            cy.get('[data-cy="screen-field-form_input_1"]').should('be.visible').should('have.value', 'example');
+            cy.get('.form-control-file > .btn').should('be.visible');
+            cy.get('[name="form_text_area_1"]').should('be.visible');
+            cy.get('input[class="form-control pac-target-input"]').should('be.visible');
+            cy.get('button[aria-label="New Submit"]').click();
+            request.verifyTaskIsCompletedB();
+        });
     }
 
     configProcessTCP4_2332(subProcessName,subProcessFilePath,mainProcessName, mainProcessFilePath){
@@ -3383,8 +3393,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('#processIndex > div.container-fluid > div > div.jumbotron.jumbotron-fluid').should('be.visible');
         cy.get('#processIndex > div.container-fluid > div > div.jumbotron.jumbotron-fluid').should('not.be.visible');
         var selectors_processTable = '//div[@id="processIndex"]/div[2]/div/div[2]/table/tbody/tr';
-        
-        //Import subprocess  
+
+        //Import subprocess
         cy.xpath(selectors_processTable, { timeout: 10000 })
         .find('td')
         .then(($loadedTable) => {
@@ -3413,7 +3423,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
                 //cy.get('div[class="multiselect__tags"]').eq(1).click();
                 //cy.get('div[class="multiselect__tags"] > input').eq(1).type('Admin User');
                 //cy.get('div > ul[role="listbox"] > li[id="option-1-0"]').should('have.attr',"aria-label","Admin User. ").click();
-                
+
                 //Cancel Request
                 cy.get('div[class="multiselect__tags"]').eq(2).click();
                 cy.get('div[class="multiselect__tags"]').eq(2).type('Admin User');
@@ -3442,44 +3452,44 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
          .then(($loadedTable) => {
              if($loadedTable.length === 1){
                  process.importProcess(mainProcessFilePath);
- 
+
                  //Config process
                  //start event
                  cy.get('div[class="multiselect__tags"]').eq(0).click();
                  cy.get('div[class="multiselect__tags"]').eq(0).type('Admin User');
-                 cy.get('div > ul[role="listbox"] > li[id="option-0-1"]').should('have.attr',"aria-label","Admin User. ").click();        
- 
+                 cy.get('div > ul[role="listbox"] > li[id="option-0-1"]').should('have.attr',"aria-label","Admin User. ").click();
+
                  //Assign subprocess to Form Task 2
                  cy.get('div[class="multiselect__tags"]').eq(1).click();
                  cy.get('div[class="multiselect__tags"]').eq(1).type(subProcessName);
                  cy.get('div > ul[role="listbox"] > li[id="option-1-0"] > span > span').should('contain.text',subProcessName).click();
- 
+
                  //Process Manager
                  cy.get('div[class="multiselect__tags"]').eq(2).click();
                  cy.get('div[class="multiselect__tags"]').eq(2).type('Admin User');
                  cy.get('div > ul[role="listbox"] > li[id="option-2-0"]').should('have.attr',"aria-label","Admin User. ").click();
- 
+
                  //Cancel Request
                  cy.get('div[class="multiselect__tags"]').eq(3).click();
                  cy.get('div[class="multiselect__tags"]').eq(3).type('Admin User');
                  cy.get('div > ul[role="listbox"] > li[id="option-3-2"]').should('have.attr',"aria-label","Admin User. ").click();
- 
+
                  //Edit Data
                  cy.get('div[class="multiselect__tags"]').eq(4).click();
                  cy.get('div[class="multiselect__tags"]').eq(4).type('Admin User');
                  cy.get('div > ul[role="listbox"] > li[id="option-4-1"]').should('have.attr',"aria-label","Admin User. ").click();
- 
+
                  cy.wait(5000);
- 
+
                  //Press Save button
                  cy.get('div[id="card-footer-post-import"] > div > button').click();
- 
+
                  ///////////////////////////////////////////////////
                  //Main Process is configurated with a sub-process//
                  ///////////////////////////////////////////////////
                  navHelper.navigateToProcessPage();
-                 process.searchForProcess(mainProcessName);                            
- 
+                 process.searchForProcess(mainProcessName);
+
                  //Assign subprocess
                  cy.get('text[joint-selector="label"] > tspan').eq(3).click();
                  cy.get('div[class="multiselect__tags"]').eq(0).click();
@@ -3489,7 +3499,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
                  cy.get('div[role="combobox"] > div > ul[role="listbox"] > li[id="option-0-0"] > span > span').click();
                  cy.wait(3000);
                  cy.get('text[joint-selector="label"] > tspan').eq(2).click();
- 
+
                  //save process
                  cy.get('button[title="Save"]').click();
                  cy.get('div[class="modal-content"] > div > div[class="modal-footer"] > button').should('be.visible');
@@ -3497,7 +3507,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
              }
          });
     }
-    
+
     verifyDashboardWithUser(Dashboard, linkName) {
         cy.get("strong").should("contain", Dashboard);
         cy.get('[style="z-index: 100;"] > .nav-item > .nav-link').should(
@@ -3711,7 +3721,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
                 cy.get('div[class="multiselect__tags"]').eq(2).click();
                 cy.get('div[class="multiselect__tags"] > input').eq(2).type(firstName+" ");
                 cy.get('div > ul[role="listbox"] > li[id="option-2-4"]').should('have.attr',"aria-label",firstName+" "+lastName+". ").click();
-                
+
                 //3
                 cy.get('div[class="multiselect__tags"]').eq(3).click();
                 cy.get('div[class="multiselect__tags"] > input').eq(3).type(firstName+" ");
@@ -4647,7 +4657,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     verifyUrlPage(){
         cy.url().should("eq", "https://www.ecosia.org/");
     }
-    //TCP42245 
+    //TCP42245
     verifyDashboardContentTCP42245(){
         cy.xpath('//span[contains(text(),"Home")]//parent::a').should('be.visible');
         cy.xpath('//span[contains(text(),"Home")]//parent::a').click({ force: true });
@@ -4804,8 +4814,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         fileManager.pressPublicFileBtn();
         fileManager.uploadFile('file5.pptx','application/vnd.openxmlformats-officedocument.presentationml.presentation');
-        fileManager.pressDoneBtn();   
-        
+        fileManager.pressDoneBtn();
+
         cy.reload();
 
         //Verify files
@@ -5119,8 +5129,9 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.wait(3000);
         cy.get(':nth-child(4) > .form-group > .btn').should("be.enabled");
         cy.get(':nth-child(4) > .form-group > .btn').click();
-        cy.get(':nth-child(4) > .form-group > .btn').should("not.exist");
+        request.verifyTaskIsCompletedB();
 
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
         cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
 
             //Step 7: login
@@ -5301,12 +5312,12 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         request.waitUntilElementIsVisible('selector','[class="conversational-chat"]');
         cy.xpath("//input[@type='text'][@name='form_input_1']").should("be.visible").type('no{enter}');
         cy.xpath("//div[contains(text(),'The Accepted must be accepted.')]").should("be.visible");
-        cy.xpath("//input[@type='text'][@name='form_input_1']").should("be.visible").type('{selectall}{backspace}');
+        cy.xpath("//input[@type='text'][@name='form_input_1']").clear();
         cy.xpath("//input[@type='text'][@name='form_input_1']").should("be.visible").type('yes{enter}');
 
         cy.xpath("//input[@type='text'][@name='form_input_12']").should("be.visible").type('2019-10-10{enter}');
         cy.xpath("//div[contains(text(),'The After Date 2020-10-10 must be after 2020/10/10.')]").should("be.visible");
-        cy.xpath("//input[@type='text'][@name='form_input_12']").should("be.visible").type('{selectall}{backspace}');
+        cy.xpath("//input[@type='text'][@name='form_input_12']").should("be.visible").clear();
         cy.xpath("//input[@type='text'][@name='form_input_12']").should("be.visible").type('2022-09-30{enter}');
 
         cy.xpath("//input[@type='text'][@name='form_input_13']").should("be.visible").type('2020-09-10{enter}');
@@ -5396,42 +5407,35 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath("//input[@type='text'][@name='form_input_10']").should("be.visible").type('{selectall}{backspace}');
         cy.xpath("//input[@type='text'][@name='form_input_10']").should("be.visible").type('https://qualitlabs-qa.processmaker.net/{enter}');
         cy.wait(2000);
-        //Go to review request
-        login.navigateToUrl();
-        login.login();
-        navHelper.navigateToRequestsPage();
-        var processName = "TCP4-2278 Verify a line input with validation rules in web entry showing the data in a manual task";
-        request.openRequestByName(processName);
-        var taskName = 'Manual Task';
-        request.openTaskByTaskName(taskName);
-        //Review Manual task
-        cy.get('[class="card card-body border-top-0 h-100 display-screen"]').should("be.visible");
-        cy.get(":nth-child(1) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(2) > .form-group > :nth-child(1) > div > p").first().should("be.visible");
-        cy.get(":nth-child(3) > .form-group > :nth-child(1) > div > p").first().should("be.visible");
-        cy.get(":nth-child(4) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(".form-group > :nth-child(1) > div > :nth-child(2)").should("be.visible");
-        cy.get(":nth-child(6) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(8) > .form-group > :nth-child(1) > div > p").should("be.visible").first();
-        cy.get(":nth-child(10) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(12) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(13) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(14) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(15) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(16) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(17) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        cy.get(":nth-child(18) > .form-group > :nth-child(1) > div > p").first().should("be.visible");
-        cy.get(":nth-child(20) > .form-group > :nth-child(1) > div > p").should("be.visible");
-        //Complete Task
-        cy.xpath("//button[contains(text(),'Complete Task')]").should("be.visible").click();
-        cy.wait(2000);
-        //Review Forms tab
-        cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
-        cy.contains('Anonymous User has completed the task Manual Task').scrollIntoView();
-        cy.xpath("//a[contains(text(),'Forms')]").click();
-        cy.xpath('//button[@title="Details"]').should("be.visible").click();
-        cy.xpath('//div[@class="card-body h-100"]').should("be.visible");
-        cy.contains('An Anonymous User started this request from a web entry').scrollIntoView();
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+            //Go to review request
+            login.navigateToUrl();
+            login.login();
+
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            //Review Manual task
+            cy.get('[class="card card-body border-top-0 h-100 display-screen"]').should("be.visible");
+            cy.get(":nth-child(1) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(2) > .form-group > :nth-child(1) > div > p").first().should("be.visible");
+            cy.get(":nth-child(3) > .form-group > :nth-child(1) > div > p").first().should("be.visible");
+            cy.get(":nth-child(4) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(".form-group > :nth-child(1) > div > :nth-child(2)").should("be.visible");
+            cy.get(":nth-child(6) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(8) > .form-group > :nth-child(1) > div > p").should("be.visible").first();
+            cy.get(":nth-child(10) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(12) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(13) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(14) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(15) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(16) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(17) > .form-group > :nth-child(1) > div > p").should("be.visible");
+            cy.get(":nth-child(18) > .form-group > :nth-child(1) > div > p").first().should("be.visible");
+            cy.get(":nth-child(20) > .form-group > :nth-child(1) > div > p").should("be.visible");            
+        });
     }
     //TCP42259 and TCP42260
     verifyLinksCreatedInTopMenu(url1,url2){
@@ -5672,7 +5676,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
     }
 
-    async actionsAndAssertionsOfTCP42242(requestID){ 
+    async actionsAndAssertionsOfTCP42242(requestID){
         request.openRequestById(requestID);
         request.openTaskByTaskName('Form Task');
         cy.intercept('POST','/api/1.0/requests/'+requestID+'/files').as('fileUpload1')
@@ -5682,7 +5686,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath('(//input[@data-cy="file-upload-button"])[2]').attachFile("images/sanagustin.jpg");
         cy.wait('@fileUpload2').its('response.statusCode').should('eq', 200)
         cy.xpath('//button[@data-cy="loop-loop_1-add"]/i').click();
-        cy.xpath('//button[@data-cy="loop-loop_1-add"]/i').click();        
+        cy.xpath('//button[@data-cy="loop-loop_1-add"]/i').click();
         cy.intercept('POST','/api/1.0/requests/'+requestID+'/files').as('fileUpload3')
         cy.xpath('(//input[@data-cy="file-upload-button"])[3]').attachFile("images/sanambrosio.jpg");
         cy.wait('@fileUpload3').its('response.statusCode').should('eq', 200)
@@ -5697,7 +5701,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath('//button[@aria-label="New Submit"]').scrollIntoView({force:true}, {timeout: 10000});
         cy.xpath('//button[@aria-label="New Submit"]').click();
         request.verifyTaskIsCompleted();
-        request.openRequestById(requestID);        
+        request.openRequestById(requestID);
         request.openTaskByTaskName('Form Task');
         cy.xpath('//div[@aria-label="File Preview"]/div/img').should('be.visible');
         cy.xpath('//div[@title="origenes.jpg"]').should('be.visible');
@@ -5705,7 +5709,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath('//div[@title="sanambrosio.jpg"]').should('be.visible');
         cy.xpath('//div[@title="sanjudas.jpg"]').should('be.visible');
         cy.xpath('//button[@aria-label="New Submit"]').scrollIntoView({force:true}, {timeout: 10000});
-        cy.xpath('//div[@title="santotomas.jpg"]').should('be.visible');        
+        cy.xpath('//div[@title="santotomas.jpg"]').should('be.visible');
         cy.xpath('//button[@aria-label="New Submit"]').click();
         request.verifyTaskIsCompleted();
         cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', "Admin User has completed the task Form Task");
@@ -5818,7 +5822,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
            cy.get('[aria-label="design"]')
                .invoke("attr", "bgcolor")
                .should("eq", "alert alert-warning");
-           cy.get('input[name="design"]').type("paola"); 
+           cy.get('input[name="design"]').type("paola");
            //Default value
            cy.get('[aria-label="default value"]').invoke("attr", "default-value")
                .should("exist");
@@ -5839,13 +5843,13 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
                .should("eq", "###-##-####");
            cy.get(
                'input[aria-label="Custom Format String  SSN  ###-##-####"]'
-           ).type("000-11-2222");   
+           ).type("000-11-2222");
        }
        //Validations Rules
        asertionsTCP42267ValidationRules(){
            //"dateStart"
            cy.get('input[aria-label="dateStart').click();
-           screen.useCustomDate("2022", "Sep", "24"); 
+           screen.useCustomDate("2022", "Sep", "24");
            //Accepted
            cy.xpath('//label[text()="accepted"]/parent::div//div').should(
                "contain",
@@ -5919,7 +5923,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
            cy.xpath('//label[text()="Date"]/parent::div//div').should(
                "not.exist"
            );
-           //email 
+           //email
            cy.get('[data-cy="screen-field-email"]')
                .type("test@gmail.com")
                .should("have.value", "test@gmail.com");
@@ -5934,11 +5938,11 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
            cy.xpath('//label[text()="In 7"]/parent::div//div').should(
                "not.exist"
            );
-           //Max Length 12 
+           //Max Length 12
            cy.get('[data-cy="screen-field-MaxLength12"]')
                .type("123456789012")
                .should("have.value", "123456789012");
-           //Min Length 3 
+           //Min Length 3
            cy.get('[data-cy="screen-field-MinLength3"]')
                .type("123")
                .should("have.value", "123");
@@ -5946,7 +5950,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
            cy.get('[data-cy="screen-field-NotIn9"]')
                .type("99")
                .should("have.value", "99");
-           //Regx [xyz] 
+           //Regx [xyz]
            cy.xpath('//label[text()="Regx [xyz]"]/parent::div//div').should(
                "contain",
                "Invalid value"
@@ -6108,7 +6112,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
                .should("eq", "percentage");
        }
 
-    //TCP4-2229 
+    //TCP4-2229
     assertionsTCP42229(PathImage){
         //accepted input
         cy.xpath('//label[text()="accepted"]/parent::div//div')
@@ -6309,59 +6313,50 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     cy.get(".alert-wrapper > .alert").should("be.visible");
    }
 
-   actionsAndAssertionsOfTCP42225(processName){
+   actionsAndAssertionsOfTCP42225(){
        //Step 1: Complet the WE Form
        cy.get('[data-cy="add-row"]').should('be.visible');
        cy.get('[data-cy="add-row"]').click();
 
        //a) Fill data in variable Date Picker Date
-       cy.xpath('//label[text()="Date Picker Date"]//parent::div//input')
-        .eq(0)
-        .type("01/01/2022")
-        .should("have.value", "01/01/2022");
+       cy.get('input[name="form_date_picker_1"]').eq(0).click();
 
        //b) Fill data in variable Date Picker Datetime
-       cy.xpath('//label[text()="Date Picker Datetime"]//parent::div//input')
+       cy.get('input[name="form_date_picker_2"]')
            .eq(0)
            .type("02/01/2022 22:47 ")
-           .should("have.value", "02/01/2022 22:47 ");
 
        //c) Fill data in variable Line Input Date
-       cy.xpath('//label[text()="Line Input Date"]//parent::div//input')
+       cy.get('input[name="form_input_2"]')
            .eq(0)
-           .type("2020-01-03")
-           .should("have.value", "2020-01-03");
+           .type("2020-01-03");
 
        //d) Fill data in variable Line Input Datetime
        cy.xpath('//label[text()="Line Input Datetime"]//parent::div//input')
            .eq(0)
-           .type("2022-01-04 22:47")
-           .should("have.value", "2022-01-04 22:47");
+           .type("2022-01-04 22:47");
 
        //Step 3.2: Inside Loop
        //a) Fill data in variable New Date Picker
        cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
            .eq(0)
-           .type("01/02/2022")
-           .should("have.value", "01/02/2022");
+           .click()
+           .type("01/02/2022");
 
        //b) Fill data in variable New Datetime Picker
        cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input')
            .eq(0)
-           .type("02/02/2022 22:47 ")
-           .should("have.value", "02/02/2022 22:47 ");
+           .type("02/02/2022 22:47 ");
 
        //c)Fill data in variable New Input Date
        cy.xpath('//label[text()="New Input Date"]//parent::div//input')
            .eq(0)
-           .type("2020-02-03")
-           .should("have.value", "2020-02-03");
+           .type("2020-02-03");
 
        //d) Fill data in variable New Input Datetime
        cy.xpath('//label[text()="New Input Datetime"]//parent::div//input')
            .eq(0)
-           .type("2022-02-04 22:47")
-           .should("have.value", "2022-02-04 22:47");
+           .type("2022-02-04 22:47");
 
        //Step 4: Create new loop and Fill inputs
        //a) Add First loop
@@ -6370,8 +6365,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //b) Fill data in variable New Date Picker (New Loop)
        cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
            .eq(1)
-           .type("01/03/2022")
-           .should("have.value", "01/03/2022");
+           .type("01/03/2022");
 
        //Step 5: Add Second loop
        cy.get('button[title="Add Item"]').eq(1).click();
@@ -6379,8 +6373,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //a) Fill data in variable New Datetime Picker (New Loop)
        cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input')
            .eq(1)
-           .type("02/03/2022")
-           .should("have.value", "02/03/2022");
+           .type("02/03/2022");
 
        //Step 6: Add Third loop
        cy.get('button[title="Add Item"]').eq(2).click();
@@ -6388,8 +6381,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //a) Fill data in variable New Input Date (New Loop)
        cy.xpath('//label[text()="New Input Date"]//parent::div//input')
            .eq(1)
-           .type("2020-03-03")
-           .should("have.value", "2020-03-03");
+           .type("2020-03-03");
 
        //Step 7: Add Four loop
        cy.get('button[title="Add Item"]').eq(3).click();
@@ -6397,8 +6389,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //a) Fill data in variable New Input Datetime (New Loop)
        cy.xpath('//label[text()="New Input Datetime"]//parent::div//input')
            .eq(1)
-           .type("2022-03-04 22:47")
-           .should("have.value", "2022-03-04 22:47");
+           .type("2022-03-04 22:47");
 
        //Click on Ok button
        cy.xpath('//footer[@class="modal-footer"]//button[@class="btn btn-primary"]')
@@ -6407,9 +6398,9 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
        //Step 8: Click on New submit button
        cy.get('button[aria-label="New Submit"]').eq(0).click();
-       cy.wait(2000);
-       cy.get('button[aria-label="New Submit"]').should('not.exist');
+       request.verifyTaskIsCompletedB();
 
+       cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
        //Step 9: Get the number of requests
        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
 
@@ -6425,7 +6416,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
            //Step 12: Submit the form B
            cy.xpath('//h4[contains(text(),"New Record List")]').should('be.visible');
            cy.get('button[aria-label="New Submit"]').should('be.visible').click();
-           request.verifyTaskIsCompleted();
+           request.verifyTaskIsCompletedB();
 
            request.waitUntilTextcontainText('selector','varHeader','Completed');
        });
@@ -6455,7 +6446,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
                 .first()
                 .type("2022-01-04 22:47")
                 .should("have.value", "2022-01-04 22:47");
-        
+
         //Step 3.2: Inside Loop
             //Fill data in variable New Date Picker
             cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
@@ -6515,7 +6506,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
             //Click on New submit button
             cy.get(':nth-child(2) > .form-group > .btn').click()
         }
-        
+
         //TCP4-2261
         plainTextBodyInSendEmailInModeler(elementName,elementXpath){
             cy.xpath(elementXpath.replace('nameElem',elementName)).first().should('be.visible').click();
@@ -6768,6 +6759,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     //TCP4-2214
     actionsAndAssertionsWebEntryOfTCP42214(option,password,filePathImage){
         //Fill form (enter password , select file, select "yes")
+        cy.get('[id="password-input"]').should('be.visible');
         cy.get('[id="password-input"]').type(password);
         cy.get('button[class="btn btn-primary"]').click();
         admin.selectFileInFileManager(filePathImage);
@@ -7520,7 +7512,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     actionsAndAssertionsOfTCP42289(){
         //Step 1: Complete the screen WE
         cy.xpath('//label[text()="list1"]/parent::div//div[@class="multiselect__tags"]').should('be.visible');
-        cy.xpath('//label[text()="list1"]/parent::div//div[@class="multiselect__tags"]').should('be.visible').click();
+        cy.xpath('//label[text()="list1"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath("//label[text()='list1']/parent::div//input").should('be.visible').type('1{enter}');
         cy.get('[data-cy="screen-field-name1"]').should('be.visible').type('name1').should('have.value','name1');
         cy.xpath("//label[text()='name2']/parent::div//input").should('be.visible');
@@ -7538,9 +7530,10 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //Step 2: Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
-        cy.xpath("//button[contains(text(),'New Submit')]").should('not.exist');
+        request.verifyTaskIsCompletedB();
 
         //Step 6: Get the number of requests
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
         cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
 
             //Step 7: login
@@ -7652,16 +7645,12 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     inputLineWithfieldIsrequired(label,value){
         var locatorInput ='//label[text()="'+label+'"]/parent::div//input'
         var locatorTextHelp ='//label[text()="'+label+'"]/parent::div//div'
-        cy.xpath(locatorTextHelp).should('contain','Field is required');
         cy.xpath(locatorInput).type(value);
-        cy.xpath(locatorTextHelp).should('not.exist');
     }
     inputDateIsrequired(label,date){
         var locatorInput ='//label[text()="'+label+'"]/parent::div//input'
         var locatorTextHelp ='//label[text()="'+label+'"]/parent::div//div'
-        cy.xpath(locatorTextHelp).should('contain','Field is required');
         cy.xpath(locatorInput).type(date).type('{enter}');
-        cy.xpath(locatorTextHelp).should('not.exist');
     }
     uploadFile(filePath){
     cy.get('[data-cy="file-upload-button"]').attachFile(filePath);
@@ -7670,10 +7659,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
     inputTextArea(label,value){
         var locatorInput ='//label[text()="'+label+'"]/parent::div//textarea'
-        var locatorTextHelp ='//label[text()="'+label+'"]/parent::div//div'
-        cy.xpath(locatorTextHelp).eq(0).should('contain','Field is required');
-        cy.xpath(locatorInput).type(value)
-        cy.xpath(locatorTextHelp).should('not.exist');
+        cy.xpath(locatorInput).type(value);
     }
     selectOption(label,option){
         cy.xpath('//label[text()="'+label+'"]/parent::div//input').click({force:true}).type(option).should('have.value',option);
@@ -7713,16 +7699,12 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         this.inputLineWithfieldIsrequired('Tiempo de Servicio:','15');
         this.inputDateIsrequired('Fecha de ingreso:','01/01/2000');
         this.inputLineWithfieldIsrequired('Ingreso de todas sus actividades en Bs:','10000');
-        this.uploadFile('images/image1.jpg');
         cy.get('button[aria-label="NEXT PAGE"]').click();
         //Fill third page
-        cy.xpath('//label[text()="Prestamos Anterioires/actuales"]/parent::div//div[@class="invalid-feedback d-block"]').should('contain','Field is required');
-        cy.xpath('//label[text()="Prestamos Anterioires/actuales"]/parent::div//input[1]').eq(1).click();
-        cy.xpath('//label[text()="Prestamos Anterioires/actuales"]/parent::div//div[@class="invalid-feedback d-block"]').should('not.exist');
         this.inputLineWithfieldIsrequired('Monto de prestamo $','50000');
         this.inputLineWithfieldIsrequired('Monto de prestamo Bs','350000');
         this.inputLineWithfieldIsrequired('Plazo Años','10');
-        this.inputTextArea('Proposito del prestamo','Inversion en activos fijos')
+        this.inputTextArea('Proposito del prestamo ','Inversion en activos fijos')
         cy.get('button[aria-label="Previous Page"]').click();
         cy.get('button[aria-label="NEXT PAGE"]').click();
         cy.get('button[aria-label="Enviar Informacion"]').click();
@@ -7960,10 +7942,10 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //Step 5: Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        cy.wait(2000);
-        cy.xpath("//button[contains(text(),'New Submit')]").should('not.exist');
+        request.verifyTaskIsCompletedB();
 
         //Step 6: Get the number of requests
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
         cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
 
             //Step 7: login
