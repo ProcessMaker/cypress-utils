@@ -6324,39 +6324,39 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //b) Fill data in variable Date Picker Datetime
        cy.get('input[name="form_date_picker_2"]')
            .eq(0)
-           .type("02/01/2022 22:47 ")
+           .type("02/01/2022 22:47 ",{force:true});
 
        //c) Fill data in variable Line Input Date
        cy.get('input[name="form_input_2"]')
            .eq(0)
-           .type("2020-01-03");
+           .type("2020-01-03",{force:true});
 
        //d) Fill data in variable Line Input Datetime
        cy.xpath('//label[text()="Line Input Datetime"]//parent::div//input')
            .eq(0)
-           .type("2022-01-04 22:47");
+           .type("2022-01-04 22:47",{force:true});
 
        //Step 3.2: Inside Loop
        //a) Fill data in variable New Date Picker
        cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
            .eq(0)
            .click()
-           .type("01/02/2022");
+           .type("01/02/2022",{force:true});
 
        //b) Fill data in variable New Datetime Picker
        cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input')
            .eq(0)
-           .type("02/02/2022 22:47 ");
+           .type("02/02/2022 22:47 ",{force:true});
 
        //c)Fill data in variable New Input Date
        cy.xpath('//label[text()="New Input Date"]//parent::div//input')
            .eq(0)
-           .type("2020-02-03");
+           .type("2020-02-03",{force:true});
 
        //d) Fill data in variable New Input Datetime
        cy.xpath('//label[text()="New Input Datetime"]//parent::div//input')
            .eq(0)
-           .type("2022-02-04 22:47");
+           .type("2022-02-04 22:47",{force:true});
 
        //Step 4: Create new loop and Fill inputs
        //a) Add First loop
@@ -6365,7 +6365,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //b) Fill data in variable New Date Picker (New Loop)
        cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
            .eq(1)
-           .type("01/03/2022");
+           .type("01/03/2022",{force:true});
 
        //Step 5: Add Second loop
        cy.get('button[title="Add Item"]').eq(1).click();
@@ -6373,7 +6373,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //a) Fill data in variable New Datetime Picker (New Loop)
        cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input')
            .eq(1)
-           .type("02/03/2022");
+           .type("02/03/2022",{force:true});
 
        //Step 6: Add Third loop
        cy.get('button[title="Add Item"]').eq(2).click();
@@ -6381,7 +6381,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //a) Fill data in variable New Input Date (New Loop)
        cy.xpath('//label[text()="New Input Date"]//parent::div//input')
            .eq(1)
-           .type("2020-03-03");
+           .type("2020-03-03",{force:true});
 
        //Step 7: Add Four loop
        cy.get('button[title="Add Item"]').eq(3).click();
@@ -6389,7 +6389,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
        //a) Fill data in variable New Input Datetime (New Loop)
        cy.xpath('//label[text()="New Input Datetime"]//parent::div//input')
            .eq(1)
-           .type("2022-03-04 22:47");
+           .type("2022-03-04 22:47",{force:true});
 
        //Click on Ok button
        cy.xpath('//footer[@class="modal-footer"]//button[@class="btn btn-primary"]')
