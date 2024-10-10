@@ -50,12 +50,17 @@ export class DocumentingProcess {
     //Select Generate Documentation from Scratch button
     optionGenerateDoc(){
         cy.get('[class="modal-header"]').should('be.visible');
+        cy.xpath(selectors.useCurrentDocBtn).should('be.visible');
+        cy.get(selectors.cancelBtn).should('be.visible');
         cy.xpath(selectors.generateDocBtn).should('be.visible').click();
+        cy.xpath("//h4[contains(text(),'Generate Documentation')] ").should('be.visible');
     }
 
     //Select option Use current Documentation button
     optionCurrentDoc(){
         cy.get('[class="modal-header"]').should('be.visible');
+        cy.xpath(selectors.generateDocBtn).should('be.visible');
+        cy.get(selectors.cancelBtn).should('be.visible');
         cy.xpath(selectors.useCurrentDocBtn).should('be.visible').click();
     }
 

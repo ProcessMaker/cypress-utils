@@ -98,11 +98,11 @@ export class FlowGenie {
     verifyPresenceFlowGenieAndCreate(nameFlowGenie, description) {
         cy.get(selectors.buttonOptions).should("be.visible");
         this.SearchFlowGenie(nameFlowGenie);
-        cy.wait(4000);
         cy.get(selectors.loading).should("not.be.visible");
-        cy.get(selectors.tableBody, { timeout: 10000 }).then($rowsTable => {
-            if($rowsTable.find("td").length ===1 ){
-                this.CreateFlowGenie(processName, description);
+        cy.xpath(selectors.tableBody, { timeout: 10000 })
+        .then($rowsTable => {
+            if($rowsTable.find("tbody").length <= 0){
+                this.CreateFlowGenie(nameFlowGenie, description);
             }
         });
     }
