@@ -5086,8 +5086,6 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //Step 3: Validations Rules
         cy.xpath("//span[text()='Validations Rules']").should("be.visible");
-        cy.xpath('//text()[contains(.,"dateStart")]/ancestor::div[@data-cy="screen-field-dateStart"]//input').type('2022-09-30{enter}');
-        cy.xpath('//text()[contains(.,"dateStart")]/ancestor::div[@data-cy="screen-field-dateStart"]//input').type('{esc}');
         cy.xpath("//input[@type='text'][@name='form_input_8']").type('yes').should('have.value','yes');
         cy.xpath("//input[@type='text'][@name='form_input_9']").type('2022-10-30{enter}');
         cy.xpath("//input[@type='text'][@name='form_input_10']").type('2022-09-30{enter}');
