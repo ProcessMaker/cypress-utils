@@ -138,7 +138,7 @@ export class NaturalLanguage {
         cy.get('.btn-outline-secondary').should('be.visible',{timeout: 1000});
         cy.xpath("//button[contains(text(),'Generate')]").should('be.visible').click({timeout: 5000});
         cy.get('[role="progressbar"]').should('be.visible');
-        this.waitUntilUseModalIsVisible('selector', '[data-test="textarea-prompt"]'); 
+        this.waitUntilUseModalIsVisible('selector', '[class="tox-edit-area"]'); 
         this.waitUntilUseModalIsVisible('selector', '[class="d-flex"]');
         cy.get('.prev-btn').should('be.visible');
     }
