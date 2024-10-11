@@ -199,6 +199,7 @@ export class ScreenTemplate {
         
         {
             cy.xpath(selectors.searchInputScreenTemplatePublic).type(`${nameScreenTemplate}{enter}`).should("have.value", nameScreenTemplate);
+            cy.wait(3000);
             cy.get("[data-cy=public-templates-table-td-0-4]").first().trigger("mouseover", { force: true });
             cy.wait(3000);
             cy.xpath(selectors.menuOptionScreenTemplatePublic).should("be.visible");
