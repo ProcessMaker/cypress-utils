@@ -74,17 +74,20 @@ export class DocumentingProcess {
 
     //Click on Apply changes
     applyChanges(){
+        cy.get(selectors.cancelSuggestionBtn).should('be.visible');
         cy.get(selectors.applyChangesBtn).should('be.visible').click();
     }
 
     //Click on cancel Suggestion
     cancelSuggestion(){
+        cy.get(selectors.applyChangesBtn).should('be.visible');
         cy.get(selectors.cancelSuggestionBtn).should('be.visible').click();
     }
 
     //Confirm action
     confirmAction(){
         cy.get('[class="modal-header"]').should('be.visible');
+        cy.get(selectors.cancelActionBtn).should('be.visible');
         cy.get(selectors.confirmActionBtn).should('be.visible').click();
     }
 
