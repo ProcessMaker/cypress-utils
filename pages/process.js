@@ -70,39 +70,38 @@ export class Process {
     dragEvent(type, offsetX, offsetY) {
         switch (type) {
             case 'start':
-                this.dragStartEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.start_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-modeler-start-event', { x: offsetX, y: offsetY });
                 break;
             case 'pool':
-                this.dragEventByOffSet(selectors.prrocessEvent.replace('eventName', pageConstants.process.pool_event), offsetX, offsetY);
-                // cy.xpath('(//*[@button-id="bottom-right-resize-button"])[1]').trigger('mousedown', 'bottomRight',{force: true});
+                this.clickAndDropElement('processmaker-modeler-pool', { x: offsetX, y: offsetY });
                 break;
             case 'task':
-                this.dragEventByOffSet(selectors.prrocessEvent.replace('eventName', pageConstants.process.task_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-modeler-task', { x: offsetX, y: offsetY });
                 break;
             case 'pdf generator':
-                this.dragPdfGeneratorEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.pdf_generator_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-communication-pdf-print', { x: offsetX, y: offsetY });
                 break;
             case 'end':
-                this.dragEndEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.end_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-modeler-end-event', { x: offsetX, y: offsetY });
                 break;
             case 'Data Connector':
-                this.dragdataConnectorEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.data_connector_event), offsetX, offsetY);
+                this.clickAndDropElement('data-source-task-service', { x: offsetX, y: offsetY });
                 break;
             case 'Gateway':
-                this.draggatewayEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.gateway_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-modeler-exclusive-gateway', { x: offsetX, y: offsetY });
                 break;
             case 'AI Generated':
-                this.dragAIGeneratedEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.AI_Generated_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-ai-assistant', { x: offsetX, y: offsetY });
                 break;
             case 'Intermediate Event':
-                this.dragintermediateEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.intermediate_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-modeler-intermediate-catch-timer-event', { x: offsetX, y: offsetY });
                 break;
             case 'Flow Genie':
-                this.dragFlowGenieEvent(selectors.prrocessEvent.replace('eventName', pageConstants.process.Flow_Genie_event), offsetX, offsetY);
+                this.clickAndDropElement('processmaker-ai-task"', { x: offsetX, y: offsetY });
                 break;
             case 'RPA':
-                    this.dragRPA(selectors.prrocessEvent.replace('eventName', pageConstants.process.RPA_event), offsetX, offsetY);
-                    break;    
+                this.dragRPA(selectors.prrocessEvent.replace('eventName', pageConstants.process.RPA_event), offsetX, offsetY);
+                break;
 
         }
     }
@@ -200,7 +199,25 @@ export class Process {
         cy.xpath("(//span[text()='Intermediate Event'])[2]")
             .trigger('mouseup');
     }
+    clickAndDropElement(node, position) {
+        cy.window().its('store.state.paper').then(paper => {
+            const { tx, ty } = paper.translate();
 
+            cy.get('.main-paper').then($paperContainer => {
+                const { x, y } = $paperContainer[0].getBoundingClientRect();
+                const mouseEvent = { clientX: position.x + x + tx, clientY: position.y + y + ty };
+                cy.get('.control-add').eq(0).click();
+                cy.get('[data-test=explorer-rail]').find(`[data-test=${node}]`).click();
+                cy.get('[id="explorer-rail"]>* [class="close--container"]>svg').click();
+                cy.document().trigger('mousemove', mouseEvent);
+                cy.wait(300);
+                cy.get('.paper-container').trigger('mousedown', mouseEvent);
+                cy.wait(300);
+                cy.get('.paper-container').trigger('mouseup', mouseEvent);
+
+            });
+        });
+    }
     dragEventByOffSet(selector, offsetX, offsetY) {
         cy.get('[class="node-types__container"]').find('#nodeTypesList > div > div:nth-child(5) > span').trigger('mousedown')
             .trigger('mousemove', {
@@ -924,10 +941,12 @@ export class Process {
         cy.xpath(selectors.saveBtnToAddProcess).should("be.visible").click();
     }
     saveProcessWithNameAndDescription(version, description) {
-        cy.get(selectors.saveButton1).should("be.visible").click();
+        this.clickOnSave();
         cy.get(selectors.nameVersionInput).type(version);
         cy.get(selectors.descriptionVersionInput).type(description);
-        cy.xpath(selectors.saveBtnToAddProcess).should("be.visible").click();
+        cy.xpath('//button[@data-test="btn-save-publish"]').click();
+        cy.wait(4000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
     }
     goToConfigProcess() {
         //cy.xpath(selectors.configctrlBtn).click();
@@ -938,6 +957,7 @@ export class Process {
     }
     versionHistory() {
         cy.get(selectors.versionHistoryTab).should("be.visible").click();
+        cy.get('[name="name"]').should('be.visible');
     }
     showVersioningOnly() {
         cy.get(selectors.onlyShowNamedVersion).eq(0).check({ force: true });
