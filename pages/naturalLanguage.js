@@ -5,11 +5,13 @@ import { th } from "date-fns/locale";
 
 export class NaturalLanguage {
     clickOnAIProcess(){
+        ;cy.xpath("//h5[contains(text(),'New Process')]").should('be.visible');
         cy.xpath(selectors.aiProcessBtn).should('be.visible');
         cy.xpath(selectors.aiProcessBtn).click();
     }
 
     clickOnDescription(){
+        cy.get('[data-test="details-button"]').should('be.visible');
         cy.get(selectors.descriptionNL).click()
     }
 
