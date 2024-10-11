@@ -460,6 +460,7 @@ selectMyTemplate() {
 
 selectTemplate(nameTemplate) {
 
+    cy.wait(3000);
     cy.get(selectors.selectScreenTemplate.replace('CustomCard',nameTemplate+'-card')).click({force:true});
     
 }
