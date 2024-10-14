@@ -32,7 +32,9 @@ export class SaveSearchs {
         cy.get(selectors.scheduled).should("be.visible").click();
         cy.get(selectors.addscheduled).should("be.visible").click();
         cy.get(selectors.selectday).should("be.visible").click();
+        cy.xpath("//label[contains(text(),'Time')]").should("be.visible");
         cy.xpath(selectors.selecttime).should("be.visible").click();
+        cy.wait(500);
         cy.get('[class="dropdown-menu show"]').should("be.visible");
         cy.xpath(selectors.selecthour).should("be.visible").first().click();
         cy.xpath(selectors.closehour).should("be.visible").click();
