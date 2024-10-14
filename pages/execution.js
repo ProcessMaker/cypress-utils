@@ -3894,7 +3894,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         request.openTaskByTaskName(taskName);
 
         //Review Manual task
-        cy.xpath("//a[text()='Go to about Processmaker']").should('be.visible').click();
+        cy.xpath("//a[text()='Go to about Processmaker']").scrollIntoView().click();
         navHelper.navigateToRequestsPage();
         //Complete Manual task
         cy.visit('/requests/'+requestId);
