@@ -126,6 +126,7 @@ export class PMBlock {
         }
     }
     searchPMBlockModeler(pmblockName) {
+        cy.wait(3000);
         cy.xpath(selectors.searchPMBlockModeler).type(`${pmblockName}{enter}`).should("have.value", pmblockName);
     }
 
