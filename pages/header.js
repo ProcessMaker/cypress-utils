@@ -42,6 +42,8 @@ export class Header {
     choseLanguage(language) {
         cy.get('#language').select(language).should('have.value', language);
         cy.get(selectors.saveBtnInProfile).click();
+        cy.wait(2000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.reload();
     }
 

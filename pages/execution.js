@@ -5246,10 +5246,11 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //j) Submit
         cy.xpath("//button[contains(text(),'New Submit')]").eq(1).click();
+        request.verifyTaskIsCompletedB();
 
         //Step 3: Review Screen A
-        request.verifyTaskIsCompleted();
         cy.visit('/requests/'+requestId);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
         //a) Review Sign
         cy.get('[data-cy="screen-field-sig1"] > .signature-container > .signature > canvas').should("be.visible");
@@ -5284,10 +5285,10 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath(" //button[text()='Ok']").should("be.visible").click();
         //k) Submit
         cy.xpath("//button[contains(text(),'New Submit')]").eq(1).click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 4: Review Summary and forms
-        cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
+        cy.xpath("//a[contains(text(),'Summary')]").should("be.visible").click();
         cy.xpath("//a[contains(text(),'Forms')]").click();
         cy.xpath("//button[@title='Details']").should("be.visible");
         cy.xpath("//a[contains(text(),'Completed')]").click();
@@ -8856,7 +8857,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //Step 5: Submit the form
         cy.get('button[aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 6: Validations in second task
         cy.visit('/requests/'+requestId);
@@ -8867,6 +8868,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         request.waitUntilElementIsVisible('selector','[data-cy="add-row"]');
         cy.xpath('//div[@data-cy="modal-add"]//div[@label="New Signature"]').invoke("attr", "pad-height").should("eq",padHeightSignInRecordList);
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
         //Step 8: verify that request was completed
         cy.visit('/requests/'+requestId+'/files');
