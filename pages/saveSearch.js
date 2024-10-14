@@ -43,7 +43,7 @@ export class SaveSearchs {
         cy.get(selectors.saveschedule).should("be.visible").click();
         //back to the save search
         cy.get('.breadcrumb > :nth-child(3) > a').should("be.visible").click();
-        cy.get(':nth-child(3) > .btn').should("be.visible").click();
+        cy.get(':nth-child(3) > .btn').first().should("be.visible").click();
     }
     //Configurations
     configurationsSaveSearch() {
@@ -205,5 +205,13 @@ export class SaveSearchs {
         }
         cy.xpath(selectors.saveTheSource).click();
         cy.wait(3000);
+    }
+    //Delete save search from My save search
+    deleteSaveSearchFromMy(nameSaveSearch){
+        cy.visit('/requests/saved-searches');
+        cy.get('input[placeholder="Search"]').first().type(nameSaveSearch, {delay:100});
+        this.pressOptionSaveSearch('delete');
+        cy.get('[class="modal-title"]').should('be.visible');
+        cy.get('[class="btn m-0 btn-secondary"]').should('be.visible').click();
     }
 }
