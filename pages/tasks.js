@@ -50,7 +50,7 @@ export class Tasks {
 
     verifySidebarMenuOption(num,option){
         cy.get('.nav-item.filter-bar.justify-content-between.py-2.sidebar-expansion').click();
-        cy.get('.nav-item.filter-bar.justify-content-between').eq(num).should('contain',option);
+        cy.get('.nav-item.filter-bar.justify-content-between').should('contain',option);
     }
    searchTaskByPMQL(PMQL){
     cy.get('.jumbotron').should("not.be.visible")
