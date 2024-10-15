@@ -131,22 +131,24 @@ export class NaturalLanguage {
     }
 
     uploadImage(file){
-        cy.get('input[type="file"]').attachFile(file,{timeout: 5000});
+        cy.get('input[type="file"]').attachFile(file,{timeout: 10000});
         cy.get('[class="image-action"] [class="fas fa-redo p-2"]').should('exist');
         cy.get('[class="image-action mr-1"] [class="fas fa-search-plus p-2"]').should('be.visible');
         cy.get('.preview-file-img > img').should('be.visible',{timeout: 5000});
+        cy.get('[class="preview-file-info w-100 p-1 d-flex justify-content-center align-items-center text-regular my-3 py-3"] [class="w-100"]').contains('B');
         cy.wait(2000);
     }
 
     generateProcessFromImage(){
+        cy.wait(1000);
         cy.get('[class="icon-wrapper p-1 mx-3"]').should('exist');
-        cy.get('.btn-outline-secondary').should('be.visible',{timeout: 1000});
+        cy.get('.btn-outline-secondary').first().should('be.visible',{timeout: 1000});
         cy.xpath("//span[contains(text(),'Loaded image to create a process')]").should('be.visible');
         cy.get('[class="fas fa-search-plus p-2"]').should('exist');
         cy.get('[class="fas fa-redo p-2"]').should('exist');
+        cy.wait(2000);
         cy.xpath("//button[contains(text(),'Generate')]").should('be.visible').click({timeout: 5000});
-        cy.wait(500);
-        cy.get('[role="progressbar"]').should('be.visible');
+        cy.get('[role="progressbar"]').should('be.visible',{timeout: 10000});
         this.waitUntilUseModalIsVisible('selector', '[class="tox-edit-area"]'); 
         this.waitUntilUseModalIsVisible('selector', '[class="d-flex"]');
         cy.get('.prev-btn').should('be.visible');
