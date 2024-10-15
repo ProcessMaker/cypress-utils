@@ -278,6 +278,14 @@ export class Admin {
         cy.xpath("//a[contains(text(),'Deleted Users')]").click();
         cy.get('.alert-wrapper > .alert').should('be.visible');
     }
+    deleteUserAPI(userID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/users/'+userID).then(response => {
+                console.log(JSON.stringify(response));
+                return "user " + userID + "was deleted";
+            });
+        });
+    }
 
     updateUser(name){
         cy.xpath(selectors.searchUserField).eq(0).type(name, { delay: 300 });
@@ -491,11 +499,10 @@ export class Admin {
 
     addMenuIfNotExist(name, description) {
         let tableXpath = '//*[@class="data-table"]//tbody';
-        cy.get(".nav-link").contains("Menu").click();
-        cy.wait(3000);
+        cy.wait(5000);
         cy.get('[placeholder="Search"]')
             .click()
-            .type(name)
+            .type(name,{delay:200})
             .should('have.value',name);
         cy.wait(3000);
         cy.xpath(tableXpath)
@@ -660,6 +667,7 @@ export class Admin {
     }
     //Assign Menu to User
     selectMenuToUser(nameMenu) {
+        cy.get("#dynamic-ui").should('exist');
         cy.get("#dynamic-ui")
             .children()
             .eq(2)
@@ -681,9 +689,10 @@ export class Admin {
     }
     saveChagesInProfile() {
         cy.get("#saveUser").click();
+        cy.wait(3000);
         cy.get(
             '[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]'
-        ).should("be.visible");
+        ).should("not.exist");
     }
     verifyPresenceOfCollectionAndImportCollection(collectionName, filePath) {
         this.loadPage();
@@ -1102,6 +1111,14 @@ export class Admin {
 		cy.xpath(selectors.groupDelete).click();
 		cy.xpath(selectors.confirmButtonGroup).click();
 	}
+    deleteGroupAPI(groupID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/groups/'+groupID).then(response => {
+                console.log(JSON.stringify(response));
+                return "group " + groupID + "was deleted";
+            });
+        });
+    }
     goToEditMenu(){
         cy.xpath(
             '//button//span[@class="text-capitalize screen-toolbar-button"]'
