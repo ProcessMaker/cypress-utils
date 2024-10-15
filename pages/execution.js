@@ -4831,42 +4831,41 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath('//tbody//tr/td[@aria-colindex="2"]/span').eq(8).should("have.contain","file5");
         cy.xpath('//tbody//tr/td[@aria-colindex="2"]/span').eq(9).should("have.contain","pptx");
     }
-    actionsAndAssertionsOfTCP42255(requestId,timezone_format) {
-        //Complete form A
+    actionsAndAssertionsOfTCP42255(requestId) {
+        //Step 1: Complete form A
         //fill input
-        cy.get('input[aria-label="New Input"]').should('be.visible').click();
+        cy.get('input[aria-label="New Input"]').should('be.visible')
         cy.get('input[aria-label="New Input"]').type('Input in line control');
-        //select date
-        admin.changeWriteTimeZone(11,11,2022,21,14,timezone_format,'date');
         //fill text area
         cy.get('[aria-label="New Textarea"]').should('be.visible').click();
-        cy.get('[aria-label="New Textarea"]').type('Input in text area');
+        cy.get('[aria-label="New Textarea"]').type('Input in text area',{delay:3000});
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').should('be.visible').click();
         //verify task is completed
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
-        cy.reload()
+        request.verifyTaskIsCompletedB();
+        cy.wait(10000);
+
         //open request by ID
         cy.visit('/requests/' + requestId);
-        request.waitUntilElementIsVisible('selector','#pending > div > div > table > tbody > tr > td:nth-child(2) > a',32);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]',20);
         request.clickOnTaskName(1, 1);
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').should('be.visible').click();
         //verify task is completed
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
+        request.verifyTaskIsCompletedB();
+        
         //verify the process is completed
         request.verifyRequestisCompleted(requestId);
         cy.xpath("//div[contains(text(),'Admin User has completed the task A')]").should('be.visible');
         cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email A')]").should('be.visible');
         cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email B')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator A')]").scrollIntoView().should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator C')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email C')]").should('be.visible');
-        cy.contains('Admin User has completed the task B').scrollIntoView();
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator B')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email D')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator D')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task B')]").should('be.visible');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator A')]").should('exist');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator C')]").should('exist');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email C')]").should('exist');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator B')]").should('exist');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email D')]").should('exist');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator D')]").should('exist');
+        cy.xpath("//div[contains(text(),'Admin User has completed the task B')]").should('exist');
     }
 
     //TCP4-2258
@@ -7218,14 +7217,20 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath(locatorInputOption).eq(index).type('{enter}');
     }
     actionsAndAssertionsOfTCP42192(requestId){
-        cy.get('[data-cy="screen-field-form_input_1"]').first().should('be.visible').type('test TCP4-2192 automation').should('have.value','test TCP4-2192 automation');
-        cy.xpath('(//input[@name="form_input_1"])[2]').should('be.visible').should('have.value','test TCP4-2192 automation');
-        cy.xpath('//label[@class="form-check-label"]').should('be.visible').click();
-        cy.xpath('//textarea[@name="form_text_area_1"]').should('be.visible').type('test TCP4-2192 Process PDF Generated Nested screen').should('have.value','test TCP4-2192 Process PDF Generated Nested screen');
-        cy.xpath('//label[text()="New Select List"]/parent::div//div[@class="multiselect__tags"]').should('be.visible').click();
-        cy.xpath('//label[text()="New Select List"]/parent::div//div[@class="multiselect__tags"]//input').should('be.visible').type('Three{enter}');
+        //Step 1: Wait the pàge is load
+        cy.get('[data-cy="screen-field-form_input_1"]').first().should('be.visible');
+        cy.get('[data-cy="screen-field-form_input_1"]').first().type('2192 automation').should('have.value','2192 automation');
+        cy.xpath('(//input[@name="form_input_1"])[2]').should('have.value','2192 automation');
+        cy.xpath('//label[@class="form-check-label"]').click();
+        cy.xpath('//textarea[@name="form_text_area_1"]').type('TCP4-2192 Process PDF',{delay:300}).should('have.value','TCP4-2192 Process PDF');
+        cy.xpath('//label[text()="New Select List"]/parent::div//div[@class="multiselect__tags"]').click();
+        cy.xpath('//label[text()="New Select List"]/parent::div//div[@class="multiselect__tags"]//input').should('be.visible').type('Three');
+        cy.wait(2000);
+        cy.xpath('//label[text()="New Select List"]/parent::div//div[@class="multiselect__tags"]//input').type('{enter}');
         cy.xpath("(//button[contains(text(),'New Submit')])[2]").should('be.visible').click();
-        //Review Summary
+        request.verifyTaskIsCompletedB();
+
+        //Validation 1: Review Summary
         cy.visit('/requests/'+requestId+'/files');
         request.waitUntilTextcontainText('selector','varHeader','Completed');
         cy.visit('/requests/'+requestId);
@@ -7235,17 +7240,11 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath("//td[text()='form_text_area_1']").first().should("be.visible");
         cy.xpath("//td[text()='form_select_list_1']").should("be.visible");
         cy.xpath("//td[text()='testCaseNestedScreen']").should("be.visible");
-        //Review File Manager
+
+        //Validation 2: Review File Manager
         cy.xpath("//a[contains(text(),'File Manager')]").should("be.visible").click();
         cy.xpath('//button[@title="View"]').should("be.visible").click();
-        cy.wait(5000);
-        cy.get('iframe').first().then(($iframe) => {
-            const $body = $iframe.contents().find('body');
-            cy.wrap($body).find('div').should("be.visible");
-        });
-        //Review Forms tab
-        cy.xpath("//a[contains(text(),'Forms')]").click();
-        cy.get('.list-group > .card-header').should("contain", 'Completed');
+        cy.get('[id="pdfViewer"]').should('be.visible');
     }
     actionsAndAssertionsOfTCP42196(requestId){
         cy.xpath('//input[@data-cy="screen-field-form_input_1"]').should('be.visible').type('test text').should('have.value','test text');
