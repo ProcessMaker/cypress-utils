@@ -97,7 +97,7 @@ export class Process {
                 this.clickAndDropElement('processmaker-modeler-intermediate-catch-timer-event', { x: offsetX, y: offsetY });
                 break;
             case 'Flow Genie':
-                this.clickAndDropElement('processmaker-ai-task"', { x: offsetX, y: offsetY });
+                this.clickAndDropElement('processmaker-ai-task', { x: offsetX, y: offsetY });
                 break;
             case 'RPA':
                 this.dragRPA(selectors.prrocessEvent.replace('eventName', pageConstants.process.RPA_event), offsetX, offsetY);

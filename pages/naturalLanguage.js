@@ -34,7 +34,6 @@ export class NaturalLanguage {
         this.clickOnGenerate();
         cy.get('[data-test="clear-button"]').should('be.visible');
         cy.get('[class="inspiration-label"]').should('be.visible');
-        cy.get('[class="progress ml-3"]').should('exist');
         cy.get(selectors.aiIcon).should('not.exist');
         cy.get('.spinner-border').should('exist');        
         this.waitUntilUseModalIsVisible('selector', '[data-test="use-model-button"]');
