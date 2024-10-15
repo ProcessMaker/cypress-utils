@@ -32,6 +32,9 @@ export class NaturalLanguage {
         this.setDataOnDescription(descriptionData, {delay:100});
         cy.wait(500);
         this.clickOnGenerate();
+        cy.get('[data-test="clear-button"]').should('be.visible');
+        cy.get('[class="inspiration-label"]').should('be.visible');
+        cy.get('[class="progress ml-3"]').should('exist');
         cy.get(selectors.aiIcon).should('not.exist');
         cy.get('.spinner-border').should('exist');        
         this.waitUntilUseModalIsVisible('selector', '[data-test="use-model-button"]');
@@ -138,7 +141,11 @@ export class NaturalLanguage {
     generateProcessFromImage(){
         cy.get('[class="icon-wrapper p-1 mx-3"]').should('exist');
         cy.get('.btn-outline-secondary').should('be.visible',{timeout: 1000});
+        cy.xpath("//span[contains(text(),'Loaded image to create a process')]").should('be.visible');
+        cy.get('[class="fas fa-search-plus p-2"]').should('exist');
+        cy.get('[class="fas fa-redo p-2"]').should('exist');
         cy.xpath("//button[contains(text(),'Generate')]").should('be.visible').click({timeout: 5000});
+        cy.wait(500);
         cy.get('[role="progressbar"]').should('be.visible');
         this.waitUntilUseModalIsVisible('selector', '[class="tox-edit-area"]'); 
         this.waitUntilUseModalIsVisible('selector', '[class="d-flex"]');
