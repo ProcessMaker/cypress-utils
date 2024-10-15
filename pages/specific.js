@@ -3596,48 +3596,45 @@ export class Specific {
         cy.get('[data-cy="add-row"]').should('be.visible');
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="input1"])[1]').type('Recordlist1 input1');
-        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist1 textarea1');
-        cy.xpath('(//input[@aria-label="Date Picker 1"])[1]').type('2022-07-13{enter}');
-        cy.xpath('(//input[@aria-label="Date Picker 2"])[1]').type('2022-07-12 11:13{enter}');
+        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist1 textarea1',{delay:300});
+        cy.wait(2000);
         cy.xpath("//button[text()='Ok']").click();
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="input1"])[1]').type('Recordlist2 input1');
-        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist2 textarea1');
-        cy.xpath('(//input[@aria-label="Date Picker 1"])[1]').type('2022-07-13{enter}');
-        cy.xpath('(//input[@aria-label="Date Picker 2"])[1]').type('2022-07-12 11:13{enter}');
+        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist2 textarea1',{delay:300});
+        cy.wait(2000);
         cy.xpath("//button[text()='Ok']").click();
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="input1"])[1]').type('Recordlist3 input1');
-        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist3 textarea1');
-        cy.xpath('(//input[@aria-label="Date Picker 1"])[1]').type('2022-07-13{enter}');
-        cy.xpath('(//input[@aria-label="Date Picker 2"])[1]').type('2022-07-12 11:13{enter}');
+        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist3 textarea1',{delay:300});
+        cy.wait(2000);
+        
         cy.xpath("//button[text()='Ok']").click();
+        
         cy.get('[name="input2"]').type('loop1 input2');
         cy.get('[name="textArea2"]').type('loop1 textarea2');
-        cy.xpath('//input[@aria-label="Date Picker 3"]').type('2022-07-26{enter}');
-        cy.xpath('//input[@aria-label="Date Picker 4"]').type('2022-07-24 11:13{enter}');
+        
+        
         cy.xpath('(//i[@class="fas fa-plus"])[2]').click();
         cy.xpath('(//input[@name="input2"])[2]').type('loop2 input 2');
-        cy.xpath('(//textarea[@name="textArea2"])[2]').type('loop2 textarea 2');
-        cy.xpath('(//input[@aria-label="Date Picker 3"])[2]').type('2022-07-26{enter}');
-        cy.xpath('(//input[@aria-label="Date Picker 4"])[2]').type('2022-07-24 11:13{enter}');
+        cy.xpath('(//textarea[@name="textArea2"])[2]').type('loop2 textarea 2',{delay:300});
+        
+        
         cy.xpath('(//i[@class="fas fa-plus"])[2]').click();
         cy.xpath('(//input[@name="input2"])[3]').type('loop3 input 2');
-        cy.xpath('(//textarea[@name="textArea2"])[3]').type('loop3 textarea 2');
-        cy.xpath('(//input[@aria-label="Date Picker 3"])[3]').type('2022-07-26{enter}');
-        cy.xpath('(//input[@aria-label="Date Picker 4"])[3]').type('2022-07-24 11:13{enter}');
+        cy.xpath('(//textarea[@name="textArea2"])[3]').type('loop3 textarea 2',{delay:300});
+        
+        
         cy.xpath('(//i[@class="fas fa-plus"])[2]').click();
         cy.xpath('(//input[@name="input2"])[4]').type('loop4 input 2');
-        cy.xpath('(//textarea[@name="textArea2"])[4]').type('loop4 textarea 2');
-        cy.xpath('(//input[@aria-label="Date Picker 3"])[4]').type('2022-07-26{enter}');
-        cy.xpath('(//input[@aria-label="Date Picker 4"])[4]').type('2022-07-24 11:13{enter}');
+        cy.xpath('(//textarea[@name="textArea2"])[4]').type('loop4 textarea 2',{delay:300});
+        cy.wait(2000);
+        
         cy.get('button[aria-label="New Submit"]').click();
-        /*cy.xpath(('//td/a[contains(text(),"task")]/ancestor::tr/td/div/button/i[".fas fa-ellipsis-h ellipsis-menu-icon"]').replace('Form Task 2', task)).should('be.visible').click();
-        cy.xpath('//span[text()="Open Task"]').click();*/
-        // cy.xpath('(//a[@title="Open Task"])[1]').should('be.visible');
+        request.verifyTaskIsCompletedB();
 
         //Complete Task 2
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         cy.xpath("//a[contains(text(),'Form Task 2')]").should('be.visible');
         request.clickOnTaskName(1,1);
         cy.xpath('(//div[@class="multiselect__select"])[1]').should('be.visible');
