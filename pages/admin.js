@@ -845,11 +845,17 @@ export class Admin {
     saveChagesInGroupDetails() {
         cy.get(selectors.saveGroupDetailsBtn).should('be.visible');
         cy.get(selectors.saveGroupDetailsBtn).click({ force: true });
+        cy.wait(3000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should("not.exist");
     }
 
     verifyDashboardAssignedToGroup(nameGroup, nameDashboard) {
         navHelper.navigateToAdminGroupPage();
         this.searchGroupAndEdit(nameGroup);
+        this.verifyDashboardSelected(nameDashboard);
+    }
+
+    verifyDashboardSelected(nameDashboard){
         cy.wait(1000);
         cy.xpath('//label[contains(text(),"Dashboard")]', { timeout: 10000 }).should('be.visible');
         cy.get(':nth-child(1) > .multiselect > .multiselect__tags').should('be.visible');
