@@ -329,13 +329,13 @@ export class PMProjects {
         }
     }
 
-    verifyPresenceOfProjectAndImportProject(project, projectPath) {
+    verifyPresenceOfProjectAndImportProject(nameProject, projectPath) {
             var editBtn =
-            '//button[@class="btn dropdown-toggle btn-outlined-secondary static-header"]';
+            '//div[@id="projectsCategorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="projectsCategorizedList"]/descendant::div[@id="projectList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
             cy.xpath(editBtn).should("be.visible");
             cy.xpath(selectors.searchProjects)
-        .type(`${project}`, {delay:60})
-        .should("have.value", project);
+        .type(`${nameProject}`, {delay:60})
+        .should("have.value", nameProject);
         cy.xpath(selectors.searchProjects).type('{enter}');
         cy.wait(2000);
         cy.xpath(selectors.loadingSpinnerProject).should("not.be.visible");
