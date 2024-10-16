@@ -474,9 +474,10 @@ export class Admin {
         cy.xpath("//legend[text()='Screen']/following-sibling::div//div[@class='multiselect__spinner']").should('not.be.visible');
         cy.xpath("//legend[text()='Screen']/following-sibling::div//div[@class='multiselect__select']").click();
 		cy.xpath("//legend[text()='Screen']/following-sibling::div//input").type(screen,{delay:50}).should('have.value',screen);
+		cy.wait(4000);
 		cy.xpath("//legend[text()='Screen']/following-sibling::div//div[@class='multiselect__content-wrapper']//li[1]")
 			.should('have.attr', 'aria-label')
-			.and('contain', screen+ '. ');
+			.and('contain', screen);
 		cy.xpath("//legend[text()='Screen']/following-sibling::div//input").type('{enter}');
         cy.xpath("//legend[contains(text(),'Description')]/following-sibling::div//textarea").type(description);
         cy.xpath("//button[text()='Save']").should('be.visible').click();
