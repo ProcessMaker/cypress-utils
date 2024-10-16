@@ -35,10 +35,6 @@ export class ProcessMap {
             .first()
             .should("be.visible")
             .click();
-        cy.xpath(taskElementXpath.replace("bpmnTask", varTaskName))
-            .first()
-            .should("be.visible")
-            .click();
         cy.xpath(selectors.tooltipXpath).should("be.visible");
     }
 
@@ -53,11 +49,6 @@ export class ProcessMap {
             .first()
             .should("be.visible")
             .click({force: true});
-            
-        cy.xpath(lineElementXpath.replace("lineName", varLineName))
-            .first()
-            .should("be.visible")
-            .click();
         cy.xpath(selectors.tooltipXpath).should("be.visible");
     }
 }
