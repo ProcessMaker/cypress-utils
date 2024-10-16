@@ -332,7 +332,7 @@ export class ExecutionConnectors {
         
         //Step 6: verify that the screen of type display is added to the project
         navHelper.navigateToPmProjects();
-        pmProjects.searchProjects(name);
+        pmProjects.searchProjects(nameProject);
         cy.xpath('//*[contains(text(),"screenEmail_TCP4-3155")]').should("be.visible");
     }
     actionsAndAssertionsOfTCP43156(name) {
