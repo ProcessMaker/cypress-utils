@@ -324,13 +324,19 @@ export class Requests {
         }
     }
     searchProcessInAllRequest(PMQL,processName){
-        cy.get('[title="Advanced Mode"]').should('be.visible').click();
-        cy.get('input[placeholder="Advanced Search (PMQL)"]').should('be.visible');
-        cy.get('input[placeholder="Advanced Search (PMQL)"]').type(PMQL).should('have.value',PMQL);
-        cy.get('button[title="Search"]').click();
-        cy.get('.jumbotron').should('be.visible')
-        cy.get('.jumbotron').should('not.be.visible')
-        cy.xpath('//div[@class="data-table"]//tbody//tr[1]').should('contain',processName);
+        cy.get('[aria-label="Advanced Search (PMQL)"]')
+            .should('be.visible')
+            .click();
+        cy.get('textarea[aria-label="Advanced Search (PMQL)"]')
+            .should('be.visible')
+            .type(PMQL,{delay:100})
+            .should('have.value',PMQL)
+            .type('{enter}');
+        cy.get('i[class="fa fa-search ml-3 pmql-icons"]')
+            .should('be.visible')
+            .click();
+        cy.xpath('//tbody//td[3]//div[@class="pm-table-truncate"]')
+            .should('contain',processName);
     }
     
     /**

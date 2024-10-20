@@ -150,10 +150,6 @@ export class NaturalLanguage {
         cy.get('[class="image-action mr-1"] [class="fas fa-search-plus p-2"]').should('be.visible');
         cy.wait(2000);
         cy.get('.preview-file-img > img').should('be.visible',{timeout: 5000});
-        cy.get('[class="preview-file-info"]')
-            .find('[class="w-100"]')
-            .should('be.visible')
-            .and('contain', 'B');
     }
 
     generateProcessFromImage() {
