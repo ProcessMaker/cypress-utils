@@ -22,14 +22,13 @@ export class PMProjects {
     }
 
     selectProjectInProcess(name) {
-        cy.xpath(selectors.projectCategoryFieldXpath)
-            .first()
-            .should("be.visible");
         cy.xpath(selectors.projectCategoryFieldXpath).click();
-        cy.xpath(selectors.projectCategoryFieldXpath).type(name);
-        cy.xpath(selectors.projectCategoryFieldXpath).type("{enter}", {delay: 120});
-        // eslint-disable-next-line cypress/no-unnecessary-waiting
-        cy.wait(2000);
+    cy.xpath(selectors.projectCategoryFieldXpath)
+        .should("be.visible")
+        .type(name, {delay: 100});         
+    // Esperar a que el elemento sea visible y luego hacer clic
+    cy.xpath(selectors.projectName.replace('projectName', name))
+        .should('be.visible',{ timeout: 10000 }).first().click();
     }
     selectProjectInScreen(name) {
         cy.xpath(selectors.projectCategoryFieldXpath)
