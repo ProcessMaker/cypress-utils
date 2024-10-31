@@ -43,4 +43,26 @@ export class FileManager {
         cy.xpath(selectors.settingIcon).should('not.exist');
     }
 
+    /**
+     * 
+     * @param {*} row nro row in order to open the floating menu 
+     * @param {*} val posible values= Open, Download
+     */
+    pressTooltip(row = 0, val) {
+        let btn;
+        switch(val){
+            case "Open":
+                btn = "file-open";
+            break;
+            case "Download":
+                btn = "file-download";
+            break;
+            default:
+                btn = "file-preview";
+        }
+        cy.get('[class="floating-menu"]').eq(row).invoke("show").within(() => {
+            cy.get('button[id*="' + btn + '-"]').should("be.visible").click({force:true});
+        });
+    }
+
 }
