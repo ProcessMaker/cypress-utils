@@ -8,9 +8,29 @@ export class NavigationHelper {
         cy.title().should('eq', 'Processes - ProcessMaker');
     }
 
-    navigateToRequestsPage(){
+    navigateToCasesPage(){
         cy.visit('/cases');
-        cy.title().should('eq', 'My Cases - ProcessMaker');
+        cy.title().should('eq', 'Cases - ProcessMaker');
+    }
+
+    navigateToInprogressCases(){
+        cy.visit('/cases/in_progress');
+        cy.title().should('eq', 'Cases - ProcessMaker');
+    }
+
+    navigateToCompletedCases(){
+        cy.visit('/cases/completed');
+        cy.title().should('eq', 'Cases - ProcessMaker');
+    }
+
+    navigateToAllCases(){
+        cy.visit('/cases/all');
+        cy.title().should('eq', 'Cases - ProcessMaker');
+    }
+
+    navigateToRequestsPage(){
+        cy.visit('/requests');
+        cy.title().should('eq', 'My Requests - ProcessMaker');
     }
 
     navigateToCompletedRequests(){
