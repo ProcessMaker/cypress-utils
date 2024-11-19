@@ -13,8 +13,8 @@ const utility = new Utility();
 export class IDP {
     selectAvalableFolders() {
         cy.xpath(selectors.selectAvailableFoldersEdit).should('be.visible').click();
-        cy.xpath(selectors.selectListFolders).should('be.visible').click();
-        cy.xpath(selectors.selectOptionFolder).should('be.visible').click();
+        cy.get('.multiselect__select').click();
+        
     }
 
     searchFolders(folderName) {
