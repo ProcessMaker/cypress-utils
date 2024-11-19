@@ -10,7 +10,7 @@ export class NavigationHelper {
 
     navigateToRequestsPage(){
         cy.visit('/cases');
-        cy.title().should('eq', 'My Cases - ProcessMaker');
+        cy.title().should('eq', 'Cases - ProcessMaker');
     }
 
     navigateToCompletedRequests(){
