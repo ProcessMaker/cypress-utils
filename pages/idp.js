@@ -21,6 +21,7 @@ export class IDP {
         var editBtn =
             '//*[@class="settings-listing data-table"]//div[contains(text(),"Select Available Folders")]/ancestor::tr//button[@aria-label="Edit"]';
         cy.xpath(editBtn).should("be.visible").click();
+        cy.wait(4000);
         cy.xpath(selectors.selectListFolders).type(`${folderName}{enter}`);
     }
     enterSelectDocumentType(documentType) {
