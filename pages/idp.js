@@ -13,14 +13,15 @@ const utility = new Utility();
 export class IDP {
     selectAvalableFolders() {
         cy.xpath(selectors.selectAvailableFoldersEdit).should('be.visible').click();
-        cy.xpath(selectors.selectListFolders).should('be.visible').click();
-        cy.xpath(selectors.selectOptionFolder).should('be.visible').click();
+        cy.get('.multiselect__select').click();
+        
     }
 
     searchFolders(folderName) {
         var editBtn =
             '//*[@class="settings-listing data-table"]//div[contains(text(),"Select Available Folders")]/ancestor::tr//button[@aria-label="Edit"]';
         cy.xpath(editBtn).should("be.visible").click();
+        cy.wait(4000);
         cy.xpath(selectors.selectListFolders).type(`${folderName}{enter}`);
     }
     enterSelectDocumentType(documentType) {

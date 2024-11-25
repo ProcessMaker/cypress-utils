@@ -1,7 +1,7 @@
 export default {
     selectAvailableFoldersEdit: '//*[@class="settings-listing data-table"]//div[contains(text(),"Select Available Folders")]/ancestor::tr//button[@aria-label="Edit"]',
     selectAvailableFolderClear: '//*[@class="settings-listing data-table"]//div[contains(text(),"Select Available Folders")]/ancestor::tr//button[@aria-label="Clear"]',
-    selectListFolders:'//h5[text()="Select Available Folders"]/ancestor::div[@class="modal-content"]//div[@class="multiselect__tags"]',
+    selectListFolders:'//div[@class="modal-content"]//div[@class="multiselect__tags"]',
     selectOptionFolder: '//h5[text()="Select Available Folders"]/ancestor::div[@class="modal-content"]//div[@class="multiselect__tags"]//input',
     buttonSaveFolder: '//*[@class="btn btn-secondary ml-3"]',
     captureCamara: '//*[@class="btn btn-photo"]',
