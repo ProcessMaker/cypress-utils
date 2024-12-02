@@ -7987,8 +7987,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     actionsAndAssertionsOfTCP42159(text,integer,currency,percentage,decimal,datetime,date,password){
         this.lineInput('text',text);
         this.lineInput('integer',integer);
-        cy.xpath('//label[text()="currency"]/parent::div//input').type(currency).should('have.value','500.00 BOB');
-        cy.xpath('//label[text()="percentage"]/parent::div//input').type(percentage).should('have.value','97.00 %');
+        cy.xpath('//label[text()="currency"]/parent::div//input').type(currency, {delay: 100}).should('have.value','500.00 BOB');
+        cy.xpath('//label[text()="percentage"]/parent::div//input').type(percentage, {delay: 100}).should('have.value','97.00 %');
         this.lineInput('decimal',decimal);
         this.lineInput('datetime',datetime);
         this.lineInput('date',date);
