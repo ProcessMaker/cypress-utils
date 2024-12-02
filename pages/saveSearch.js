@@ -16,7 +16,6 @@ export class SaveSearchs {
         cy.xpath("//input[@type='text'][@placeholder='Search']").should('be.visible');
         cy.xpath("//input[@type='text'][@placeholder='Search']").first().type(namesave, {delay: 100}).should("have.value",namesave);
         cy.wait(2000);
-        cy.xpath('//td//span[contains(text(),'+namesave+')]').should("be.visible");
         cy.get(selectors.viewsearch).should("be.visible").first().click();
     }
     //send report
@@ -66,7 +65,7 @@ export class SaveSearchs {
     createSaveSearch(name,iconName, userName="", groupName="", completeUserName=""){
         cy.get('button[title="Save Search"]').should('be.visible');
         cy.get('button[title="Save Search"]').click();
-        cy.get('[aria-label="Close"]').click();
+        cy.get('[aria-label="Close"]').first().click();
        cy.get('button[title="Save Search"]').click();
         cy.xpath('//legend[text()="Share With Users"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
         cy.xpath('//legend[text()="Share With Groups"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');

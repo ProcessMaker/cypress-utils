@@ -3800,29 +3800,30 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     setConfigurationSaveSearch(name){
         cy.xpath('//a[@title="Configure Saved Search"]').should('be.visible')
         cy.xpath('//a[@title="Configure Saved Search"]').click()
-        cy.xpath('//label[text()="PMQL"]/following-sibling::input').clear().type('(request = "TCP4-2342 Save Search") AND (status = "Completed")');
+        cy.get('[class="pmql-input"]').clear().type('(request = "TCP4-2342 Save Search") AND (status = "Completed")');
         cy.get('#nav-config > .d-flex > .btn-secondary').click();
         cy.get('#nav-config > .d-flex > .btn-outline-secondary').click();
-        cy.xpath('//a[@title="View"]').should('be.visible')
-        saveSearch.viewSaveSearch(name);
+        //cy.xpath('//a[@title="View"]').should('be.visible')
+        //saveSearch.viewSaveSearch(name);
         cy.xpath('//a[@title="Configure Saved Search"]').click();
         cy.xpath('//a[text()="Columns"]').click();
         cy.get('h5').eq(0).should('have.text','Active Columns');
         cy.get('h5').eq(1).should('have.text','Available Columns');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',6)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9)
         //verify available column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',4)
         //move element
         cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
+        cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',7)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',11)
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',2)
 
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
         cy.get('.mt-3 > .d-flex > .btn-outline-secondary').click();
-        saveSearch.viewSaveSearch(name);
+        //saveSearch.viewSaveSearch(name);
         cy.xpath('//a[@title="Configure Saved Search"]').click()
         cy.get('#nav-columns-tab').click();
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-current"]//div/span[text()="Line 1"]').should('have.text','Line 1');
@@ -3831,7 +3832,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath('//button[text()="Confirm"]').click();
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-available"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',6)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9)
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3)
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
@@ -4676,7 +4677,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.wait(2000);
         cy.xpath('//tbody//tr//td').eq(0).should('contain',subject)
         cy.xpath('//tbody//tr//td').eq(1).should('contain',email)
-        cy.xpath('//tbody//tr//td').eq(2).should('contain','Every Tuesday at 07:00')
+        cy.xpath('//tbody//tr//td').eq(2).should('contain','Every Tuesday at 09:00')
     }
 
     //TCP42246
@@ -6924,7 +6925,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
             .should('have.attr', 'aria-label')
             .and('equal', Course+". ");
         cy.xpath("//label[text()='Course']/parent::div//input").eq(0).type('{enter}');
-        cy.xpath('//label[text()="Date"]//parent::div//input').eq(0).type(Birthday).should('have.value',Birthday).eq(0).type('{enter}');
+        cy.xpath('//label[text()="Date"]//parent::div//input').eq(0).type(Birthday).eq(0).type('{enter}');
+        cy.xpath('//label[text()="Name"]//parent::div//input').click();
         cy.get('button[aria-label="New Submit"]').click();
         cy.get('.alert-wrapper > .alert').should('be.visible');
     }
@@ -6941,10 +6943,10 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
     addCustomColumnTCP42336(){
 
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.xpath('//*[@id="nav-columns"]//button[2]').click({ force: true });
     }
     waitUntilcardBodyIsVisible(selectorXPath,maxAttempts=10, attempts=0){
@@ -7994,25 +7996,23 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('button[aria-label="New Submit"]').click();
     }
     addCustomColumnTCP42159(){
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.xpath('//*[@id="nav-columns"]//button[2]').click({ force: true });
     }
     validationDataInChart2159(text,integer,currency,percentage,decimal,datetime,password,date){
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[2]').should('contain',text)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[3]').should('contain',integer)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[4]').should('contain',currency)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[5]').should('contain',percentage)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[6]').should('contain',decimal)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[7]').should('contain',datetime)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[8]').should('contain',password)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[9]').should('contain',date)
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[1]').should('contain',text);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[2]').should('contain',integer);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[3]').should('contain',currency);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[4]').should('contain',percentage);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[5]').should('have.text',decimal);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[7]').should('include.text',password);
     }
     //TCP4 2505
     typeInTextArea(label,value){

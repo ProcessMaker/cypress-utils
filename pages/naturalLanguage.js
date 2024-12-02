@@ -161,7 +161,9 @@ export class NaturalLanguage {
         cy.contains('button', 'Generate')
             .should('be.visible')
             .click({ timeout: 5000 });
-        cy.get('[role="progressbar"]').should('be.visible', { timeout: 15000 });
+        cy.get('[role="progressbar"]')
+            .should('exist')
+            .and('have.class', 'progress-bar-animated');
         this.waitUntilElementIsVisible('selector', '[class="tox-edit-area"]', 30);
         this.waitUntilElementIsVisible('selector', '[class="d-flex"]', 30);
         cy.get('.prev-btn').should('be.visible');
