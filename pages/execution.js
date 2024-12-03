@@ -4666,8 +4666,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
 
     fillFormTCP42234(value1,value2){
-        cy.get('input[name="lineInputInteger"]').type(value1);
-        cy.get('input[name="lineInputPercentage"]').type(value2);
+        cy.get('input[name="lineInputInteger"]').type(value1,{delay:50});
+        cy.get('input[name="lineInputPercentage"]').type(value2,{delay:50});
         cy.get('button[aria-label="Submit"]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
     }
