@@ -63,12 +63,7 @@ export class SaveSearchs {
      * @param {string} config.frequency - Frecuencia del reporte (daily, weekly, monthly) - Opcional
      * @param {string} config.time - Hora del envío (formato HH:mm) - Opcional
      */
-    scheduledReports({ email, subject, body, frequency = 'daily', time = '09:00' }) {
-        // Validaciones básicas
-        if (!email || !subject || !body) {
-            throw new Error('Email, subject y body son campos requeridos');
-        }
-
+    scheduledReports(email, subject, body, frequency = 'daily', time = '09:00') {
         // Configurar el reporte programado
         cy.get(selectors.scheduled).should('be.visible').click();
         cy.get(selectors.addscheduled).should('be.visible').click();
@@ -97,7 +92,7 @@ export class SaveSearchs {
         cy.xpath(selectors.closehour)
             .should('be.visible')
             .click();
-
+        cy.wait(1000);
         // Llenar formulario
         cy.xpath(selectors.sendto2)
             .first()
