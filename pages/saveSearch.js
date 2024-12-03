@@ -4,53 +4,142 @@ export class SaveSearchs {
         //select one process
         cy.xpath('//button[@class="btn btn-outline-secondary mr-1 d-flex align-items-center"]').first().click();
         cy.xpath('(//label[text()="Process"]/parent::div//div[@class="multiselect__tags"])[1]').should("be.visible").click();
-        cy.get('#option-0-3').should("be.visible").click();
-        cy.get('[class="btn btn-primary btn-sm"]').should("be.visible").click();
+        cy.get('#option-0-3')
+            .should("be.visible")
+            .click();
+        cy.get('[class="btn btn-primary btn-sm"]')
+            .should("be.visible")
+            .click();
         //create save search
-        cy.xpath('//button[@title="Save Search"]').should("be.visible").click();
-        cy.get('[name="title"]').click().type(namesave).should('have.value', namesave);
-        cy.get('#save-search-modal___BV_modal_footer_ > .btn-secondary').should("be.visible").click();
+        cy.xpath('//button[@title="Save Search"]')
+            .should("be.visible")
+            .click();
+        cy.get('[name="title"]')
+            .click()
+            .type(namesave,{delay:100})
+            .should('have.value', namesave);
+        cy.get('#save-search-modal___BV_modal_footer_ > .btn-secondary')
+            .should("be.visible")
+            .click();
     } 
     //search view save search
     viewSaveSearch(namesave) {
-        cy.xpath("//input[@type='text'][@placeholder='Search']").should('be.visible');
-        cy.xpath("//input[@type='text'][@placeholder='Search']").first().type(namesave, {delay: 100}).should("have.value",namesave);
+        cy.xpath("//input[@type='text'][@placeholder='Search']")
+            .should('be.visible')
+            .first()
+            .type(namesave, {delay: 100})
+            .should("have.value",namesave);
         cy.wait(2000);
-        cy.get(selectors.viewsearch).should("be.visible").first().click();
+        cy.get(selectors.viewsearch)
+            .should("be.visible")
+            .first()
+            .click();
     }
     //send report
     sendReportSaveSearch(email,subject,body) {
-        cy.get(selectors.sendreport).should("be.visible").click();
-        cy.get(selectors.sendto).type(email,{delay:100}).should("have.value",email);
-        cy.get(selectors.emailsubject).type(subject).should("have.value",subject);
-        cy.get(selectors.emailbody).type(body).should("have.value",body);
-        cy.get(selectors.send).should("be.visible").click();
+        cy.get(selectors.sendreport)
+            .should("be.visible")
+            .click();
+        cy.get(selectors.sendto)
+            .type(email,{delay:100})
+            .should("have.value",email);
+        cy.get(selectors.emailsubject)
+            .type(subject,{delay:100})
+            .should("have.value",subject);
+        cy.get(selectors.emailbody)
+            .type(body,{delay:100})
+            .should("have.value",body);
+        cy.get(selectors.send)
+            .should("be.visible")
+            .click();
     }
     //scheduled reports
-    scheduledReports(email,subject,body) {
-        cy.get(selectors.scheduled).should("be.visible").click();
-        cy.get(selectors.addscheduled).should("be.visible").click();
-        cy.get(selectors.selectday).should("be.visible").click();
-        cy.xpath("//label[contains(text(),'Time')]").should("be.visible");
-        cy.xpath(selectors.selecttime).should("be.visible").click();
-        cy.wait(500);
-        cy.get('[class="dropdown-menu show"]').should("be.visible");
-        cy.xpath(selectors.selecthour).should("be.visible").first().click();
-        cy.xpath(selectors.closehour).should("be.visible").click();
-        cy.get('[class="bv-no-focus-ring col-form-label pt-0"]').first().should("be.visible");
-        cy.xpath(selectors.sendto2).first().type(email,{delay:100}).should("have.value",email);
-        cy.get(selectors.subject).eq(2).type(subject,{delay:100}).should("have.value",subject);
-        cy.get(selectors.body).eq(3).type(body,{delay:100}).should("have.value",body);
-        cy.get(selectors.saveschedule).should("be.visible").click();
-        //back to the save search
-        cy.get('.breadcrumb > :nth-child(3) > a').should("be.visible").click();
-        cy.get(':nth-child(3) > .btn').first().should("be.visible").click();
+    /**
+     * Configura un reporte programado para una búsqueda guardada
+     * @param {Object} config - Configuración del reporte programado
+     * @param {string} config.email - Dirección de correo del destinatario
+     * @param {string} config.subject - Asunto del correo
+     * @param {string} config.body - Cuerpo del correo
+     * @param {string} config.frequency - Frecuencia del reporte (daily, weekly, monthly) - Opcional
+     * @param {string} config.time - Hora del envío (formato HH:mm) - Opcional
+     */
+    scheduledReports({ email, subject, body, frequency = 'daily', time = '09:00' }) {
+        // Validaciones básicas
+        if (!email || !subject || !body) {
+            throw new Error('Email, subject y body son campos requeridos');
+        }
+
+        // Configurar el reporte programado
+        cy.get(selectors.scheduled).should('be.visible').click();
+        cy.get(selectors.addscheduled).should('be.visible').click();
+
+        // Seleccionar frecuencia
+        cy.get(selectors.selectday)
+            .should('be.visible')
+            .click();
+
+        // Configurar hora
+        cy.xpath("//label[contains(text(),'Time')]")
+            .should('be.visible');
+        cy.xpath(selectors.selecttime)
+            .should('be.visible')
+            .click();
+        
+        // Esperar que el dropdown esté visible
+        cy.get('[class="dropdown-menu show"]')
+            .should('be.visible');
+
+        // Seleccionar hora específica
+        cy.xpath(selectors.selecthour)
+            .should('be.visible')
+            .first()
+            .click();
+        cy.xpath(selectors.closehour)
+            .should('be.visible')
+            .click();
+
+        // Llenar formulario
+        cy.xpath(selectors.sendto2)
+            .first()
+            .type(email, { delay: 100 })
+            .should('have.value', email);
+        
+        cy.get(selectors.subject)
+            .eq(2)
+            .type(subject, { delay: 100 })
+            .should('have.value', subject);
+        
+        cy.get(selectors.body)
+            .eq(3)
+            .type(body, { delay: 100 })
+            .should('have.value', body);
+
+        // Guardar configuración
+        cy.get(selectors.saveschedule)
+            .should('be.visible')
+            .click();
+
+        // Regresar a la búsqueda guardada
+        cy.get('.breadcrumb > :nth-child(3) > a')
+            .should('be.visible')
+            .click();
+        
+        cy.get(':nth-child(3) > .btn')
+            .first()
+            .should('be.visible')
+            .click();
     }
     //Configurations
     configurationsSaveSearch() {
-        cy.xpath(selectors.configure).should("be.visible").click();
-        cy.get(selectors.sharedwithgroups).should("be.visible").click();
-        cy.get(selectors.saveconfiguration).should("be.visible").click();
+        cy.xpath(selectors.configure)
+            .should("be.visible")
+            .click();
+        cy.get(selectors.sharedwithgroups)
+            .should("be.visible")
+            .click();
+        cy.get(selectors.saveconfiguration)
+            .should("be.visible")
+            .click();
     }
 
    /**
@@ -65,7 +154,9 @@ export class SaveSearchs {
     createSaveSearch(name,iconName, userName="", groupName="", completeUserName=""){
         cy.get('button[title="Save Search"]').should('be.visible');
         cy.get('button[title="Save Search"]').click();
-        cy.get('[aria-label="Close"]').first().click();
+        cy.get('[aria-label="Close"]')
+            .first()
+            .click();
        cy.get('button[title="Save Search"]').click();
         cy.xpath('//legend[text()="Share With Users"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
         cy.xpath('//legend[text()="Share With Groups"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
@@ -90,10 +181,15 @@ export class SaveSearchs {
     }
 
     enableNotification(){
-        cy.get('[title="Enable Notifications"]').should("be.exist").click();
+        cy.get('[title="Enable Notifications"]')
+            .should("be.exist")
+            .click();
     }
     waitForSaveSearch(saveSearchName){
-        cy.xpath("//input[@placeholder='Search']").first().click().type(' ');
+        cy.xpath("//input[@placeholder='Search']")
+            .first()
+            .click()
+            .type(' ',{delay:100});
         cy.xpath('((//div[@class="data-table"]//table//tbody//tr)[1]//span)[1]').invoke('text').then(($name)=>{
             if($name !== saveSearchName){
                 cy.wait(3000);
@@ -141,9 +237,12 @@ export class SaveSearchs {
     }
     createChartsToSaveSearch(name,chart_type){
         cy.xpath(selectors.clickOnChartsOptn).click();
-        cy.xpath(selectors.clickOnPlusChartsBtn).should('be.visible').click();
+        cy.xpath(selectors.clickOnPlusChartsBtn)
+            .should('be.visible')
+            .click();
         cy.wait(2000);
-        cy.xpath(selectors.clickOnNameTxtBx).type(name);
+        cy.xpath(selectors.clickOnNameTxtBx)
+            .type(name,{delay:100});
         switch(chart_type){
             case "Horizental":
                 const a=1;
@@ -179,12 +278,16 @@ export class SaveSearchs {
         cy.xpath(selectors.clickOnSourceOptn).click();
         cy.xpath(selectors.clickOnSeriesDrpDwn).should('be.visible');
         cy.xpath(selectors.clickOnSeriesDrpDwn).click();
-        cy.xpath(selectors.clickOnSeriesInptBx).type(series);
-        cy.xpath(selectors.clickOnSeriesValue.replace('name',series)).should('be.visible').click();
+        cy.xpath(selectors.clickOnSeriesInptBx).type(series,{delay:100});
+        cy.xpath(selectors.clickOnSeriesValue.replace('name',series))
+            .should('be.visible')
+            .click();
         cy.wait(2000);
         cy.xpath(selectors.clickOnMetricDrpDwn).click();
-        cy.xpath(selectors.clickOnMetricInptBx).type(metric);
-        cy.xpath(selectors.clickOnMetricValue.replace('name',metric)).should('be.visible').click();
+        cy.xpath(selectors.clickOnMetricInptBx).type(metric,{delay:100});
+        cy.xpath(selectors.clickOnMetricValue.replace('name',metric))
+        .should('be.visible')
+        .click();
         cy.wait(2000);
         cy.xpath(selectors.clickOnSumBtn).click();
         switch(metric_type){
@@ -210,9 +313,13 @@ export class SaveSearchs {
     //Delete save search from My save search
     deleteSaveSearchFromMy(nameSaveSearch){
         cy.visit('/requests/saved-searches');
-        cy.get('input[placeholder="Search"]').first().type(nameSaveSearch, {delay:100});
+        cy.get('input[placeholder="Search"]')
+            .first()
+            .type(nameSaveSearch,{delay:100});
         this.pressOptionSaveSearch('delete');
         cy.get('[class="modal-title"]').should('be.visible');
-        cy.get('[class="btn m-0 btn-secondary"]').should('be.visible').click();
+        cy.get('[class="btn m-0 btn-secondary"]')
+            .should('be.visible')
+            .click();
     }
 }
