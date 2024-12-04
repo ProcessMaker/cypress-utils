@@ -77,8 +77,9 @@ export class SaveSearchs {
         cy.xpath("//label[contains(text(),'Time')]")
             .should('be.visible');
         cy.xpath(selectors.selecttime)
-            .should('be.visible')
-            .click();
+            .should('exist')
+            .should('be.visible');
+        cy.get('[aria-label="clock"]').click();
         
         // Esperar que el dropdown esté visible
         cy.get('[class="dropdown-menu show"]')
