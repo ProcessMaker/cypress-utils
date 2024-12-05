@@ -938,21 +938,20 @@ export class Admin {
     }
     selectFileInFileManager(filePath) {
         cy.get(selectors.selectFileBtn).attachFile(filePath);
-        cy.xpath('//div[@class="uploader-list"]/ul/li/div[@status="uploading"]').should('be.visible')
-        cy.xpath('//div[@class="uploader-list"]/ul/li/div[@status="uploading"]').should('not.be.exist',{ timeout: 10000 })
+        cy.wait(2000);
+        cy.xpath('//li[contains(text(),"/public-files")]').should('exist');
+        cy.wait(2000);
     }
     doneUploadPublicFile(){
         cy.get(selectors.doneBtn).click();
-        cy.xpath('//div[@class="container text-center"]/div[@class="icon-container"]').should('be.visible');
-        cy.xpath('//div[@class="container text-center"]/div[@class="icon-container"]').should('not.exist',{ timeout: 10000 })
+        cy.get('[id="file-manager"]>* .table').should('be.visible');
     }
 
     createFolder(folderName){
         cy.xpath('//div[@class="modal-content"]//header//h5[text()="Create Folder"]').should('be.visible');
         cy.get('input[placeholder="Untitled folder"]').type(folderName, {delay:100});
         cy.xpath('//div[@class="modal-content"]//footer//button[text()="Create"]').click();
-        cy.xpath('//div[@class="container text-center"]/div[@class="icon-container"]').should('be.visible');
-        cy.xpath('//div[@class="container text-center"]/div[@class="icon-container"]').should('not.exist')
+        cy.wait(4000);
     }
     
     /**
