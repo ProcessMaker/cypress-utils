@@ -949,6 +949,8 @@ export class Admin {
 
     createFolder(folderName){
         cy.xpath('//div[@class="modal-content"]//header//h5[text()="Create Folder"]').should('be.visible');
+        cy.get('input[placeholder="Untitled folder"]').should('be.visible');
+        cy.wait(2000);
         cy.get('input[placeholder="Untitled folder"]').type(folderName, {delay:100});
         cy.xpath('//div[@class="modal-content"]//footer//button[text()="Create"]').click();
         cy.wait(4000);
