@@ -12,18 +12,22 @@ export class Tasks {
     }
 
     searchByPMQL(query){
-    //Click in Field to write Query
+        //Click in Field to write Query
         cy.xpath(selectors.tasksTable).should('be.visible');
-        cy.get(selectors.searchbar).eq(0).type(query).should('have.value', query);
+        cy.get(selectors.searchbar).eq(0)
+        .type(query)
+        .should('have.value', query);
+    cy.get(selectors.searchbar).eq(0).type('{enter}');
      //Click in Search Button
-        cy.get(selectors.searchButton).eq(0).click();
-        
+        //cy.get(selectors.searchButton).eq(0).click();
     }
    
 
     verifyValueInTable(taskName){
         cy.xpath(selectors.tasksTable).should('be.visible');
-        cy.xpath(selectors.tasksTable).should('be.visible').should('contain',taskName);
+        cy.xpath(selectors.tasksTable)
+        .should('be.visible')
+        .should('contain',taskName);
         
     }
     deleteQuery(){
@@ -32,7 +36,9 @@ export class Tasks {
     }
 
     searchTaskName(name){
-        cy.get(selectors.searchbar).eq(0).type(name).click();
+        cy.get(selectors.searchbar).eq(0)
+        .type(name)
+        .click();
         cy.get(selectors.searchButton).eq(0).click();
         cy.get(selectors.openTaskButton).eq(0).click();
     }

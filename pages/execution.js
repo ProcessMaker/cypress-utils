@@ -1809,7 +1809,7 @@ export class Execution {
 
     goToLastTaskAndFillFormTCP4_2397(){
         //cy.get(selectors.lastTask).click();
-        cy.get('tr > :nth-child(2) > a').should('be.visible').click();
+        //cy.get('tr > :nth-child(2) > a').should('be.visible').click();
         cy.get('[data-cy="screen-field-name"]').should('be.visible').type('name1');
         cy.get('[data-cy="screen-field-phone"]').should('be.visible').type('123');
         cy.get('.form-group > .btn').click();
