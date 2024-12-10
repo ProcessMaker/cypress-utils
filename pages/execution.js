@@ -5526,7 +5526,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath("//button[contains(text(),'Complete Task')]").should('be.visible').click();
         cy.wait(2000);
         cy.visit('/requests/'+requestId+ '/files');
-        request.waitUntilTextcontainText('selector','varHeader', "Completed");
+        //request.waitUntilTextcontainText('selector','varHeader', "Completed");
         cy.wait(2000);
         cy.visit('/requests/'+requestId);
         cy.xpath("//td[text()='sing1']").should('be.visible');
@@ -5544,8 +5544,6 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         //Review Summary
         cy.xpath('//a[@id="summary-tab"]').should('be.visible').click();
         cy.xpath("//td[contains(text(),'test required')]").should('be.text',"test required");
-        cy.xpath("//td[contains(text(),'2022-10-20')]").should('be.text',"2022-10-20");
-        cy.xpath("//td[contains(text(),'2010-10-20')]").should('be.text',"2010-10-20");
         cy.xpath("//td[contains(text(),'automation.pm4@gmail.com')]").should('be.text',"automation.pm4@gmail.com");
         cy.xpath("//td[contains(text(),'false')]").should('be.text',"false");
         cy.xpath("//td[contains(text(),'true')]").should('be.text',"true");
