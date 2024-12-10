@@ -5464,9 +5464,25 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     actionsAndAssertionsOfTCP42250(requestId){
         //Complete task form 1
         cy.xpath('//div[@class="card card-body border-top-0 h-100 form-screen"]').should('be.visible');
-        cy.get('[data-cy="screen-field-email"]').should('be.visible').type('automation.pm4@gmail.com').should('have.value','automation.pm4@gmail.com');
-        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input').should('be.visible').type('2022-10-20');
-        cy.xpath('//label[text()="Date_2"]//ancestor::div[@class="col-sm-4"]//input').should('be.visible').type('2010-10-20{enter}');
+        cy.get('[data-cy="screen-field-email"]')
+            .should('be.visible')
+            .type('automation.pm4@gmail.com')
+            .should('have.value','automation.pm4@gmail.com');
+        
+        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input')
+            .should('be.visible')
+            .click()
+            .type('10/20/2022',{delay:100});
+        
+        cy.xpath('//label[text()="Date_2"]//ancestor::div[@class="col-sm-4"]//input')
+            .should('be.visible')
+            .click()
+            .type('10/20/2010{enter}',{delay:50});
+
+        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input')
+            .clear()
+            .type('10/20/2022',{delay:100});
+
         cy.xpath('//label[text()="Select"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath('//label[text()="Select"]/parent::div//input').should('be.visible').type('Bolivia').should('have.value','Bolivia');
         cy.xpath('//label[text()="Select"]/parent::div//input').type('{enter}');
