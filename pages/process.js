@@ -1300,6 +1300,7 @@ export class Process {
     createProcessWithBPMNFile(nameProcess, descriptionProcess, category, path) {
         cy.get(selectors.addProcessBtn).click();
         cy.xpath(selectors.blankProcessBtbXpath).should("be.visible").click();
+        cy.xpath('//*[@class="modal-body"]//*[contains(text(),"Uncategorized")]').should('be.visible');
         cy.get(selectors.nameTxtBx).click().type(nameProcess, {delay:200}).should("have.value", nameProcess);
         cy.get(selectors.descriptionTxtBx).click().type(descriptionProcess).should("have.value", descriptionProcess);
         cy.xpath(selectors.labelCategory).should("be.visible");
@@ -1312,6 +1313,8 @@ export class Process {
             .and("equal", category + ". ");
         cy.get(selectors.categoryInput).first().type("{enter}");
         cy.get(selectors.uploadBPMNBrowseButton).attachFile(path);
+        cy.wait(3000);
+        cy.get(selectors.saveBtnBPMN).should('be.enabled');
         cy.get(selectors.saveBtnBPMN).click();
     }
     verifyNameProcess(nameProcess) {

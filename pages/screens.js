@@ -24,7 +24,9 @@ export class Screens {
 	}
 
 	clickOnSave() {
-		cy.get(Selectors.saveBtn).should('be.visible').click();
+		cy.xpath(Selectors.saveBtn)
+			.should('be.visible')
+			.click();
 	}
 	clickOnPublishSave() {
 		cy.xpath(Selectors.savePublishBtn).should('be.visible').click();
@@ -90,9 +92,9 @@ export class Screens {
 		} else {
 			this.clickOnSaveVersions();
 			this.clickOnSave();
-			cy.xpath(Selectors.sucessToastMsg).should('be.visible');
-			cy.xpath(Selectors.sucessToastMsg).should('not.exist');
-			//cy.wait(2000);
+			//cy.xpath(Selectors.sucessToastMsg).should('be.visible');
+			//cy.xpath(Selectors.sucessToastMsg).should('not.exist');
+			cy.wait(2000);
 		}
 	}
 

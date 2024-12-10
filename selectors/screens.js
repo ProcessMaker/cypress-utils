@@ -13,7 +13,7 @@ export default{
     screenTypeEmail: '[data-cy="type-container-E-mail"]',
     screenTypeDisplay: '[data-cy="type-container-Display"]',
     screenTypeConversational: '[data-cy="type-container-Conversational"]',
-    saveBtn: '[data-cy="create_screen_save_btn"]',
+    saveBtn: '//button[text()="Publish"]',
     savePublishBtn: '//button[text()="Publish"]',
     varaibleNameTxtBx: '[name="Variable Name"]',
     //Data Source configuration
@@ -103,7 +103,7 @@ export default{
     clickonplus: "//a[@data-cy='inspector-add-option']",
     clickonvalueInptBx:"//label[text()='Value']/following::input[1]",
     clickoncontentInptBx:"//label[text()='Content']/following::input[1]",
-    clickonsaveBtn:"//button[text()[normalize-space()='Save']]",
+    clickonsaveBtn:"//button[text()[normalize-space()='Publish']]",
     //nested screen
     nestedscreenDrpDwnBtn:"(//div[@role='combobox']//div)[1]",
     nestedscreenInputTxtBX:"//label[text()='Screen']/following::input[1]",

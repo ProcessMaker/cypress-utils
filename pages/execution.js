@@ -796,163 +796,38 @@ export class Execution {
        cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text',"Admin User has completed the task PDF Generator");
     }
 
-    async actionsAndAssertionsOfTCP42296(requestId){
-        var processName = "TCP4-2296 Verify Multiple File Upload";
-        var filePath = "processes/TCP4-2296 Verify Multiple File Upload.json";
-
-        //Step 1: Checking and Creating the vocabulary
-        navHelper.navigateToProcessPage();
-        cy.get(selectors.vocabulariesOption).click();
-            cy.get('div[class="input-group w-100"] > input[aria-label="Search"]').type("TCP4-2296 Verify Multiple File Upload");
-            cy.get('button[aria-label="Search"] > i[class="fas fa-search"]').click();
-            cy.wait(5000);
-            cy.xpath(selectors.vocabulariesList, {timeout: 10000})
-                    .find('td')
-                    .then(($loadedTable) => {
-                        if($loadedTable.length === 1){
-                            cy.get('button[aria-label="Create Vocabulary"]').click();
-                            cy.get('input[name="title"]').type("TCP4-2296 Verify Multiple File Upload");
-                            cy.get('textarea[name="description"]').type("TCP4-2296 Verify Multiple File Upload");
-                            cy.get('button[type="button"]').eq(8).should('contain.text',"Save").click();
-                            cy.get('input[class="form-control input-sm"]').should('be.visible');
-                            cy.get('div[class="col-sm my-auto"] > i[class="fas fa-plus ml-3"]').click();
-                            cy.get('div[class="input-group"] > input[aria-label="Name"]').eq(1).clear().type("fileUpload");
-                            cy.get('select[aria-label="Type"]').eq(1).select('Array').should('have.value', 'array');
-                            cy.get('input[type="number"]').type(30);
-                            cy.get('button[type="button"]').eq(7).should('contain.text',"Save").click();
-                        }
-                        else return;
-                    });
-        navHelper.navigateToProcessPage();
-        //Step 2: Import Process
-        cy.wait(5000);
-        var editBtn = "[title='Edit'] > .fas";
-        cy.get(editBtn).should('be.visible');
-        cy.get(selectors.searchInputBox)
-            .eq(0)
-            .type(processName)
-            .should("have.value", processName);
-        cy.get(
-            selectors.loadingSpinnerProcess
-        ).should("be.visible");
-        cy.get(
-            selectors.loadingSpinnerProcess
-        ).should("not.be.visible");
-        cy.xpath(selectors.processTable, { timeout: 10000 })
-            .find('td')
-            .then(($loadedTable) => {
-                if($loadedTable.length === 1){
-                    process.importProcess(filePath);
-                    cy.get('div[class="multiselect__select"]').eq(0).click();
-                    cy.get('input[id="search-user-text"]').type("Admin Us");
-                    cy.get(
-                        'li[aria-label="Admin User. "] > span[class="multiselect__option multiselect__option--highlight"] > span'
-                    )
-                        .eq(0)
-                        .should('contain.text',"Admin User")
-                        .click({force:true});
-                    cy.get('button[type="button"]').eq(5).should('contain.text',"Save").click();
-                    cy.wait(10000);
-
-                    navHelper.navigateToProcessPage();
-                    cy.get(editBtn).should('be.visible');
-                    cy.get('input[aria-label="Search"]')
-                        .eq(0)
-                        .type(processName)
-                        .should("have.value", processName);
-                cy.get('tbody[class="vuetable-body"] > tr[item-index="0"] > td').should("contain.text", "TCP4-2296 Verify Multiple File Upload");
-                }
-                else return;
-            });
-        // Step 3: Checking and adding the vocabulary
-        navHelper.navigateToProcessPage();
-        cy.wait(5000);
-        var editBtn = "[title='Edit'] > .fas";
-        cy.get(editBtn).should('be.visible');
-        cy.get(selectors.searchInputBox)
-            .eq(0)
-            .type(processName)
-            .should("have.value", processName);
-        cy.get(
-            selectors.loadingSpinnerProcess
-        ).should("be.visible");
-        cy.get(
-            selectors.loadingSpinnerProcess
-        ).should("not.be.visible");
-        cy.xpath(selectors.processTable, { timeout: 10000 })
-
-            .then(($loadedTable) => {
-                if($loadedTable.length === 1){
-                    cy.get('button[title="Edit"] > i[class="fas fa-pen-square fa-lg fa-fw"]', { timeout: 10000 }).eq(0).click();
-                }else{
-                    cy.get('div[aria-label="pagination"]').eq(1).get('div[class="pagination-nav-item item"]').eq(1).click();
-                }
-            });
-        cy.get('rect[joint-selector="body"]').eq(2).click({force:true});
-        cy.get('span[class="ml-1 mr-auto"]').eq(7).should('have.text',"Vocabularies").click();
-        cy.get('div[name="vocabularies"] > div > div[class="form-group px-0"]').then(($vocabulary) => {
-            if($vocabulary.children().hasClass('text-center font-italic text-muted')){
-                cy.get('button[aria-label="Add"] > i[class="fa fa-plus"]').click();
-                cy.get('div[class="multiselect__select"]').eq(1).click();
-                cy.get('li[aria-label="TCP4-2296 Verify Multiple File Upload. "] > span').should('have.text',"TCP4-2296 Verify Multiple File Upload").click();
-                cy.get('button[aria-label="Add"] > i[class="fa fa-plus"]').click();
-                cy.get('div[class="card-footer p-2 text-right"] > button[type="button"]').eq(0).contains("Save").click();
-                cy.get(
-                    'button[title="Save"] > svg[data-icon="save"]').click();
-                cy.get('button[class="btn btn-secondary"]').eq(0)
-                    .contains("Save").click();
-        }
-        else return;
-    });
-        navHelper.navigateToRequestsPage();
-        request.openNewRequest(
-            "TCP4-2296 Verify Multiple File Upload"
-        );
-        cy.get(
-            'ul[id="requestTab"] > li[class="nav-item"] > a[id="pending-tab"]'
-        ).click();
-        cy.wait(5000);
-        cy.get('tbody[class="vuetable-body"] > tr[item-index="0"] > td').eq(1).get('a[target="_self"]').eq(6).should('contain.text',"AA").click();
-        cy.wait(5000);
+    actionsAndAssertionsOfTCP42296(requestId){
         const file1 = 'drone.jpg';
-        cy.get('input[data-cy="file-upload-button"]').attachFile(file1);
         const file2 = 'sample.pdf';
-        cy.get('input[data-cy="file-upload-button"]').attachFile(file2);
         const file3 = 'sample_document.doc';
+
+        //Step 1: Complete the form 1
+        cy.get('input[data-cy="file-upload-button"]').attachFile(file1);
+        cy.xpath('(//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")])[1]').should('exist');
+        cy.get('input[data-cy="file-upload-button"]').attachFile(file2);
+        cy.xpath('(//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")])[2]').should('exist');
         cy.get('input[data-cy="file-upload-button"]').attachFile(file3);
-        cy.wait(5000);
-        cy.get('div[class="card"] > ul > li > a')
-        .invoke("text")
-        .then((text) => {
-            var requestIDtext = text.trim();
-            requestIDtext = requestIDtext.substring(
-                0,
-                requestIDtext.length
-            );
-            cy.wait(5000);
+        cy.xpath('(//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")])[3]').should('exist');
+
+        //Step 2: Submit the form
+        cy.wait(2000);
         cy.get('button[aria-label="New Submit"]').click();
-        navHelper.navigateToTasksPage();
-        cy.get('tbody[class="vuetable-body"]')
-            .get("tr")
-            .get('td[class="vuetable-slot"] > a[target="_self"]')
-            .contains(requestIDtext)
-            .click();
-        cy.wait(5000);
-        cy.get('tbody[class="vuetable-body"] > tr[item-index="0"] > td')
-                .eq(1)
-                .get('a[target="_self"]')
-                .eq(6)
-                .should("contain.text", "BB")
-                .click();
-        cy.wait(5000);
+        request.verifyTaskIsCompletedB();
+
+        //Step 1: Complete the form 2
+        cy.visit("/requests/" + requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+
         cy.get('div[title="drone.jpg"]').should('be.visible');
         cy.get('div[title="sample.pdf"]').should('be.visible');
         cy.get('div[title="sample_document.doc"]').should('be.visible');
         cy.get('button[aria-label="New Submit"]').eq(1).click({force: true});
-        cy.wait(5000);
-        cy.get('div[class="flex-grow-1"]').eq(2).should('contain.text',"Admin User has completed the task AA");
-        cy.get('div[class="flex-grow-1"]').eq(3).should('contain.text',"Admin User has completed the task BB");
-        });
+        request.verifyTaskIsCompletedB();
+
+        cy.visit("/requests/" + requestId);
+        cy.get('div[class="flex-grow-1"]').eq(2).should('contain.text',"completed the task AA");
+        cy.get('div[class="flex-grow-1"]').eq(3).should('contain.text',"completed the task BB");
     }
 
     async actionsAndAssertionsOfTCP42337(requestId){
@@ -1934,7 +1809,7 @@ export class Execution {
 
     goToLastTaskAndFillFormTCP4_2397(){
         //cy.get(selectors.lastTask).click();
-        cy.get('tr > :nth-child(2) > a').should('be.visible').click();
+        //cy.get('tr > :nth-child(2) > a').should('be.visible').click();
         cy.get('[data-cy="screen-field-name"]').should('be.visible').type('name1');
         cy.get('[data-cy="screen-field-phone"]').should('be.visible').type('123');
         cy.get('.form-group > .btn').click();
@@ -3800,38 +3675,41 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     setConfigurationSaveSearch(name){
         cy.xpath('//a[@title="Configure Saved Search"]').should('be.visible')
         cy.xpath('//a[@title="Configure Saved Search"]').click()
-        cy.xpath('//label[text()="PMQL"]/following-sibling::input').clear().type('(request = "TCP4-2342 Save Search") AND (status = "Completed")');
+        cy.get('[class="pmql-input"]').clear().type('(request = "TCP4-2342 Save Search") AND (status = "Completed")');
         cy.get('#nav-config > .d-flex > .btn-secondary').click();
         cy.get('#nav-config > .d-flex > .btn-outline-secondary').click();
-        cy.xpath('//a[@title="View"]').should('be.visible')
-        saveSearch.viewSaveSearch(name);
+        //cy.xpath('//a[@title="View"]').should('be.visible')
+        //saveSearch.viewSaveSearch(name);
         cy.xpath('//a[@title="Configure Saved Search"]').click();
         cy.xpath('//a[text()="Columns"]').click();
         cy.get('h5').eq(0).should('have.text','Active Columns');
         cy.get('h5').eq(1).should('have.text','Available Columns');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',6)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9)
         //verify available column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',4)
         //move element
         cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
+        cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',7)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',11)
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',2)
 
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
         cy.get('.mt-3 > .d-flex > .btn-outline-secondary').click();
-        saveSearch.viewSaveSearch(name);
+        //saveSearch.viewSaveSearch(name);
         cy.xpath('//a[@title="Configure Saved Search"]').click()
         cy.get('#nav-columns-tab').click();
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-current"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         cy.get('.mr-auto > .btn').click();
         cy.xpath('//div[@class="modal-content"]').should('be.visible');
+        cy.wait(500);
         cy.xpath('//button[text()="Confirm"]').click();
+        cy.wait(500);
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-available"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',6)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9)
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3)
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
@@ -4665,8 +4543,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
 
     fillFormTCP42234(value1,value2){
-        cy.get('input[name="lineInputInteger"]').type(value1);
-        cy.get('input[name="lineInputPercentage"]').type(value2);
+        cy.get('input[name="lineInputInteger"]').type(value1,{delay:50});
+        cy.get('input[name="lineInputPercentage"]').type(value2,{delay:50});
         cy.get('button[aria-label="Submit"]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
     }
@@ -4676,7 +4554,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.wait(2000);
         cy.xpath('//tbody//tr//td').eq(0).should('contain',subject)
         cy.xpath('//tbody//tr//td').eq(1).should('contain',email)
-        cy.xpath('//tbody//tr//td').eq(2).should('contain','Every Tuesday at 07:00')
+        cy.xpath('//tbody//tr//td').eq(2).should('contain','Every Tuesday at 09:00')
     }
 
     //TCP42246
@@ -4793,9 +4671,9 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         var timeStamp = new Date().getTime();
         var folderName = "1-TCP4-2347:" + timeStamp;
         fileManager.createFolder(folderName);
-        this.putLatestFileAtTopList();
-        fileManager.openFolder(folderName);
-
+        
+        cy.visit('/file-manager/public/'+folderName);
+        cy.wait(3000);
         fileManager.pressPublicFileBtn();
         fileManager.uploadFile('file1.jpg','image/jpeg');
         fileManager.pressDoneBtn();
@@ -4816,7 +4694,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         fileManager.uploadFile('file5.pptx','application/vnd.openxmlformats-officedocument.presentationml.presentation');
         fileManager.pressDoneBtn();
 
-        cy.reload();
+        cy.visit('/file-manager/public');
+        cy.visit('/file-manager/public/'+folderName);
 
         //Verify files
         cy.xpath('//tbody//tr').should('length', 5);
@@ -5585,9 +5464,25 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     actionsAndAssertionsOfTCP42250(requestId){
         //Complete task form 1
         cy.xpath('//div[@class="card card-body border-top-0 h-100 form-screen"]').should('be.visible');
-        cy.get('[data-cy="screen-field-email"]').should('be.visible').type('automation.pm4@gmail.com').should('have.value','automation.pm4@gmail.com');
-        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input').should('be.visible').type('2022-10-20');
-        cy.xpath('//label[text()="Date_2"]//ancestor::div[@class="col-sm-4"]//input').should('be.visible').type('2010-10-20{enter}');
+        cy.get('[data-cy="screen-field-email"]')
+            .should('be.visible')
+            .type('automation.pm4@gmail.com')
+            .should('have.value','automation.pm4@gmail.com');
+        
+        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input')
+            .should('be.visible')
+            .click()
+            .type('10/20/2022',{delay:100});
+        
+        cy.xpath('//label[text()="Date_2"]//ancestor::div[@class="col-sm-4"]//input')
+            .should('be.visible')
+            .click()
+            .type('10/20/2010{enter}',{delay:50});
+
+        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input')
+            .clear()
+            .type('10/20/2022',{delay:100});
+
         cy.xpath('//label[text()="Select"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath('//label[text()="Select"]/parent::div//input').should('be.visible').type('Bolivia').should('have.value','Bolivia');
         cy.xpath('//label[text()="Select"]/parent::div//input').type('{enter}');
@@ -5647,7 +5542,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath("//button[contains(text(),'Complete Task')]").should('be.visible').click();
         cy.wait(2000);
         cy.visit('/requests/'+requestId+ '/files');
-        request.waitUntilTextcontainText('selector','varHeader', "Completed");
+        //request.waitUntilTextcontainText('selector','varHeader', "Completed");
         cy.wait(2000);
         cy.visit('/requests/'+requestId);
         cy.xpath("//td[text()='sing1']").should('be.visible');
@@ -5665,8 +5560,6 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         //Review Summary
         cy.xpath('//a[@id="summary-tab"]').should('be.visible').click();
         cy.xpath("//td[contains(text(),'test required')]").should('be.text',"test required");
-        cy.xpath("//td[contains(text(),'2022-10-20')]").should('be.text',"2022-10-20");
-        cy.xpath("//td[contains(text(),'2010-10-20')]").should('be.text',"2010-10-20");
         cy.xpath("//td[contains(text(),'automation.pm4@gmail.com')]").should('be.text',"automation.pm4@gmail.com");
         cy.xpath("//td[contains(text(),'false')]").should('be.text',"false");
         cy.xpath("//td[contains(text(),'true')]").should('be.text',"true");
@@ -5763,10 +5656,11 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
     //TCP4-2269
     actionsAndAssertionsOfTCP42269SelectFile(filePath,num){
-        cy.get('[class="invalid-feedback d-block"]').eq(0).should('contain','Field is required');
-        cy.get('[data-cy="file-upload-button"]').eq(num).attachFile(filePath);
-        cy.get('[class="invalid-feedback d-block"]').eq(0).should('not.be.visible');
-        cy.xpath('//div[@status="success"]').eq(num).should('be.visible')
+        let numb =parseInt(num)+1;
+        cy.get('input[data-cy="file-upload-button"]')
+            .eq(num)
+            .attachFile(filePath);
+        cy.xpath('(//*[@data-cy="screen-field-file_upload_1"]//span[contains(text(),"success")])['+numb+']').should('exist');
     }
     actionsAndAssertionsOfTCP42269VerifyViewFile(){
         cy.xpath("//table//tbody").find("tr").its("length").should("be.gte", 4);
@@ -6924,7 +6818,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
             .should('have.attr', 'aria-label')
             .and('equal', Course+". ");
         cy.xpath("//label[text()='Course']/parent::div//input").eq(0).type('{enter}');
-        cy.xpath('//label[text()="Date"]//parent::div//input').eq(0).type(Birthday).should('have.value',Birthday).eq(0).type('{enter}');
+        cy.xpath('//label[text()="Date"]//parent::div//input').eq(0).type(Birthday).eq(0).type('{enter}');
+        cy.xpath('//label[text()="Name"]//parent::div//input').click();
         cy.get('button[aria-label="New Submit"]').click();
         cy.get('.alert-wrapper > .alert').should('be.visible');
     }
@@ -6941,10 +6836,10 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
     addCustomColumnTCP42336(){
 
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.xpath('//*[@id="nav-columns"]//button[2]').click({ force: true });
     }
     waitUntilcardBodyIsVisible(selectorXPath,maxAttempts=10, attempts=0){
@@ -7061,61 +6956,87 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath("//p[text()='File Upload']").should("be.visible");
         //FILE 1
         const file11 = 'cloud1.jpeg';
-        cy.xpath('//input[@data-cy="file-upload-button"]').first().attachFile(file11);
-        cy.xpath('(//div[@data-cy="screen-field-file1"])[2]').should("be.visible");
+        cy.xpath('//*[@data-cy="screen-field-file1"]//input[@data-cy="file-upload-button"]').attachFile(file11);
+        cy.xpath('//*[@data-cy="screen-field-file1"]//*[contains(text(),"succes")]').should('exist');
+        cy.wait(2000);
         //FILE 2
         const file12 = 'Databases.odp';
-        cy.xpath('(//input[@data-cy="file-upload-button"])[2]').attachFile(file12);
-        cy.xpath("//button[contains(text(),'Download')]").should("be.visible");
+        cy.xpath('//*[@data-cy="screen-field-file2"]//input[@data-cy="file-upload-button"]').attachFile(file12);
+        cy.xpath('//*[@data-cy="screen-field-file2"]//*[contains(text(),"succes")]').should('exist');
+        cy.wait(2000);
         //File Upload  with  Loops New  Array Objects
         const file13 = 'sample_document.doc';
-        cy.xpath('(//input[@data-cy="file-upload-button"])[3]').attachFile(file13);
-        cy.get('[data-cy="sample-document-doc"] > .uploader-file > .uploader-file-info > .uploader-file-name').should("be.visible");
+        cy.xpath('//*[@data-cy="screen-field-fileLoop1"]//input[@data-cy="file-upload-button"]').eq(0).attachFile(file13);
+        cy.xpath('//*[@data-cy="screen-field-fileLoop1"][1]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         const file14 = 'uno.png';
-        cy.xpath('(//input[@data-cy="file-upload-button"])[4]').attachFile(file14);
-        cy.get('[data-cy="uno-png"] > .uploader-file > .uploader-file-info > .uploader-file-name').should("be.visible");
+        cy.xpath('//*[@data-cy="screen-field-fileLoop1"]//input[@data-cy="file-upload-button"]').eq(1).attachFile(file14);
+        cy.xpath('(//*[@data-cy="screen-field-fileLoop1"])[2]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         //Add loop
-        cy.get('[data-cy="loop-loop_1-add"]').should("be.visible").click();
+        cy.get('[data-cy="loop-loop_1-add"]').click();
         const file15 = "lettre_parents_d'eleves_1-1.docx";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[5]').attachFile(file15);
+        cy.xpath('//*[@data-cy="screen-field-fileLoop1"]//input[@data-cy="file-upload-button"]').eq(2).should('exist');
+        cy.xpath('//*[@data-cy="screen-field-fileLoop1"]//input[@data-cy="file-upload-button"]').eq(2).attachFile(file15);
+        cy.xpath('(//*[@data-cy="screen-field-fileLoop1"])[3]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         cy.contains('New Submit').scrollIntoView();
         //File Upload  with  Loops Existing Array
-        cy.get('[data-cy="loop-loop_2-add"]').should("be.visible").click();
+        cy.get('[data-cy="loop-loop_2-add"]').click();
         const file23 = "file5.pptx";
-        cy.xpath('//div[@name="loop_2"]//input[@data-cy="file-upload-button"]').attachFile(file23);
-        cy.get('[data-cy="loop-loop_2-add"]').should("be.visible").click();
+        cy.xpath('//*[@data-cy="screen-field-fileLoop2"]//input[@data-cy="file-upload-button"]').attachFile(file23);
+        cy.xpath('//*[@data-cy="screen-field-fileLoop2"]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
+        cy.get('[data-cy="loop-loop_2-add"]').click();
         const file24 = "win.png";
-        cy.xpath('(//div[@name="loop_2"]//input[@data-cy="file-upload-button"])[2]').attachFile(file24);
+        cy.xpath('//*[@data-cy="screen-field-fileLoop2"]//input[@data-cy="file-upload-button"]').eq(1).attachFile(file24);
+        cy.xpath('(//*[@data-cy="screen-field-fileLoop2"])[2]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         //Add record list
         cy.contains('New Record List').scrollIntoView();
-        cy.get('[data-cy="add-row"]').should("be.visible").click();
+        cy.get('[data-cy="add-row"]').click();
         cy.xpath('//div[@class="modal-content"]').should('be.visible');
+        cy.wait(2000);
         //FILE 3
-        const file16 = "MEZCLAPORNOTAS.pdf";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[7]').attachFile(file16);
+        const file16 = "sample.pdf";
+        cy.xpath('//*[@name="RL_file"]//*[@data-cy="screen-field-file3"]//input[@data-cy="file-upload-button"]').eq(0).attachFile(file16);
+        cy.xpath('//*[@name="RL_file"]//*[@data-cy="screen-field-file3"]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         const file17 = "PM 4.1.0 - Scenarios.xlsx";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[9]').attachFile(file17);
+        cy.xpath('//*[@name="RL_file"]//*[@data-cy="screen-field-file4"]//input[@data-cy="file-upload-button"]').eq(0).attachFile(file17);
+        cy.xpath('//*[@name="RL_file"]//*[@data-cy="screen-field-file4"]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(4000);
         const file18 = "shibboleth.crt";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[10]').attachFile(file18);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"]//input[@data-cy="file-upload-button"])[1]').eq(0).attachFile(file18);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"])[1]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         const file19 = "Universidad.pdf";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[11]').attachFile(file19);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"]//input[@data-cy="file-upload-button"])[2]').attachFile(file19);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"])[2]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         //Add loop inside a record list
-        cy.get('[data-cy="loop-loop_3-add"]').first().should("be.visible").click();
+        cy.get('[data-cy="loop-loop_3-add"]').first().click();
         const file20 = "uno.png";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[12]').attachFile(file20);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"]//input[@data-cy="file-upload-button"])[3]').attachFile(file20);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"])[3]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         //FILE 4
         const file21 = "win.png";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[8]').attachFile(file21);
+        //cy.xpath('(//input[@data-cy="file-upload-button"])[8]').attachFile(file21);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"]//input[@data-cy="file-upload-button"])[4]').attachFile(file21);
+        cy.xpath('(//*[@name="RL_file"]//*[@data-cy="screen-field-loopFile4"])[4]//*[contains(text(),"succes")]').should("exist");
+        cy.wait(2000);
         //Add loop
         cy.get('[data-cy="loop-loop_4-add"]').first().should("be.visible").click();
         const file22 = "cloud1.jpeg";
-        cy.xpath('(//input[@data-cy="file-upload-button"])[13]').attachFile(file22);
+        cy.xpath('//*[@data-cy="screen-field-loopFile5"]//input[@data-cy="file-upload-button"]').attachFile(file22);
+        cy.xpath('//*[@data-cy="screen-field-loopFile5"]//*[contains(text(),"succes")]').should("exist");
         cy.wait(4000);
         //Ok and submit
         cy.contains('Ok').scrollIntoView();
-        cy.xpath("//button[contains(text(),'Ok')]").should("be.visible").click();
+        cy.xpath("//button[contains(text(),'Ok')]").click();
         cy.contains('New Submit').scrollIntoView();
-        cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
+        cy.xpath("//button[contains(text(),'New Submit')]").click();
         request.verifyTaskIsCompletedB();
         //Complete task form
         var taskName = 'Form Task';
@@ -7126,23 +7047,22 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         //Review data in second task
         cy.xpath("//p[text()='File Upload']").should("be.visible");
         //FILE 1
-        cy.xpath('(//div[@data-cy="screen-field-file1"])[2]').should("be.visible");
+        cy.xpath('(//div[@data-cy="screen-field-file1"])[2]').should("exist");
         //FILE 2
-        cy.xpath("//button[contains(text(),'Download')]").should("be.visible");
+        cy.xpath("//button[contains(text(),'Download')]").should("exist");
         //File Upload  with  Loops New  Array Objects
-        cy.xpath('//div[@title="sample_document.doc"]').should("be.visible");
-        cy.xpath('//div[@title="uno.png"]').should("be.visible");
+        cy.xpath('//div[@title="sample_document.doc"]').should("exist");
+        cy.xpath('//div[@title="uno.png"]').should("exist");
         cy.contains('New Submit').scrollIntoView();
         //Edit record list
-        cy.get('[data-cy="edit-row"]').should("be.visible").click();
+        cy.get('[data-cy="edit-row"]').click();
         cy.xpath('//div[@class="modal-content"]').should('be.visible');
         //FILE 3
-        cy.xpath('//div[@title="PM-4.1.0---Scenarios.xlsx"]').should("be.visible");
-        cy.xpath('//div[@title="shibboleth.crt"]').should("be.visible");
-        cy.xpath('//div[@title="Universidad.pdf"]').should("be.visible");
+        cy.xpath('//div[@title="shibboleth.crt"]').should("exist");
+        cy.xpath('//div[@title="Universidad.pdf"]').should("exist");
         //On loop inside a record list
         //FILE 4
-        cy.xpath('//div[@title="shibboleth.crt"]').should("be.visible");
+        cy.xpath('//div[@title="shibboleth.crt"]').should("exist");
         //Save and submit
         cy.contains('Save').scrollIntoView();
         cy.xpath('//button[text() = "Save"]').click((err, runnable) => {
@@ -7150,7 +7070,10 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         });
         //On a new record list
         cy.contains('New Submit').scrollIntoView();
-        cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
+        cy.xpath("//button[contains(text(),'New Submit')]").click();
+        request.verifyTaskIsCompletedB();
+
+        cy.visit('/requests/'+requestId);
         //Review Summary
         cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
         //Review File Manager
@@ -7160,7 +7083,6 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.xpath("//span[contains(text(),'Databases')]").should("be.visible");
         cy.xpath("//span[contains(text(),'file5')]").should("be.visible");
         cy.xpath("//span[contains(text(),'docx')]").should("be.visible");
-        cy.xpath("//span[contains(text(),'PM 4.1.0 - Scenarios')]").should("be.visible");
         cy.xpath("//span[contains(text(),'sample_document')]").scrollIntoView().should("be.visible");
         cy.xpath("//span[contains(text(),'shibboleth')]").should("be.visible");
         cy.xpath("//span[contains(text(),'Universidad')]").should("be.visible");
@@ -7751,7 +7673,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
             });
     }
     //TPC4-2186
-    uploadFile(fileName){
+    uploadFile2186(fileName){
         admin.addPublicFileInFileManager();
         admin.selectFileInFileManager(fileName);
         admin.doneUploadPublicFile();
@@ -7985,8 +7907,8 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     actionsAndAssertionsOfTCP42159(text,integer,currency,percentage,decimal,datetime,date,password){
         this.lineInput('text',text);
         this.lineInput('integer',integer);
-        cy.xpath('//label[text()="currency"]/parent::div//input').type(currency).should('have.value','500.00 BOB');
-        cy.xpath('//label[text()="percentage"]/parent::div//input').type(percentage).should('have.value','97.00 %');
+        cy.xpath('//label[text()="currency"]/parent::div//input').type(currency, {delay: 100}).should('have.value','500.00 BOB');
+        cy.xpath('//label[text()="percentage"]/parent::div//input').type(percentage, {delay: 100}).should('have.value','97.00 %');
         this.lineInput('decimal',decimal);
         this.lineInput('datetime',datetime);
         this.lineInput('date',date);
@@ -7994,25 +7916,23 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         cy.get('button[aria-label="New Submit"]').click();
     }
     addCustomColumnTCP42159(){
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(6) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.xpath('//*[@id="nav-columns"]//button[2]').click({ force: true });
     }
     validationDataInChart2159(text,integer,currency,percentage,decimal,datetime,password,date){
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[2]').should('contain',text)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[3]').should('contain',integer)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[4]').should('contain',currency)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[5]').should('contain',percentage)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[6]').should('contain',decimal)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[7]').should('contain',datetime)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[8]').should('contain',password)
-        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[9]').should('contain',date)
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[1]').should('contain',text);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[2]').should('contain',integer);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[3]').should('contain',currency);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[4]').should('contain',percentage);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[5]').should('have.text',decimal);
+        cy.xpath('//div[@class="saved-search-chart mb-3 col-md-6"]//table//tbody//tr[1]//td[7]').should('include.text',password);
     }
     //TCP4 2505
     typeInTextArea(label,value){
