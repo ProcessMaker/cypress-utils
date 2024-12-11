@@ -545,13 +545,72 @@ export class Scripts {
         });
     }
 
-    getScriptByNameApi(scriptName){
+    /**
+     * This method retrieves the ID of a script by its name using the API.
+     * @param scriptName: The name of the script to search for.
+     * @return {Promise} A promise that resolves to the ID of the script if found, or undefined if not found.
+     * 
+     * @example
+     * getScriptByNameApi("My Script Name").then(scriptId => {
+     *     if (scriptId) {
+     *         console.log("Script ID:", scriptId);
+     *     } else {
+     *         console.log("Script not found.");
+     *     }
+     * });
+     */
+    getScriptByNameApi(scriptName) {
         return cy.window().then(win => {
-            return win.ProcessMaker.apiClient.get('/scripts', { params: {filter: scriptName} }).then(response => {
-                const script = response.data.data.find(script => script.title === scriptName);
-                return script;
-            });
+            return win.ProcessMaker.apiClient.get('/scripts', { params: { filter: scriptName } })
+                .then(response => {
+                    const script = response.data.data.find(script => script.title === scriptName);
+                    if(script){
+                        return script.id;
+                    }else{
+                        return false
+                    }
+                })
         });
-
     }
+
+    /**
+     * This method creates a script using the API. 
+     * It first checks if a script with the given title already exists. 
+     * If it does, it returns the existing script's ID. 
+     * If not, it creates a new script with the provided payload and returns the newly created script's data.
+     * 
+     * @param payload: An object containing the details of the script to be created.
+     * @return {Promise} A promise that resolves to the ID of the existing script or the data of the newly created script.
+     * 
+     * @example
+     * let payloadScript = {
+     *     "title": "scriptTest_api1",
+     *     "script_executor_id": "1",
+     *     "description": "test automation",
+     *     "script_category_id": "1",
+     *     "run_as_user_id": 1,
+     *     "projects": [],
+     *     "code": '<?php \n$test["resp"] = "test qa"; \nreturn [$test];',
+     *     "timeout": "5",
+     *     "retry_attempts": 0,
+     *     "retry_wait_time": 5
+     * };
+     * createScriptAPI(payloadScript).then(scriptID => {
+     *     console.log("Script created or found:", scriptID);
+     * });
+     * see TCP4-3127
+     */
+    createScriptAPI(payload) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.post('/scripts', payload)
+                .then(response => {
+                    return response.data.data.id;
+                }).catch(err => {
+                    const errorMessage = err.response?.data?.message?.toLowerCase() || 'Unknown error';
+                    cy.log("message: ===" + errorMessage + "===");;
+                    return this.getScriptByNameApi(payload.title);
+                });
+            })
+    }
+
 }
