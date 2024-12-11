@@ -843,7 +843,7 @@ export class Process {
         this.clickOnSave();
         //cy.xpath(selectors.saveBtnInPopUp).should('be.visible').click();
         //cy.get(selectors.alertSaveProcess).should('be.visible');
-        cy.xpath('[id="name"]').should('be.visible');
+        cy.get('[id="name"]').should('be.visible');
         cy.wait(3000);
         cy.xpath('//button[@data-test="btn-save-publish"]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
