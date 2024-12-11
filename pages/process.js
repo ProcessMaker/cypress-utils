@@ -1433,7 +1433,10 @@ export class Process {
                 cy.wait(2000);
                 cy.xpath(selectors.processManagerFieldXpath).find("input").type("{enter}");
                 cy.xpath(selectors.processManagerSpanXpath).should("have.text", fullNameManager);
+                cy.wait(3000);
                 cy.xpath(selectors.processManagerEditSaveBtn).click();
+                cy.wait(2000);
+                cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
             }else return;
         });
     }
