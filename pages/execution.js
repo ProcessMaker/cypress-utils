@@ -1171,39 +1171,6 @@ export class Execution {
             cy.get('div[class="flex-grow-1"]').contains("Admin User has completed the task Task 2");
     }
 
-    actionsAndAssertionsOfTCP42315() {
-        var processname = 'TCP4-2315 Check interstitial with script in a sub process';
-        //Open requests to Conversational form
-        cy.get('button[id="navbar-request-button"]').click();
-        cy.get('[class="process-list"]').should('be.visible');
-        cy.get('input[class="form-control"]').type(processname).should('have.value',processname);
-
-        cy.xpath("//*[@class='modal-content']//*[contains(text(),'processName')]/ancestor::div[@class='card-body']/div".replace('processName',processname), { timeout: 10000 })
-            .then(() => {
-                cy.xpath("//*[@class='modal-content']//*[contains(text(),'processName')]/ancestor::div[@class='card']//button[contains(text(),'Start')]".replace('processName',processname)).should('be.visible');
-                cy.wait(2000);
-                cy.xpath("//*[@class='modal-content']//*[contains(text(),'processName')]/ancestor::div[@class='card']//button[contains(text(),'Start')]".replace('processName',processname)).click();
-            });
-        //Completed task
-        cy.get('input[name="form_input_1"]').type("yes");
-        cy.xpath('//button[@class="btn input-submit btn-link"]').click();
-        cy.xpath('//button[@class="btn mb-2 select-list-options w-100 btn-outline-primary btn-sm rounded-pill"]').first()
-        .click();
-        request.waitUntilElementIsVisible('selector','[id="summary-tab"]');
-        //Review Summary
-        cy.get('[id="summary-tab"]').should('be.visible').click();
-        cy.get('#summary > div > div > table > tbody > tr').eq(0).find('td').eq(1).should('have.text','ASSAM is ASSAM KERELA is KERELA ORRISA is ORRISA');
-
-        //Review Sub process Complete
-        var processName =  'Subprocess 2315';
-        navHelper.navigateToAllRequests();
-        request.openRequestByNameForCompletedProcess(processName);
-
-        //Review Summary subprocess
-        cy.get('[id="summary-tab"]').should('be.visible').click();
-        cy.get('#summary > div > div > table > tbody > tr').eq(9).find('td').eq(1).should('have.text','Israel Japan Germany');
-
-    }
 
     async actionsAndAssertionsOfTCP42338(requestId){
         request.openNewRequest(
