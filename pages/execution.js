@@ -916,7 +916,8 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42330(requestId){
-        //Complete form
+        //Step 1: Complete form
+        cy.get('[data-cy="screen-field-array"]').should('be.visible');
         cy.xpath('//label[text()="Object"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath("//label[text()='Object']/parent::div//input").type("La Leçon de ténèbres").type('{enter}');
         const file1 = 'drone.jpg';
@@ -2495,50 +2496,44 @@ export class Execution {
         cy.get('div > p').eq(6).should('contain.text','2026');
     }
 ///////////////////
-async actionsAndAssertionsOfTCP42332_1(taskName, process_id, subprocess_id, subprocessName, processName){
-    // press + button on the loop control
-    cy.get('button[title="Add Item"]').click();
-    cy.get('input[name="form_input_1"]').eq(0).type('test 1').should('have.value','test 1');
-    cy.get('button[title="Add Item"]').click();
-    cy.get('input[name="form_input_1"]').eq(1).type('test 2').should('have.value','test 2');
 
-    // fill line inputs
-    cy.get('input[name="decimal"]').type('1.1').should('have.value','1.1');
-    cy.get('input[name="integer"]').type('1').should('have.value','1');
+    actionsAndAssertionsOfTCP42332_1(requestID,processName,subprocessName){
+        // press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
+        cy.get('button[title="Add Item"]').click();
+        cy.get('input[name="form_input_1"]').eq(0).type('test 1').should('have.value','test 1');
+        cy.get('button[title="Add Item"]').click();
+        cy.get('input[name="form_input_1"]').eq(1).type('test 2').should('have.value','test 2');
 
-    /**
-    * search Request ID according to card
-    **/
-    cy.get('div[class="card"] > ul > li > a').invoke('text').then((URL) => {
-        URL=URL.trim();
-        var requestID = URL.substring(1,URL.indexOf(' '));
+        // fill line inputs
+        cy.get('input[name="decimal"]').type('1.1').should('have.value','1.1');
+        cy.get('input[name="integer"]').type('1').should('have.value','1');
 
         //press submit button
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
         //Open Request
         navHelper.navigateToInprogressRequests();
         cy.visit('/requests/'+requestID);
         cy.location('href').should('include', '/requests/'+requestID);
 
-        //verify Main Request status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'In Progress');
-
         //Verify that 2 threads are displayed
-        cy.get('div[class="card"] > ul > li > div > i').should('have.length',2);
+        cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',2);
 
         //Verify the process name according to Sub process
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).should('have.contain',subprocessName);
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
 
         //Open the first subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).click();
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).click();
 
         //fill fields in the first subprocess
-        cy.get('tr > :nth-child(2) > a').eq(0).should('contain', taskName);
-        cy.get('tr > :nth-child(2) > a').eq(0).click();
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
 
         // press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
         cy.get('button[title="Add Item"]').click();
         cy.get('input[name="form_input_1"]').eq(0).type('test subprocess 1A').should('have.value','test subprocess 1A');
         cy.get('button[title="Add Item"]').click();
@@ -2549,15 +2544,23 @@ async actionsAndAssertionsOfTCP42332_1(taskName, process_id, subprocess_id, subp
 
         //press submit button
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
-        //Open the second subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).click();
+        cy.visit('/requests/'+requestID);
+        cy.location('href').should('include', '/requests/'+requestID);
+
+        //Verify that 2 threads are displayed
+        cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',2);
+
+        //Open the second sub process
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).click();
 
         //fill fields in the second subprocess
-        cy.get('tr > :nth-child(2) > a').eq(0).should('contain', taskName);
-        cy.get('tr > :nth-child(2) > a').eq(0).click();
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
 
         // press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
         cy.get('button[title="Add Item"]').click();
         cy.get('input[name="form_input_1"]').eq(0).type('test subprocess 1B').should('have.value','test subprocess 1B');
         cy.get('button[title="Add Item"]').click();
@@ -2568,252 +2571,137 @@ async actionsAndAssertionsOfTCP42332_1(taskName, process_id, subprocess_id, subp
 
         //press submit button to complete the request
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
-        //verify Main Request status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
+        cy.visit('/requests/'+requestID);
+        cy.location('href').should('include', '/requests/'+requestID);
 
         //Verify that 2 threads are displayed in the Main
-        cy.get('div[class="card"] > ul > li > div > i').should('have.length',2);
+        cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',2);
 
         //Verify the process name according to Sub process
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).should('have.contain',subprocessName);
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
 
         //Verify data in each row in the summary tab for the main process
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 14)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
+        cy.get('table[role="table"]> tbody > tr').should('have.length', 14);
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.0.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2A')
+        cy.xpath('//td[contains(text(),"1A")]').should('exist');
+        cy.xpath('//td[contains(text(),"2A")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','loop_1.0.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.text','12.2')
+        cy.xpath('//td[contains(text(),"12.2")]').should('exist');
+        cy.xpath('//td[contains(text(),"4")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','loop_1.0.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text','4')
+        cy.xpath('//td[contains(text(),"1")]').should('exist');
+        cy.xpath('//td[contains(text(),"test 1")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','loop_1.0.loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','1')
+        cy.xpath('//td[contains(text(),"1B")]').should('exist');
+        cy.xpath('//td[contains(text(),"2B")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','test 1')
+        cy.xpath('//td[contains(text(),"10123.2")]').should('exist');
+        cy.xpath('//td[contains(text(),"263")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','loop_1.1.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test subprocess 1B')
+        cy.xpath('//td[contains(text(),"2")]').should('exist');
+        cy.xpath('//td[contains(text(),"test 2")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','loop_1.1.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test subprocess 2B')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','loop_1.1.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','10123.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','loop_1.1.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','263')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','loop_1.1.loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text','1')
+        cy.xpath('//td[contains(text(),"1.1")]').should('exist');
+        cy.xpath('//td[contains(text(),"1")]').should('exist');
 
         //Validate the first subprocess
         //open subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).click();
+        cy.get('div[class="tab-content"] *>ul > li > div > a').eq(0).click();
 
-        //Validate first subprocess status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
+        cy.get('table[role="table"]> tbody > tr').should('have.length', 20);
+        cy.xpath('//td[contains(text(),"loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"1A")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"2A")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 20)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
+        cy.xpath('//td[contains(text(),"_parent.config.name")]/following-sibling::td[contains(text(),"'+subprocessName+'")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2A')
+        cy.xpath('//td[contains(text(),"_parent.config.startEvent")]/following-sibling::td[contains(text(),"node")]').should('exist');
+        cy.xpath('//td[contains(text(),"_parent.loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"test 1")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName)
+        cy.xpath('//td[contains(text(),"_parent.loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"test 2")]').should('exist');
+        cy.xpath('//td[contains(text(),"_parent.decimal")]/following-sibling::td[contains(text(),"1.1")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text',subprocess_id)
+        cy.xpath('//td[contains(text(),"_parent.integer")]/following-sibling::td[contains(text(),"1")]').should('exist');
+        cy.xpath('//td[contains(text(),"_parent.node_id")]/following-sibling::td[contains(text(),"node")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
+        cy.xpath('//td[contains(text(),"decimal")]/following-sibling::td[contains(text(),"12.2")]').should('exist');
+        cy.xpath('//td[contains(text(),"integer")]/following-sibling::td[contains(text(),"4")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.node_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','node_19')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.process_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text', process_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.request_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',requestID)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text','12.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','4')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','numberOfInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfActiveInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfCompletedInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','0')
-
-        //Return to main process
-        cy.get('div[class="card"] > ul > li > a').should('have.contain',processName)
-        cy.get('div[class="card"] > ul > li > a').click();
+        cy.xpath('//td[contains(text(),"loopCounter")]/following-sibling::td[contains(text(),"1")]').should('exist');
+        cy.xpath('//td[contains(text(),"form_input_1")]/following-sibling::td[contains(text(),"test 1")]').should('exist');
+        
 
         //Validate second subprocess
         //open subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).click();
+        cy.visit('/requests/'+requestID);
+        cy.location('href').should('include', '/requests/'+requestID);
 
-        //Validate first subprocess status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
+        cy.get('div[class="tab-content"] *>ul > li > div > a').eq(1).click();
 
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 20)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1B')
+        cy.get('table[role="table"]> tbody > tr').should('have.length', 20);
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2B')
+        cy.xpath('//td[contains(text(),"loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"1B")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"2B")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName)
+        cy.xpath('//td[contains(text(),"_parent.config.startEvent")]/following-sibling::td[contains(text(),"node")]').should('exist');
+        cy.xpath('//td[contains(text(),"_parent.loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"test 1")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text',subprocess_id)
+        cy.xpath('//td[contains(text(),"_parent.loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"test 2")]').should('exist');
+        cy.xpath('//td[contains(text(),"_parent.decimal")]/following-sibling::td[contains(text(),"1.1")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
+        cy.xpath('//td[contains(text(),"_parent.integer")]/following-sibling::td[contains(text(),"1")]').should('exist');
+        cy.xpath('//td[contains(text(),"_parent.node_id")]/following-sibling::td[contains(text(),"node")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
+        cy.xpath('//td[contains(text(),"decimal")]/following-sibling::td[contains(text(),"10123.2")]').should('exist');
+        cy.xpath('//td[contains(text(),"integer")]/following-sibling::td[contains(text(),"263")]').should('exist');
 
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.node_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','node_19')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.process_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text',process_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.request_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',requestID)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text','10123.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','263')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','numberOfInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfActiveInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfCompletedInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','0')
-    });
+        cy.xpath('//td[contains(text(),"loopCounter")]/following-sibling::td[contains(text(),"2")]').should('exist');
+        cy.xpath('//td[contains(text(),"form_input_1")]/following-sibling::td[contains(text(),"test 2")]').should('exist');
 }
 
-async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subprocessName, processName){
-    // press + button on the loop control
-    cy.get('button[title="Add Item"]').click();
-    cy.get('input[name="form_input_1"]').eq(0).type('test 1').should('have.value','test 1');
-    cy.get('button[title="Add Item"]').click();
-    cy.get('input[name="form_input_1"]').eq(1).type('test 2').should('have.value','test 2');
-    cy.get('button[title="Add Item"]').click();
-    cy.get('input[name="form_input_1"]').eq(2).type('test 3').should('have.value','test 3');
 
-    // fill line inputs
-    cy.get('input[name="decimal"]').type('1.1').should('have.value','1.1');
-    cy.get('input[name="integer"]').type('1').should('have.value','1');
+    actionsAndAssertionsOfTCP42332_4(requestID, processName, subprocessName){
+        //Step 1: press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
+        cy.get('button[title="Add Item"]').click();
+        cy.get('input[name="form_input_1"]').eq(0).type('test 1').should('have.value','test 1');
+        cy.get('button[title="Add Item"]').click();
+        cy.get('input[name="form_input_1"]').eq(1).type('test 2').should('have.value','test 2');
+        cy.get('button[title="Add Item"]').click();
+        cy.get('input[name="form_input_1"]').eq(2).type('test 3').should('have.value','test 3');
 
-    /**
-    * search Request ID according to card
-    **/
-    cy.get('div[class="card"] > ul > li > a').invoke('text').then((URL) => {
-        URL=URL.trim();
-        var requestID = URL.substring(1,URL.indexOf(' '));
+        //Step 2: fill line inputs
+        cy.get('input[name="decimal"]').type('1.1').should('have.value','1.1');
+        cy.get('input[name="integer"]').type('1').should('have.value','1');
 
         //press submit button
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
         //Open Request
         navHelper.navigateToInprogressRequests();
         cy.visit('/requests/'+requestID);
         cy.location('href').should('include', '/requests/'+requestID);
 
-        //verify Main Request status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'In Progress');
-
-        cy.reload();
-
-        //Verify that 3 threads are displayed
-        cy.get('div[class="card"] > ul > li > div > i').should('have.length',3);
-
+        //Verify that 2 threads are displayed
+        cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',3);
+        
         //Verify the process name according to Sub process
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).should('have.contain',subprocessName);
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).should('have.contain',subprocessName);
-        cy.get('div[class="card"] > ul > li > div > a').eq(2).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
 
-        //// Open the first subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).click();
+        //Open the first subprocess
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).click();
 
         //fill fields in the first subprocess
-        cy.get('tr > :nth-child(2) > a').eq(0).should('contain', taskName);
-        cy.get('tr > :nth-child(2) > a').eq(0).click();
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
 
         // press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
         cy.get('button[title="Add Item"]').click();
         cy.get('input[name="form_input_1"]').eq(0).type('test subprocess 1A').should('have.value','test subprocess 1A');
         cy.get('button[title="Add Item"]').click();
@@ -2824,15 +2712,21 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //press submit button
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
+
+        cy.visit('/requests/'+requestID);
+        cy.location('href').should('include', '/requests/'+requestID);
+
+        //Verify that 2 threads are displayed
+        cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',3);
 
         //Open the second subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).click();
-
-        //fill fields in the second subprocess
-        cy.get('tr > :nth-child(2) > a').eq(0).should('contain', taskName);
-        cy.get('tr > :nth-child(2) > a').eq(0).click();
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).click();
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
 
         // press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
         cy.get('button[title="Add Item"]').click();
         cy.get('input[name="form_input_1"]').eq(0).type('test subprocess 1B').should('have.value','test subprocess 1B');
         cy.get('button[title="Add Item"]').click();
@@ -2843,15 +2737,21 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //press submit button to complete the request
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
-        //// Open the third subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(2).click();
+        cy.visit('/requests/'+requestID);
+        cy.location('href').should('include', '/requests/'+requestID);
 
-        //fill fields in the first subprocess
-        cy.get('tr > :nth-child(2) > a').eq(0).should('contain', taskName);
-        cy.get('tr > :nth-child(2) > a').eq(0).click();
+        //Verify that 2 threads are displayed
+        cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',3);
+
+        //Open the third subprocess
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(2).click();
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
 
         // press + button on the loop control
+        cy.get('button[title="Add Item"]').should('be.visible');
         cy.get('button[title="Add Item"]').click();
         cy.get('input[name="form_input_1"]').eq(0).type('test subprocess 1C').should('have.value','test subprocess 1C');
         cy.get('button[title="Add Item"]').click();
@@ -2862,301 +2762,270 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
 
         //press submit button
         cy.get('button[aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
-        //verify Main Request status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
-
-        //Verify that 3 threads are displayed in the Main
-        cy.get('div[class="card"] > ul > li > div > i').should('have.length',3);
+        cy.visit('/requests/'+requestID);
+        cy.location('href').should('include', '/requests/'+requestID);
 
         //Verify the process name according to Sub process
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).should('have.contain',subprocessName);
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).should('have.contain',subprocessName);
-        cy.get('div[class="card"] > ul > li > div > a').eq(2).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
+        cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
 
         //Verify data in each row in the summary tab for the main process
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 20)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.0.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2A')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','loop_1.0.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.text','12.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','loop_1.0.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text','4')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','loop_1.0.loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','loop_1.1.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test subprocess 1B')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','loop_1.1.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test subprocess 2B')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','loop_1.1.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','10123.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','loop_1.1.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','263')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','loop_1.1.loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','loop_1.2.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text','test subprocess 1C')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','loop_1.2.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text','test subprocess 2C')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','loop_1.2.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','111.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','loop_1.2.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','4546')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loop_1.2.loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','loop_1.2.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','1')
-
-        //Validate the first subprocess
-        //open subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(0).click();
-
-        //Validate first subprocess status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
-
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 21)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2A')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName);
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text',subprocess_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.loop_1.2.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','test 3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.node_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','node_19')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.process_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',process_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','_parent.request_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text',requestID)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','12.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','4')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfActiveInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
-
-        //Return to main process
-        cy.get('div[class="card"] > ul > li > a').should('have.contain',processName)
-        cy.get('div[class="card"] > ul > li > a').click();
-
-        //Validate second subprocess
-        //open subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(1).click();
-
-        //Validate second subprocess status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
-
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 21)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1B')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2B')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName);
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text',subprocess_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.loop_1.2.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','test 3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.node_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','node_19')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.process_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',process_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','_parent.request_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text',requestID)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','10123.2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','263')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfActiveInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
-
-        //Return to main process
-        cy.get('div[class="card"] > ul > li > a').should('have.contain',processName)
-        cy.get('div[class="card"] > ul > li > a').click();
-
-        //Validate third subprocess
-        //open subprocess
-        cy.get('div[class="card"] > ul > li > div > a').eq(2).click();
-
-        //Validate third subprocess status
-        cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
-
-        cy.get('tbody[role="rowgroup"] > tr').should('have.length', 21)
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1C')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2C')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
-        cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
-        cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.contain',subprocess_id);
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
-        cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
-        cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.loop_1.2.form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','test 3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.node_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','node_19')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.process_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',process_id)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','_parent.request_id')
-        cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text',requestID)
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','decimal')
-        cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','111.1')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','integer')
-        cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','4546')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loopCounter')
-        cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','form_input_1')
-        cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfActiveInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','3')
-
-        cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
-        cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
-    });
+        cy.get('table[role="table"]> tbody > tr').should('have.length', 20);
+
+        cy.xpath('//td[contains(text(),"loop_1.0.loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"1A")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.0.loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"2A")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.0.decimal")]/following-sibling::td[contains(text(),"12.2")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.0.integer")]/following-sibling::td[contains(text(),"4")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.0.loopCounter")]/following-sibling::td[contains(text(),"1")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"test 1")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.1.loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"1B")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.1.loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"2B")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.1.decimal")]/following-sibling::td[contains(text(),"10123")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.1.integer")]/following-sibling::td[contains(text(),"263")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.1.loopCounter")]/following-sibling::td[contains(text(),"2")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"test 2")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.2.loop_1.0.form_input_1")]/following-sibling::td[contains(text(),"1C")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.2.loop_1.1.form_input_1")]/following-sibling::td[contains(text(),"2C")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.2.decimal")]/following-sibling::td[contains(text(),"111.1")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.2.integer")]/following-sibling::td[contains(text(),"4546")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"loop_1.2.loopCounter")]/following-sibling::td[contains(text(),"3")]').should('exist');
+        cy.xpath('//td[contains(text(),"loop_1.2.form_input_1")]/following-sibling::td[contains(text(),"test 3")]').should('exist');
+
+        cy.xpath('//td[contains(text(),"decimal")]/following-sibling::td[contains(text(),"1.1")]').should('exist');
+        cy.xpath('//td[contains(text(),"integer")]/following-sibling::td[contains(text(),"1")]').should('exist');
+        
+        
+        // //Validate the first subprocess
+        // //open subprocess
+        // cy.get('div[class="card"] > ul > li > div > a').eq(0).click();
+        //
+        // //Validate first subprocess status
+        // cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').should('have.length', 21)
+        // cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1A')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2A')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName);
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text',subprocess_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.loop_1.2.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','test 3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.decimal')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1.1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.integer')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.node_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','node_19')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.process_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',process_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','_parent.request_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text',requestID)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','decimal')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','12.2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','integer')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','4')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loopCounter')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfActiveInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
+        //
+        // //Return to main process
+        // cy.get('div[class="card"] > ul > li > a').should('have.contain',processName)
+        // cy.get('div[class="card"] > ul > li > a').click();
+        //
+        // //Validate second subprocess
+        // //open subprocess
+        // cy.get('div[class="card"] > ul > li > div > a').eq(1).click();
+        //
+        // //Validate second subprocess status
+        // cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').should('have.length', 21)
+        // cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1B')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2B')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName);
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.text',subprocess_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.loop_1.2.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','test 3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.decimal')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1.1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.integer')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.node_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','node_19')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.process_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',process_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','_parent.request_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text',requestID)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','decimal')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','10123.2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','integer')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','263')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loopCounter')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfActiveInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
+        //
+        // //Return to main process
+        // cy.get('div[class="card"] > ul > li > a').should('have.contain',processName)
+        // cy.get('div[class="card"] > ul > li > a').click();
+        //
+        // //Validate third subprocess
+        // //open subprocess
+        // cy.get('div[class="card"] > ul > li > div > a').eq(2).click();
+        //
+        // //Validate third subprocess status
+        // cy.get('div[class="card"] > div > h4').should('have.text', 'Completed');
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').should('have.length', 21)
+        // cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(0).should('have.text','loop_1.0.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(0).find('td').eq(1).should('have.text','test subprocess 1C')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(0).should('have.text','loop_1.1.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(1).find('td').eq(1).should('have.text','test subprocess 2C')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(0).should('have.text','_parent.config.name')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(2).find('td').eq(1).should('have.contain',subprocessName)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(0).should('have.text','_parent.config.processId')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(3).find('td').eq(1).should('have.contain',subprocess_id);
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(0).should('have.text','_parent.config.startEvent')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(4).find('td').eq(1).should('have.text','node_1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(0).should('have.text','_parent.config.calledElement')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(5).find('td').eq(1).should('have.text','ProcessId-'+subprocess_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(0).should('have.text','_parent.loop_1.0.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(6).find('td').eq(1).should('have.text','test 1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(0).should('have.text','_parent.loop_1.1.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(7).find('td').eq(1).should('have.text','test 2')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(0).should('have.text','_parent.loop_1.2.form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(8).find('td').eq(1).should('have.text','test 3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(0).should('have.text','_parent.decimal')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(9).find('td').eq(1).should('have.text','1.1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(0).should('have.text','_parent.integer')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(10).find('td').eq(1).should('have.text','1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(0).should('have.text','_parent.node_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(11).find('td').eq(1).should('have.text','node_19')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(0).should('have.text','_parent.process_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(12).find('td').eq(1).should('have.text',process_id)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(0).should('have.text','_parent.request_id')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(13).find('td').eq(1).should('have.text',requestID)
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(0).should('have.text','decimal')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(14).find('td').eq(1).should('have.text','111.1')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(0).should('have.text','integer')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(15).find('td').eq(1).should('have.text','4546')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(0).should('have.text','loopCounter')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(16).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(0).should('have.text','form_input_1')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(17).find('td').eq(1).should('have.text','test 3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(0).should('have.text','numberOfInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(18).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(0).should('have.text','numberOfActiveInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(19).find('td').eq(1).should('have.text','3')
+        //
+        // cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(0).should('have.text','numberOfCompletedInstances')
+        // cy.get('tbody[role="rowgroup"] > tr').eq(20).find('td').eq(1).should('have.text','0')
 }
 //////////////////////
 
@@ -7496,6 +7365,7 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
         //cy.xpath(locatorTextHelp).should('not.exist');
     }
     actionsAndAssertionsSelectProduct(){
+        cy.get('[name="name"]').should('be.visible');
         cy.xpath('//label[text()="Product"]//parent::div//input')
             .click({force: true}).type('Blue Table').should('have.value','Blue Table');
             cy.xpath('//label[text()="Product"]/parent::div//div[@class="multiselect__content-wrapper"]//li[1]')
@@ -8420,14 +8290,13 @@ async actionsAndAssertionsOfTCP42332_4(taskName, process_id, subprocess_id, subp
     }
     //TCP4-2492
     actionsAndAssertionsTCP42492(){
+        cy.get('input[name="Text"]').should('be.visible');
         cy.get('input[name="Text"]').type('qa').should('have.value','qa');
         cy.get('input[name="TextRequired"]').type('qa2').should('have.value','qa2');
         cy.get('input[name="TextURL"]').type('https://ecosia.org').should('have.value','https://ecosia.org');
         cy.get('input[name="TextEmail"]').type('mail@gmail.com').should('have.value','mail@gmail.com');
         cy.get('button[aria-label="New Submit"]').click();
-        cy.get(
-            '[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]'
-        ).should("be.visible");
+        request.verifyTaskIsCompletedB();
     }
 
     verifyLabelsCompleted(requestId){
