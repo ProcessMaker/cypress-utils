@@ -624,8 +624,8 @@ export class ExecutionConnectors {
     }
     actionsAndAssertionsOfTCP43179(name) {
         let timeStamp = new Date().getTime();
-        let decisionTableName =`DecisionTableTCP4-3179${timeStamp}`;
-        let description=`TCP4-3179${timeStamp}`;
+        let decisionTableName =`DT-TCP4-3179-${timeStamp}`;
+        let description=`Description TCP4-3179-${timeStamp}`;
 
         //Step 1: Create Decision Table
         navHelper.navigateToDecisionTables();
