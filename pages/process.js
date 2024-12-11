@@ -1187,7 +1187,7 @@ export class Process {
 
 
             cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click({force:true});
-            cy.wait(2000);
+            cy.wait(4000);
             cy.get("[data-cy='inspector-button']").should('be.visible').click();
             cy.get('#accordion-button-permissions-accordion').should('be.visible').click();
             //Open hamburger menu if not is open
@@ -1218,7 +1218,7 @@ export class Process {
                             if (text !== fullName) {
                                 cy.xpath(startPemrissions_opSelectListSelector.replace('nameType', 'user')).click();
                                 cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'user')).type(userName).should('have.value', userName);
-                                cy.wait(2000);
+                                cy.wait(4000);
                                 cy.xpath('//div[@class="multiselect__content-wrapper"]//ul[contains(@style," inline")]/li[1]')
                                     .should('have.attr', 'aria-label') // yields the "href" attribute
                                     .and('equal', fullName + ". ");
