@@ -1187,7 +1187,6 @@ export class Process {
 
             cy.wait(3000);
             cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click({ delay: 1000 });
-            cy.wait(6000);
             cy.get("[data-cy='inspector-button']").should('be.visible').click();
             cy.get('#accordion-button-permissions-accordion').should('be.visible').click();
             //Open hamburger menu if not is open
@@ -1222,7 +1221,7 @@ export class Process {
                                 cy.xpath('//div[@class="multiselect__content-wrapper"]//ul[contains(@style," inline")]/li[1]')
                                     .should('have.attr', 'aria-label') // yields the "href" attribute
                                     .and('equal', fullName + ". ");
-                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'user')).type('{enter}');
+                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'user')).type('{enter}', {delay : 1200});
 
                             }
                         });
