@@ -544,4 +544,14 @@ export class Scripts {
             cy.xpath('//button[contains(text(),"Save")]').click();
         });
     }
+
+    getScriptByNameApi(scriptName){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/scripts', { params: {filter: scriptName} }).then(response => {
+                const script = response.data.data.find(script => script.title === scriptName);
+                return script;
+            });
+        });
+
+    }
 }
