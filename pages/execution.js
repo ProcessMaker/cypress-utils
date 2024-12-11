@@ -922,6 +922,7 @@ export class Execution {
         cy.xpath("//label[text()='Object']/parent::div//input").type("La Leçon de ténèbres").type('{enter}');
         const file1 = 'drone.jpg';
         cy.get('input[data-cy="file-upload-button"]').attachFile(file1);
+        cy.xpath('//*[@data-cy="screen-field-array"]//span[contains(text(),"success")]').should('exist');
         const file2 = 'sample.pdf';
         cy.get('input[data-cy="file-upload-button"]').attachFile(file2);
         cy.get('button[aria-label="New Submit"]').click();
