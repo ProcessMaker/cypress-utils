@@ -681,12 +681,19 @@ export class Admin {
     }
     selectDefaultInHomePage() {
         cy.get("#dynamic-ui").scrollIntoView().should("be.visible");
-        cy.xpath("//label[text()='Home Page']/parent::div//div[@class='multiselect__select']").click();
-        cy.xpath("//label[text()='Home Page']/parent::div//input").type("Default").should('have.value',"Default");
+        cy.xpath("//label[text()='Home Page']/parent::div//div[@class='multiselect__select']")
+            .should("be.visible")
+            .click();
+        cy.xpath("//label[text()='Home Page']/parent::div//input")
+            .should("be.visible")
+            .type("Default",{delay:200})
+            .should('have.value',"Default");
 		cy.xpath("//label[text()='Home Page']/parent::div//div[@class='multiselect__content-wrapper']//li[1]")
-			.should('have.attr', 'aria-label')
-			.and('equal', "Default. ");
+            .should("be.visible")
+            .and('have.attr', 'aria-label').and('equal', "Default. ");
+        
 		cy.xpath("//label[text()='Home Page']/parent::div//input").type('{enter}');
+        cy.wait(500);
     }
     saveChagesInProfile() {
         cy.get("#saveUser").click();
