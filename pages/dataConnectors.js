@@ -39,8 +39,8 @@ export class Dataconnectors {
     }
     AddAToken(token) {
         this.OpenConfigurationTab();
-        cy.get(selectors.tokenInput).clear();
-        cy.get(selectors.tokenInput).type(token);
+        cy.get(selectors.tokenInput).invoke('removeAttr', 'type','hidden');
+        cy.get(selectors.tokenInput).clear().type(token).should("have.value", token);
         this.ClickSaveBtn();
     }
 
