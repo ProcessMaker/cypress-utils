@@ -843,6 +843,8 @@ export class Process {
         this.clickOnSave();
         //cy.xpath(selectors.saveBtnInPopUp).should('be.visible').click();
         //cy.get(selectors.alertSaveProcess).should('be.visible');
+        cy.xpath('[id="name"]').should('be.visible');
+        cy.wait(3000);
         cy.xpath('//button[@data-test="btn-save-publish"]').click();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
     }
@@ -2030,6 +2032,7 @@ export class Process {
             .and('equal', vocabularyName+". ");
         cy.xpath('//div[@aria-label="Select Vocabulary"]//input').type('{enter}');
         cy.xpath('//div[@class="card"]//button[@class="d-block float-right ml-2 btn btn-secondary btn-vocabulary-action btn-sm"]').click();
+        cy.wait(2000);
         this.saveProcessWithoutVersion();
     }
 
