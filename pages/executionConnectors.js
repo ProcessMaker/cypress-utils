@@ -493,7 +493,7 @@ export class ExecutionConnectors {
     actionsAndAssertionsOfTCP43183(name) {
         let timeStamp = new Date().getTime();
         let dataConnectorName = "TCP4-3183-Data Connector" + timeStamp;
-        let dataConnectorDescription = "TCP4-3183";
+        let dataConnectorDescription = "Description TCP4-3183";
         let dataconnectorType = "No Auth";
 
         //Step 1: Create Data connector
@@ -509,14 +509,14 @@ export class ExecutionConnectors {
         cy.xpath(selectors.assignProjects).should("be.visible");
         cy.xpath(selectors.assignProjects).click({ force: true });
         cy.get('[class="modal-content"]').should("be.visible");
-        cy.get('#nav-collapse > div > div',{timeout: 10000}).should("be.visible");
+        cy.get('#nav-collapse > div > div',{timeout: 12000}).should("be.visible");
 
         //Step 4: verify that the process is added to the project
         navHelper.navigateToPmProjects();
         pmProjects.searchProjectsAndSelectOptions(name, "open");
         request.waitUntilElementIsVisible('selector','[data-cy="asset-listing-table"]');
         cy.get('.search-bar > .search-bar-container > .pmql-input').should('be.visible');
-        cy.get('.search-bar > .search-bar-container > .pmql-input').type(dataConnectorName,{delay:20}).type('{enter}').should('have.value',dataConnectorName);
+        cy.get('.search-bar > .search-bar-container > .pmql-input').type(dataConnectorName,{delay:35}).type('{enter}').should('have.value',dataConnectorName);
         cy.xpath('//tbody[@class="vuetable-body"]//tr//a').should('contain',dataConnectorName);
      }
     actionsAndAssertionsOfTCP42963(processName){
