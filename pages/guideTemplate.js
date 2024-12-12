@@ -22,8 +22,8 @@ export class GuideTemplate {
 
     searchForCategory(catName) {
         cy.get(selectors.catList).should("be.visible");
-		//cy.get(selectors.noDataAvaiable).should('not.exist');
-        cy.xpath(selectors.searchInputCat).type(`${catName}{enter}`).should("have.value", catName);		cy.wait(1500);
+        cy.xpath(selectors.searchInputCat).type(`${catName}{enter}`).should("have.value", catName);		
+        cy.wait(1000);
 	}
 
 }
