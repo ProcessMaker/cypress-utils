@@ -251,12 +251,12 @@ export class Screens {
 
 	selectDataConnector(option) {
 		cy.get(Selectors.dataConnectorDropDown).select(option);
+		cy.wait(1000);
 	}
 
 	selectTheEndPoint(endPointOption) {
 		cy.get(Selectors.endPointDropDown).select(endPointOption);
 		cy.wait(1000);
-
 	}
 
 	addControlls(controllsData, timeStamp) {
@@ -1015,10 +1015,12 @@ export class Screens {
 	 * @return nothing returns
 	 */
 	verifyConfigDataSourceOfSelectListAndConfig(selectList,dataSource,API){
+		cy.xpath('//div[contains(@id,"'+selectList+'")]').should('exist');
 		cy.xpath('//div[contains(@id,"'+selectList+'")]').click({force:true});
 		this.clickOnDataSource();
 		this.selectDataConnector(dataSource);
 		this.selectTheEndPoint("ListAll");
+		cy.wait(2000);
 	}
 	/**
 	 * This method is responsible to change the page in a Screen
@@ -1026,10 +1028,12 @@ export class Screens {
 	 * @return nothing returns
 	 */
 	changePageInScreen(nroPage){
+		cy.get(Selectors.screensSelectionBtn).should('be.visible');
 		cy.get(Selectors.screensSelectionBtn).click();
 		cy.xpath('//a[@data-cy="page-'+nroPage+'"]')
 			.should('exist')
 			.click({force:true});
+		cy.wait(3000);
 	}
     changeDataConnectorForSelectList(pageName, collectionName, endPointVal, type) {
         cy.get(Selectors.navPageBtn).select(pageName);

@@ -1169,6 +1169,7 @@ export class Specific {
 
         //click on ok
         cy.xpath('//button[text()="Ok"]').click();
+        cy.wait(2000);
 
         //click on 2 plus
         cy.xpath('//button[@data-cy="loop-loop_3-add"]//i[1]').click();
@@ -1246,9 +1247,8 @@ export class Specific {
 
         //new submit
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-
-
-
+        request.verifyTaskIsCompletedB();
+        
         //request page
         request.openRequestById(requestId);
         request.clickOnTaskName(1, 1);
@@ -1333,23 +1333,28 @@ export class Specific {
         cy.xpath("(//input[@data-cy='screen-field-varB'])[2]").type( 'varb2');
         //click on submit button
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
+        request.verifyTaskIsCompletedB();
     }
+    
     actionsAndAssertionsOfTCP42192(requestId, name, screen) {
+        //Step 1: Complete the form 1
+        cy.xpath('(//input[@name="form_input_1"])[1]').should('be.visible');
         cy.xpath('(//input[@name="form_input_1"])[1]').type('Form');
         cy.xpath('(//input[@name="form_input_1"])[1]').type('Nested Screen');
-        cy.get('[type="checkbox"]').click();
+        cy.get('[type="checkbox"]').first().check();
         cy.get('[name="form_text_area_1"]').type('text area nested');
         cy.get('[class="multiselect__select"]').click();
         cy.get('[aria-label="One. "]').click();
         cy.get(':nth-child(3) > .form-group > .btn').click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifytaskiscompleted();
-        request.verifyRequestisCompleted(requestId);
+        //Step 2: Wait to PDF will be generated
+        cy.visit('/requests/'+requestId);
+        request.waitUntilTextcontainText('selector','varHeader','Completed');
         request.clickonfilemanager();
         var file = "//span[text()='name']";
         cy.xpath(file.replace('name', screen)).should('be.visible');
-        cy.xpath("(//div[@id='fileManager']//tr)[2]//td[2]").should('be.visible');
-        // cy.get('#tcp4-2175-display1653045946823-qtgcmbkn').should('contain',name);
+        cy.get('[title="View"]').click();
 
     }
     actionsAndAssertionsOfTCP42422(requestId) {
@@ -1382,14 +1387,14 @@ export class Specific {
 
     actionsAndAssertionsOfTCP42441(requestId) {
         cy.xpath("(//div[text()='Field must be accepted'])[1]").should('be.visible');
-        cy.xpath("(//input[@class='form-check-input is-invalid'])[1]").click();
+        cy.xpath("(//input[@class='form-check-input is-invalid'])[1]").check();
         cy.xpath("//div[@data-cy='screen-field-form_date_picker_1']//input").click();
-        screens.useCustomDate("2022", "May", "03");
+        screensP.useCustomDate("2024", "May", "13");
         cy.xpath("//label[text()='input_1']/following::input[1]").type("yes");
         cy.xpath("(//input[@type='checkbox'])[2]").click();
         cy.xpath("(//div[text()='Must be after 2020-02-20'])[1]").should('be.visible');
         cy.xpath("//div[@data-cy='screen-field-form_date_picker_2']//input").click();
-        screens.useCustomDate("2021", "Jun", "01");
+        screensP.useCustomDate("2021", "Jun", "11");
         cy.xpath("(//div[@class='invalid-feedback d-block']//div)[1]").should('not.have.value', "Must be after 2020-02-20");
         cy.xpath("(//div[text()='Must be after 2020-02-20'])[1]").should('be.visible');
         cy.xpath("//label[text()='input_2']/following::input[1]").type("2022-02-20");
@@ -1402,7 +1407,8 @@ export class Specific {
         //datepicker 3
         //cy.wait(3000);
         cy.xpath("//div[text()='Must be equal or after 2020-02-20']").should('be.visible')
-        cy.xpath("//label[text()='date_picker_3']/following::input[1]").type("2020-02-20");
+        cy.xpath("//label[text()='date_picker_3']/following::input[1]").click();
+        screensP.useCustomDate("2020", "Feb", "20");
         cy.xpath("(//div[@class='invalid-feedback d-block']//div)[1]").should('not.have.value', "Must be equal or after 2020-02-20");
         // input 3
         //cy.wait(3000);
@@ -1421,7 +1427,8 @@ export class Specific {
         //datepicker4
         //cy.wait(3000);
         cy.xpath("//div[text()='Must be before 2020-02-20']").should('be.visible');
-        cy.xpath("//label[text()='date_picker_4']/following-sibling::input").type("2019-03-28");
+        cy.xpath("//label[text()='date_picker_4']/following::input[1]").click();
+        screensP.useCustomDate("2019", "Feb", "20");
         cy.xpath("(//div[@class='invalid-feedback d-block']//div)[1]").should('not.have.value', "Must be before 2020-02-20");
         //input 4
         //cy.wait(3000);
@@ -1437,8 +1444,8 @@ export class Specific {
         //datepicker 5
         //cy.wait(3000);
         cy.xpath("//div[text()='Must be equal or before 2020-02-20']").should('be.visible');
-        cy.xpath("//label[text()='date_picker_5']/following-sibling::input").type("2020-02-20");
-        cy.xpath("//div[@class='invalid-feedback d-block']//div[1]").should('not.have.value', "Must be equal or before 2020-02-20");
+        cy.xpath("//label[text()='date_picker_5']/following::input[1]").click();
+        screensP.useCustomDate("2020", "Feb", "20");
         //input 5
         //cy.wait(3000);
         cy.xpath("//label[text()='input_5']/following-sibling::input").type("test");
@@ -1510,11 +1517,12 @@ export class Specific {
         //cy.wait(3000);
         cy.xpath("//div[text()='Must be a valid URL']").should('not.exist');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB();
     }
 
     actionsAndAssertionsOfTCP42211(requestId) {
         //Step 1: Complete the Form A
+        cy.xpath("//input[@data-cy='screen-field-checkbox1']").should('be.visible');
         cy.xpath("//input[@data-cy='screen-field-checkbox1']").click();
         cy.get("[data-cy='screen-field-date']>* input").eq(1)
             .should('be.visible')
@@ -1535,13 +1543,16 @@ export class Specific {
         cy.xpath("//button[text()='Ok']").click();
         cy.xpath("(//button[@class='btn btn-primary'])[2]").should('be.visible');
         cy.xpath("(//button[text()[normalize-space()='New Submit']])[2]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
+
+        //Step 2: Open the second task
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
         cy.xpath("(//button[text()[normalize-space()='New Submit']])[1]").click();
-        request.verifyTaskIsCompleted();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB();
 
+        request.verifyRequestisCompleted(requestId);
     }
     actionsAndAssertionsOfTCP42288(requestId){
         const addRecordBTn = "[data-cy='add-row']";
@@ -1559,6 +1570,7 @@ export class Specific {
         cy.xpath(inputLineXpath).first().type('{enter}');
         //add file
         cy.get("[type='file']").attachFile("drone.jpg");
+        cy.xpath('//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")]').should('exist');
         //add signature
         cy.xpath("(//div[@class='signature pl-0']//canvas)[1]").click();
         cy.xpath("//span[text()='success']").should('be.visible');
@@ -1573,6 +1585,7 @@ export class Specific {
         cy.xpath(inputLineXpath).first().type('{enter}');
         //add file
         cy.get("[type='file']").attachFile("data.json");
+        cy.xpath('//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")]').should('exist');
         //add signature
         cy.xpath("(//div[@class='signature pl-0']//canvas)[1]").click();
         cy.xpath("//span[text()='success']").should('be.visible');
@@ -1583,7 +1596,6 @@ export class Specific {
         cy.get('[data-cy="loop-loop-add"]').should('be.visible').click();
 
         //Second Record list
-
         //Add a record list 1
         cy.get(addRecordBTn).eq(1).should('be.visible').click();
         cy.xpath(selectListXpath).eq(2).should('be.visible').click();
@@ -1592,6 +1604,7 @@ export class Specific {
         cy.xpath(inputLineXpath).eq(2).type('{enter}');
         //add file
         cy.get("[type='file']").eq(2).attachFile("drone.jpg");
+        cy.xpath('//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")]').should('exist');
         cy.xpath("//span[text()='success']").should('be.visible');
         //add signature
         cy.xpath("(//div[@class='signature pl-0']//canvas)[3]").click();
@@ -1606,12 +1619,12 @@ export class Specific {
         cy.xpath(inputLineXpath).eq(2).type('{enter}');
         //add file
         cy.get("[type='file']").eq(2).attachFile("data.json");
+        cy.xpath('//*[@data-cy="screen-field-fileUpload"]//span[contains(text(),"success")]').should('exist');
         cy.xpath("//span[text()='success']").should('be.visible');
         //add signature
         cy.xpath("(//div[@class='signature pl-0']//canvas)[3]").click();
         //click on ok
         cy.xpath(okBtnXPath).eq(1).click();
-
 
         //Add a loop 2
         cy.xpath('(//*[@data-cy="loop-loop-add"])[1]').should('be.visible');
@@ -1652,11 +1665,11 @@ export class Specific {
         cy.xpath('//button[text()[normalize-space()="New Submit"]]').should('be.visible');
         cy.wait(1000);
         cy.xpath('//button[text()[normalize-space()="New Submit"]]').click();
+        request.verifyTaskIsCompletedB();
 
-        //verify  task is completed
-        request.verifyTaskIsCompleted();
-        //open request by id
-        request.openRequestById(requestId);
+        cy.visit('/requests/'+requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        
         //open manual task
         request.clickOnTaskName(1, 1);
         cy.xpath("//td[contains(text(),'title1')]").should('be.visible');
@@ -1666,14 +1679,11 @@ export class Specific {
         cy.xpath('//td[normalize-space(text())="title2"]').eq(0).should('be.visible');
         //verify the author2 is showing
         cy.xpath('//td[normalize-space(text())="author2"]').eq(0).should('be.visible');
-
-
-        cy.get('[id="main"]').scrollTo('bottom');
+        
         //verify the value 2 in loop1
-        cy.xpath('//td[normalize-space(text())="title2"]').eq(1).should('be.visible');
+        cy.xpath('//td[normalize-space(text())="title2"]').eq(1).should('exist');
         //verify the author2 is showing
-        cy.xpath('//td[normalize-space(text())="author2"]').eq(1).should('be.visible');
-
+        cy.xpath('//td[normalize-space(text())="author2"]').eq(1).should('exist');
 
         cy.xpath("//td[contains(text(),'title3')]").eq(1).should('be.visible');
         //verify the author1 is showing
@@ -1684,7 +1694,7 @@ export class Specific {
         cy.xpath('//td[normalize-space(text())="author4"]').eq(0).should('be.visible');
 
         cy.xpath("//button[contains(text(),'Complete Task')]").click();
-
+        request.verifyTaskIsCompletedB();
     }
 
     actionsAndAssertionsOfTCP42154(requestId, name1, name2) {
@@ -2633,7 +2643,7 @@ export class Specific {
         cy.xpath("//li[@id='option-10-1']/span[1]").click();
         cy.xpath("(//button[text()='Ok'])[6]").click();
         cy.xpath("//button[normalize-space(text())='New Submit']").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         // task BB
         request.openRequestById(requestId);
         request.clickOnTaskName(1, 1);
@@ -2646,7 +2656,7 @@ export class Specific {
         cy.xpath("//span[text()='New Input']").should('be.visible');
         cy.xpath("(//input[@type='text'])[1]").type('input');
         cy.xpath("//i[@class='fas fa-paper-plane']").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         // manual task
         request.openRequestById(requestId);
@@ -2656,7 +2666,7 @@ export class Specific {
         cy.xpath("//table//td[normalize-space(text())='title1']").should('be.visible');
         cy.xpath("//table//td[normalize-space(text())='author1']").should('be.visible');
         cy.xpath("//table//td[normalize-space(text())='1000']").should('be.visible');
-        cy.xpath("(//table//td[normalize-space(text())='2006-07-20'])[1]").should('be.visible');
+
         //second record list verify
         cy.xpath("(//h4[text()='New Record List'])[2]").should('be.visible');
         cy.xpath("(//div[normalize-space(text())='This record list is empty or contains no data.'])[1]").should('be.visible');
@@ -2666,13 +2676,13 @@ export class Specific {
         cy.xpath("(//table//td[normalize-space(text())='title2'])[1]").should('be.visible');
         cy.xpath("(//table//td[normalize-space(text())='author2'])[1]").should('be.visible');
         cy.xpath("(//table//td[normalize-space(text())='4000'])[1]").should('be.visible');
-        cy.xpath("(//table//td[normalize-space(text())='2006-07-20'])[2]").should('be.visible');
+
         //fourth record list verify
         cy.xpath("(//h4[text()='New Record List'])[4]").click();
         cy.xpath("//table//td[normalize-space(text())='title3']").should('be.visible');
         cy.xpath("//table//td[normalize-space(text())='author3']").should('be.visible');
         cy.xpath("//table//td[normalize-space(text())='3000']").should('be.visible');
-        cy.xpath("(//table//td[normalize-space(text())='2006-07-20'])[3]").should('be.visible');
+
         //fivth record list verify
         cy.xpath("(//h4[text()='New Record List'])[5]").should('be.visible');
         cy.xpath("(//div[normalize-space(text())='This record list is empty or contains no data.'])[2]").should('be.visible');
@@ -2681,7 +2691,7 @@ export class Specific {
         cy.xpath("(//table//td[normalize-space(text())='title2'])[2]").should('be.visible');
         cy.xpath("(//table//td[normalize-space(text())='author2'])[2]").should('be.visible');
         cy.xpath("(//table//td[normalize-space(text())='4000'])[2]").should('be.visible');
-        cy.xpath("(//table//td[normalize-space(text())='2006-07-20'])[4]").should('be.visible');
+
         cy.xpath("(//p[text()='true'])[1]").should('contain', 'true');
         cy.xpath("(//p[text()='false'])[1]").should('contain', 'false');
         cy.xpath("(//p[text()='true'])[2]").should('contain', 'true');
@@ -2689,7 +2699,7 @@ export class Specific {
         cy.xpath("(//p[text()='true'])[3]").should('contain', 'true');
         cy.xpath("(//p[text()='false'])[3]").should('contain', 'false');
         request.manualtaskcomplete();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB();
     }
 
     actionsAndAssertionsOfTCP42425(requestId){

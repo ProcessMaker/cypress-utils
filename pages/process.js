@@ -1373,14 +1373,13 @@ export class Process {
         cy.readFile(path).its("type").should("eq", "process_package");
         cy.readFile(path).its("version").should("eq", "2");
     }
-    openScreenofElementFromModeler(typeName, elementName, defaultAlternative="A") {
+    openScreenofElementFromModeler(typeName, elementName) {
         const elementStartEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
         const elementTaskEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
         const weBtnSelector = "[id='accordion-button-webentry']";
         const linkScreenAssociatedXpath = "//label[text()='Screen For Completed']/parent::div//a";
-        cy.get(selectors.alternativeA).should('exist');
+        cy.get('[data-cy="inspector-button"]').should('exist');
         cy.url().then(url => {
-            cy.visit(url + '/alternative/' + defaultAlternative);
             cy.get('[data-cy="inspector-button"]').click();
             switch (typeName) {
                 case 'Start Event':
