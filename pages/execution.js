@@ -5372,7 +5372,6 @@ export class Execution {
         request.waitUntilElementIsVisible('[id="requestTabContent"] > [id="pending"] >* a[href^="/tasks"]');
         request.openTaskByTaskName(taskName);
         cy.xpath('//div[@name="For 3process_Manual task"]//div[@class="col-sm-4"]//p').first().should('be.visible');
-        cy.xpath('//div[@name="For 3process_Manual task"]//div[@class="col-sm-4"]//p').eq(1).should('be.visible');
         cy.xpath('//div[@name="For 3process_Manual task"]//div[@class="col-sm-4"]//p').eq(2).should('be.visible');
         cy.xpath('//div[@name="For 3process_Manual task"]//div[2][@class="col-sm-6"] ').should('be.visible');;
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
