@@ -5314,11 +5314,7 @@ export class Execution {
         cy.xpath('//label[text()="Date_2"]//ancestor::div[@class="col-sm-4"]//input')
             .should('be.visible')
             .click()
-            .type('10/20/2010{enter}',{delay:50});
-
-        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input')
-            .clear()
-            .type('10/20/2022',{delay:100});
+            .type('10/20/2010{enter}',{delay:150});
 
         cy.xpath('//label[text()="Select"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath('//label[text()="Select"]/parent::div//input').should('be.visible').type('Bolivia').should('have.value','Bolivia');
