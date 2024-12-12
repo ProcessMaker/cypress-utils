@@ -13,7 +13,7 @@ export default{
     screenTypeEmail: '[data-cy="type-container-E-mail"]',
     screenTypeDisplay: '[data-cy="type-container-Display"]',
     screenTypeConversational: '[data-cy="type-container-Conversational"]',
-    saveBtn: '//button[text()="Publish"]',
+    saveBtn: '[data-cy="create_screen_save_btn"]',
     savePublishBtn: '//button[text()="Publish"]',
     varaibleNameTxtBx: '[name="Variable Name"]',
     //Data Source configuration
