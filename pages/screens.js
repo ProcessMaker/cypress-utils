@@ -24,9 +24,7 @@ export class Screens {
 	}
 
 	clickOnSave() {
-		cy.xpath(Selectors.saveBtn)
-			.should('be.visible')
-			.click();
+		cy.get(Selectors.saveBtn).should('be.visible').click();
 	}
 	clickOnPublishSave() {
 		cy.xpath(Selectors.savePublishBtn).should('be.visible').click();
