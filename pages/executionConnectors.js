@@ -1027,7 +1027,7 @@ export class ExecutionConnectors {
 
     actionsAndAssertionsOfTCP43396() {
         // Step 1: Select the "Create New Script" option.
-        let scriptName = "TCP4-3396 Script " + new Date().getTime();
+        let scriptName = "Script TCP4-3396 " + new Date().getTime();
         cy.xpath('//input[@name="title"]').should('be.visible');
         cy.xpath('//input[@name="title"]').type(scriptName,{delay:40}).should('have.value',scriptName);
         cy.get('textarea[name="description"]').type("TCP4-3396 Description");
