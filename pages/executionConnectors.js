@@ -985,7 +985,7 @@ export class ExecutionConnectors {
     actionsAndAssertionsOfTCP43395() {
         //Step 1: Create Screen Display
         cy.wait(2000);
-        const screenName = "TCP4-3394 Screen " + new Date().getTime();
+        const screenName = "TCP4-3395-Screen-" + new Date().getTime();
         cy.get('input[name="title"]').type(screenName);
         cy.get('textarea[name="description"]').type("Description TCP4-3395");
         cy.get('[class="multiselect screen-type-select mt-2"] div[class="multiselect__select"]').click();
