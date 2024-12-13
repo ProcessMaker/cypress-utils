@@ -1097,7 +1097,7 @@ export class ExecutionConnectors {
         // Step 1: Select the "Create New Script" option.
 
         cy.wait(2000);
-        var decisionTableName = "TCP4-3398 Decision Table " + new Date().getTime();
+        var decisionTableName = "Decision Table TCP4-3398 " + new Date().getTime();
         cy.xpath('//input[@name="name"]').type(decisionTableName);
         cy.xpath('//textarea[@name="description"]').type("TCP4-3398 Description");
         cy.wait(3000);
