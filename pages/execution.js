@@ -1266,197 +1266,52 @@ export class Execution {
         cy.get('button[class="btn btn-link"]').eq(0).click();
     }
 
-    async actionsAndAssertionsOfNoLoopsTCP42340(requestId){
-        request.openNewRequest("TCP4-2340 Verify loop");
-        cy.wait(10000);
-        cy.get('div[class="col-10"] > span').contains("TCP4-2340 Verify loop");
-        cy.get(
-            'div[class="col-2 text-right"] > a[class="btn btn-primary btn-sm"]'
-        )
-            .contains("Start")
-            .click();
-        cy.get(
-                'ul[class="list-group list-group-flush w-100"] > li[class="list-group-item"]'
-            ).should("be.visible");
-        cy.wait(5000);
-        cy.get(
-            'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-        )
-            .eq(1)
-            .contains("Form Task 1")
-            .click();
-        cy.get('input[type="checkbox"]').check();
-        cy.get('input[name="form_input_1"]').type("Germany");
-        cy.get('textarea[name="form_text_area_1"]').type(
-            "Japan is an Asian country."
-        );
-        cy.get('input[aria-label="New Date Picker"]').click();
-        cy.xpath(
-            "/html/body/div[1]/div[2]/div[2]/div/div/div/div[1]/div/div/div[1]/div[1]/div/div/div/div/div/div/div[4]/div/div/ul/li[1]/div/div[1]/table/tbody/tr[3]/td[7]"
-        ).click();
-        cy.get(
-            'div[class="card"] > ul[class="list-group list-group-flush w-100"] > li[class="list-group-item"] > a'
-        )
-            .invoke("text")
-            .then((text) => {
-                var requestIDtext = text.trim();
-                requestIDtext = requestIDtext.substring(
-                    0,
-                    requestIDtext.length
-                );
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-                navHelper.navigateToTasksPage();
-                cy.get('tbody[class="vuetable-body"]')
-                    .get('tr[item-index="0"]')
-                    .get('td[class="vuetable-slot"]')
-                    .should("be.visible", requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task Loop")
-                    .click();
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-            navHelper.navigateToTasksPage();
-            cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                    .get('td[class="vuetable-slot"]')
-                    .should("be.visible", requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task 2")
-                    .click();
-                cy.get('button[aria-label="New Submit"]').click();
-        });
+    actionsAndAssertionsOfNoLoopsTCP42340(requestId){
+        //Complete Form Task 1
+        cy.get('[data-cy="screen-field-form_checkbox_1"]').check();
+        cy.get('input[name="form_input_1"]').type("Germany",{delay:50});
+        cy.get('textarea[name="form_text_area_1"]').type("Japan is an Asian country.",{delay:50});
+        cy.get('input[aria-label="New Date Picker"]').type("2022-02-01",{force:true});
+        cy.get('input[aria-label="New Date Picker"]').type('{enter}');
+        cy.get('input[name="form_input_1"]').click();
+        cy.get('button[aria-label="New Submit"]').click();
+         
+        //Complete Form Task Loop
+        cy.get('[data-cy="screen-field-form_input_1"]').type('2',{delay:50});
+        cy.get('button[aria-label="New Submit"]').click();
+
+        //Complete Form Task 2 Validate
+        cy.get('textarea[name="form_text_area_1"]').should('have.value','Japan is an Asian country.');
+        cy.get('button[aria-label="New Submit"]').click();
     }
-    async actionsAndAssertionsOfLoopsTCP42340(requestId){
-        cy.wait(5000);
-        request.openNewRequest("TCP4-2340 Verify loop");
-        cy.wait(10000);
-        //cy.get('div[aria-label="pagination"] div[class="pagination-nav-item icon item"] > i[class="fas fa-angle-right"]').eq(1).click({ multiple: true });
-        cy.get('div[class="col-10"] > span').should('have.length', 1);
-        cy.get('div[class="col-10"] > span').contains("TCP4-2340 Verify loop");
-        cy.get(
-            'div[class="col-2 text-right"] > a[class="btn btn-primary btn-sm"]'
-        )
-            .contains("Start")
-            .click();
-        cy.wait(5000);
-        cy.get(
-            'ul[class="list-group list-group-flush w-100"] > li[class="list-group-item"]'
-        ).should("be.visible");
-        cy.get(
-            'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-        )
-            .eq(1)
-            .contains("Form Task 1")
-            .click();
+
+    actionsAndAssertionsOfLoopsTCP42340(requestId){
         cy.get('input[name="form_input_1"]').type("Germany");
         cy.get('textarea[name="form_text_area_1"]').type("Japan is an Asian country.");
-        cy.get('input[aria-label="New Date Picker"]').click();
-        cy.xpath(
-            "/html/body/div[1]/div[2]/div[2]/div/div/div/div[1]/div/div/div[1]/div[1]/div/div/div/div/div/div/div[4]/div/div/ul/li[1]/div/div[1]/table/tbody/tr[3]/td[7]"
-        ).click();
-        cy.get(
-            'div[class="card"] > ul[class="list-group list-group-flush w-100"] > li[class="list-group-item"] > a'
-        )
-            .invoke("text")
-            .then((text) => {
-                var requestIDtext = text.trim();
-                requestIDtext = requestIDtext.substring(
-                    0,
-                    requestIDtext.length
-                );
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-            navHelper.navigateToTasksPage();
-            cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                    .get('td[class="vuetable-slot"]')
-                    .should("be.visible", requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task Loop")
-                    .click();
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-                navHelper.navigateToTasksPage();
-                cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                    .get('td[class="vuetable-slot"]')
-                    .should("be.visible", requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task Loop")
-                    .click();
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-            navHelper.navigateToTasksPage();
-            cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                .get('td[class="vuetable-slot"]').should('be.visible', requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task Loop")
-                    .click();
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-                navHelper.navigateToTasksPage();
-                cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                .get('td[class="vuetable-slot"]').should('be.visible', requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task Loop")
-                    .click();
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-                navHelper.navigateToTasksPage();
-                cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                    .get('td[class="vuetable-slot"]')
-                    .should("be.visible", requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-                cy.get(
-                    'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-                )
-                    .eq(1)
-                    .contains("Form Task 2")
-                    .click();
-                cy.get('button[aria-label="New Submit"]').click();
-            });
+        cy.get('input[aria-label="New Date Picker"]').type("2022-02-01",{force:true});
+        cy.get('input[aria-label="New Date Picker"]').type('{enter}');
+        cy.get('input[name="form_input_1"]').click();
+        cy.get('button[aria-label="New Submit"]').click();
+
+        //Complete Form Task Loop
+        cy.get('[data-cy="screen-field-form_input_1"]').type('4',{delay:50});
+        cy.get('button[aria-label="New Submit"]').click();
+
+        //Complete Form Task Loop 2
+        cy.get('[name="season"]').should('have.value','4');
+        cy.get('button[aria-label="New Submit"]').click();
+
+        //Complete Form Task Loop 3
+        cy.get('[name="season"]').should('have.value','4');
+        cy.get('button[aria-label="New Submit"]').click();
+
+        //Complete Form Task Loop 4
+        cy.get('[name="season"]').should('have.value','4');
+        cy.get('button[aria-label="New Submit"]').click();
+
+        //Complete Form Task 2 Validate
+        cy.get('textarea[name="form_text_area_1"]').should('have.value','Japan is an Asian country.');
+        cy.get('button[aria-label="New Submit"]').click();
     }
 
     async actionsAndAssertionsOfTCP44206(requestId){
