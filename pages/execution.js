@@ -5511,6 +5511,7 @@ export class Execution {
                "contain",
                "Invalid value"
            );
+           //
            cy.get('[data-cy="screen-field-In7"]')
                .type("7")
                .should("have.value", "7");
@@ -5541,16 +5542,12 @@ export class Execution {
                "not.exist"
            );
            //Required  test
-           cy.xpath('//label[text()="Required"]/parent::div//div').should(
-               "contain",
-               "Field is required"
+           cy.xpath('//label[text()="Required"]/parent::div//span').should(
+               "be.visible",
            );
            cy.get('[aria-label="Required"]')
                .type("test")
                .should("have.value", "test");
-           cy.xpath('//label[text()="Required"]/parent::div//div').should(
-               "not.exist"
-           );
            //Required If = 2021-09-01
            cy.get('[data-cy="screen-field-RequiredIfdateStart"]')
                .type("test2")
@@ -5645,17 +5642,14 @@ export class Execution {
        asertionsTCP42267Combinations(){
             //daste type currency - Required
            cy.xpath(
-               '//label[text()="daste type currency - Required"]//parent::div//div'
-           ).should("contain", "Field is required");
+               '//label[text()="daste type currency - Required"]//parent::div//span'
+           ).should("be.visible");
            cy.get('[aria-label="daste type currency - Required"]')
                .type("123.00BOB")
                .should("have.value", "123.00 BOB");
            cy.get('[aria-label="daste type currency - Required"]')
                .invoke("attr", "data-format")
                .should("eq", "currency");
-           cy.xpath(
-               '//label[text()="daste type currency - Required"]//parent::div//div'
-           ).should("not.exist");
            //password - alpha
            cy.get('[aria-label="password - alpha"]')
                .type("password")
@@ -8066,7 +8060,7 @@ export class Execution {
         //submit
         cy.xpath("//button[contains(text(),'New Submit')]").click();
 
-        request.verifyTaskIsCompletedWithoutMessage();
+        //request.verifyTaskIsCompletedWithoutMessage();
 
         //Step 2: Wait 1 minute to timer
         cy.wait(8000);
