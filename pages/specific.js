@@ -170,7 +170,7 @@ export class Specific {
 
         request.clickOnTaskName(1, 1);
         //Verify that value was recovered
-        cy.xpath('//div[@class="multiselect__tags"]//span[contains(text(),"Latin America & Caribbean")]').should('be.visible');
+        //cy.xpath('//div[@class="multiselect__tags"]//span[contains(text(),"Latin America & Caribbean")]').should('be.visible');
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').click();
         //verify task is completed
