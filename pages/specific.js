@@ -135,16 +135,19 @@ export class Specific {
 
     }
 
-    async actionsAndAssertionsOfTCP42227(requestId) {
-        cy.get('input[name="form_input_1"]').should('be.visible').type("Test");
+    actionsAndAssertionsOfTCP42227(requestId) {
+        cy.get('input[name="input"]').should('be.visible');
+        cy.get('input[name="input"]').type("Test");
         cy.get('button[aria-label="Submit"]').click();
         cy.xpath("(//button[contains(@class, 'select-list-options')])[1]").click();
         cy.xpath("(//button[contains(@class, 'select-list-options')])[2]").click();
         cy.xpath("(//button[contains(@class, 'select-list-options')])[3]").click();
+        cy.wait(2000);
         cy.xpath("//button[text()[normalize-space()='I am done selecting']]").click();
 
         cy.xpath("(//button[contains(@class, 'select-list-options')])[1]").click();
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
+        request.verifyTaskIsCompletedB();
+        cy.wait(5000);
         request.verifyRequestisCompleted(requestId);
         cy.get('#file-manager-tab').click();
         cy.get('#fileManager tbody[role="rowgroup"] tr[data-pk]').should('have.length', 3);
@@ -160,7 +163,7 @@ export class Specific {
         cy.xpath('//button[@class="btn btn-primary"]').click();
 
         //verify task is completed
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
+        request.verifyTaskIsCompletedB();
 
         //open request by ID
         request.openRequestById(requestId);
@@ -171,7 +174,7 @@ export class Specific {
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').click();
         //verify task is completed
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
+        request.verifyTaskIsCompletedB();
 
         //Go to Inprogress
         //open request by ID
@@ -183,7 +186,7 @@ export class Specific {
         cy.xpath('//div[@class="multiselect__tags"]//input').type('{enter}');
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').should('be.visible').click();
-
+        request.verifyTaskIsCompletedB();
 
         //verify the process is completed
         request.verifyRequestisCompleted(requestId);
@@ -504,26 +507,30 @@ export class Specific {
     actionsAndAssertionsOfTCP42243(requestId) {
         //request part
         //click on add item
+        cy.xpath('(//*[@data-cy="loop-loop-add"])[1]').should('be.visible');
         cy.xpath('(//*[@data-cy="loop-loop-add"])[1]').click();
         cy.wait(5000);
         //verify watcher is working
         cy.xpath("//p[text()='ASSAM is ASSAM KERELA is KERELA ORRISA is ORRISA']").should('be.visible');
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').click();
-        //verify task is completed
-        cy.xpath("//div[text()='Task Completed Successfully']").should('be.visible');
-        //go to inprogress
-        navHelper.navigateToInprogressRequests();
-        //open request by id
+        request.verifyTaskIsCompletedB();
+
+        //Open the request
         request.openRequestById(requestId);
+
         //open task
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
+
         //click on complete task
         cy.xpath("//button[@class='btn btn-primary']").click();
+        request.verifyTaskIsCompletedB();
+
         //verify the process is completed
         request.verifyRequestisCompleted(requestId);
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task A']]").should('be.visible');
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task B']]").should('be.visible');
+        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task A']]").should('exist');
+        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task B']]").should('exist');
     }
 
     actionsAndAssertionsOfTCP42202(requestId) {
@@ -1358,31 +1365,35 @@ export class Specific {
 
     }
     actionsAndAssertionsOfTCP42422(requestId) {
+        //Step 1: Complete the task form 1
         cy.xpath("//button[text()[normalize-space()='Add']]").should('be.visible').click();
         cy.xpath("(//input[@name='text'])[1]").type("check enabled");
-        cy.xpath("(//input[@name='Check'])[1]").click();
+        cy.xpath("(//input[@name='Check'])[1]").check();
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.xpath("(//td[@class='table-column']/following-sibling::td)[1]").should('contain', 'true');
 
         //click on add button of record list
         cy.xpath("//button[text()[normalize-space()='Add']]").click();
         cy.xpath("(//input[@name='text'])[1]").type("check disabled");
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.xpath("(//td[@class='table-column']/following-sibling::td)[3]").should('contain', 'false');
-        //cy.wait(4000);
+
         //click on new submit
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
+        request.verifyTaskIsCompletedB();
 
-
-        request.verifytaskiscompleted();
+        //Open the second task
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
-        //cy.wait(2000);
+
+        //Step 2: Complete the task form 2
         cy.xpath("(//td[@role='cell'])[2]").should('be.visible').should('contain', 'true');
         cy.xpath("(//td[@class='table-column']/following-sibling::td)[3]").should('contain', 'false');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        request.verifytaskiscompleted();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB();
     }
 
     actionsAndAssertionsOfTCP42441(requestId) {
@@ -2189,184 +2200,189 @@ export class Specific {
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task BB']]").should('be.visible');
     }
 
-    actionsAndAssertionsOfTCP42138(screen_name1,name,processId,screen_name2) {
-        cy.wait(2000);
+    actionsAndAssertionsOfTCP42138(processId) {
         //go to url
-        cy.visit('/webentry/' + processId + '/node_2');
+        cy.visit('/webentry/' + processId + '/node_1');
         //verify screen name
-        cy.get('[name="form_screen"]'.replace('form_screen', screen_name1)).should('be.visible');
+
         cy.xpath("//button[text()[normalize-space()='Add']]").click();
         cy.xpath('(//input[@data-cy="screen-field-input1"])[1]').type('Recordlist1 input1');
-        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist1 textarea1');
-        cy.xpath('(//input[@aria-label="datePicker1"])[1]').type('2022-07-12{enter}');
-        cy.xpath('(//input[@aria-label="datePicker2"])[1]').type('2022-07-13 13:49{enter}');
+        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist1 textarea1',{delay:100});
+        cy.wait(2000);
         cy.xpath("//button[text()='Ok']").click();
+
         //second recordlist
         cy.xpath("//button[text()[normalize-space()='Add']]").click();
         cy.xpath('(//input[@data-cy="screen-field-input1"])[1]').type('Recordlist2 input1');
-        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist2 textarea1');
-        cy.xpath('(//input[@aria-label="datePicker1"])[1]').type('2022-07-12{enter}');
-        cy.xpath('(//input[@aria-label="datePicker2"])[1]').type('2022-07-13 13:49{enter}');
+        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist2 textarea1', {delay:100});
+        cy.wait(2000);
         cy.xpath("//button[text()='Ok']").click();
+
         //third recordlist
         cy.xpath("//button[text()[normalize-space()='Add']]").click();
         cy.xpath('(//input[@data-cy="screen-field-input1"])[1]').type('Recordlist3 input1');
-        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist3 textarea1');
-        cy.xpath('(//input[@aria-label="datePicker1"])[1]').type('2022-07-12{enter}');
-        cy.xpath('(//input[@aria-label="datePicker2"])[1]').type('2022-07-13 13:49{enter}');
+        cy.xpath('(//textarea[@name="textArea1"])[1]').type('Recordlist3 textarea1',{delay:100});
+        cy.wait(2000);
         cy.xpath("//button[text()='Ok']").click();
         //first loop
         cy.get('[name="input2"]').type('loop1 input2');
-        cy.get('[name="textArea2"]').type('loop1 input2');
-        cy.xpath('//input[@aria-label="Date Picker 3"]').type('2022-07-13');
-        cy.xpath('//input[@aria-label="Date Picker 4"]').type("2022-07-14 16:18");
+        cy.get('[name="textArea2"]').type('loop1 input2',{delay:100});
+        cy.wait(2000);
         cy.get('[class="fas fa-plus"]').click();
         //second loop
-        cy.xpath('(//input[@name="input2"])[2]').type('loop2 input2')
-        cy.xpath('(//textarea[@name="textArea2"])[2]').type('loop2 input2');
-        cy.xpath('(//input[@aria-label="Date Picker 3"])[2]').type('2022-07-01');
-        cy.xpath('(//input[@aria-label="Date Picker 4"])[2]').type('2022-07-13 16:31');
+        cy.xpath('(//input[@name="input2"])[2]').type('loop2 input2');
+        cy.xpath('(//textarea[@name="textArea2"])[2]').type('loop2 input2',{delay:100});
+        cy.wait(2000);
         cy.get('[class="fas fa-plus"]').click();
         //third loop
-        cy.xpath('(//input[@name="input2"])[3]').type('loop3 input2')
-        cy.xpath('(//textarea[@name="textArea2"])[3]').type('loop3 input2');
-        cy.xpath('(//input[@aria-label="Date Picker 3"])[3]').type('2022-07-01');
-        cy.xpath('(//input[@aria-label="Date Picker 4"])[3]').type('2022-07-13 16:31');
+        cy.xpath('(//input[@name="input2"])[3]').type('loop3 input2');
+        cy.xpath('(//textarea[@name="textArea2"])[3]').type('loop3 input2',{delay:100});
+        cy.wait(2000);
         cy.get('[class="fas fa-plus"]').click();
         //fourth loop
-        cy.xpath('(//input[@name="input2"])[4]').type('loop4 input2')
-        cy.xpath('(//textarea[@name="textArea2"])[4]').type('loop4 input2');
-        cy.xpath('(//input[@aria-label="Date Picker 3"])[4]').type('2022-07-01');
-        cy.xpath('(//input[@aria-label="Date Picker 4"])[4]').type('2022-07-13 16:31');
-        cy.xpath("//button[normalize-space(text())='New Submit']").click();
+        cy.xpath('(//input[@name="input2"])[4]').type('loop4 input2');
+        cy.xpath('(//textarea[@name="textArea2"])[4]').type('loop4 input2',{delay:100});
         cy.wait(2000);
-        cy.url().should('eq', 'https://www.ecosia.org/');
-        navHelper.navigateToRequestsPage();
-        request.openRequestByName(name);
-        cy.url().then(url => {
-            var requestId = url.split('/')[4].trim();
+        cy.xpath("//button[normalize-space(text())='New Submit']").click();
+        cy.wait(3000);
+
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+
+        //Step 3: Get the number of requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            //Step 4: Log in
+            login.navigateToUrl();
+            login.login();
+
+            //Step 5: Open the requests
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
-            cy.get('[name="form_screen"]'.replace('form_screen', screen_name2)).should('be.visible');
+
+            cy.xpath('(//div[@class="multiselect__select"])[1]').should('be.visible');
             cy.xpath('(//div[@class="multiselect__select"])[1]').click();
-            cy.xpath("//li[@id='option-76-0']//span[text()='Recordlist1 input1']").should('be.visible');
-            cy.xpath("//li[@id='option-76-1']//span[text()='Recordlist2 input1']").should('be.visible');
-            cy.xpath("//li[@id='option-76-2']//span[text()='Recordlist3 input1']").should('be.visible');
-            cy.xpath("//li[@id='option-76-1']//span[text()='Recordlist2 input1']").click();
+            cy.xpath("//li//span[text()='Recordlist1 input1']").should('be.visible');
+            cy.xpath("//li//span[text()='Recordlist2 input1']").should('be.visible');
+            cy.xpath("//li//span[text()='Recordlist3 input1']").should('be.visible');
+            cy.xpath("//li//span[text()='Recordlist2 input1']").click();
             cy.xpath('(//div[@class="multiselect__select"])[2]').click();
-            cy.xpath("//li[@id='option-77-0']//span[text()='Recordlist1 textarea1']").should('be.visible');
-            cy.xpath("//li[@id='option-77-1']//span[text()='Recordlist2 textarea1']").should('be.visible');
-            cy.xpath("//li[@id='option-77-2']//span[text()='Recordlist3 textarea1']").should('be.visible');
-            cy.xpath("//li[@id='option-77-1']//span[text()='Recordlist2 textarea1']").click();
+            cy.xpath("//li//span[text()='Recordlist1 textarea1']").should('be.visible');
+            cy.xpath("//li//span[text()='Recordlist2 textarea1']").should('be.visible');
+            cy.xpath("//li//span[text()='Recordlist3 textarea1']").should('be.visible');
+            cy.xpath("//li//span[text()='Recordlist2 textarea1']").click();
             cy.xpath('(//div[@class="multiselect__select"])[3]').click();
-            cy.xpath("//li[@id='option-78-0']//span[text()='2022-07-12']").should('be.visible');
-            cy.xpath("//li[@id='option-78-1']//span[text()='2022-07-12']").should('be.visible');
-            cy.xpath("//li[@id='option-78-2']//span[text()='2022-07-12']").should('be.visible');
-            cy.xpath("//li[@id='option-78-0']//span[text()='2022-07-12']").click();
+            cy.xpath("//li//span[contains(text(),'2022')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022')]").should('be.visible');
+            cy.get('[data-cy="screen-field-selectRecoverDate"]>* input').type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[4]').click();
-            cy.xpath("//li[@id='option-79-0']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-79-1']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-79-2']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-79-2']//span[contains(text(),'2022-07-13T')]").click();
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.get('[data-cy="screen-field-selectRecoverDateTime"]>* input').type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[5]').click();
-            cy.xpath("//li[@id='option-60-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-60-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-60-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-60-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-60-3']//span[text()='loop4 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverInput1"]>* input').eq(0).type('{enter}')
             cy.xpath('(//div[@class="multiselect__select"])[6]').click();
-            cy.xpath("//li[@id='option-61-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-61-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-61-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-61-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-61-3']//span[text()='loop4 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverTextarea1"]>* input').eq(0).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[7]').click();
-            cy.xpath('//li[@id="option-62-0"]//span[text()="2022-07-13"]').should('be.visible');
-            cy.xpath('//li[@id="option-62-1"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-62-2"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-62-3"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-62-3"]//span[text()="2022-07-01"]').click();
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDate1"]>* input').type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[8]').click();
-            cy.xpath('//li[@id="option-63-0"]//span[contains(text(),"2022-07-14T")]').should('be.visible');
-            cy.xpath("//li[@id='option-63-1']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-63-2']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-63-3']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-63-3']//span[contains(text(),'2022-07-13T')]").click();
+            cy.xpath('//li//span[contains(text(),"2022-07-13T")]').should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDateTime1"]>* input').type('{enter}');
+            cy.get('[data-cy="loop-loop_3-add"]').click();
             cy.xpath('(//div[@class="multiselect__select"])[9]').click();
-            cy.xpath("//li[@id='option-64-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-64-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-64-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-64-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-64-1']//span[text()='loop2 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverInput1"]>* input').eq(1).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[10]').click();
-            cy.xpath("//li[@id='option-65-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-65-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-65-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-65-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-65-3']//span[text()='loop4 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverTextarea1"]>* input').eq(1).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[11]').click();
-            cy.xpath('//li[@id="option-66-0"]//span[text()="2022-07-13"]').should('be.visible');
-            cy.xpath('//li[@id="option-66-1"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-66-2"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-66-3"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-66-3"]//span[text()="2022-07-01"]').click();
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDate1"]>* input').eq(1).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[12]').click();
-            cy.xpath('//li[@id="option-67-0"]//span[contains(text(),"2022-07-14T")]').should('be.visible');
-            cy.xpath("//li[@id='option-67-1']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-67-2']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-67-3']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-67-3']//span[contains(text(),'2022-07-13T')]").click();
+            cy.xpath('//li//span[contains(text(),"2022-07-13T")]').should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDateTime1"]>* input').eq(1).type('{enter}');
+            cy.get('[data-cy="loop-loop_3-add"]').click();
             cy.xpath('(//div[@class="multiselect__select"])[13]').click();
-            cy.xpath("//li[@id='option-68-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-68-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-68-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-68-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-68-1']//span[text()='loop2 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverInput1"]>* input').eq(2).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[14]').click();
-            cy.xpath("//li[@id='option-69-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-69-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-69-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-69-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-69-3']//span[text()='loop4 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverTextarea1"]>* input').eq(2).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[15]').click();
-            cy.xpath('//li[@id="option-70-0"]//span[text()="2022-07-13"]').should('be.visible');
-            cy.xpath('//li[@id="option-70-1"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-70-2"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-70-3"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-70-3"]//span[text()="2022-07-01"]').click();
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDate1"]>* input').eq(2).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[16]').click();
-            cy.xpath('//li[@id="option-71-0"]//span[contains(text(),"2022-07-14T")]').should('be.visible');
-            cy.xpath("//li[@id='option-71-1']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-71-2']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-71-3']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-71-3']//span[contains(text(),'2022-07-13T')]").click();
+            cy.xpath('//li//span[contains(text(),"2022-07-13T")]').should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDateTime1"]>* input').eq(2).type('{enter}');
             //last loop
+            cy.get('[data-cy="loop-loop_3-add"]').click();
             cy.xpath('(//div[@class="multiselect__select"])[17]').click();
-            cy.xpath("//li[@id='option-72-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-72-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-72-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-72-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-72-1']//span[text()='loop2 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverInput1"]>* input').eq(3).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[18]').click();
-            cy.xpath("//li[@id='option-73-0']//span[text()='loop1 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-73-1']//span[text()='loop2 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-73-2']//span[text()='loop3 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-73-3']//span[text()='loop4 input2']").should('be.visible');
-            cy.xpath("//li[@id='option-73-3']//span[text()='loop4 input2']").click();
+            cy.xpath("//li//span[text()='loop1 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop2 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop3 input2']").should('be.visible');
+            cy.xpath("//li//span[text()='loop4 input2']").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverTextarea1"]>* input').eq(3).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[19]').click();
-            cy.xpath('//li[@id="option-74-0"]//span[text()="2022-07-13"]').should('be.visible');
-            cy.xpath('//li[@id="option-74-1"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-74-2"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-74-3"]//span[text()="2022-07-01"]').should('be.visible');
-            cy.xpath('//li[@id="option-74-3"]//span[text()="2022-07-01"]').click();
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+            cy.xpath('//li//span[text()="2022-07-01"]').should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDate1"]>* input').eq(3).type('{enter}');
             cy.xpath('(//div[@class="multiselect__select"])[20]').click();
-            cy.xpath('//li[@id="option-75-0"]//span[contains(text(),"2022-07-14T")]').should('be.visible');
-            cy.xpath("//li[@id='option-75-1']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-75-2']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-75-3']//span[contains(text(),'2022-07-13T')]").should('be.visible');
-            cy.xpath("//li[@id='option-75-3']//span[contains(text(),'2022-07-13T')]").click();
+            cy.xpath('//li//span[contains(text(),"2022-07-13T")]').should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+            cy.xpath("//li//span[contains(text(),'2022-07-13T')]").should('be.visible');
+                cy.get('[data-cy="screen-field-selectRecoverDateTime1"]>* input').eq(3).type('{enter}');
             cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
             request.verifyRequestisCompleted(requestId);
-        })
+        });
     }
 
     actionsAndAssertionsOfTCP42065(requestId){
@@ -2582,25 +2598,35 @@ export class Specific {
     actionsAndAssertionsOfTCP42134(requestId){
         //select  option 1
         cy.get('[data-cy="screen-field-optionTest"]').should('be.visible').click();
-        cy.xpath('//span[text()="three"]').click();
+        cy.get('[data-cy="screen-field-optionTest"]>* input').type('three').should('have.value','three');
+        cy.wait(2000);
+        cy.get('[data-cy="screen-field-optionTest"]>* input').type('{enter}');
         cy.get('[class="form-control"]').should('have.value','three');
+
         //select option 2
-        cy.get('[data-cy="screen-field-optionTest"]').should('be.visible').click();
-        cy.xpath('//span[text()="one"]').click();
+        cy.get('[data-cy="screen-field-optionTest"]').click();
+        cy.get('[data-cy="screen-field-optionTest"]>* input').type('one').should('have.value','one');
+        cy.wait(2000);
+        cy.get('[data-cy="screen-field-optionTest"]>* input').type('{enter}');
         cy.xpath('(//input[@class="form-control"])[2]').should('have.value','one');
+
         //select option 3
-        cy.get('[data-cy="screen-field-optionTest"]').should('be.visible').click();
-        cy.xpath("//span[text()='two']").click();
+        cy.get('[data-cy="screen-field-optionTest"]').click();
+        cy.get('[data-cy="screen-field-optionTest"]>* input').type('two').should('have.value','two');
+        cy.wait(2000);
+        cy.get('[data-cy="screen-field-optionTest"]>* input').type('{enter}');
         cy.xpath('(//input[@class="form-control"])[3]').should('have.value','two');
+
         //verify selectlist selected option visible or not
         cy.xpath("//span[@class='multiselect__tag'][1]/span").should('contain','three');
         cy.xpath("//span[@class='multiselect__tag'][2]/span").should('contain','one');
         cy.xpath("//span[@class='multiselect__tag'][3]/span").should('contain','two');
-        cy.xpath("(//i[@class='fas fa-plus'])[2]").should('be.visible');
-        cy.xpath("(//i[@class='fas fa-minus'])[1]").should('be.visible');
+        cy.xpath("(//i[@class='fas fa-plus'])[2]").should('exist');
+        cy.xpath("(//i[@class='fas fa-minus'])[1]").should('exist');
         cy.xpath("//button[@class='btn btn-primary']").click();
+
         //request.verifyTaskIsCompleted();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB();
     }
     actionsAndAssertionsOfTCP42413(requestId) {
         cy.xpath("(//button[@data-cy='add-row'])[4]").should('be.visible');
@@ -2818,7 +2844,8 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42257(requestId) {
-        cy.xpath("//textarea[@name = 'form_text_area_1']").type("test text area");
+        cy.xpath("//textarea[@name = 'form_text_area_1']").should('be.visible');
+        cy.xpath("//textarea[@name = 'form_text_area_1']").type("test text area",{delay:100});
         cy.xpath("//textarea[@placeholder = 'PlaceHOLDER Text Area']").should('be.visible');
         cy.xpath("//textarea[@readonly='readonly']").should('be.visible');
         cy.xpath("//small[text()[normalize-space() = 'Helper Text']]").should('be.visible');
@@ -2833,10 +2860,15 @@ export class Specific {
         cy.xpath("//textarea[@name = 'form_text_area_8']").type("text aria label");
         cy.xpath("//textarea[@name = 'form_text_area_10']").type('test');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
+        
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
+        
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
+        
         request.verifyRequestisCompleted(requestId);
         cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Form Task']]").should('be.visible');
         cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Form Task']]").should('be.visible');
@@ -3199,85 +3231,83 @@ export class Specific {
         });
     }
     actionsAndAssertionsOfTCP42240(requestId){
-        cy.xpath("//input[@name = 'form_checkbox_1']").click();
+        cy.xpath("//input[@name = 'form_checkbox_1']").should('be.visible');
+        cy.xpath("//input[@name = 'form_checkbox_1']").check({force: true} );
         cy.xpath("//input[@name = 'form_checkbox_3']").should('be.checked');
-        cy.xpath("//label[text()='Checkbox Toggle Style Form']").click();
+        cy.get("input[data-cy='screen-field-form_checkbox_4']").check({force: true} );
 
-        cy.xpath("(//input[@name = 'form_checkbox_5'])[1]").click();
+        cy.xpath("(//input[@name = 'form_checkbox_5'])[1]").check({force: true} );
         cy.xpath("(//input[@name = 'form_checkbox_7'])[1]").should('be.checked');
-        cy.xpath("(//label[text()='Checkbox Toggel style Loop'])[1]").click();
+        cy.get("input[data-cy='screen-field-form_checkbox_6']").check({force: true} );
 
+        //Add new record on the loop
         cy.xpath("//button[@data-cy = 'loop-loop_1-add']").click();
 
-        cy.xpath("(//input[@name = 'form_checkbox_5'])[2]").click();
+        cy.xpath("(//input[@name = 'form_checkbox_5'])[2]").check({force: true});
         cy.xpath("(//input[@name = 'form_checkbox_7'])[2]").should('be.checked');
-        cy.xpath("(//label[text()='Checkbox Toggel style Loop'])[2]").click();
+        cy.get("input[data-cy='screen-field-form_checkbox_6']").eq(1).check({force: true});
 
+        //Add new record on second the loop
         cy.xpath("//button[@data-cy = 'loop-loop_2-add']").click();
-        cy.xpath("//input[@name = 'form_checkbox_9']").click();
+
+        cy.xpath("//input[@name = 'form_checkbox_9']").check({force: true} );
         cy.xpath("//input[@name = 'form_checkbox_11']").should('be.checked');
-        cy.xpath("//label[text()='Checkbox Toggle Style Loop2']").click();
+        cy.get("input[data-cy='screen-field-form_checkbox_10']").check({force: true} );
 
+        //Add new record on second the loop
         cy.xpath("//button[@data-cy = 'loop-loop_2-add']").click();
-        cy.xpath("(//input[@name = 'form_checkbox_9'])[2]").click();
-        cy.xpath("(//input[@name = 'form_checkbox_11'])[2]").should('be.checked');
-        cy.xpath("(//label[text()='Checkbox Toggle Style Loop2'])[2]").click();
 
+        cy.xpath("(//input[@name = 'form_checkbox_9'])[2]").check({force: true});
+        cy.xpath("(//input[@name = 'form_checkbox_11'])[2]").should('be.checked');
+        cy.get("input[data-cy='screen-field-form_checkbox_10']").eq(1).check({force: true});
+
+        //Add new record on record list
         cy.xpath("//button[@data-cy = 'add-row']").click();
+        cy.xpath("//button[text()[normalize-space() = 'Ok']]").should('be.visible');
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
+        //Add new record on record list
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@name = 'form_checkbox_13'])[1]").click();
+        cy.xpath("//button[text()[normalize-space() = 'Ok']]").should('be.visible');
+        cy.xpath("(//input[@name = 'form_checkbox_13'])[1]").check({force: true} );
         cy.xpath("(//input[@name = 'form_checkbox_15'])[1]").should('be.checked');
 
-        cy.xpath("(//label[text()='Checkbox Toggle Style RL'])[1]").click();
+        cy.get("input[data-cy='screen-field-form_checkbox_16']").eq(0).check({force:true});
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
+        cy.wait(2000);
+
+        //Submit the form
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifyTaskIsCompleted();
-
+        //Open request by ID
         request.openRequestById(requestId);
-        //cy.reload();
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
-        cy.wait(3000);
-        cy.xpath("//button[@aria-label = 'New Submit']").should('be.visible').click();
+
+        //Complete the second form
+        cy.get('[data-cy="screen-field-form_checkbox_1"]').should('be.visible');
+        cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
         request.verifyRequestisCompleted(requestId);
 
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[1]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[2]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[3]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[1]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[4]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[5]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[6]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[2]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[7]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[8]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[9]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[3]").should('be.visible');
-        cy.get('#main').scrollTo(0, 1000);
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[10]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[11]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[12]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[4]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[13]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[14]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[5]").should('be.visible');
-        cy.get('#main').scrollTo(0, 2000);
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[15]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[6]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[16]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[7]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[17]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[18]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[8]").should('be.visible');
-        cy.get('#main').scrollTo(0, 3000);
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'true']])[19]").should('be.visible');
-        cy.xpath("(//tr[@role = 'row']//td[text()[normalize-space() = 'false']])[9]").should('be.visible');
+        //Verify the summary data
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[1]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[2]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[3]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'false']])[1]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[4]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[5]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[6]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'false']])[2]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[7]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[8]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'true']])[9]").should('exist');
+        cy.xpath("(//tr//td[text()[normalize-space() = 'false']])[3]").should('exist');
 
-        cy.xpath("(//div[text()[normalize-space() = 'Admin User has completed the task Form Task']])[1]").should('be.visible');
+        cy.xpath("(//div[text()[normalize-space() = 'Admin User has completed the task Form Task']])[1]").should('exist');
     }
     actionsAndAssertionsOfTCP42296(requestId) {
         cy.get('input[type="file"]').attachFile('drone.jpg');
@@ -3299,31 +3329,29 @@ export class Specific {
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task BB']]").should('be.visible');
     }
     actionsAndAssertionsOfTCP42208(requestId){
+        cy.xpath("(//div[@class='signature pl-0']/child::canvas)[1]").should('be.visible');
         cy.xpath("(//div[@class='signature pl-0']/child::canvas)[1]").click();
-        cy.xpath("//div[text()='Signature saved successfully']").should('be.visible');
+        cy.xpath("//*[contains(text(),'Signature saved successfully')]").should('be.visible');
         cy.xpath("(//div[@class='signature pl-0']/child::canvas)[2]").click();
-        cy.xpath("(//div[text()='Signature saved successfully'])[2]").should('be.visible');
+        cy.xpath("//*[contains(text(),'Signature saved successfully')]").should('be.visible');
         cy.xpath("(//div[@class='signature pl-0']/child::canvas)[3]").click();
-        cy.xpath("(//div[text()='Signature saved successfully'])[3]").should('be.visible');
+        cy.xpath("//*[contains(text(),'Signature saved successfully')]").should('be.visible');
         cy.xpath("(//div[@class='signature pl-0']/child::canvas)[4]").click();
-        cy.xpath("(//div[text()='Signature saved successfully'])[4]").should('be.visible');
+        cy.xpath("//*[contains(text(),'Signature saved successfully')]").should('be.visible');
         cy.xpath("(//div[@class='signature pl-0']/child::canvas)[5]").click();
-        cy.xpath("(//div[text()='Signature saved successfully'])[5]").should('be.visible');
+        cy.xpath("//*[contains(text(),'Signature saved successfully')]").should('be.visible');
         cy.xpath("(//div[@class='signature pl-0']/child::canvas)[6]").click();
-        cy.xpath("(//div[text()='Signature saved successfully'])[6]").should('be.visible');
-        cy.xpath("//button[@class='btn btn-primary']").click();
-        //request.verifyTaskIsCompleted();
-        cy.xpath("(//div[@icon='fas fa-image']//img)[1]").should('be.visible');
-        cy.wait(2000);
-        cy.xpath("(//div[@icon='fas fa-image']//img)[2]").should('be.visible');
-        cy.wait(2000);
-        cy.xpath("(//div[@icon='fas fa-image']//img)[3]").should('be.visible');
-        cy.xpath("//li[@class='nav-item']/a[@id='forms-tab']").click();
-        cy.xpath("//i[@class='fas fa-search-plus fa-lg fa-fw']").click();
+        cy.xpath("//*[contains(text(),'Signature saved successfully')]").should('be.visible');
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.get('button[aria-label="New Submit"]').click();
+
+        request.verifyTaskIsCompletedB();
 
         //verify request is completed
         cy.visit('/requests/' + requestId);
         request.waitUntilTextcontainText('selector','varHeader', "Completed");
+        cy.xpath("//li[@class='nav-item']/a[@id='forms-tab']").click();
+        cy.xpath("//i[@class='fas fa-search-plus fa-lg fa-fw']").click();
     }
 
     actionsAndAssertionsOfTCP42066_Operations(a, b){

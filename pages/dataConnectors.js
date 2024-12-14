@@ -98,10 +98,10 @@ export class Dataconnectors {
         cy.xpath(selectors.dataSourceIndex).type(name)
             .should('have.value', name);
         cy.xpath(selectors.dataSourceIndexLoading).should('be.visible');
-        cy.wait(2000);
-        cy.xpath(selectors.dataSourceIndexLoading, { timeout: 10000 })
-            .then(($message) => {
-                if ($message.length === 1) {
+        cy.wait(6000);
+        cy.xpath('//div[@id="dataSourceIndex"]//div[@id="table-container"]//tbody', { timeout: 10000 })
+            .then(($rowsTable) => {
+                if ($rowsTable.find("tr").length <= 0) {
                     this.createADataConnector(name, description, type);
                     cy.xpath(selectors.resourcesTitle).should('be.visible');
                     cy.xpath(selectors.resourcesTitle).click();
