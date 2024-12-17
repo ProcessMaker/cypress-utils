@@ -2921,6 +2921,7 @@ export class Specific {
         cy.wait(2000);
         cy.get('[data-cy="screen-field-cash_drawer_setup_steps"]>* input').type('{enter}');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        cy.wait(3000);
         request.verifyTaskIsCompletedB();
 
         //Step 2: Open the by request id
@@ -2929,6 +2930,7 @@ export class Specific {
         request.clickOnTaskName(1, 1);
 
         //Step 3: Complete the Review task
+        cy.wait(2000);
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").should('exist');
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
         cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('No',{delay:100})
@@ -2936,6 +2938,7 @@ export class Specific {
         cy.wait(2000);
         cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('{enter}');
         cy.xpath("//textarea[@data-cy = 'screen-field-cash_drawer_setup_requester_comment']").type('yes',{delay:100});
+        cy.wait(3000);
         cy.xpath("//button[@aria-label = 'Reload']").click();
         request.verifyTaskIsCompletedB();
 
@@ -2955,6 +2958,7 @@ export class Specific {
         request.clickOnTaskName(1, 1);
 
         //Step 7: Complete the Review task
+        cy.wait(2000);
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").should('exist');
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
         cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('Yes',{delay:100})
@@ -2962,6 +2966,7 @@ export class Specific {
         cy.wait(2000);
         cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('{enter}');
         cy.xpath("//textarea[@data-cy = 'screen-field-cash_drawer_setup_requester_comment']").type('yess');
+        cy.wait(3000);
         cy.xpath("//button[@aria-label = 'Finish case']").should('be.enabled');
         cy.xpath("//button[@aria-label = 'Finish case']").click();
         request.verifyTaskIsCompletedB();
