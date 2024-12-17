@@ -70,8 +70,8 @@ export class PMProjects {
             .first()
             .should("be.visible");
             cy.xpath(selectors.projectAsset).click();
-            cy.xpath(selectors.projectAsset).should("be.visible").type(name, {delay: 100});         
-            cy.xpath(selectors.projectName.replace('projectName', name)).should('be.visible').first().click({force: true});
+            cy.xpath(selectors.projectAsset).should("be.visible").type(name, {delay: 300});         
+            cy.xpath(selectors.projectName.replace('projectName', name, {delay: 400})).should('be.visible').first().click({delay: 300},{force: true});
     }
     enterPMProjectCategory(categories) {
         const categoryList = categories.split(",");
