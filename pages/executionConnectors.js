@@ -712,11 +712,12 @@ export class ExecutionConnectors {
         navHelper.navigateToTemplatePage();
 
         //Step3: search the  tenplate imported
-        templates.searchTemplateAndSelectOptions(templateName, "config");
+        templates.searchTemplateAndSelectOptions(templateName, "edit");
 
         //Step4: verify that template is  imported correctly
-        cy.xpath('//*[contains(text(),"Template Action By Email")]').should('be.visible');
-        
+        //cy.xpath('//*[contains(text(),"Template Action By Email")]').should('be.visible');
+        process.openAlternativeModeler();
+        cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("ActionsByEmail").should("be.visible"); 
 
     }
 
