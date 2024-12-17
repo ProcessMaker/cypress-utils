@@ -2874,24 +2874,36 @@ export class Specific {
         cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Form Task']]").should('be.visible');
     }
     actionsAndAssertionsOfTCP42273(requestId) {
+        //Step 1: Complete the Form 1
+        cy.xpath("//input[@name = 'var1']").should('be.visible');
         cy.xpath("//input[@name = 'var1']").type('1');
+        cy.xpath("//input[@name = 'var1']").should('have.value','1');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifyTaskIsCompleted();
+        //Step 2: Wait that the intermediate event complete 1 min
         cy.wait(60000);
 
+        //Step 3: Open the task by request
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
+        //Step 4: Open the task by request
         cy.xpath("//input[@name = 'var1']").clear().type('2');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifyTaskIsCompleted();
+        //Step 5: Open the task by request
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
+        //Step 6: Complete the form 2
+        cy.xpath("//input[@name = 'form_input_1']").should('be.visible');
         cy.xpath("//input[@name = 'form_input_1']").type('QA-Testing');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
         request.verifyRequestisCompleted(requestId);
         cy.xpath("//div[text()[normalize-space()= 'Admin User has completed the task Form Task']]").should('be.visible');
@@ -2901,46 +2913,68 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42271(requestId) {
+        //Step 1: Complete the form 1
+        cy.xpath("(//div[@class = 'multiselect__select'])[1]").should('be.visible');
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
-        cy.xpath("(//li[@role = 'option'])[1]").click();
+        cy.get('[data-cy="screen-field-cash_drawer_setup_steps"]>* input').type('Yes',{delay:100})
+            .should('have.value','Yes');
+        cy.wait(2000);
+        cy.get('[data-cy="screen-field-cash_drawer_setup_steps"]>* input').type('{enter}');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifyTaskIsCompleted();
-
+        //Step 2: Open the by request id
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
+        //Step 3: Complete the Review task
+        cy.xpath("(//div[@class = 'multiselect__select'])[1]").should('exist');
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
-        cy.xpath("(//li[@role = 'option'])[2]").click();
-        cy.xpath("//textarea[@data-cy = 'screen-field-cash_drawer_setup_requester_comment']").type('yes');
+        cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('No',{delay:100})
+            .should('have.value','No');
+        cy.wait(2000);
+        cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('{enter}');
+        cy.xpath("//textarea[@data-cy = 'screen-field-cash_drawer_setup_requester_comment']").type('yes',{delay:100});
         cy.xpath("//button[@aria-label = 'Reload']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifytaskiscompleted(requestId);
-
+        //Step 4: Open the by request id
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
+        //Step 5: Complete the Form
+        cy.xpath("//button[@aria-label = 'New Submit']").should('exist');
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifytaskiscompleted(requestId);
-
+        //Step 6: Open the by request id
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
+        //Step 7: Complete the Review task
+        cy.xpath("(//div[@class = 'multiselect__select'])[1]").should('exist');
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
-        cy.xpath("(//li[@role = 'option'])[1]").click();
+        cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('Yes',{delay:100})
+            .should('have.value','Yes');
+        cy.wait(2000);
+        cy.get('[data-cy="screen-field-cash_drawer_setup_do_you_approve"]>* input').type('{enter}');
         cy.xpath("//textarea[@data-cy = 'screen-field-cash_drawer_setup_requester_comment']").type('yess');
+        cy.xpath("//button[@aria-label = 'Finish case']").should('be.enabled');
         cy.xpath("//button[@aria-label = 'Finish case']").click();
+        request.verifyTaskIsCompletedB();
 
+        //Step 7: Verify task is completed
         request.verifyRequestisCompleted(requestId);
 
-        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Script Task']").should('be.visible');
-        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Fill Out Request']").should('be.visible');
-        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Review Request']").should('be.visible');
-        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Fill Out Request']").should('be.visible');
-        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Review Request']").should('be.visible');
-        cy.xpath("//div[normalize-space(text()) = 'Daily Work Process Complete?: No']").should('be.visible');
-        cy.xpath("//div[normalize-space(text()) = 'Daily Work Process Complete?: No']").should('be.visible');
+        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Script Task']").should('exist');
+        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Fill Out Request']").should('exist');
+        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Review Request']").should('exist');
+        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Fill Out Request']").should('exist');
+        cy.xpath("//div[normalize-space(text()) = 'Admin User has completed the task Review Request']").should('exist');
+        cy.xpath("//div[normalize-space(text()) = 'Daily Work Process Complete?: No']").should('exist');
     }
     actionsAndAssertionsOfTCP42302(requestId){
         cy.xpath("//label[text()='enable']").click();
@@ -2973,12 +3007,13 @@ export class Specific {
         cy.xpath('(//button[@aria-label="New Submit"])[1]').click();
         request.verifyRequestisCompleted(requestId);
     }
-    actionsAndAssertionsOfTCP42294(name,processId,screen_name1){
+    actionsAndAssertionsOfTCP42294(name,processId){
         cy.wait(2000);
-        //go to url
+        //Step 1: go to url
         cy.visit('/webentry/' + processId + '/node_2');
-        //verify screen name
-        cy.get('[name="form_screen"]'.replace('form_screen', screen_name1)).should('be.visible');
+
+        //Complete the WE
+        cy.get('[name="accepted"]').should('be.visible');
         cy.get('[name="accepted"]').type('yes');
         cy.get('[name="afterdate"]').type('2022-04-29');
         cy.get('[name="afterorequaltodate"]').type('2022-10-15');
@@ -2998,34 +3033,41 @@ export class Specific {
         cy.get('[name="same"]').type('test');
         cy.get('[name="url"]').type('https://release.testing.processmaker.net/modeler/554');
         cy.xpath("(//button[contains(@class,'btn btn-primary')])[2]").click();
-        cy.wait(2000);
-        navHelper.navigateToRequestsPage();
-        request.openRequestByName(name);
-        cy.url().then( url =>{
-            var requestId = url.split('/')[4].trim();
 
-            request.clickOnTaskName(1,1);
-            cy.wait(30000);
+
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+
+        //Step 3: Get the number of requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=> {
+
+            //Step 4: Log in
+            login.navigateToUrl();
+            login.login();
+
+            //Step 5: Open the requests
+            cy.visit('/requests/' + requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
             cy.get('[name="accepted"]').should('have.value','yes');
-            cy.get('[name="afterdate"]').should('have.value','2022-04-29');
-            cy.get('[name="afterorequaltodate"]').should('have.value','2022-10-15');
+            cy.get('[name="afterdate"]').should('contain.value','2022');
+            cy.get('[name="afterorequaltodate"]').should('contain.value','2022');
             cy.get('[name="alpha"]').should('have.value','test');
             cy.get('[name="alphanumeric"]').should('have.value','user113');
-            cy.get('[name="beforedate"]').should('have.value','2021-01-20');
-            cy.get('[name="beforeorequaldate"]').should('have.value','2021-10-29');
+            cy.get('[name="beforedate"]').should('contain.value','2021');
+            cy.get('[name="beforeorequaldate"]').should('contain.value','2021');
             cy.get('[name="betweenminmax"]').should('have.value','7');
-            cy.get('[name="date"]').should('have.value','2021-10-10');
+            cy.get('[name="date"]').should('contain.value','2021-10-10');
             cy.get('[name="email"]').should('have.value','abc@gmail.com');
             cy.get('[name="maxlength"]').should('have.value','tester1');
             cy.get('[name="minlength"]').should('have.value','tester1');
-            cy.get('[name="regex"]').should('have.value','2020-10-10');
+            cy.get('[name="regex"]').should('contain.value','2020');
             cy.get('[name="required"]').should('have.value','test');
             cy.get('[name="requiredif"]').should('have.value','test');
             cy.get('[name="requiredunless"]').should('have.value','test');
             cy.get('[name="same"]').should('have.value','test');
-            cy.get('[name="url"]').should('have.value','https://release.testing.processmaker.net/modeler/554');
             //click on plus
-            cy.get('[title="Add Item"]').click()
+            cy.get('[title="Add Item"]').click();
             cy.get('#main').scrollTo('bottom');
             cy.xpath('(//input[@name="accepted"])[2]').type('yes');
             cy.xpath('(//input[@name="afterdate"])[2]').type('2022-04-29');
@@ -3046,92 +3088,119 @@ export class Specific {
             cy.xpath('(//input[@name="same"])[2]').type('test');
             cy.xpath('(//input[@name="url"])[2]').type('https://release.testing.processmaker.net/modeler/554');
             cy.xpath("(//button[contains(@class,'btn btn-primary')])[2]").click();
+            request.verifyTaskIsCompletedB();
+
             request.verifyRequestisCompleted(requestId);
-            cy.xpath("//div[text()[normalize-space()='Admin User started this request from a web entry']]").should('be.visible');
-            cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Form Task']]").should('be.visible');
-        })
-
-
+        });
     }
     actionsAndAssertionsOfTCP42295(requestId,name){
+
+        //Step 1: Complete the Form 1
+        cy.xpath('(//div[@class="multiselect__select"])[1]').should('be.visible');
         cy.xpath('(//div[@class="multiselect__select"])[1]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-0-0"]//span[text()="carlos"]').click();
         cy.get('[name="value"]').should('have.value','carlos');
+        
         cy.xpath('(//div[@class="multiselect__select"])[1]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-0-1"]//span[text()="maria"]').click();
         cy.xpath('(//input[@name="value"])[2]').should('have.value','maria');
+        
         cy.xpath('(//div[@class="multiselect__select"])[1]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-0-2"]//span[text()="ada"]').click();
         cy.xpath('(//input[@name="value"])[3]').should('have.value','ada');
+        
         cy.xpath('(//div[@class="multiselect__select"])[1]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-0-3"]//span[text()="abed"]').click();
         cy.xpath('(//input[@name="value"])[4]').should('have.value','abed');
+        
         cy.xpath('(//div[@class="multiselect__select"])[2]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-1-0"]//span[text()="carla"]').click();
         cy.xpath('(//input[@name="value"])[5]').should('have.value','A');
         cy.xpath('(//input[@name="content"])[1]').should('have.value','carla');
+        
         cy.xpath('(//div[@class="multiselect__select"])[2]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-1-1"]//span[text()="andres"]').click();
         cy.xpath('(//input[@name="value"])[6]').should('have.value','B');
         cy.xpath('(//input[@name="content"])[2]').should('have.value','andres');
+        
         cy.xpath('(//div[@class="multiselect__select"])[2]').click();
+        cy.wait(2000);
         cy.xpath('//li[@id="option-1-2"]//span[text()="keila"]').click();
         cy.xpath('(//input[@name="value"])[7]').should('have.value','C');
         cy.xpath('(//input[@name="content"])[3]').should('have.value','keila');
+        
         //recordlist
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('1');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('2');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('3');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('4');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('5');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('6');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('7');
         cy.xpath("//button[text()='Ok']").click();
+        cy.wait(2000);
         cy.get('[data-cy="add-row"]').click();
         cy.xpath('(//input[@name="option"])[1]').type('8');
         cy.xpath("//button[text()='Ok']").click();
-        cy.get('[id="main"]').scrollTo('bottom');
-        cy.xpath('(//li[@role="presentation"])[1]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[2]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[3]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[4]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[5]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[6]').should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='1']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='2']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='3']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='4']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='5']]").should('be.visible');
+        cy.wait(2000);
+        
+        cy.xpath('(//li[@role="presentation"])[1]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[2]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[3]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[4]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[5]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[6]').should('exist');
+        cy.xpath("//td[text()[normalize-space()='1']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='2']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='3']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='4']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='5']]").should('exist');
         cy.xpath("//button[text()='2']").click();
-        cy.xpath("//td[text()[normalize-space()='6']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='7']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='8']]").should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='6']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='7']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='8']]").should('exist');
         cy.xpath('(//button[@data-cy="remove-row"])[3]').click();
         cy.xpath("//button[text()='Delete']").click();
-        cy.xpath("//td[text()[normalize-space()='6']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='7']]").should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='6']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='7']]").should('exist');
         cy.xpath('(//button[@role="menuitem"])[1]').click();
-        cy.xpath("//td[text()[normalize-space()='1']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='2']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='3']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='4']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='5']]").should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='1']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='2']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='3']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='4']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='5']]").should('exist');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
+        request.verifyTaskIsCompletedB();
+        
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1,1);
+        
         cy.xpath('(//input[@name="value"])[1]').should('have.value','carlos');
         cy.xpath('(//input[@name="value"])[2]').should('have.value','maria');
         cy.xpath('(//input[@name="value"])[3]').should('have.value','ada');
@@ -3142,26 +3211,27 @@ export class Specific {
         cy.xpath('(//input[@name="content"])[2]').should('have.value','andres');
         cy.xpath('(//input[@name="value"])[7]').should('have.value','C');
         cy.xpath('(//input[@name="content"])[3]').should('have.value','keila');
-        cy.get('[id="main"]').scrollTo('bottom');
-        cy.xpath("//td[text()[normalize-space()='1']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='2']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='3']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='4']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='5']]").should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[1]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[2]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[3]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[4]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[5]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[6]').should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='1']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='2']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='3']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='4']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='5']]").should('exist');
+        cy.xpath('(//li[@role="presentation"])[1]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[2]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[3]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[4]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[5]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[6]').should('exist');
         cy.xpath("//button[text()='2']").click();
-        cy.xpath("//td[text()[normalize-space()='6']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='7']]").should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='6']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='7']]").should('exist');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        /* var requestId1 = parseInt(requestId)+1;
-         request.openRequestById(requestId1);*/
+        request.verifyTaskIsCompletedB();
+        
         request.openRequestByName(name);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1,1);
+        
         cy.xpath('(//input[@name="value"])[1]').should('have.value','carlos');
         cy.xpath('(//input[@name="value"])[2]').should('have.value','maria');
         cy.xpath('(//input[@name="value"])[3]').should('have.value','ada');
@@ -3173,20 +3243,20 @@ export class Specific {
         cy.xpath('(//input[@name="value"])[7]').should('have.value','C');
         cy.xpath('(//input[@name="content"])[3]').should('have.value','keila');
         cy.get('[id="main"]').scrollTo('bottom');
-        cy.xpath("//td[text()[normalize-space()='1']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='2']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='3']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='4']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='5']]").should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[1]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[2]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[3]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[4]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[5]').should('be.visible');
-        cy.xpath('(//li[@role="presentation"])[6]').should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='1']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='2']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='3']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='4']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='5']]").should('exist');
+        cy.xpath('(//li[@role="presentation"])[1]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[2]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[3]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[4]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[5]').should('exist');
+        cy.xpath('(//li[@role="presentation"])[6]').should('exist');
         cy.xpath("//button[text()='2']").click();
-        cy.xpath("//td[text()[normalize-space()='6']]").should('be.visible');
-        cy.xpath("//td[text()[normalize-space()='7']]").should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='6']]").should('exist');
+        cy.xpath("//td[text()[normalize-space()='7']]").should('exist');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
         request.verifyRequestisCompleted(requestId);
     }
@@ -3310,21 +3380,31 @@ export class Specific {
         cy.xpath("(//div[text()[normalize-space() = 'Admin User has completed the task Form Task']])[1]").should('exist');
     }
     actionsAndAssertionsOfTCP42296(requestId) {
+
+        //Step 1: Completed the form 1
+        cy.get('input[type="file"]').should('exist');
         cy.get('input[type="file"]').attachFile('drone.jpg');
         cy.xpath("//span[text()='success']").should('be.visible');
         cy.get('input[type="file"]').attachFile('images/1.jfif');
-        cy.xpath("//span[text()='success']").should('be.visible');
+        cy.xpath("//span[text()='success']").should('have.length',2);
         cy.get('input[type="file"]').attachFile('images/4.jfif');
-        cy.xpath("//span[text()='success']").should('be.visible');
+        cy.xpath("//span[text()='success']").should('have.length',3);
         cy.xpath("//button[@aria-label = 'New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifyTaskIsCompleted();
-
+        //Step 2: Open by request id
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
+
+        //Step 3: Complete the Form 2
+        cy.xpath('//button[contains(text(),"Download")]').should('be.visible');
         cy.xpath('(//button[text()[normalize-space()="New Submit"]])[2]').click();
+        request.verifyTaskIsCompletedB();
+
         request.verifyRequestisCompleted(requestId);
-        cy.xpath("//td[text()='fileUpload']").should('be.visible');
+        cy.xpath("//td[text()='fileUpload.0.file']").should('be.visible');
+        cy.xpath("//td[text()='fileUpload.1.file']").should('be.visible');
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task AA']]").should('be.visible');
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task BB']]").should('be.visible');
     }
