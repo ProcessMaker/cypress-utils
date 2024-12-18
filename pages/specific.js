@@ -206,11 +206,12 @@ export class Specific {
                 ,{delay:100});
         cy.xpath('(//input[@type="file"])[1]').attachFile("sample.pdf");
         cy.get('.uploader-file-name').contains("sample.pdf");
+        cy.xpath('(//input[@type="file"])[2]').attachFile('drone.jpg');
+        cy.xpath('(//*[@class="uploader-file-name"])[2]').contains("drone.jpg");
         cy.get('[data-cy="screen-field-form_input_2"]')
             .type('<html><head><title>Este es solo un ejemplo</title></head> <body>Aqui se encuentra el contenido de la web</body>'
                 ,{delay:100});
-        cy.xpath('(//input[@type="file"])[2]').attachFile('drone.jpg');
-        cy.xpath('(//*[@class="uploader-file-name"])[2]').contains("drone.jpg");
+        cy.wait(2000);
         cy.xpath('//button[text()[normalize-space()="New Submit"]]').click();
         request.verifyTaskIsCompletedB();
 
@@ -230,10 +231,6 @@ export class Specific {
         request.verifyRequestisCompleted(requestId);
         cy.get('[id="file-manager-tab"]').should('be.visible').click();
         cy.xpath('(//*[@title="View"])[3]').click();
-
-        //Step 4: requestpart___Quarter Scenario
-        navHelper.navigateToTasksPage();
-        request.openNewRequest(processName);
     }
 
      actionsAndAssertionsOfTCP42078(requestId) {
