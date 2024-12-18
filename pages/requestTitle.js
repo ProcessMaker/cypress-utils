@@ -164,7 +164,7 @@ export class RequestTitle {
     }
 
     verifyTitleinColumn = function(numColumn,regex){
-        cy.xpath(`//th[@id="-column-${numColumn}"]//div[@id="requests-table-column-case_title"]`).invoke('text').then(($value)=>{
+        cy.xpath(`//th[@id="-column-${numColumn}"]//div[@class="pm-table-column-header-text"]`).invoke('text').then(($value)=>{
         expect($value).to.match(regex);
         }) 
     }
