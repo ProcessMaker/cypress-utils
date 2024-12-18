@@ -1118,15 +1118,18 @@ export class ExecutionConnectors {
 
         cy.get(selectors.assetListingTable).find(".asset_title.asset_type_decision_table").should("exist");
     }
-    actionsAndAssertionsTCP43219(processName, version){
+    actionsAndAssertionsTCP43219(nameProcess, version){
+        let timeStamp = new Date().getTime();
+        let templateName = `TCP4-3219-Template-${timeStamp}`
+        let Description = new Date().getTime()+"Description TCP4-3219";
         navHelper.navigateToProcessPage();
-        process.searchProcessAndSelectOptions(processName,"Template");
-        var templateName = new Date().getTime()+"-TCP4-3219";
-        var Description = "TCP4-3219 description";
-        //Step 1: Create process as a Template
-        process.publishTemplate(templateName, Description, version);
+        process.searchProcessAndSelectOptions(nameProcess,"Template");
+        
+        //Step 1: Create Template
+        templates.createTemplatefromProcess(templateName, Description, version);
+
         //Step 2: Review template created
-        cy.get("#nav-templates-tab").click();
-        templates.searchTemplateAndSelectOptions(templateName,"Config");
+        cy.get("#nav-templates-tab").should('be.visible').click();
+        templates.searchTemplateAndSelectOptions(templateName,"edit");
         }
 }
