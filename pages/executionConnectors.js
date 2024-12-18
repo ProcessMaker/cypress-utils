@@ -735,9 +735,9 @@ export class ExecutionConnectors {
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(nameProcess,"Template");
         
-        //Step 1: Create process as a Template
+        //Step 1: Create Template
         templates.createTemplatefromProcess(templateName, Description, version);
-        
+
         //Step 2: Review template created
         cy.get("#nav-templates-tab").should('be.visible').click();
         templates.searchTemplateAndSelectOptions(templateName,"edit");
@@ -760,15 +760,18 @@ export class ExecutionConnectors {
         }
 
     actionsAndAssertionsTCP43218(nameProcess, version){
+        let timeStamp = new Date().getTime();
+        let templateName = `TCP4-3218-Template-${timeStamp}`
+        let Description = new Date().getTime()+"Description TCP4-3218";
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(nameProcess,"Template");
-        var templateName = new Date().getTime()+"TCP4-3218";
-        var Description = new Date().getTime()+"TCP4-3218";
-        //Step 1: Create process as a Template
-        process.publishTemplate(templateName, Description, version);
+        
+        //Step 1: Create Template
+        templates.createTemplatefromProcess(templateName, Description, version);
+
         //Step 2: Review template created
-        cy.get("#nav-templates-tab").click();
-        templates.searchTemplateAndSelectOptions(templateName, "Config");
+        cy.get("#nav-templates-tab").should('be.visible').click();
+        templates.searchTemplateAndSelectOptions(templateName,"edit");
     }
     actionsAndAssertionsOfTCP43221() {
         cy.reload();
