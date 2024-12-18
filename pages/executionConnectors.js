@@ -728,12 +728,16 @@ export class ExecutionConnectors {
     }
 
     actionsAndAssertionsTCP43217(nameProcess, version){
+
+        let timeStamp = new Date().getTime();
+        let templateName = `TCP4-3217-Template-${timeStamp}`
+        let Description = new Date().getTime()+"Description TCP4-3217";
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(nameProcess,"Template");
-        var templateName = new Date().getTime()+"TCP4-3217";
-        var Description = new Date().getTime()+"Description TCP4-3217";
+        
         //Step 1: Create process as a Template
-        process.publishTemplate(templateName, Description, version);
+        templates.createTemplatefromProcess(templateName, Description, version);
+        
         //Step 2: Review template created
         cy.get("#nav-templates-tab").should('be.visible').click();
         templates.searchTemplateAndSelectOptions(templateName,"edit");
@@ -778,7 +782,7 @@ export class ExecutionConnectors {
         var Description = new Date().getTime()+"TCP4-3230";
 
         //Step 1: Create process as a Template
-        process.publishTemplate(templateName, Description, version);
+        templates.createTemplatefromProcess(templateName, Description, version);
 
         //Step 2: Review template created
         cy.get("#nav-templates-tab").click();
