@@ -3292,6 +3292,7 @@ export class Specific {
         request.verifyRequestisCompleted(requestId);
     }
     actionsAndAssertionsOfTCP42445(){
+
         //Step 1: Verify that PDF will be generated
         cy.wait(80000);
 
