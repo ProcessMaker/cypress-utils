@@ -779,23 +779,21 @@ export class ExecutionConnectors {
         cy.get('g > text >tspan').contains('PDF').should('be.visible');
     }
     actionsAndAssertionsTCP43230(nameProcess, version){
+        let timeStamp = new Date().getTime();
+        let templateName = `TCP4-3230-Template-${timeStamp}`;
+        let Description = new Date().getTime()+"TCP4-3230";
+
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(nameProcess,"Template");
-        var templateName = new Date().getTime()+"TCP4-3230";
-        var Description = new Date().getTime()+"TCP4-3230";
-
-        //Step 1: Create process as a Template
+        
+        //Step 1: Create Template
         templates.createTemplatefromProcess(templateName, Description, version);
 
         //Step 2: Review template created
-        cy.get("#nav-templates-tab").click();
-        //process.searchTemplate(templateName);
-
-        //Step 3: Verify that template  contains Decision Table
-        templates.searchTemplateAndSelectOptions(templateName, "edit");
-        cy.reload();
-        request.waitUntilElementIsVisible('selector','g > text >tspan');
-        cy.get('g > text >tspan').contains('Data').should('be.visible');
+        cy.get("#nav-templates-tab").should('be.visible').click();
+        templates.searchTemplateAndSelectOptions(templateName,"edit");
+        process.openAlternativeModeler();
+        cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(1).contains("DataConnector").should("be.visible"); 
     }
     actionsAndAssertionsTCP43225(nameProcess, version) {
         navHelper.navigateToProcessPage();
