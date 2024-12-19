@@ -721,7 +721,6 @@ export class Admin {
         cy.get(selectors.inputToFileUpload).attachFile(filePath);
         cy.get(selectors.importBtn).click();
         cy.get(selectors.loadingCollectionSpinner).should('not.exist');
-        navHelper.navigateToAdminPage();
         cy.wait(6000);
         navHelper.navigateToCollectionPage();
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-danger"]').should('not.exist');
