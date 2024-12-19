@@ -893,11 +893,11 @@ export class ExecutionConnectors {
     actionsAndAssertionsTCP43237(nameProcess, version){
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(nameProcess,"Template");
-        var templateName = new Date().getTime()+"TCP4-3237";
-        var Description = new Date().getTime()+"TCP4-3237";
+        var templateName = "TCP4-3237-" + new Date().getTime();
+        let Description = new Date().getTime()+"TCP4-3237";
 
         //Step 1: Create process as a Template
-        process.publishTemplate(templateName, Description, version);
+        templates.createTemplatefromProcess(templateName, Description, version);
 
         //Step 2: Review template created
         cy.get("#nav-templates-tab").click();
