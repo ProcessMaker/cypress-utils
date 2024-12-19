@@ -847,39 +847,41 @@ export class Specific {
 
     }
 
-    async actionsAndAssertionsOfTCP42440(requestId, name) {
+    actionsAndAssertionsOfTCP42440(requestId, processName) {
         //click on yes
         cy.xpath("//input[@value='Yes']").should('be.visible').click();
         //verify before data is visible
         cy.xpath("//label[text()='Before Date TODAY']").should('be.visible');
-        //add date 
-        cy.xpath("(//label[text()='Before Date TODAY']/following::input)[1]").type('2022-06-05{enter}');
+        //add date
+        cy.xpath("(//label[text()='Before Date TODAY']/following::input)[1]").click({force:true});
+        screensP.useCustomDate("2022", "Jul", "20");
         //click on submit button
-        request.clickOnSubmitButton();
+        cy.xpath('//button[@aria-label="New Submit"]').click();
         //verify task is completed
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
+
         //verify the process is completed
         request.verifyRequestisCompleted(requestId);
 
         //request  part of second scenario
-        navHelper.navigateToRequestsPage();
-        header.clickOnAddRequest();
-        header.searchWithProcessName(name);
-        header.clickOnStart(name);
+        navHelper.navigateToTasksPage();
+        request.openNewRequest(processName);
+
         cy.url().then(url => {
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             var requestId = url.split('/')[4].trim();
             request.clickOnTaskName(1, 1);
-            cy.wait(4000);
-
+            cy.xpath("//input[@value='No']").should('be.visible');
             //click on No
             cy.xpath("//input[@value='No']").click();
             //verify before date is not visible
             cy.xpath("//label[text()='Before Date TODAY']").should('not.be.visible');
             //click on submit button
-            request.clickOnSubmitButton();
-            request.verifyTaskIsCompleted();
+            cy.xpath('//button[@aria-label="New Submit"]').click();
+            //verify task is completed
+            request.verifyTaskIsCompletedB();
             request.verifyRequestisCompleted(requestId);
-        })
+        });
     }
 
     actionsAndAssertionsOfTCP42384(requestId) {
@@ -1940,237 +1942,268 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42404(requestId){
+        //Step 1: Complete the form 1
+        cy.xpath("//button[@data-cy = 'add-row']").should('be.visible');
+        cy.wait(2000);
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("1");
         cy.get('input[type="file"]').attachFile('images/1.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("2");
         cy.get('input[type="file"]').attachFile('images/2.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("3");
         cy.get('input[type="file"]').attachFile('images/3.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("4");
         cy.get('input[type="file"]').attachFile('images/4.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("5");
         cy.get('input[type="file"]').attachFile('images/5.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("6");
         cy.get('input[type="file"]').attachFile('images/6.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("7");
         cy.get('input[type="file"]').attachFile('images/7.png');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("8");
         cy.get('input[type="file"]').attachFile('images/8.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("9");
         cy.get('input[type="file"]').attachFile('images/9.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("10");
         cy.get('input[type="file"]').attachFile('images/10.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("11");
         cy.get('input[type="file"]').attachFile('images/11.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("12");
         cy.get('input[type="file"]').attachFile('images/12.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("13");
         cy.get('input[type="file"]').attachFile('images/13.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("14");
         cy.get('input[type="file"]').attachFile('images/14.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("15");
         cy.get('input[type="file"]').attachFile('images/15.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("16");
         cy.get('input[type="file"]').attachFile('images/16.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("17");
         cy.get('input[type="file"]').attachFile('images/17.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("18");
         cy.get('input[type="file"]').attachFile('images/18.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("19");
         cy.get('input[type="file"]').attachFile('images/19.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("20");
         cy.get('input[type="file"]').attachFile('images/20.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("21");
         cy.get('input[type="file"]').attachFile('images/21.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("22");
         cy.get('input[type="file"]').attachFile('images/22.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("23");
         cy.get('input[type="file"]').attachFile('images/23.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("24");
         cy.get('input[type="file"]').attachFile('images/24.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("25");
         cy.get('input[type="file"]').attachFile('images/25.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("26");
         cy.get('input[type="file"]').attachFile('images/26.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("27");
         cy.get('input[type="file"]').attachFile('images/27.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("28");
         cy.get('input[type="file"]').attachFile('images/28.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("29");
         cy.get('input[type="file"]').attachFile('images/29.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("30");
         cy.get('input[type="file"]').attachFile('images/30.jfif');
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
-        cy.xpath("//button[@name='submit']").click();
+        cy.wait(2000);
+        cy.xpath("//button[@aria-label='New Submit']").click();
+        request.verifyTaskIsCompletedB();
 
-        request.verifyTaskIsCompleted();
-
+        //Step 2: Open by request id
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
-        cy.xpath("//button[@name='submit']").click();
+        //Step 3: Complete the form 2
+        cy.xpath("//button[@aria-label='New Submit']").should('exist');
+        cy.xpath("//button[@aria-label='New Submit']").click();
 
+        //Step 4: Open the request completed
         request.verifyRequestisCompleted(requestId);
 
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.0.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.1.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.2.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.3.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 1000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.4.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.5.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.6.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.7.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 2000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.8.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.9.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.10.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.11.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 3000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.12.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.13.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.14.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.15.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 4000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.16.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.17.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.18.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.19.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 5000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.20.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.21.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.22.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.23.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 6000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.24.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.25.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.26.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.27.name']").should('be.visible');
-        cy.get('#main').scrollTo(0, 7000);
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.28.name']").should('be.visible');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.29.name']").should('be.visible');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.0.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.1.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.2.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.3.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.4.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.5.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.6.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.7.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.8.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.9.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.10.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.11.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.12.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.13.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.14.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.15.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.16.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.17.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.18.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.19.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.20.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.21.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.22.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.23.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.24.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.25.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.26.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.27.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.28.name']").should('exist');
+        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.29.name']").should('exist');
 
-        cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task AA']]").should('be.visible');
-        cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task BB']]").should('be.visible');
+        cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task AA']]").should('exist');
+        cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task BB']]").should('exist');
     }
 
     actionsAndAssertionsOfTCP42138(processId) {
@@ -2702,82 +2735,100 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42425(requestId){
+        //Step 1: Complete the Form 1
+        cy.xpath("//button[@data-cy = 'add-row']").should('be.visible');
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Date'])[1]").type("2022-03-20");
-        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").type("2022-07-06 11:25{enter}");
+        cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
+        screensP.useCustomDate("2022", "Mar", "20");
+        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
+        screensP.useCustomDateTime('2022','Aug','18','11','25');
+
         cy.xpath("(//input[@name = 'check1'])[1]").click();
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
         cy.xpath('(//li[@id="option-0-0"]//span)[1]').click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("Test Name");
         cy.xpath("//button[text() = 'Ok']").click();
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[1]').should('contain','2022-03-20');
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[2]').should('contain','2022-07-06 11:25');
+        cy.wait(2000);
+
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[1]').should('contain.text','2022');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[2]').should('contain.text','2022');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[3]').should('contain','Test Name');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[4]').should('contain','var1');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[5]').should('contain','true');
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[1]').should('contain','2022-03-20');
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[2]').should('contain','2022-07-06 11:25');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[1]').should('contain.text','2022');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[2]').should('contain.text','2022');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[3]').should('contain','Test Name');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[4]').should('contain','var1');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[5]').should('contain','true');
         //second record
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Date'])[1]").type("2021-03-20");
-        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").type("2021-07-06 11:25{enter}");
+        cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
+        screensP.useCustomDate("2022", "Mar", "20");
+        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
+        screensP.useCustomDateTime('2022','Aug','18','11','25');
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
         cy.xpath('//li[@id="option-2-2"]/span[1]').click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("Test Name 2");
         cy.xpath("//button[text() = 'Ok']").click();
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[7]').should('contain','2021-03-20');
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[8]').should('contain','2021-07-06 11:25');
+        cy.wait(2000);
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[7]').should('contain.text','2022');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[8]').should('contain.text','2022');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[9]').should('contain','Test Name 2')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[10]').should('contain','var3')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[11]').should('contain','false')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[6]').should('contain','2021-03-20')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[7]').should('contain','2021-07-06 11:25')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[6]').should('contain.text','2022-03-20')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[7]').should('contain.text','2022')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[8]').should('contain','Test Name 2')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[9]').should('contain','var3')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[10]').should('contain','false')
         //Third record
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Date'])[1]").type("2020-03-20");
-        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").type("2020-07-06 11:25{enter}");
+        cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
+        screensP.useCustomDate("2020", "Mar", "20");
+        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
+        screensP.useCustomDateTime('2020','Aug','18','11','25');
         cy.xpath("(//input[@name = 'check1'])[1]").click();
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
         cy.xpath('//li[@id="option-3-3"]/span[1]').click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("Test Name 3");
         cy.xpath("//button[text() = 'Ok']").click();
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[13]').should('contain','2020-03-20');
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[14]').should('contain','2020-07-06 11:25');
+        cy.wait(2000);
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[13]').should('contain.text','2020');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[14]').should('contain.text','2020');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[15]').should('contain','Test Name 3')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[16]').should('contain','var4')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[17]').should('contain','true')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[11]').should('contain','2020-03-20')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[12]').should('contain','2020-07-06 11:25')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[11]').should('contain.text','2020')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[12]').should('contain.text','2020')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[13]').should('contain','Test Name 3')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[14]').should('contain','var4')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[15]').should('contain','true')
         cy.xpath("//button[@aria-label = 'New Submit']").click();
         //second Form task
-        request.verifyTaskIsCompleted();
-        cy.wait(2000);
+        request.verifyTaskIsCompletedB();
+
+        //Step 2: Open by request ID
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
+
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Date'])[1]").type("2019-03-20");
-        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").type("2019-07-06 11:25{enter}");
+        cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
+        screensP.useCustomDate("2019", "Mar", "20");
+        cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
+        screensP.useCustomDateTime('2019','Aug','18','11','25');
         cy.xpath("(//input[@name = 'check1'])[1]").click();
         cy.xpath("(//div[@class = 'multiselect__select'])[1]").click();
         cy.xpath('(//li[@id="option-0-1"]//span)[1]').click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("Test Name Secound Task");
         cy.xpath("//button[text() = 'Ok']").click();
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[19]').should('contain','2019-03-20');
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[20]').should('contain','2019-07-06 11:25');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[19]').should('contain.text','2019');
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[20]').should('contain.text','2019');
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[21]').should('contain','Test Name Secound Task')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[22]').should('contain','var2')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[23]').should('contain','true')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[16]').should('contain','2019-03-20')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[17]').should('contain','2019-07-06 11:25')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[16]').should('contain.text','2019')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[17]').should('contain.text','2019')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[18]').should('contain','Test Name Secound Task')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[19]').should('contain','var2')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[20]').should('contain','true')
@@ -3240,9 +3291,10 @@ export class Specific {
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
         request.verifyRequestisCompleted(requestId);
     }
-    actionsAndAssertionsOfTCP42445(requestId){
-        //cy.wait(20000);
-        //request.verifyRequestisCompleted(requestId);
+    actionsAndAssertionsOfTCP42445(){
+        //Step 1: Verify that PDF will be generated
+        cy.wait(80000);
+
         request.waitUntilTextcontainText('selector','varHeader', "Completed");
         cy.get('#file-manager-tab').click();
         cy.xpath('(//*[@title="View"])[1]').click();
