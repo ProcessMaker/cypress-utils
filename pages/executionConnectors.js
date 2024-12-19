@@ -877,7 +877,7 @@ export class ExecutionConnectors {
         var Description = "TCP4-3236 Description";
 
         //Step 1: Create process as a Template
-        process.publishTemplate(templateName, Description, version);
+        templates.createTemplatefromProcess(templateName, Description, version);
 
         //Step 2: Review template created
         cy.get("#nav-templates-tab").click();
@@ -885,11 +885,9 @@ export class ExecutionConnectors {
         //Step 3: Verify that template  contains Pmblock and two Threads
         templates.searchTemplateAndSelectOptions(templateName, "edit");
         cy.reload();
-        request.waitUntilElementIsVisible('selector','g > text >tspan');
+        process.openAlternativeModeler();
         cy.get('g > text >tspan').contains('PMBlock1-A').should('be.visible');
-        request.waitUntilElementIsVisible('selector','g > text >tspan');
         cy.get('g > text >tspan').contains('SubProcess1').should('be.visible');
-        request.waitUntilElementIsVisible('selector','g > text >tspan');
         cy.get('g > text >tspan').contains('SubProcess2').should('be.visible');
     }
     actionsAndAssertionsTCP43237(nameProcess, version){
