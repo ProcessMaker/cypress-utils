@@ -907,12 +907,12 @@ export class ExecutionConnectors {
         cy.get('.alert > span').contains('exported').should('be.visible');
     }
     actionsAndAssertionsOfTCP43238(templateName) {
-        var timeStamp = new Date().getTime();
-        var processName = "TCP4-3238 Template Threads"+timeStamp;
+        let timeStamp = new Date().getTime();
+        let processName = "TCP4-3238 Template Threads"+timeStamp;
         //Ste 1: Search template imported
         navHelper.navigateToProcessPage();
         process.clickOnAddProcess();
-               
+ 
         //Step2: Create the  process from template
         templates.searchTemplateFromProcess(templateName);
         //Click on use Template
@@ -923,7 +923,9 @@ export class ExecutionConnectors {
         //Step 3: Verify that process can be created from templated
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(processName,"edit");
-        cy.get('[data-type="processmaker.components.nodes.task.Shape"]').eq(0).contains("Sub Process").should("be.visible");
+        process.openAlternativeModeler(); 
+        cy.get('g > text >tspan').contains('Sub Process').should('be.visible');
+
 
     }
     actionsAndAssertionsOfTCP43392() {
