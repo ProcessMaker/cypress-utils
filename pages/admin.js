@@ -297,8 +297,9 @@ export class Admin {
     }
 
     readUser(){
-        cy.xpath("(//button[contains(text(),'Save')])[1]").scrollIntoView();
         cy.xpath("(//button[contains(text(),'Save')])[1]").click({force:true});
+        cy.wait(2000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
     }
 
 	selectLanguage(language){

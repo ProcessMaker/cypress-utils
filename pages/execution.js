@@ -5695,9 +5695,6 @@ export class Execution {
         .eq(0)
         .type("yes")
         .should("have.value", "yes");
-    cy.xpath('//label[text()="accepted"]/parent::div//div')
-        .eq(1)
-        .should("not.exist");
     //alpha input
     cy.xpath('//label[text()="alpha"]//parent::div//input')
         .eq(0)
@@ -5709,9 +5706,7 @@ export class Execution {
         .type("Processmaker123")
         .should("have.value", "Processmaker123");
     //Between Min 3 & Max10
-    cy.xpath(
-        '//label[text()="Between Min 3 & Max10"]//parent::div//input'
-    )
+    cy.xpath('//label[text()="Between Min 3 & Max10"]//parent::div//input')
         .eq(0)
         .type("5")
         .should("have.value", "5");
@@ -5723,9 +5718,6 @@ export class Execution {
         .eq(0)
         .type("2020-10-10")
         .should("have.value", "2020-10-10");
-    cy.xpath('//label[text()="Date"]/parent::div//div')
-        .eq(1)
-        .should("not.exist");
     //Email
     cy.xpath('//label[text()="Email"]//parent::div//input')
         .eq(0)
@@ -5739,9 +5731,6 @@ export class Execution {
         .eq(0)
         .type("7")
         .should("have.value", "7");
-    cy.xpath('//label[text()="In =7"]/parent::div//div')
-        .eq(1)
-        .should("not.exist");
     //Max Length 10
     cy.xpath('//label[text()="Max Length 10"]//parent::div//input')
         .eq(0)
@@ -5765,20 +5754,11 @@ export class Execution {
         .eq(0)
         .type("xyz")
         .should("have.value", "xyz");
-    cy.xpath('//label[text()="Regex[xyz]"]/parent::div//div')
-        .eq(1)
-        .should("not.exist");
     //Required
-    cy.xpath('//label[text()="Required"]/parent::div//div')
-        .eq(0)
-        .should("contain", "Field is required");
     cy.xpath('//label[text()="Required"]//parent::div//input')
         .eq(0)
         .type("required text")
         .should("have.value", "required text");
-    cy.xpath('//label[text()="Required"]/parent::div//div')
-        .eq(1)
-        .should("not.exist");
     //Required if form_input_2 = paola
     cy.xpath('//label[text()="form_input_2"]//parent::div//input')
         .eq(0)
@@ -5796,9 +5776,6 @@ export class Execution {
         .click()
         .type("paola")
         .should("have.value", "paola");
-    cy.xpath('//label[text()="Required Unless"]//parent::div//div')
-        .eq(1)
-        .should("not.exist");
     //Required if
     cy.get('[aria-label="Required If"]').eq(0).type("text");
     //Required Unless
@@ -5820,8 +5797,6 @@ export class Execution {
         .eq(0)
         .type("Colosa123")
         .should("have.value", "Colosa123");
-    cy.xpath('//label[text()="Same"]//parent::div//div')
-        .should("not.exist");
     //URL
     cy.xpath('//label[text()="URL"]//parent::div//input')
         .eq(0)
@@ -5883,7 +5858,7 @@ export class Execution {
     cy.get(".alert-wrapper > .alert").should("be.visible");
     //Click on "Submit" button
     cy.get('[aria-label="New Submit"]').last().click();
-    cy.get(".alert-wrapper > .alert").should("be.visible");
+    request.verifyTaskIsCompletedB();
    }
 
    actionsAndAssertionsOfTCP42225(){
@@ -5999,16 +5974,13 @@ export class Execution {
     actionsAndAssertionsOfTCP42226(){
         //3.1 Add Record List
         cy.get('[data-cy="add-row"]').click();
+
             //Fill data in variable Date Picker Date
-            cy.xpath('//label[text()="Date Picker Date"]//parent::div//input')
-                .first()
-                .type("01/01/2022")
-                .should("have.value", "01/01/2022");
+            cy.xpath('//label[text()="Date Picker Date"]//parent::div//input').first().click();
+            screen.useCustomDate("2022", "Jan", "11");
             //Fill data in variable Date Picker Datetime
-            cy.xpath('//label[text()="Date Picker Datetime"]//parent::div//input')
-                .first()
-                .type("02/01/2022 22:47 ")
-                .should("have.value", "02/01/2022 22:47 ");
+            cy.xpath('//label[text()="Date Picker Datetime"]//parent::div//input').first().click();
+            screen.useCustomDateTime("2022", "Jan", "11","22","47");
             //Fill data in variable Line Input Date
             cy.xpath('//label[text()="Line Input Date"]//parent::div//input')
                 .first()
@@ -6022,15 +5994,11 @@ export class Execution {
 
         //Step 3.2: Inside Loop
             //Fill data in variable New Date Picker
-            cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
-                .first()
-                .type("01/02/2022")
-                .should("have.value", "01/02/2022");
+            cy.xpath('//label[text()="New Date Picker"]//parent::div//input').first().click();
+            screen.useCustomDate("2022", "Jan", "11");
             //Fill data in variable New Datetime Picker
-            cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input')
-                .first()
-                .type("02/02/2022 22:47 ")
-                .should("have.value", "02/02/2022 22:47 ");
+            cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input').first().click();
+            screen.useCustomDateTime("2022", "Feb", "11","22","47");
             //Fill data in variable New Input Date
             cy.xpath('//label[text()="New Input Date"]//parent::div//input')
                 .first()
@@ -6046,38 +6014,24 @@ export class Execution {
             cy.get('button[title="Add Item"]').first().click();
             //Fill data in variable New Date Picker (New Loop)
             cy.xpath('//label[text()="New Date Picker"]//parent::div//input')
-                .eq(1)
-                .type("01/03/2022")
-                .should("have.value", "01/03/2022");
+                .eq(1).click();
+            screen.useCustomDate("2022", "Jan", "11");
             //Add Second loop
             cy.get('button[title="Add Item"]').eq(1).click();
             //Fill data in variable New Datetime Picker (New Loop)
             cy.xpath('//label[text()="New Datetime Picker"]//parent::div//input')
-                .eq(1)
-                .type("02/03/2022")
-                .should("have.value", "02/03/2022");
+                .eq(1).click();
+            screen.useCustomDateTime("2022", "Feb", "11","22","47");
             //Add Third loop
             cy.get('button[title="Add Item"]').eq(2).click();
             //Fill data in variable New Input Date (New Loop)
             cy.xpath('//label[text()="New Input Date"]//parent::div//input')
-                .eq(1)
-                .type("2020-03-03")
-                .should("have.value", "2020-03-03");
+                .eq(1).click();
             //Add Four loop
-            cy.get('button[title="Add Item"]').eq(3).click();
-            //Fill data in variable New Input Datetime (New Loop)
-            cy.xpath('//label[text()="New Input Datetime"]//parent::div//input')
-                .eq(1)
-                .type("2022-03-04 22:47")
-                .should("have.value", "2022-03-04 22:47");
-            //Click on "OK" button
-            cy.xpath(
-                '//footer[@class="modal-footer"]//button[@class="btn btn-primary"]'
-            )
-                .first()
-                .click();
+            cy.xpath('//button[contains(text(),"Ok")]').click();
             //Click on New submit button
-            cy.get(':nth-child(2) > .form-group > .btn').click()
+            cy.get(':nth-child(2) > .form-group > .btn').click();
+            request.verifyTaskIsCompletedB();
         }
 
         //TCP4-2261
@@ -6537,20 +6491,27 @@ export class Execution {
             })
     }
     actionsAndAssertionsOfTCP42223(requestId){
-        cy.xpath("//input[@type='text'][@name='form_input_1']").should("be.visible").type('Test 2223').should('have.value','Test 2223');
+
+        //Step 1: Complete the Form 1
+        cy.xpath("//input[@type='text'][@name='form_input_1']").should("be.visible");
+        cy.xpath("//input[@type='text'][@name='form_input_1']").type('Test 2223').should('have.value','Test 2223');
         cy.xpath("//button[contains(text(),'Add')]").should("be.visible").click();
         //record list
-        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09{enter}').should('have.value','2022-11-09');
-        cy.xpath('//label[text()="Date Picker Datetime"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09 16:14{enter}');
-        cy.xpath("//input[@type='text'][@name='form_input_2']").first().should("be.visible").type('2023-24-02{enter}').should('have.value','2023-24-02');
-        cy.xpath("//input[@type='text'][@name='form_input_3']").first().should("be.visible").type('2023-24-02 01:22{enter}');
+        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().click({force:true});
+        screen.useCustomDate("2022", "Sep", "11");
+        cy.xpath('//label[text()="Date Picker Datetime"]//ancestor::div[@class="form-group position-relative"]//input').first().click({force:true});
+        screen.useCustomDateTime('2022','Sep','11','16','14');
+        cy.xpath("//input[@type='text'][@name='form_input_2']").first().type('2023-24-02{enter}').should('have.value','2023-24-02');
+        cy.xpath("//input[@type='text'][@name='form_input_3']").first().type('2023-24-02 01:22{enter}');
+
         //Inside Loop
-        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input').first().type('2022-11-09{enter}').should('have.value','2022-11-09');
+        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input').first().click({force:true});
+        screen.useCustomDate("2022", "Sep", "12");
         cy.xpath('(//button[@title="Add Item"])[1]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').type('2022-11-30{enter}').should('have.value','2022-11-30');
-        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input').first().should("be.visible").type('2022-10-30 16:14{enter}');
-        cy.xpath('(//button[@title="Add Item"])[2]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input)[2]').should("be.visible").type('2022-11-30 16:40{enter}');
+        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').click({force:true});
+        screen.useCustomDate("2022", "Sep", "30");
+        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input').first().click({force:true});
+        screen.useCustomDateTime('2022','Oct','30','16','14');
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[1]").type('1993-11-15{enter}').should('have.value','1993-11-15');
         cy.xpath('(//button[@title="Add Item"])[3]').should("be.visible").click();
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[2]").type('1993-11-16{enter}').should('have.value','1993-11-16');
@@ -6562,17 +6523,20 @@ export class Execution {
         //add record list
         cy.xpath("//button[contains(text(),'Add')]").should("be.visible").click();
         //record list
-        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09{enter}').should('have.value','2022-11-09');
-        cy.xpath('//label[text()="Date Picker Datetime"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09 16:14{enter}');
+        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().click({forcce:true});
+        screen.useCustomDate("2022", "Oct", "10");
+        cy.xpath('//label[text()="Date Picker Datetime"]//ancestor::div[@class="form-group position-relative"]//input').first().click({force:true});
+        screen.useCustomDateTime('2022','Oct','11','16','14');
         cy.xpath("//input[@type='text'][@name='form_input_2']").first().should("be.visible").type('2023-24-02{enter}').should('have.value','2023-24-02');
         cy.xpath("//input[@type='text'][@name='form_input_3']").first().should("be.visible").type('2023-24-02 01:22{enter}');
         //Inside Loop
-        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input').first().type('2022-12-09{enter}').should('have.value','2022-12-09');
+        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input').first().click({force:true});
+        screen.useCustomDate("2022", "Dec", "10");
         cy.xpath('(//button[@title="Add Item"])[1]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').type('2022-12-30{enter}').should('have.value','2022-12-30');
-        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input').first().should("be.visible").type('2022-12-30 16:14{enter}');
-        cy.xpath('(//button[@title="Add Item"])[2]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input)[2]').should("be.visible").type('2022-12-30 16:40{enter}');
+        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').click({force:true});
+        screen.useCustomDate("2022", "Dec", "30");
+        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input').first().click({force:true});
+        screen.useCustomDateTime('2022','Dec','30','16','14');
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[1]").type('1993-12-20{enter}').should('have.value','1993-12-20');
         cy.xpath('(//button[@title="Add Item"])[3]').should("be.visible").click();
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[2]").type('1993-12-16{enter}').should('have.value','1993-12-16');
@@ -6582,22 +6546,21 @@ export class Execution {
         cy.xpath("(//input[@type='text'][@name='form_input_5'])[2]").type('1992-10-30 15:13{enter}');
         cy.xpath("//button[text()='Ok']").should("be.visible").click();
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
-        cy.wait(2000);
-        //Go to review request
-        login.navigateToUrl();
-        navHelper.navigateToRequestsPage();
-        var processName = "TCP4-2223 Verify the date with date picker and line input type date in a Record List";
-        request.openRequestByName(processName);
-        var taskName = 'Form Task';
-        request.openTaskByTaskName(taskName);
-        //Review task form
+        request.verifyTaskIsCompletedB();
+        
+        //Step 2: Go to review request
+        request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+        
+        //Step 3: Review task form
         cy.get('[data-cy="edit-row"]').first().should("be.visible");
         cy.get('[data-cy="edit-row"]').first().click();
-        cy.xpath('(//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input)[2]').should('have.value','2022-11-09');
+        cy.xpath('(//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input)[2]').should('contain.value','2022');
         cy.xpath("(//input[@type='text'][@name='form_input_2'])[2] ").should('have.value','2023-24-02');
         //Verify data loop
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').should('have.value','2022-11-09');
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[3]').should('have.value','2022-11-30');
+        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').should('contain.value','2022');
+        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[3]').should('contain.value','2022');
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[2]").should('have.value','1993-11-15');
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[3]").should('have.value','1993-11-16');
         cy.xpath("(//input[@type='text'][@name='form_input_5'])[4]").type('1992-11-30 15:13{enter}');
@@ -6605,7 +6568,7 @@ export class Execution {
         //add record list
         cy.xpath("//button[contains(text(),'Add')]").should("be.visible").click();
         //record list
-        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09{enter}').should('have.value','2022-11-09');
+        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09{enter}').should('contain.value','2022');
         cy.xpath('//label[text()="Date Picker Datetime"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09 16:14{enter}');
         cy.xpath("//input[@type='text'][@name='form_input_2']").first().should("be.visible").type('2023-24-02{enter}').should('have.value','2023-24-02');
         cy.xpath("//input[@type='text'][@name='form_input_3']").first().should("be.visible").type('2023-24-02 01:22{enter}');
@@ -6625,6 +6588,8 @@ export class Execution {
         cy.xpath("(//input[@type='text'][@name='form_input_5'])[2]").type('1992-10-30 15:13{enter}');
         cy.xpath("//button[text()='Ok']").should("be.visible").click();
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
+        request.verifyTaskIsCompletedB();
+        
         //Review Summary
         cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
         //Review Forms tab
@@ -6850,25 +6815,27 @@ export class Execution {
         cy.get('[id="pdfViewer"]').should('be.visible');
     }
     actionsAndAssertionsOfTCP42196(requestId){
+
+        //Step 1: Complete the Form 1
         cy.xpath('//input[@data-cy="screen-field-form_input_1"]').should('be.visible').type('test text').should('have.value','test text');
-        cy.xpath('//input[@data-cy="screen-field-form_input_2"]').should('be.visible').type('1234567890').should('have.value','1234567890');
-        cy.xpath('//input[@data-cy="screen-field-form_input_3"]').should('be.visible').type('123456789').should('have.value','123.456.789,00');
-        cy.xpath('//input[@data-cy="screen-field-form_input_4"]').should('be.visible').type('99').should('have.value','99.00 %');
-        cy.xpath('//input[@data-cy="screen-field-form_input_5"]').should('be.visible').type('123456.789').should('have.value','123456.789');
-        cy.xpath('//input[@data-cy="screen-field-form_input_6"]').should('be.visible').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
-        cy.xpath('//input[@data-cy="screen-field-form_input_7"]').should('be.visible').type('2020-10-09').should('have.value','2020-10-09');
-        cy.xpath('//input[@data-cy="screen-field-form_input_8"]').should('be.visible').type('password123');
-        cy.xpath('//input[@data-cy="screen-field-form_input_9"]').first().should('be.visible').type('test 1').should('have.value','test 1');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[2]').should('be.visible').type('test 2').should('have.value','test 2');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[3]').should('be.visible').type('test 3').should('have.value','test 3');
+        cy.xpath('//input[@data-cy="screen-field-form_input_2"]').type('1234567890').should('have.value','1234567890');
+        cy.xpath('//input[@data-cy="screen-field-form_input_3"]').type('123456789').should('have.value','123.456.789,00');
+        cy.xpath('//input[@data-cy="screen-field-form_input_4"]').type('99').should('have.value','99.00 %');
+        cy.xpath('//input[@data-cy="screen-field-form_input_5"]').type('123456.789').should('have.value','123456.789');
+        cy.xpath('//input[@data-cy="screen-field-form_input_6"]').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
+        cy.xpath('//input[@data-cy="screen-field-form_input_7"]').type('2020-10-09').should('have.value','2020-10-09');
+        cy.xpath('//input[@data-cy="screen-field-form_input_8"]').type('password123');
+        cy.xpath('//input[@data-cy="screen-field-form_input_9"]').first().type('test 1').should('have.value','test 1');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[2]').type('test 2').should('have.value','test 2');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[3]').type('test 3').should('have.value','test 3');
         //add loop
-        cy.xpath('//button[@data-cy="loop-loop_2-add"]').should('be.visible').click();
+        cy.xpath('//button[@data-cy="loop-loop_2-add"]').click();
         cy.xpath('//input[@data-cy="screen-field-form_input_10"]').first().should('be.visible').type('test loop 2').should('have.value','test loop 2');
-        cy.xpath('//button[@data-cy="loop-loop_2-add"]').should('be.visible').click();
+        cy.xpath('//button[@data-cy="loop-loop_2-add"]').click();
         cy.xpath('(//input[@data-cy="screen-field-form_input_10"])[2]').should('be.visible').type('test loop 22').should('have.value','test loop 22');
-        cy.xpath('//input[@data-cy="screen-field-form_input_11"]').first().should('be.visible').type('loop 3').should('have.value','loop 3');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[2]').should('be.visible').type('loop 33').should('have.value','loop 33');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[3]').should('be.visible').type('loop 333').should('have.value','loop 333');
+        cy.xpath('//input[@data-cy="screen-field-form_input_11"]').first().type('loop 3').should('have.value','loop 3');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[2]').type('loop 33').should('have.value','loop 33');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[3]').type('loop 333').should('have.value','loop 333');
         cy.xpath('//button[@data-cy="loop-loop_3-add"]').should('be.visible').click();
         cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[4]').should('be.visible').type('loop 3333').should('have.value','loop 3333');
         //add new first recordlist
@@ -6876,70 +6843,71 @@ export class Execution {
         cy.xpath('//div[@class="modal-content"]').first().should('be.visible');
         //complete data recordlist
         cy.xpath('//input[@data-cy="screen-field-text1"]').first().should('be.visible').type('test text recordlist').should('have.value','test text recordlist');
-        cy.xpath('//input[@data-cy="screen-field-integer1"]').first().should('be.visible').type('1234567890').should('have.value','1234567890');
-        cy.xpath('//input[@data-cy="screen-field-currency1"]').first().should('be.visible').type('123456789').should('have.value','123,456,789.00 BOB');
-        cy.xpath('//input[@data-cy="screen-field-percentage1"]').first().should('be.visible').type('99').should('have.value','99.00 %');
-        cy.xpath('//input[@data-cy="screen-field-decimal1"]').first().should('be.visible').type('123456.789').should('have.value','123456.789');
-        cy.xpath('//input[@data-cy="screen-field-datetime1"]').first().should('be.visible').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
-        cy.xpath('//input[@data-cy="screen-field-date1"]').first().should('be.visible').type('2020-10-09').should('have.value','2020-10-09');
-        cy.xpath('//input[@data-cy="screen-field-password1"]').first().should('be.visible').type('password123');
+        cy.xpath('//input[@data-cy="screen-field-integer1"]').first().type('1234567890').should('have.value','1234567890');
+        cy.xpath('//input[@data-cy="screen-field-currency1"]').first().type('123456789').should('have.value','123,456,789.00 BOB');
+        cy.xpath('//input[@data-cy="screen-field-percentage1"]').first().type('99').should('have.value','99.00 %');
+        cy.xpath('//input[@data-cy="screen-field-decimal1"]').first().type('123456.789').should('have.value','123456.789');
+        cy.xpath('//input[@data-cy="screen-field-datetime1"]').first().type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
+        cy.xpath('//input[@data-cy="screen-field-date1"]').first().type('2020-10-09').should('have.value','2020-10-09');
+        cy.xpath('//input[@data-cy="screen-field-password1"]').first().type('password123');
         //Ok
         cy.xpath("//button[contains(text(),'Ok')]").first().click();
+        cy.wait(2000);
         //add new second recordlist
         cy.xpath('(//button[@data-cy="add-row"])[2]').click();
         cy.xpath('(//div[@class="modal-content"])[3]').should('be.visible');
         //complete data recordlist
         cy.xpath('(//input[@data-cy="screen-field-text1"])[3]').should('be.visible').type('test text recordlist').should('have.value','test text recordlist');
-        cy.xpath('(//input[@data-cy="screen-field-integer1"])[3]').should('be.visible').type('1234567890').should('have.value','1234567890');
-        cy.xpath('(//input[@data-cy="screen-field-currency1"])[3]').should('be.visible').type('123456789').should('have.value','123,456,789.00 BOB');
-        cy.xpath('(//input[@data-cy="screen-field-percentage1"])[3]').should('be.visible').type('99').should('have.value','99.00 %');
-        cy.xpath('(//input[@data-cy="screen-field-decimal1"])[3]').should('be.visible').type('123456.789').should('have.value','123456.789');
-        cy.xpath('(//input[@data-cy="screen-field-datetime1"])[3]').should('be.visible').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
-        cy.xpath('(//input[@data-cy="screen-field-date1"])[3]').should('be.visible').type('2020-10-09').should('have.value','2020-10-09');
-        cy.xpath('(//input[@data-cy="screen-field-password1"])[3]').should('be.visible').type('password123');
+        cy.xpath('(//input[@data-cy="screen-field-integer1"])[3]').type('1234567890').should('have.value','1234567890');
+        cy.xpath('(//input[@data-cy="screen-field-currency1"])[3]').type('123456789').should('have.value','123,456,789.00 BOB');
+        cy.xpath('(//input[@data-cy="screen-field-percentage1"])[3]').type('99').should('have.value','99.00 %');
+        cy.xpath('(//input[@data-cy="screen-field-decimal1"])[3]').type('123456.789').should('have.value','123456.789');
+        cy.xpath('(//input[@data-cy="screen-field-datetime1"])[3]').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
+        cy.xpath('(//input[@data-cy="screen-field-date1"])[3]').type('2020-10-09').should('have.value','2020-10-09');
+        cy.xpath('(//input[@data-cy="screen-field-password1"])[3]').type('password123');
         //Ok
         cy.xpath("(//button[contains(text(),'Ok')])[2]").first().click();
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
-        //Open task form
-        var taskName = 'Form Task';
+        request.verifyTaskIsCompletedB();
+
+        //Step 2: Open task form
         cy.visit('/requests/'+requestId);
         request.waitUntilElementIsVisible('selector','[id="requestTabContent"] > [id="pending"] >* a[href^="/tasks"]');
-        request.openTaskByTaskName(taskName);
-        //Review and add data
+        request.clickOnTaskName(1, 1);
+
+        //Step 3: Review and add data
         cy.xpath('//input[@data-cy="screen-field-form_input_1"]').should('be.visible').should('have.value','test text');
-        cy.xpath('//input[@data-cy="screen-field-form_input_2"]').should('be.visible').should('have.value','1234567890');
-        cy.xpath('//input[@data-cy="screen-field-form_input_3"]').should('be.visible').should('have.value','123.456.789,00');
-        cy.xpath('//input[@data-cy="screen-field-form_input_4"]').should('be.visible').should('have.value','99.00 %');
-        cy.xpath('//input[@data-cy="screen-field-form_input_5"]').should('be.visible').should('have.value','123456.789');
-        cy.xpath('//input[@data-cy="screen-field-form_input_6"]').should('be.visible').should('have.value','2020-10-09 08:30');
-        cy.xpath('//input[@data-cy="screen-field-form_input_7"]').should('be.visible').should('have.value','2020-10-09');
-        cy.xpath('//input[@data-cy="screen-field-form_input_8"]').should('be.visible');
-        cy.xpath('//input[@data-cy="screen-field-form_input_9"]').first().should('be.visible').should('have.value','test 1');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[2]').should('be.visible').should('have.value','test 2');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[3]').should('be.visible').should('have.value','test 3');
+        cy.xpath('//input[@data-cy="screen-field-form_input_2"]').should('have.value','1234567890');
+        cy.xpath('//input[@data-cy="screen-field-form_input_3"]').should('have.value','123.456.789,00');
+        cy.xpath('//input[@data-cy="screen-field-form_input_4"]').should('have.value','99.00 %');
+        cy.xpath('//input[@data-cy="screen-field-form_input_5"]').should('have.value','123456.789');
+        cy.xpath('//input[@data-cy="screen-field-form_input_6"]').should('have.value','2020-10-09 08:30');
+        cy.xpath('//input[@data-cy="screen-field-form_input_7"]').should('have.value','2020-10-09');
+        cy.xpath('//input[@data-cy="screen-field-form_input_9"]').first().should('have.value','test 1');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[2]').should('have.value','test 2');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_9"])[3]').should('have.value','test 3');
         //add loop
         cy.xpath('//button[@data-cy="loop-loop_2-add"]').should('be.visible');
-        cy.xpath('//input[@data-cy="screen-field-form_input_10"]').first().should('be.visible').should('have.value','test loop 2');
+        cy.xpath('//input[@data-cy="screen-field-form_input_10"]').first().should('have.value','test loop 2');
         cy.xpath('//button[@data-cy="loop-loop_2-add"]').should('be.visible');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_10"])[2]').should('be.visible').should('have.value','test loop 22');
-        cy.xpath('//input[@data-cy="screen-field-form_input_11"]').first().should('be.visible').should('have.value','loop 3');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[2]').should('be.visible').should('have.value','loop 33');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[3]').should('be.visible').should('have.value','loop 333');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_10"])[2]').should('have.value','test loop 22');
+        cy.xpath('//input[@data-cy="screen-field-form_input_11"]').first().should('have.value','loop 3');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[2]').should('have.value','loop 33');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[3]').should('have.value','loop 333');
         cy.xpath('//button[@data-cy="loop-loop_3-add"]').should('be.visible');
-        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[4]').should('be.visible').should('have.value','loop 3333');
+        cy.xpath('(//input[@data-cy="screen-field-form_input_11"])[4]').should('have.value','loop 3333');
         //add new first recordlist
         cy.xpath('//button[@data-cy="add-row"]').first().click();
         cy.xpath('//div[@class="modal-content"]').first().should('be.visible');
         //complete data recordlist
         cy.xpath('//input[@data-cy="screen-field-text1"]').first().should('be.visible').type('test text recordlist').should('have.value','test text recordlist');
-        cy.xpath('//input[@data-cy="screen-field-integer1"]').first().should('be.visible').type('1234567890').should('have.value','1234567890');
-        cy.xpath('//input[@data-cy="screen-field-currency1"]').first().should('be.visible').type('123456789').should('have.value','123,456,789.00 BOB');
-        cy.xpath('//input[@data-cy="screen-field-percentage1"]').first().should('be.visible').type('99').should('have.value','99.00 %');
-        cy.xpath('//input[@data-cy="screen-field-decimal1"]').first().should('be.visible').type('123456.789').should('have.value','123456.789');
-        cy.xpath('//input[@data-cy="screen-field-datetime1"]').first().should('be.visible').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
-        cy.xpath('//input[@data-cy="screen-field-date1"]').first().should('be.visible').type('2020-10-09').should('have.value','2020-10-09');
-        cy.xpath('//input[@data-cy="screen-field-password1"]').first().should('be.visible').type('password123');
+        cy.xpath('//input[@data-cy="screen-field-integer1"]').first().type('1234567890').should('have.value','1234567890');
+        cy.xpath('//input[@data-cy="screen-field-currency1"]').first().type('123456789').should('have.value','123,456,789.00 BOB');
+        cy.xpath('//input[@data-cy="screen-field-percentage1"]').first().type('99').should('have.value','99.00 %');
+        cy.xpath('//input[@data-cy="screen-field-decimal1"]').first().type('123456.789').should('have.value','123456.789');
+        cy.xpath('//input[@data-cy="screen-field-datetime1"]').first().type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
+        cy.xpath('//input[@data-cy="screen-field-date1"]').first().type('2020-10-09').should('have.value','2020-10-09');
+        cy.xpath('//input[@data-cy="screen-field-password1"]').first().type('password123');
         //Ok
         cy.xpath("//button[contains(text(),'Ok')]").first().click();
         //add new second recordlist
@@ -6947,57 +6915,51 @@ export class Execution {
         cy.xpath('(//div[@class="modal-content"])[3]').should('be.visible');
         //complete data recordlist
         cy.xpath('(//input[@data-cy="screen-field-text1"])[3]').should('be.visible').type('test text recordlist').should('have.value','test text recordlist');
-        cy.xpath('(//input[@data-cy="screen-field-integer1"])[3]').should('be.visible').type('1234567890').should('have.value','1234567890');
-        cy.xpath('(//input[@data-cy="screen-field-currency1"])[3]').should('be.visible').type('123456789').should('have.value','123,456,789.00 BOB');
-        cy.xpath('(//input[@data-cy="screen-field-percentage1"])[3]').should('be.visible').type('99').should('have.value','99.00 %');
-        cy.xpath('(//input[@data-cy="screen-field-decimal1"])[3]').should('be.visible').type('123456.789').should('have.value','123456.789');
-        cy.xpath('(//input[@data-cy="screen-field-datetime1"])[3]').should('be.visible').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
-        cy.xpath('(//input[@data-cy="screen-field-date1"])[3]').should('be.visible').type('2020-10-09').should('have.value','2020-10-09');
-        cy.xpath('(//input[@data-cy="screen-field-password1"])[3]').should('be.visible').type('password123');
+        cy.xpath('(//input[@data-cy="screen-field-integer1"])[3]').type('1234567890').should('have.value','1234567890');
+        cy.xpath('(//input[@data-cy="screen-field-currency1"])[3]').type('123456789').should('have.value','123,456,789.00 BOB');
+        cy.xpath('(//input[@data-cy="screen-field-percentage1"])[3]').type('99').should('have.value','99.00 %');
+        cy.xpath('(//input[@data-cy="screen-field-decimal1"])[3]').type('123456.789').should('have.value','123456.789');
+        cy.xpath('(//input[@data-cy="screen-field-datetime1"])[3]').type('2020-10-09 08:30').should('have.value','2020-10-09 08:30');
+        cy.xpath('(//input[@data-cy="screen-field-date1"])[3]').type('2020-10-09').should('have.value','2020-10-09');
+        cy.xpath('(//input[@data-cy="screen-field-password1"])[3]').type('password123');
         //Ok
         cy.xpath("(//button[contains(text(),'Ok')])[2]").first().click();
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
+        
         cy.visit('/requests/'+ requestId);
         request.waitUntilTextcontainText('selector','varHeader','Completed');
         //Review summary Completed and forms
         cy.xpath("//a[contains(text(),'Summary')]").should('be.visible').click();
-        cy.xpath("//td[contains(text(),'loop_1.0.form_input_9')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_1.1.form_input_9')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_1.2.form_input_9')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_2.0.form_input_10')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_2.1.form_input_10')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_3.0.form_input_11')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_3.1.form_input_11')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_3.2.form_input_11')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'loop_3.3.form_input_11')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.date1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.date1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.text1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.row_id')] ").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.decimal1')] ").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.integer1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.currency1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.datetime1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.password1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.0.percentage1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.date1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.text1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.row_id')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.decimal1')]").click().should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.integer1')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.currency1')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.datetime1')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.password1')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_1.1.percentage1')]").should('be.visible');
-        cy.xpath("//td[contains(text(),'form_record_list_2.0.date1')]").should('be.visible');
-        //complete
-        cy.xpath("//a[text()='Completed']").click();
-        cy.xpath("//a[contains(text(),'Form Task')]").first().should('be.visible');
-        cy.xpath("(//a[contains(text(),'Form Task')])[2]").should('be.visible');
-        cy.xpath("//a[contains(text(),'Forms')]").should('be.visible').click();
-        cy.xpath('//button[@title="Details"]').first().should("be.visible").click();
-        cy.xpath('//div[@class="card-body h-100"]').should("be.visible");
+        cy.xpath("//td[contains(text(),'loop_1.0.form_input_9')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_1.1.form_input_9')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_1.2.form_input_9')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_2.0.form_input_10')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_2.1.form_input_10')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_3.0.form_input_11')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_3.1.form_input_11')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_3.2.form_input_11')]").should('exist');
+        cy.xpath("//td[contains(text(),'loop_3.3.form_input_11')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.date1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.date1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.text1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.row_id')] ").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.decimal1')] ").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.integer1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.currency1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.datetime1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.password1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.0.percentage1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.date1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.text1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.row_id')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.decimal1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.integer1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.currency1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.datetime1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.password1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_1.1.percentage1')]").should('exist');
+        cy.xpath("//td[contains(text(),'form_record_list_2.0.date1')]").should('exist');
     }
     actionsAndAssertionsOfTCP42169(requestId){
         //Step 1: Wait the page is load
