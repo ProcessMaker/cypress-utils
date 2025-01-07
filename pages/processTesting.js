@@ -229,15 +229,22 @@ export class ProcessTesting {
       */
 
     clickOnPlusScenario() {
+        cy.wait(3000);
         cy.get(selectors.plusScenarioBtn).click();
     }
 
-    fillName(nameScenario) {
-        cy.get(selectors.nameScenarioBP).type(nameScenario).should('have.value', nameScenario);
+    fillName(name) { 
+        
+        cy.get(selectors.nameScenarioBP)
+            .should("be.visible")
+            .type(name, { delay: 200, force: true })
+            .should("have.value", name);
+
     }
 
     fillDescription(description) {
-        cy.get(selectors.descriptionScenarioBP).first().type(description).should('have.value', description);
+
+        cy.get(selectors.descriptionScenarioBP).first().type(description, { delay: 200, force: true }).should("have.value", description);
     }
 
     //Select Scenario Creation Type (Manual or Document upload)
@@ -316,6 +323,7 @@ export class ProcessTesting {
     }
 
     goToScenariosTab() {
+        cy.wait(3000);
         this.clickOnTestRun_ScenariosTab();
         this.clickOnScenariosTab();
     }
@@ -325,10 +333,10 @@ export class ProcessTesting {
         this.clickOnTestRunTab();
     }
 
-    createScenario(createScenarioConfig) {
-        const { scenarioName, scenarioDescription, scenarioCreationType, data, nameFile, filePath } = createScenarioConfig
-        this.clickOnPlusScenario();
-        this.fillName(scenarioName);
+    createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+        
+        this.clickOnPlusScenario(); 
+        this.fillName(nameScenario);
         this.fillDescription(scenarioDescription);
         switch (scenarioCreationType) {
             case 'Manual Data':
@@ -347,9 +355,9 @@ export class ProcessTesting {
     }
 
     //2D Modal to create scenario 
-    createScenarioByProcess(createScenarioConfig) {
+    createScenarioByProcess(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {         
         this.goToScenariosTab();
-        this.createScenario(createScenarioConfig)
+        this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath)
         cy.get('.alert-wrapper > .alert').should("be.visible");
         cy.get('.alert-wrapper > .alert').should("contain","The process test scenario was created.");
     }
