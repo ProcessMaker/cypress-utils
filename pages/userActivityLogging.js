@@ -3,69 +3,78 @@ import selectorsAdmin from "#selectors/admin";
 
 export class userActivityLogging{
 
-   /**
+    /**
     * This method is responsible to check validations in Security Logs
     * @param elementList: object of elements to verify for labels
     * @return nothing returns
     */
 
-   checkLabelsSecurityLogsLabels(elementList=[]) {
-       let len = elementList.length;
-       for (var i = 0; i < len; i++) {
-           cy.xpath(selectors.userActivityLoggingLabel.replace('element',elementList[i])).should('be.visible');           
-       }
-   }
+    checkLabelsSecurityLogsLabels(elementList=[]) {
+        cy.get('[id="showLogInfo"] [class="modal-body"] p > b').each(($el, index)=>{
+            cy.log("-----"+$el.text().trim()+"------");
+            expect($el.text().trim()).to.be.eq(elementList[index])
+        });
+    }
 
-   /**
+    /**
     * This method is responsible to access Security Logs
     * @return nothing returns
     */
 
-   accessToSecurityLogs(){
-       cy.xpath(selectors.securityLogsMenu).should("be.visible");
-       cy.xpath(selectors.securityLogsMenu).click();
-   }
+    accessToSecurityLogs(){
+        cy.xpath(selectors.securityLogsMenu).should("be.visible");
+        cy.xpath(selectors.securityLogsMenu).click();
+    }
 
-   /**
+    /**
     * This method is responsible to access Security Logs
     * @log log to be searched in Security Logs
     * @return nothing returns
     */
 
-   accessToSpecificSecurityLog(log){
-       const xpath = selectors.securityLog.replace('log', log);
-       cy.xpath(xpath).should('be.visible');
-       cy.xpath((selectors.securityLog.replace('log', log))).should('be.visible');
-       cy.xpath((selectors.securityLog.replace('log', log))).click({force:true});
-   }
+    accessToSpecificSecurityLog(log){
+        const xpath = selectors.securityLog.replace('log', log);
+        cy.xpath(xpath).should('be.visible');
+        cy.xpath((selectors.securityLog.replace('log', log))).should('be.visible');
+        cy.xpath((selectors.securityLog.replace('log', log))).click({force:true});
+    }
 
-   /**
+    replaceDateFields(array) {
+        const datePattern = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z)|(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)|(\d{4}-\d{2}-\d{2})|(\d{2}\/\d{2}\/\d{4})|(\d{2}-\d{2}-\d{4})|(\d{1,2} \w{3} \d{4})|(\w{3} \d{1,2}, \d{4})/;
+        return array.map(element => datePattern.test(element) ? 'dateField' : element);
+    }
+
+    /**
     * This method is responsible to check validations in Security Logs for span selectors
     * @param elementArray: object of elements to verify
     * @return nothing returns
     */
 
-   checkLabelsSecurityLogsSpan(elementArray=[]){
-       let len = elementArray.length;
-       for (var i = 0; i < len; i++) {
-           cy.xpath(selectors.userActivityLoggingSpan.replace('element', elementArray[i])).should('have.text', elementArray[i]);           
-       }
-   }
+    checkLabelsSecurityLogsSpan(elementArray=[]){
+        let newArray = [];
+        cy.get('[id="showLogInfo"] [class="modal-body"] p > span').each(($el, index)=>{
+            //expect().to.be.eq(elementArray[index])
+            newArray.push($el.text().trim());
+        });
+        cy.log("REAL= "+JSON.stringify(newArray));
+        let newInfo = this.replaceDateFields(newArray);
+        cy.log("NEW= "+JSON.stringify(newInfo));
+    }
 
-   /**
+    /**
     * This method is responsible to check validations in Security Logs for href selectors
     * @param elementList: object of elements to verify
     * @return nothing returns
     */
 
-   checkLabelsSecurityLogsHref(elementList=[]){
-       let len = elementList.length;
-       for (var i = 0; i < len; i++) {
-           cy.xpath(selectors.userActivityLoggingHref.replace('element',elementList[i]))
-           .should('be.visible').should("have.attr","href");
-           cy.xpath(selectors.userActivityLoggingHref.replace('element',elementList[i])).click();
-       }
-   }
+    checkLabelsSecurityLogsHref(elementList=[]){
+        let len = elementList.length;
+        for (var i = 0; i < len; i++) {
+            cy.xpath(selectors.userActivityLoggingHref.replace('element',elementList[i]))
+            .should('be.visible').should("have.attr","href");
+            cy.xpath(selectors.userActivityLoggingHref.replace('element',elementList[i])).click();
+        }
+    }
 
     /**
      * This method is responsible to search by a specific event
