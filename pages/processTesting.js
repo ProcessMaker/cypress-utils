@@ -243,7 +243,7 @@ export class ProcessTesting {
     }
 
     fillDescription(description) {
-
+        cy.wait(1000);
         cy.get(selectors.descriptionScenarioBP).first().type(description, { delay: 200, force: true }).should("have.value", description);
     }
 
@@ -362,14 +362,14 @@ export class ProcessTesting {
         cy.get('.alert-wrapper > .alert').should("contain","The process test scenario was created.");
     }
 
-    createScenarioIfNotExist(scenarioName,createScenarioConfig) {
+    createScenarioIfNotExist(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
         this.goToScenariosTab();
-        this.searchScenario(scenarioName);
+        this.searchScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
         this.load();
         cy.xpath('//div[@id="scenarios-edit-tab"]//div[@class="data-table"]').invoke('text').then($element => {
             cy.log($element)
             if ($element.includes('No Data Available')) {
-                this.createScenario(createScenarioConfig);
+                this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
             } else {
                 cy.log('brenda')
             }
