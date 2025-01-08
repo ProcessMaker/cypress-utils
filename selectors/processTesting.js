@@ -69,7 +69,7 @@ export default {
     editDescription: '//legend[text()="Description *"]/following-sibling::div//textarea',
 
     //TESTS RUN
-    //testRunTab:'a[id="test_runs-tab"]',
+    testRunTabScenarios:'a[id="test_runs-tab"]',
     testRunTab: '[data-test="test-runs-tab"]',
     plusScenarioBtn: '[aria-label="Create Scenario"]',
     testBtnInConfigProcess: 'button[aria-label="Test"]',

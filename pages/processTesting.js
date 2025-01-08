@@ -184,6 +184,7 @@ export class ProcessTesting {
 
     //Go to scenarios Tab
     clickOnScenariosTab() {
+        cy.get(selectors.scenariosTab).should('be.visible');
         cy.get(selectors.scenariosTab).click();
     }
 
@@ -205,11 +206,11 @@ export class ProcessTesting {
     //Search scenario and select edit or delete
     searchScenarioAndSelectOption(scenarioName, option, scenarioConfig) {
         this.searchScenario(scenarioName);
-        cy.wait(2000)
+        cy.wait(3000);
         this.clickOnEllipsisScenario();
         switch (option) {
             case "edit":
-                this.editScenario(scenarioConfig);
+                this.editScenario(scenarioName, option, scenarioConfig);
                 break;
             case "delete":
                 this.deleteScenario();
@@ -254,8 +255,8 @@ export class ProcessTesting {
         cy.contains(option).click();
     }
 
-    addDataInScenario(data) {
-        cy.get(selectors.dataScenarioBP).type(`{{}${data}}`);
+    addDataInScenario(data)    {        
+        cy.get(selectors.dataScenarioBP).type(`{{}${data}}`).should('contain', `{${data}}`);
     }
 
     clearDataField() {
@@ -286,13 +287,14 @@ export class ProcessTesting {
 
     editScenario(scenarioConfig) {
         this.clickOnEditScenario();
+        cy.wait(7000);
         const { editName, editDescription, editData } = scenarioConfig
         if (editName !== null) {
-            cy.xpath(selectors.nameScenarioBP).clear().type(editName).should('have.value', editName);
+            cy.get(selectors.nameScenarioBP).clear().type(editName, { delay: 200, force: true }).should('have.value', editName);        
         }
         if (editDescription !== null) {
-            cy.xpath(selectors.editDescription).clear().should('have.value', "")
-                .type(editDescription).should('have.value', editDescription);
+            cy.get(selectors.descriptionScenarioBP).clear().should('have.value', "")
+                .type(editDescription, { delay: 200, force: true }).should('have.value', editDescription);
         }
         if (editData !== null) {
             cy.get('[class="active-line-number line-numbers lh-odd"]').should('be.visible');
@@ -392,6 +394,11 @@ export class ProcessTesting {
     clickOnTestRunsTab() {
         cy.get(selectors.testRunTab).should('be.visible');
         cy.get(selectors.testRunTab).click();
+    }
+
+    clickOnTestRunTabScenarios() {
+        cy.get(selectors.testRunTabScenarios).should('be.visible');
+        cy.get(selectors.testRunTabScenarios).click();
     }
 
     clickOnPlusTest() {
@@ -640,7 +647,7 @@ export class ProcessTesting {
     deleteScenarios(scenarioName, init, end) {
         for (let index = init; index < end; index++) {
             this.searchScenarioAndSelectOption(`${scenarioName} - ${index}`, 'delete');
-            cy.wait(100)
+            cy.wait(3000);
         }
     }
 }
