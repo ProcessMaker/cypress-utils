@@ -11,7 +11,6 @@ export class userActivityLogging{
 
     checkLabelsSecurityLogsLabels(elementList=[]) {
         cy.get('[id="showLogInfo"] [class="modal-body"] p > b').each(($el, index)=>{
-            cy.log("-----"+$el.text().trim()+"------");
             expect($el.text().trim()).to.be.eq(elementList[index])
         });
     }
@@ -39,11 +38,6 @@ export class userActivityLogging{
         cy.xpath((selectors.securityLog.replace('log', log))).click({force:true});
     }
 
-    replaceDateFields(array) {
-        const datePattern = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z)|(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)|(\d{4}-\d{2}-\d{2})|(\d{2}\/\d{2}\/\d{4})|(\d{2}-\d{2}-\d{4})|(\d{1,2} \w{3} \d{4})|(\w{3} \d{1,2}, \d{4})/;
-        return array.map(element => datePattern.test(element) ? 'dateField' : element);
-    }
-
     /**
     * This method is responsible to check validations in Security Logs for span selectors
     * @param elementArray: object of elements to verify
@@ -51,14 +45,10 @@ export class userActivityLogging{
     */
 
     checkLabelsSecurityLogsSpan(elementArray=[]){
-        let newArray = [];
-        cy.get('[id="showLogInfo"] [class="modal-body"] p > span').each(($el, index)=>{
-            //expect().to.be.eq(elementArray[index])
-            newArray.push($el.text().trim());
-        });
-        cy.log("REAL= "+JSON.stringify(newArray));
-        let newInfo = this.replaceDateFields(newArray);
-        cy.log("NEW= "+JSON.stringify(newInfo));
+        let len = elementArray.length;
+        for (var i = 0; i < len; i++) {
+            cy.xpath(selectors.userActivityLoggingSpan.replace('element', elementArray[i])).should('have.text', elementArray[i]);           
+        }
     }
 
     /**
