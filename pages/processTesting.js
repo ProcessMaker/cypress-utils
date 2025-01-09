@@ -487,14 +487,26 @@ export class ProcessTesting {
         cy.xpath('//div[@data-test="test-run-scenario-select"]//input').type('{enter}');
     }
 
-    selectScenario(scenario) {
-        cy.wait(1000);
-        cy.xpath(selectors.labelScenario).should('be.visible');
-        cy.xpath(selectors.containerScenario).click();
-        cy.get(selectors.inputScenario).should('be.visible');
-        cy.get(selectors.inputScenario).click().type(scenario, { force: true, delay: 70 });
-        cy.wait(1000)
-        cy.get(selectors.inputScenario).type('{enter}');
+    selectScenario(scenario, iframeOption = 'a') {
+
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
+        cy.iframe(iframeSelector).xpath(selectors.labelScenario).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.containerScenario).should('be.visible');
+        cy.iframe(iframeSelector).xpath(selectors.containerScenario).click({force:true});
+        //cy.iframe(iframeSelector).xpath(selectors.inputScenario).should('be.visible');
+        cy.iframe(iframeSelector).find(selectors.inputScenario).type(`{backspace}${scenario}`).should('have.value', scenario);
+        //cy.iframe(iframeSelector).xpath(selectors.inputScenario).should('have.attr', 'aria-label').and('equal', `${scenario}. `);
+        cy.wait(3000);
+        cy.iframe(iframeSelector).find(selectors.inputScenario).type('{enter}'); 
+
+        
+        //cy.xpath(selectors.labelScenario).should('be.visible');
+        //cy.xpath(selectors.containerScenario).should('be.visible');
+        //cy.xpath(selectors.containerScenario).click({force:true, delay:200});
+        //cy.get(selectors.inputScenario).should('be.visible');
+        //cy.get(selectors.inputScenario).click({force:true});
+        //cy.get(selectors.inputScenario).type(scenario, { force: true, delay: 200 });
+        //cy.get(selectors.inputScenario).type('{enter}');
     }
 
     selectAllScenarios(nameToFilter) {
