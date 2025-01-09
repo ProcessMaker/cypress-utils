@@ -390,8 +390,13 @@ export class ProcessTesting {
 
     //2E. Test Run
     clickOnTestRunsTab() {
-        cy.get(selectors.testRunTab).should('be.visible');
-        cy.get(selectors.testRunTab).click();
+        cy.get(selectors.testRunTabScenarios).should('be.visible');
+        cy.get(selectors.testRunTabScenarios).click();
+    }
+
+    clickOnTestRunTabScenarios() {
+        cy.get(selectors.testRunTabScenarios).should('be.visible');
+        cy.get(selectors.testRunTabScenarios).click();
     }
 
     clickOnPlusTest() {
@@ -493,20 +498,10 @@ export class ProcessTesting {
         cy.iframe(iframeSelector).xpath(selectors.labelScenario).should('be.visible');
         cy.iframe(iframeSelector).xpath(selectors.containerScenario).should('be.visible');
         cy.iframe(iframeSelector).xpath(selectors.containerScenario).click({force:true});
-        //cy.iframe(iframeSelector).xpath(selectors.inputScenario).should('be.visible');
         cy.iframe(iframeSelector).find(selectors.inputScenario).type(`{backspace}${scenario}`).should('have.value', scenario);
-        //cy.iframe(iframeSelector).xpath(selectors.inputScenario).should('have.attr', 'aria-label').and('equal', `${scenario}. `);
         cy.wait(3000);
         cy.iframe(iframeSelector).find(selectors.inputScenario).type('{enter}'); 
-
-        
-        //cy.xpath(selectors.labelScenario).should('be.visible');
-        //cy.xpath(selectors.containerScenario).should('be.visible');
-        //cy.xpath(selectors.containerScenario).click({force:true, delay:200});
-        //cy.get(selectors.inputScenario).should('be.visible');
-        //cy.get(selectors.inputScenario).click({force:true});
-        //cy.get(selectors.inputScenario).type(scenario, { force: true, delay: 200 });
-        //cy.get(selectors.inputScenario).type('{enter}');
+       
     }
 
     selectAllScenarios(nameToFilter) {
@@ -606,7 +601,9 @@ export class ProcessTesting {
 
     clearAllTestRuns() {
         this.clickOnTestRunsTab();
+        this.clickOnTestRunTabScenarios();
         cy.wait(2000);
+        this.clickOnTestRunTab();
         cy.xpath(selectors.rowTestsRun).find('td').invoke('text').then(($element) => {
             if ($element !== 'No Data Available') {
                 this.clickOnclearBtn();
