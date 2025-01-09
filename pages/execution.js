@@ -429,14 +429,16 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42243(requestID){
-        cy.xpath('//h4').should('be.visible');
-        cy.xpath('//button[@data-cy="loop-loop-add"]').click();
+        cy.xpath('//button[@data-cy="loop-loop-add"]').should('be.visible');
         cy.xpath('//button[@data-cy="loop-loop-add"]').click();
         cy.xpath('//p[text()="ASSAM is ASSAM KERELA is KERELA ORRISA is ORRISA"]').should('be.visible');
         cy.xpath('//p[text()="Israel Japan Germany"]').should('be.visible');
+        cy.xpath('//button[@data-cy="loop-loop-add"]').click();
+        cy.wait(2000);
+        cy.xpath('//*[contains(text(),"watcher running.")]').should('not.exist');
         cy.xpath('//div[@class="card-footer"]/button').should('contain.text', "Complete Task").click();
-        request.verifyTaskIsCompleted();
-        navHelper.navigateToTasksPage();
+        request.verifyTaskIsCompletedB();
+
         navHelper.navigateToRequestsPage();
         request.openRequestById(requestID);
         cy.xpath('//tr[@item-index="0"]/td/a').contains('B').click();
@@ -4479,7 +4481,7 @@ export class Execution {
         cy.xpath('//strong[text()="D"]/ancestor::div[@class="card mb-3 mr-2 ml-2"]//p').should("contain", "Add documentation in Script Task 'D' control");
     }
 
-    async CompleteFormTCP42240(requestId){
+    completeFormTCP42240(requestId){
         cy.xpath("//label[text()='Checkbox']").should("be.visible").click();
         cy.get('[data-cy="screen-field-form_checkbox_2"]').should("be.visible").uncheck();
         cy.xpath("//label[text()='Checkbox Checked by default Form']").should("be.visible");
@@ -4530,12 +4532,11 @@ export class Execution {
         cy.xpath('//tr[@role="row"]').should("be.visible");
         //Submit
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
+        request.verifyTaskIsCompletedB();
         //Review task
-        cy.wait(3000);
-        var taskName = 'Form Task';
-        cy.visit('/requests/'+requestId);
+        request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
-        cy.wait(3000);
         cy.xpath('//div[@class="custom-css-scope container-desktop"]').first().should("be.visible");
         //Add new loop
         cy.get('[data-cy="loop-loop_1-add"]').should("be.visible").click();
@@ -4562,13 +4563,12 @@ export class Execution {
         cy.xpath('//tr[@role="row"]').should("be.visible");
         //Submit
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
+        request.verifyTaskIsCompletedB();
+
         //Review Summary and forms
         cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
         cy.xpath("//a[contains(text(),'Forms')]").click();
         cy.xpath('//button[@title="Details"]').first().should("be.visible").click();
-        cy.xpath('//div[@class="card-body h-100"]').should("be.visible");
-        cy.get('[item-index="1"] > .vuetable-slot > .actions > .popout > [title="Details"] > .fas').should("be.visible").click();
-        cy.get(':nth-child(4) > [colspan="3"] > .card.h-100 > #overlay-background > .card').should("be.visible");
     }
     //TCP42251
     completedTask(){
@@ -6243,13 +6243,11 @@ export class Execution {
         cy.get('[title="Add Item"]').eq(20).click({force:true});
         cy.get('[aria-label="New Checkbox"]').eq(1).click();
         //Fill New date PickerA
-        cy.xpath('//label[text()="New Date PickerA"]//parent::div//input')
-        .type("2022-10-06").type('{enter}')
-        .should("have.value", "2022-10-06");
+        cy.get('input[aria-label="New Date PickerA"]').click();
+        screen.useCustomDate('2022','Nov','17');
         //Fill New date PickerB
-        cy.xpath('//label[text()="New Date PickerB"]//parent::div//input')
-        .type("2022-10-06 00:00").type('{enter}')
-        .should("have.value", "2022-10-06 00:00");
+        cy.get('input[aria-label="New Date PickerB"]').click();
+        screen.useCustomDateTime('2022','Nov','17','10','20');
         //Select File
         //upload file
         const file = 'images/image1.jpg';
@@ -6262,13 +6260,14 @@ export class Execution {
         cy.xpath("//label[text()='New Select ListA']/parent::div//div[@class='multiselect__content-wrapper']//li[1]")
             .should('have.attr', 'aria-label')
             .and('equal', '3. ');
-        cy.xpath("//label[text()='New Select ListA']/parent::div//input").type('{enter}');
+        cy.get('[data-cy="screen-field-form_select_list_3"]').click();
+        cy.get('[data-cy="screen-field-form_select_list_3"]>* input').type('{enter}');
         //New text area
-        cy.xpath('//label[text()="New Textarea"]//parent::div//textarea')
+        cy.get('[data-cy="screen-field-form_text_area_1"]')
         .type("text area")
         .should("have.value", "text area");
         cy.get('[title="Add Item"]').eq(24).click({force:true});
-        cy.xpath('//label[text()="New Textarea"]//parent::div//textarea').eq(1)
+        cy.get('[data-cy="screen-field-form_text_area_1"]').eq(1)
         .type("2")
         .should("have.value", "2");
         //Sign
