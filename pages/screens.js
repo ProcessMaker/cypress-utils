@@ -1122,7 +1122,7 @@ export class Screens {
             .should('be.visible').click();
         cy.xpath(Selectors.selectTheVaraible.replace('name', resource)).click();
         cy.xpath(Selectors.clickonOutput).click();
-        cy.xpath("//label[text()='Output Variable Property Mapping']/parent::div//button[text()[normalize-space()='+ Property']]")
+        cy.xpath("//label[text()='Output Variable Property Mapping']/parent::div//button[text()[normalize-space()='+ Property']")
             .click();
         cy.xpath("//input[@type='text'][@name='value']").should('be.visible').type(output.source);
         cy.xpath("//input[@type='text'][@name='key']").should('be.visible').type(output.variable);
@@ -1262,4 +1262,46 @@ export class Screens {
 		if(response)
 			cy.xpath('//div[text()[normalize-space()="'+response+'"]]').should('be.visible');
 	}
+
+	importScreenAPI(path, mode = 'update') {
+		let formData = new FormData();
+        let win;
+        return cy.fixture(path, null)
+            .then(Cypress.Blob.arrayBufferToBlob)
+            .then(fileBlob => {
+                formData.append('file', fileBlob);
+                return cy.window();
+            })
+            .then(cyWin => {
+                win = cyWin;
+            })
+            .then(response => {
+                const options = {};
+                const optionsBlob = new Blob([JSON.stringify(options)], {
+                    type: 'application/json'
+                });
+                formData.append('options', optionsBlob);
+                return win.ProcessMaker.apiClient.post('/screens/import', formData);
+            })
+            .then(response => {
+                return response.data;
+            });
+    }
+
+	getScreenByIdAPI(screenID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/screens/'+screenID).then(response => {
+				//cy.log("screenData="+JSON.stringify(response.data));
+                return response.data;
+            });
+        });
+    }
+
+	deleteScreenAPI(screenID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/screens/'+screenID).then(response => {
+                return "screen " + screenID + "was deleted";
+            });
+        });
+    }
 }
