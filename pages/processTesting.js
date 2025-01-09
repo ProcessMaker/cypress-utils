@@ -39,7 +39,7 @@ export class ProcessTesting {
         cy.iframe(iframeSelector).xpath(selectors.containerSP).click({force:true});
         cy.iframe(iframeSelector).find(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
         cy.iframe(iframeSelector).xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
-        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}', {delay: 1000});
+        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}', {force:true, delay: 1000});
     }
 
     //Manual Resume Point from Modeler
