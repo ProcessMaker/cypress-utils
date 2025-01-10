@@ -6546,12 +6546,12 @@ export class Execution {
         cy.xpath("//button[text()='Ok']").should("be.visible").click();
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
         request.verifyTaskIsCompletedB();
-        
+
         //Step 2: Go to review request
         request.openRequestById(requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
-        
+
         //Step 3: Review task form
         cy.get('[data-cy="edit-row"]').first().should("be.visible");
         cy.get('[data-cy="edit-row"]').first().click();
@@ -6572,23 +6572,16 @@ export class Execution {
         cy.xpath("//input[@type='text'][@name='form_input_2']").first().should("be.visible").type('2023-24-02{enter}').should('have.value','2023-24-02');
         cy.xpath("//input[@type='text'][@name='form_input_3']").first().should("be.visible").type('2023-24-02 01:22{enter}');
         //Inside Loop
-        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input').first().type('2022-12-09{enter}').should('have.value','2022-12-09');
+        cy.xpath('//*[@data-cy="screen-field-form_date_picker_3"]//input').first().click();
+        screen.useCustomDate("2022", "Dec", "19");
         cy.xpath('(//button[@title="Add Item"])[1]').should("be.visible").click();
         cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').type('2022-12-30{enter}').should('have.value','2022-12-30');
-        cy.xpath('//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input').first().should("be.visible").type('2022-12-30 16:14{enter}');
-        cy.xpath('(//button[@title="Add Item"])[2]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_4"]//input)[2]').should("be.visible").type('2022-12-30 16:40{enter}');
-        cy.xpath("(//input[@type='text'][@name='form_input_4'])[1]").type('1993-12-20{enter}').should('have.value','1993-12-20');
-        cy.xpath('(//button[@title="Add Item"])[3]').should("be.visible").click();
-        cy.xpath("(//input[@type='text'][@name='form_input_4'])[2]").type('1993-12-16{enter}').should('have.value','1993-12-16');
-        cy.xpath('(//button[@title="Add Item"])[4]').should("be.visible").click();
-        cy.xpath("(//input[@type='text'][@name='form_input_5'])[1]").type('1992-09-20 13:12{enter}');
-        cy.xpath('(//button[@title="Add Item"])[4]').should("be.visible").click();
-        cy.xpath("(//input[@type='text'][@name='form_input_5'])[2]").type('1992-10-30 15:13{enter}');
+        cy.xpath('//*[@data-cy="screen-field-form_date_picker_4"]//input').first().click();
+        screen.useCustomDateTime("2022","Dec","30","16","14");
         cy.xpath("//button[text()='Ok']").should("be.visible").click();
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
         request.verifyTaskIsCompletedB();
-        
+
         //Review Summary
         cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
         //Review Forms tab
