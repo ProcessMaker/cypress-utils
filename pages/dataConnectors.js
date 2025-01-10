@@ -346,4 +346,44 @@ export class Dataconnectors {
     resourceSaveBtn() {
         cy.xpath(selectors.resourceSaveBtnDC).scrollIntoView().click();
     }
+
+    getDataSourceByNameAPI(dataSourceName){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/data_sources', { params: { filter: dataSourceName} }).then(response => {
+                const dc = response.data.data.find(dc => dc.name === dataSourceName);
+                //console.log('DC-id: ', dc.id);
+                // return cy.wrap(user);
+                return dc;
+            });
+        });
+    }
+
+    createDataSourceAPI(payload, ignoreTakenError){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.post('/data_sources', payload)
+            .then(response => {
+                console.log("Created DC: ", response.data);
+                // return cy.wrap(response.data.data);
+                return response.data.data;
+            })
+            .catch(err => {
+                if (
+                    ignoreTakenError && 
+                    err.response.data.message.toLowerCase() === 'the name has already been taken.') {
+                        return this.getDataSourceByNameAPI(payload.name);
+                } else {
+                    throw err;
+                }
+            });
+        });
+    }
+
+    deleteDataSourceAPI(dc_id){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/data_sources/'+dc_id).then(response => {
+                console.log(JSON.stringify(response));
+                return "data source: " + dc_id + " was deleted";
+            });
+        });
+    }
 }
