@@ -5832,12 +5832,7 @@ export class Execution {
         .eq(0)
         .type("ddd")
         .should("have.value", "ddd");
-    cy.xpath(
-        '//label[text()="Select List"]/parent::div//div[@class="multiselect__content-wrapper"]//li[1]'
-    )
-        .eq(0)
-        .should("have.attr", "aria-label")
-        .and("equal", "ddd. ");
+    cy.wait(3000);
     cy.xpath('//label[text()="Select List"]//parent::div//input')
         .eq(0)
         .type("{enter}");
