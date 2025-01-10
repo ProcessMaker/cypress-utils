@@ -36,18 +36,18 @@ export class ProcessTesting {
     selectStartingPointFromModeler(startingPoint, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         cy.iframe(iframeSelector).xpath(selectors.labelSP).should('be.visible');
-        cy.iframe(iframeSelector).xpath(selectors.containerSP).click();
+        cy.iframe(iframeSelector).xpath(selectors.containerSP).click({force:true});
         cy.iframe(iframeSelector).find(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
         cy.iframe(iframeSelector).xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
-        cy.wait(3000);
-        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}');
+        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}', {force:true, delay: 1000});
     }
 
     //Manual Resume Point from Modeler
-    selectManualResumePointFromModeler(stopPoint, iframeOption = 'a') {
-        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).xpath(selectors.labelMRP).should('be.visible');
-        cy.iframe(iframeSelector).xpath(selectors.containerMRP).click();
+    selectManualResumePointFromModeler(stopPoint, iframeOption = 'a') { 
+        let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB   
+        cy.iframe(iframeSelector).xpath(selectors.labelMRP).should('be.visible');   
+        cy.iframe(iframeSelector).xpath(selectors.containerMRP).click({force:true}, {delay: 1000});
+        cy.wait(2000);    
         cy.iframe(iframeSelector).xpath(selectors.inputMRP).type(`{backspace}${stopPoint}`).should('have.value', stopPoint);
         cy.iframe(iframeSelector).xpath(selectors.itemMRP).should('have.attr', 'aria-label').and('equal', `${stopPoint}. `);
         cy.iframe(iframeSelector).xpath(selectors.inputMRP).type('{enter}');
@@ -446,10 +446,12 @@ export class ProcessTesting {
     //Starting point from process configure
     selectStartingPoint(startingPoint) {
         cy.xpath(selectors.labelSP).should('be.visible');
-        cy.xpath(selectors.containerSP).click();
-        cy.get(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
+        cy.xpath(selectors.containerSP).should('be.visible');
+        cy.xpath(selectors.containerSP).click({force:true});
+        cy.get(selectors.inputSP).type(`{backspace}${startingPoint}`, {delay: 1000}).should('have.value', startingPoint);
         cy.xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
         cy.get(selectors.inputSP).type('{enter}');
+
     }
 
     //Manual Resume Point from process configure
@@ -539,6 +541,7 @@ export class ProcessTesting {
         }
 
         if (startingPoint !== null) {
+            cy.wait(3000);
             this.selectStartingPoint(startingPoint.startingPointOption);
         }
 
