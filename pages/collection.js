@@ -166,7 +166,7 @@ export class Collection {
     deleteCollectionByIdAPI(collectionID){
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.delete('/collections/'+collectionID).then(response => {
-                console.log(JSON.stringify(response));
+                //console.log(JSON.stringify(response));
                 return "collection " + collectionID + " was deleted";
             });
         });
