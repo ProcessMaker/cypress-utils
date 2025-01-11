@@ -91,6 +91,8 @@ export default {
     emailTab: '//a[contains(text(),"Emails")]',
     submitBtn: 'button[aria-label="New Submit"]',
     completedBtn: '//button[text()[normalize-space()="Complete Task"]]',
+    searchInputScenario: '//div[@id="scenarios-edit-tab"]//input[@placeholder="Search"]',
+    selectMenuOptionRowScenario: '//div[@id="scenarios-edit-tab"]//button[@aria-haspopup="menu"]',
 
 
 

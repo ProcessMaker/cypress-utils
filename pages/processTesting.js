@@ -284,23 +284,85 @@ export class ProcessTesting {
         cy.xpath(selectors.editScenarioBtn).click();
     }
 
-    editScenario(scenarioConfig) {
+    editScenario2() {
+        this.selectMenuOptionRowScenario("Edit Scenario");
+    }
+
+    selectMenuOptionRowScenario(nameOption2) {
+        const optionCatXpath2 = `//div[@id="scenarios-edit-tab"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
+        //cy.get('//*[@id="row-222"]/td[4]').first().trigger("mouseover", { force: true });
+        cy.xpath(optionCatXpath2).should("be.visible").first().click();
+    }
+
+    searchScenarioAndSelectOptions(
+        nameScenario,
+        option2 = "config"
+    ) {
+        
+        {
+            cy.xpath(selectors.searchInputScenario).type(`${nameScenario}{enter}`).should("have.value", nameScenario);
+            //cy.get('[id="element-0-3"]').type('{enter}');
+            cy.wait(3000);
+
+            cy.xpath(selectors.selectMenuOptionRowScenario).should("be.visible");
+            cy.xpath(selectors.selectMenuOptionRowScenario).first().should('be.visible');
+            cy.wait(3000);
+            cy.xpath(selectors.selectMenuOptionRowScenario).first().click();
+            
+        }
+        switch (option2) {
+            case "editScenario":
+                this.editScenario2();
+                break;
+            case "deleteSenario":
+                this.deleteScenario();
+                break;
+        }
+    }
+
+
+    editScenario(scenarioConfig = {}) {
         this.clickOnEditScenario();
-        const { editName, editDescription, editData } = scenarioConfig
-        if (editName !== null) {
-            cy.xpath(selectors.nameScenarioBP).clear().type(editName).should('have.value', editName);
+        
+        if (!scenarioConfig || typeof scenarioConfig !== 'object') {
+            cy.log('Warning: scenarioConfig is not defined or is not an object');
+            return;
         }
-        if (editDescription !== null) {
-            cy.xpath(selectors.editDescription).clear().should('have.value', "")
-                .type(editDescription).should('have.value', editDescription);
+        
+        const { 
+            editName = null, 
+            editDescription = null, 
+            editData = null 
+        } = scenarioConfig;
+        
+        if (editName) {
+            // Cambiamos xpath() por get() para selectores CSS
+            cy.get('[data-test="name"]')  // o el selector CSS correcto
+                .should('be.visible')
+                .clear()
+                .type(editName, { force: true })
+                .should('have.value', editName);
         }
-        if (editData !== null) {
-            cy.get('[class="active-line-number line-numbers lh-odd"]').should('be.visible');
-            this.clearDataField()
+    
+        if (editDescription) {
+            // Cambiamos xpath() por get() para selectores CSS
+            cy.get('[data-test="description"]')  // o el selector CSS correcto
+                .should('be.visible')
+                .clear()
+                .type(editDescription, { force: true })
+                .should('have.value', editDescription);
+        }
+    
+        if (editData) {
+            cy.get('[class="active-line-number line-numbers lh-odd"]')
+                .should('be.visible');
+            this.clearDataField();
             this.addDataInScenario(editData.data);
         }
-        cy.xpath(selectors.saveScenarioBPBtn).click()
-        cy.get('.alert-wrapper > .alert').should('be.visible')
+    
+        // Cambiamos xpath() por get() si es un selector CSS
+        cy.get('[data-test="save-scenario-btn"]').click();  // o el selector correcto
+        cy.get('.alert-wrapper > .alert').should('be.visible');
     }
 
 
