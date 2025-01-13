@@ -383,7 +383,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42264(requestID){
-        cy.xpath('//h4').should('be.visible');
+        //Step 1: Complete the Form 1
         cy.xpath('//div[@data-cy="screen-field-Portrait-bust-Parmenides"]/img').should('be.visible');
         cy.xpath('//strong[text()="Bold"]').should('be.visible');
         cy.xpath('//strong[text()="Italic"]').should('be.visible');
@@ -397,17 +397,22 @@ export class Execution {
         cy.xpath('//ol/li/em/strong[text()="third"]').should('be.visible');
         cy.xpath('//p/span').should('contain.text', "Sociology is the study of human social relationships and institutions");
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
-        navHelper.navigateToTasksPage();
+        request.verifyTaskIsCompletedB();
+
+        //Step 2: Complete The send Email and PDF
         navHelper.navigateToRequestsPage();
         cy.visit('/requests/'+requestID+'/files');
         var requestPDF = '[title="View"]';
         var requestXpath = "//a[contains(text(),'Manual Task')]";
         request.waitUntilElementIsVisible('selector', requestPDF);
+
+        //Step 3: Open The Manual task
         cy.visit('/requests/'+requestID);
-        cy.xpath( requestXpath).should('be.visible');
-        cy.xpath('//h4').should('be.visible');
-        cy.xpath( requestXpath).should('be.visible').click();
+        cy.xpath(requestXpath).should('be.visible');
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+
+        //Step 4: Complete The Manual task
         cy.xpath('//strong[text()="Bold"]').should('be.visible');
         cy.xpath('//strong[text()="Italic"]').should('be.visible');
         cy.xpath('//strong[text()="underlined"]').should('be.visible');
@@ -420,8 +425,9 @@ export class Execution {
         cy.xpath('//ol/li/em/strong[text()="third"]').should('be.visible');
         cy.xpath('//p/span').should('contain.text', "Sociology is the study of human social relationships and institutions");
         cy.xpath('//button[contains(text(), "Complete Task")] ').click();
+        request.verifyTaskIsCompletedB();
+
         cy.visit('/requests/'+requestID);
-        request.waitUntilTextcontainText('selector','varHeader','Completed');
         cy.xpath("//div[contains(text(),'has completed the task Form Task')]").should('be.visible');
         cy.xpath("//div[contains(text(),'has completed the task Send Email')]").should('be.visible');
         cy.xpath("//div[contains(text(),'has completed the task PDF')]").should('be.visible');
@@ -1277,7 +1283,7 @@ export class Execution {
         cy.get('input[aria-label="New Date Picker"]').type('{enter}');
         cy.get('input[name="form_input_1"]').click();
         cy.get('button[aria-label="New Submit"]').click();
-         
+
         //Complete Form Task Loop
         cy.get('[data-cy="screen-field-form_input_1"]').type('2',{delay:50});
         cy.get('button[aria-label="New Submit"]').click();
@@ -1643,12 +1649,14 @@ export class Execution {
     }
     actionsTCP4_2314 (inputone, inputtwo,inputthree){
         //complete recordlist
+        cy.xpath("//button[contains(text(),'Add')]").should('be.visible');
         cy.xpath("//button[contains(text(),'Add')]").click();
         cy.get('[class = modal-content]').should('be.visible');
         cy.get('[data-cy="screen-field-form_input_1"]').first().type(inputone).should('have.value',inputone);
         cy.get('[data-cy="screen-field-form_input_2"]').first().type(inputtwo).should('have.value',inputtwo);
         cy.get('[data-cy="screen-field-form_input_3"]').first().type(inputthree).should('have.value',inputthree);
         cy.xpath("//button[text()='Ok']").should('be.visible').click();
+        cy.wait(2000);
         cy.xpath("//div[text()='line1']").should('be.visible');
     }
     otherActionsAndSubmitTCP4_2314 (inputoneedit){
@@ -1659,6 +1667,7 @@ export class Execution {
         cy.get('div[name="lineInput"] > div > div > div > div > div  > input[name="form_input_1"]').eq(1).type(inputoneedit);
         cy.xpath("//button[text()='Save']").should('be.visible').click();
         cy.get('.form-group > .btn').click();
+        request.verifyTaskIsCompletedB();
     }
 
     async scenario1OfTCP42414() {
@@ -2201,7 +2210,7 @@ export class Execution {
         });
     }
 
-    async actionsOfTCP2305(yearVar,monthVar){
+    actionsOfTCP2305(yearVar,monthVar){
         cy.get('input[aria-label="New Date Picker 1"]').should('be.visible');
         //Step 1: Fill "New Date Picker 1" field
         cy.get('input[aria-label="New Date Picker 1"]').click();
@@ -2301,7 +2310,7 @@ export class Execution {
         cy.get('button').contains('Ok').click();
 
         cy.xpath('(//button[contains(text(),"New Submit")])[2]').click();
-
+        request.verifyTaskIsCompletedB();
     }
 
     assertionsOfTCP2305(){
@@ -2456,7 +2465,7 @@ export class Execution {
 
         cy.xpath('//td[contains(text(),"loopCounter")]/following-sibling::td[contains(text(),"1")]').should('exist');
         cy.xpath('//td[contains(text(),"form_input_1")]/following-sibling::td[contains(text(),"test 1")]').should('exist');
-        
+
 
         //Validate second subprocess
         //open subprocess
@@ -2512,7 +2521,7 @@ export class Execution {
 
         //Verify that 2 threads are displayed
         cy.get('div[class="tab-content"] *> ul > li > div > i').should('have.length',3);
-        
+
         //Verify the process name according to Sub process
         cy.get('div[class="tab-content"] *> ul > li > div > a').eq(0).should('have.contain',subprocessName);
         cy.get('div[class="tab-content"] *> ul > li > div > a').eq(1).should('have.contain',subprocessName);
@@ -2629,8 +2638,8 @@ export class Execution {
 
         cy.xpath('//td[contains(text(),"decimal")]/following-sibling::td[contains(text(),"1.1")]').should('exist');
         cy.xpath('//td[contains(text(),"integer")]/following-sibling::td[contains(text(),"1")]').should('exist');
-        
-        
+
+
         // //Validate the first subprocess
         // //open subprocess
         // cy.get('div[class="card"] > ul > li > div > a').eq(0).click();
@@ -2854,56 +2863,69 @@ export class Execution {
 }
 //////////////////////
 
-    async verifyRichTextTCP42310(){
-        cy.wait(5000);
-        request.openNewRequest("Verify Rich Text in Four Different Type of Screen");
-        cy.wait(5000);
-        cy.get('.col-2 > .btn').click();
-        cy.wait(5000);
-        cy.get('tr > :nth-child(2) > a').click();
-        cy.wait(5000);
+    verifyRichTextTCP42310(requestId){
+        //Step 1: Complete the form 1
+        cy.get('[data-cy="screen-field-input"]').should('be.visible');
         cy.get('[data-cy="screen-field-input"]').type('test1');
         cy.get(':nth-child(3) > .form-group > :nth-child(1) > div > p').should('have.text','test1');
-        cy.get('.form-group > .btn').click();
-        cy.wait(5000);
-        cy.get('[item-index="0"] > :nth-child(3) > a').click();
-        cy.get('#pending > .data-table > div > .vuetable > .vuetable-body > tr > :nth-child(2) > a').click();
+        cy.xpath('//*[contains(text(),"New Submit")]').first().click();
+        request.verifyTaskIsCompletedB();
+
+        //Step 2: Complete the manual task 1
+        cy.visit('/requests/' + requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
         cy.get(':nth-child(3) > .form-group > :nth-child(1) > div > p').should('have.text','test1');
         cy.get('.card-footer > .btn').click();
-        cy.get('[item-index="0"] > :nth-child(3) > a').click();
-        cy.get('#pending > .data-table > div > .vuetable > .vuetable-body > tr > :nth-child(2) > a').click();
+        request.verifyTaskIsCompletedB();
+
+        //Step 3: Complete the conversational form
+        cy.visit('/requests/' + requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
         cy.get(':nth-child(3) > .message > div > span > p').should('have.text','test1');
-        cy.get('.d-block > .btn').click();
+        cy.xpath('//button[@aria-label="Submit"]').click();
+        request.verifyTaskIsCompletedB();
     }
 
     verifySelectListValuesTCP42325(requestId){
-        //select list
+        //Step 1: Select list
+        cy.xpath("//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']").should('be.visible');
         cy.xpath("//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']").click();
-        cy.xpath("//label[text()='New Select List']/parent::div//input").type("Uno").type('{enter}');
+        cy.xpath("//label[text()='New Select List']/parent::div//input").type("Uno");
+        cy.wait(2000);
+        cy.xpath("//label[text()='New Select List']/parent::div//input").type('{enter}');
         cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Uno');
-        cy.xpath("//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']").click();
-        cy.xpath("//label[text()='New Select List']/parent::div//input").type("Dos").type('{enter}');
-        cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Dos');
-        cy.xpath("//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']").click();
-        cy.xpath("//label[text()='New Select List']/parent::div//input").type("Tres").type('{enter}');
-        cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Tres');
-        //Submit
-        cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
 
-        //Complete task
+        cy.xpath("//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']").click();
+        cy.xpath("//label[text()='New Select List']/parent::div//input").type("Dos");
+        cy.wait(2000);
+        cy.xpath("//label[text()='New Select List']/parent::div//input").type('{enter}');
+        cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Dos');
+
+        cy.xpath("//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']").click();
+        cy.xpath("//label[text()='New Select List']/parent::div//input").type("Tres");
+        cy.wait(2000);
+        cy.xpath("//label[text()='New Select List']/parent::div//input").type('{enter}');
+        cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Tres');
+
+        //Step 2: Submit
+        cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
+        request.verifyTaskIsCompletedB();
+
+        //Step 3: Open the request
         cy.visit('/requests/' + requestId);
-        cy.reload();
-        request.waitUntilElementIsVisible('selector','#pending > div > div > table > tbody > tr > td:nth-child(2) > a');
-        let taskName = "Form Task";
-        request.openTaskByTaskName(taskName);
-        request.waitUntilElementIsVisible('selector','[data-cy="screen-field-form_select_list_1.content"]');
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+
+        //Step 4: Complete task 2
         cy.get('[data-cy="screen-field-form_select_list_1.content"]').should('have.value', 'Tres');
         cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
+        request.verifyTaskIsCompletedB();
 
         //Review Summary
         cy.get('[id="summary-tab"]').should('be.visible').click();
         cy.get('[id="completed-tab"]').should('be.visible').click();
-
     }
     actionsTCP42345(example){
         //Step 1: Complete the form 1 by WE
@@ -3548,61 +3570,68 @@ export class Execution {
         cy.get('[name="date"]').type('2022-07-07').should('be.visible');
         cy.get('[name="email"]').type('automation1@endtest-mail.io').should('be.visible');
         cy.get('[name="Verify Validation Rules with Loop and Nested Screen in Nested Screen"] > :nth-child(2) > .form-group > .btn').should('be.visible').click();
-        //Log In
-        login.navigateToUrl();
-        login.login();
-        //Open request
-        var processName = "TCP4-2294 Verify Validation Rules with Loop and Nested Screen";
-        var taskName = 'Form Task';
-        request.openRequestByName(processName);
-        request.openTaskByTaskName(taskName);
-        //Review Data and Add a Loop
-        cy.get('[name="accepted"]').should('be.visible').should('have.value', 'yes');
-        cy.get('[name="maxlength"]').should('be.visible').should('have.value', '1234567');
-        cy.get('[name="afterdate"]').should('be.visible').should('have.value', '2022-01-20');
-        cy.get('[name="minlength"]').should('be.visible').should('have.value', '12345');
-        cy.get('[name="afterorequaltodate"]').should('be.visible').should('have.value', '2022-01-15');
-        cy.get('[name="regex"]').should('be.visible').should('have.value', '2022-01-31');
-        cy.get('[name="alpha"]').should('be.visible').should('have.value', 'ProcessMaker');
-        cy.get('[name="required"]').should('be.visible').should('have.value', 'ProcessMaker');
-        cy.get('[name="alphanumeric"]').should('be.visible').should('have.value', 'Process123');
-        cy.get('[name="requiredif"]').should('be.visible').should('have.value', 'ProcessMaker');
-        cy.get('[name="beforedate"]').should('be.visible').should('have.value', '2022-01-01');
-        cy.get('[name="requiredunless"]').should('be.visible').should('have.value', 'ProcessMaker');
-        cy.get('[name="beforeorequaldate"]').should('be.visible').should('have.value', '2022-01-15');
-        cy.get('[name="same"]').should('be.visible').should('have.value', 'ProcessMaker');
-        cy.get('[name="betweenminmax"]').should('be.visible').should('have.value', '5');
-        cy.get('[name="url"]').should('be.visible').should('have.value', 'https://qualitlabs-qa.processmaker.net/');
-        cy.get('[name="date"]').should('be.visible').should('have.value', '2022-07-07');
-        cy.get('[name="email"]').should('be.visible').should('have.value', 'automation1@endtest-mail.io');
-        //Add a loop
-        cy.get('[data-cy="loop-loop-add"]').should('be.visible').click();
-        cy.get('[name="accepted"]').eq(1).type('yes').should('be.visible');
-        cy.get('[name="maxlength"]').eq(1).type('1234567').should('be.visible');
-        cy.get('[name="afterdate"]').eq(1).type('2022-01-20').should('be.visible');
-        cy.get('[name="minlength"]').eq(1).type('12345').should('be.visible');
-        cy.get('[name="afterorequaltodate"]').eq(1).type('2022-01-15').should('be.visible');
-        cy.get('[name="regex"]').eq(1).type('2022-01-31').should('be.visible');
-        cy.get('[name="alpha"]').eq(1).type('ProcessMaker').should('be.visible');
-        cy.get('[name="required"]').eq(1).type('ProcessMaker').should('be.visible');
-        cy.get('[name="alphanumeric"]').eq(1).type('Process123').should('be.visible');
-        cy.get('[name="requiredif"]').eq(1).type('ProcessMaker').should('be.visible');
-        cy.get('[name="beforedate"]').eq(1).type('2022-01-01').should('be.visible');
-        cy.get('[name="requiredunless"]').eq(1).type('ProcessMaker').should('be.visible');
-        cy.get('[name="beforeorequaldate"]').eq(1).type('2022-01-15').should('be.visible');
-        cy.get('[name="same"]').eq(1).type('ProcessMaker').should('be.visible');
-        cy.get('[name="betweenminmax"]').eq(1).type('5').should('be.visible');
-        cy.get('[name="url"]').eq(1).type('https://qualitlabs-qa.processmaker.net/').should('be.visible');
-        cy.get('[name="date"]').eq(1).type('2022-07-07').should('be.visible');
-        cy.get('[name="email"]').eq(1).type('automation1@endtest-mail.io').should('be.visible');
-        cy.get('[name="Verify Validation Rules with Loop and Nested Screen in Nested Screen"] > :nth-child(2) > .form-group > .btn').should('be.visible').click();
-        cy.wait(2000);
-        cy.get('[class="flex-grow-1"]').eq(3).should('be.visible');
-        cy.get('[class="flex-grow-1"]').eq(2).should('be.visible');
-        cy.get('[id="forms-tab"]').should('be.visible').click();
-        cy.get('[title="Details"]').should('be.visible').click();
-        cy.reload();
-        cy.contains('An Anonymous User started this request from a web entry').scrollIntoView();
+
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            //Step 7: login
+            login.navigateToUrl();
+            login.login();
+
+            //Step 7: Open the Second Task
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+            
+            //Review Data and Add a Loop
+            cy.get('[name="accepted"]').should('be.visible').should('have.value', 'yes');
+            cy.get('[name="maxlength"]').should('be.visible').should('have.value', '1234567');
+            cy.get('[name="afterdate"]').should('be.visible').should('have.value', '2022-01-20');
+            cy.get('[name="minlength"]').should('be.visible').should('have.value', '12345');
+            cy.get('[name="afterorequaltodate"]').should('be.visible').should('have.value', '2022-01-15');
+            cy.get('[name="regex"]').should('be.visible').should('have.value', '2022-01-31');
+            cy.get('[name="alpha"]').should('be.visible').should('have.value', 'ProcessMaker');
+            cy.get('[name="required"]').should('be.visible').should('have.value', 'ProcessMaker');
+            cy.get('[name="alphanumeric"]').should('be.visible').should('have.value', 'Process123');
+            cy.get('[name="requiredif"]').should('be.visible').should('have.value', 'ProcessMaker');
+            cy.get('[name="beforedate"]').should('be.visible').should('have.value', '2022-01-01');
+            cy.get('[name="requiredunless"]').should('be.visible').should('have.value', 'ProcessMaker');
+            cy.get('[name="beforeorequaldate"]').should('be.visible').should('have.value', '2022-01-15');
+            cy.get('[name="same"]').should('be.visible').should('have.value', 'ProcessMaker');
+            cy.get('[name="betweenminmax"]').should('be.visible').should('have.value', '5');
+            cy.get('[name="url"]').should('be.visible').should('have.value', 'https://qualitlabs-qa.processmaker.net/');
+            cy.get('[name="date"]').should('be.visible').should('have.value', '2022-07-07');
+            cy.get('[name="email"]').should('be.visible').should('have.value', 'automation1@endtest-mail.io');
+            //Add a loop
+            cy.get('[data-cy="loop-loop-add"]').should('be.visible').click();
+            cy.get('[name="accepted"]').eq(1).type('yes').should('be.visible');
+            cy.get('[name="maxlength"]').eq(1).type('1234567').should('be.visible');
+            cy.get('[name="afterdate"]').eq(1).type('2022-01-20').should('be.visible');
+            cy.get('[name="minlength"]').eq(1).type('12345').should('be.visible');
+            cy.get('[name="afterorequaltodate"]').eq(1).type('2022-01-15').should('be.visible');
+            cy.get('[name="regex"]').eq(1).type('2022-01-31').should('be.visible');
+            cy.get('[name="alpha"]').eq(1).type('ProcessMaker').should('be.visible');
+            cy.get('[name="required"]').eq(1).type('ProcessMaker').should('be.visible');
+            cy.get('[name="alphanumeric"]').eq(1).type('Process123').should('be.visible');
+            cy.get('[name="requiredif"]').eq(1).type('ProcessMaker').should('be.visible');
+            cy.get('[name="beforedate"]').eq(1).type('2022-01-01').should('be.visible');
+            cy.get('[name="requiredunless"]').eq(1).type('ProcessMaker').should('be.visible');
+            cy.get('[name="beforeorequaldate"]').eq(1).type('2022-01-15').should('be.visible');
+            cy.get('[name="same"]').eq(1).type('ProcessMaker').should('be.visible');
+            cy.get('[name="betweenminmax"]').eq(1).type('5').should('be.visible');
+            cy.get('[name="url"]').eq(1).type('https://qualitlabs-qa.processmaker.net/').should('be.visible');
+            cy.get('[name="date"]').eq(1).type('2022-07-07').should('be.visible');
+            cy.get('[name="email"]').eq(1).type('automation1@endtest-mail.io').should('be.visible');
+            cy.get('[name="Verify Validation Rules with Loop and Nested Screen in Nested Screen"] > :nth-child(2) > .form-group > .btn').click();
+            request.verifyTaskIsCompletedB();
+            cy.wait(2000);
+            cy.get('[class="flex-grow-1"]').eq(3).should('be.visible');
+            cy.get('[class="flex-grow-1"]').eq(2).should('be.visible');
+            cy.get('[id="forms-tab"]').should('be.visible').click();
+            cy.get('[title="Details"]').should('be.visible').click();
+            cy.reload();
+            cy.contains('An Anonymous User started this request from a web entry').scrollIntoView();
+        });
     }
     async actionsOfTCP42298(processName){
         cy.get('[name="form_input_1"]').should('be.visible').type('test_2298');
@@ -3685,7 +3714,7 @@ export class Execution {
         cy.wait(2000);
     }
 
-    async completeFormTCP42292(requestId){
+    completeFormTCP42292(requestId){
         //First section
         cy.get('[name="fullName"]').should('be.visible').type('test case_1').should('have.value','test case_1');
         cy.get('[style="color: #000000;"]').should('be.visible');
@@ -3745,15 +3774,13 @@ export class Execution {
         cy.get('[name="form_input_5"]').eq(1).type('test_case_2').should('have.value','test_case_2');
         cy.get('.signature > canvas').eq(1).click();
         cy.get(':nth-child(2) > .form-group > .btn').click();
-        cy.wait(3000);
+        request.verifyTaskIsCompletedB();
 
         ///Review task form 2
-        //cy.get('[class="breadcrumb-item active"]').should('be.visible');
-        //cy.get('[title="Open Task"]').first().click();
         var taskName = 'Form Task';
         cy.visit('/requests/'+requestId);
         request.clickOnTaskName(1, 1);
-        cy.contains('New Submit').scrollIntoView();
+        
         //First section
         cy.get('[name="fullName"]').should('be.visible').should('have.value','test case_1');
         cy.get('[style="color: #000000;"]').should('be.visible');
@@ -3798,8 +3825,9 @@ export class Execution {
         cy.get(':nth-child(2) > .form-group > .btn').click();
         cy.wait(2000);
     }
-    async completeFormTCP42286 (){
+    completeFormTCP42286 (requestId){
         //first textarea
+        cy.xpath('//*[contains(text(),"sin loop")]').first().should('be.visible');
         cy.get('[title="Bold"]').first().click();
         cy.get('[title="Italic"]').first().click();
         cy.get('[class="tox-tbtn tox-split-button__chevron"]').first().click();
@@ -3807,7 +3835,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').first().then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('strong').type('This is a test to verify textarea control');
-        })
+        });
         //second textarea
         cy.get('[title="More..."]').first().click();
         cy.get('[class="tox-toolbar__overflow"]').should('be.visible');
@@ -3819,7 +3847,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(1).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //textarea inside a loop 1
         cy.get('[data-cy="loop-loop_1-add"]').should('be.visible').click();
         cy.get('[title="More..."]').eq(1).click();
@@ -3832,7 +3860,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(2).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //textarea inside a loop 2
         cy.get('[data-cy="loop-loop_5-add"]').click();
         cy.get('[name="loop_5"]').should('be.visible');
@@ -3847,7 +3875,8 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(3).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('li').type('This is a test to verify textarea control');
-        })
+        });
+        cy.wait(5000);
         //Add textarea inside a record list
         cy.get('[class="btn btn-primary"]').first().should('be.visible').click();
         cy.get('[class="modal-content"]').first().should('be.visible');
@@ -3862,7 +3891,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(4).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //Add textarea inside a record list first loop
         cy.get('[data-cy="loop-loop_2-add"]').first().should('be.visible').click();
         cy.get('[title="More..."]').eq(4).click();
@@ -3876,7 +3905,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(5).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //Add textarea inside a record list second loop 2
         cy.get('[data-cy="loop-loop_4-add"]').first().should('be.visible').click();
         cy.get('[title="More..."]').eq(5).click();
@@ -3890,61 +3919,65 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(6).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         cy.xpath('//button[text() = "Ok"]').click((err, runnable) => {
             return false
         });
-        cy.get('.form-group > .btn').should('be.visible').click();
-        //Open next form task
-        cy.get('.breadcrumb > .active').should('be.visible');
-        const processName = 'TCP4-2286 process Text Area Rich Text';
-        const taskName = 'Form Task';
-        request.openRequestByName(processName);
-        request.openTaskByTaskName(taskName);
-        //Review first textarea
-        cy.get('[class="tox-edit-area__iframe"]').first().then(($iframe) => {
-            const $body = $iframe.contents().find('body');
-            cy.wrap($body).find('strong').contains('This is a test to verify textarea control');
-        })
-        //Review second textarea
-        cy.get('[class="tox-edit-area__iframe"]').eq(1).then(($iframe) => {
-            const $body = $iframe.contents().find('body');
-            cy.wrap($body).find('p').contains('This is a test to verify textarea control');
-        })
-        //Review textarea inside a loop 1
-        cy.get('[class="tox-edit-area__iframe"]').eq(2).then(($iframe) => {
-            const $body = $iframe.contents().find('body');
-            cy.wrap($body).find('p').contains('This is a test to verify textarea control');
-        })
-        //Review textarea inside a loop 2
-        cy.get('[class="tox-edit-area__iframe"]').eq(3).then(($iframe) => {
-            const $body = $iframe.contents().find('body');
-            cy.wrap($body).find('li').contains('This is a test to verify textarea control');
-        })
-        //Review textarea inside a record list
-        cy.get('[title="Edit"]').click((err, runnable) => {
-            return false
-        });
-        cy.wait(2000);
-        cy.get('[class="tox-edit-area__iframe"]').eq(5).then(($iframe) => {
-            const $body = $iframe.contents().find('body');
-            cy.wrap($body).find('p').contains('This is a test to verify textarea control');
-        })
-        cy.xpath('//button[text() = "Save"]').click((err, runnable) => {
-            return false
-        });
-        cy.get('.form-group > .btn').should('be.visible').click();
-        //Review tab form
-        cy.get('[id="summary-tab"]').should('be.visible');
-        cy.get('[id="forms-tab"]').should('be.visible').click();
-        cy.get('[title="Details"]').first().click();
-        cy.get('[class="card-body h-100"]').should('be.visible');
+        cy.get('[data-cy="table"]>* td').first().should('exist');
+        cy.wait(6000);
+        cy.reload();
+        cy.xpath('//button[contains(text(),"New Submit")]').should('exist');
+        cy.xpath('//button[contains(text(),"New Submit")]').click({force:true});
+        cy.log('fin textarea');
+        cy.wait(6000);
+        request.verifyTaskIsCompletedB();
+
+        //Step 2: Open next form task
+        cy.visit('/requests/'+requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+
+        // //Review first textarea
+        // // cy.get('[class="tox-edit-area__iframe"]').first().then(($iframe) => {
+        // //     const $body = $iframe.contents().find('body');
+        // //     cy.wrap($body).find('strong').contains('This is a test to verify textarea control');
+        // // })
+        // //Review second textarea
+        // cy.get('[class="tox-edit-area__iframe"]').eq(1).then(($iframe) => {
+        //     const $body = $iframe.contents().find('body');
+        //     cy.wrap($body).find('p').contains('This is a test to verify textarea control');
+        // })
+        // //Review textarea inside a loop 1
+        // cy.get('[class="tox-edit-area__iframe"]').eq(2).then(($iframe) => {
+        //     const $body = $iframe.contents().find('body');
+        //     cy.wrap($body).find('p').contains('This is a test to verify textarea control');
+        // })
+        // //Review textarea inside a loop 2
+        // cy.get('[class="tox-edit-area__iframe"]').eq(3).then(($iframe) => {
+        //     const $body = $iframe.contents().find('body');
+        //     cy.wrap($body).find('li').contains('This is a test to verify textarea control');
+        // })
+        // //Review textarea inside a record list
+        // cy.get('[title="Edit"]').click((err, runnable) => {
+        //     return false
+        // });
+        // cy.wait(2000);
+        // cy.get('[class="tox-edit-area__iframe"]').eq(5).then(($iframe) => {
+        //     const $body = $iframe.contents().find('body');
+        //     cy.wrap($body).find('p').contains('This is a test to verify textarea control');
+        // })
+        // cy.xpath('//button[text() = "Save"]').click((err, runnable) => {
+        //     return false
+        // });
+        cy.get('.form-group > .btn').should('exist').click();
+        request.verifyTaskIsCompletedB();
     }
-    async completeFormManualTaskTCP42286 (){
+    completeFormManualTaskTCP42286 (requestId){
         navHelper.navigateToRequestsPage();
         const processName = 'TCP4-2286 process Text Area Rich Text';
         const taskName = 'Form Task';
         const nroButton = '1';
+        navHelper.navigateToRequestsPage();
         request.openNewRequestByNumberStartButton(processName,nroButton);
         request.openTaskByTaskName(taskName);
         //first textarea
@@ -3955,7 +3988,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').first().then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('strong').type('This is a test to verify textarea control');
-        })
+        });
         //second textarea
         cy.get('[title="More..."]').first().click();
         cy.get('[class="tox-toolbar__overflow"]').should('be.visible');
@@ -3967,7 +4000,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(1).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //textarea inside a loop 1
         cy.get('[data-cy="loop-loop_1-add"]').should('be.visible').click();
         cy.get('[title="More..."]').eq(1).click();
@@ -3980,7 +4013,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(2).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //textarea inside a loop 2
         cy.get('[data-cy="loop-loop_5-add"]').click();
         cy.get('[name="loop_5"]').should('be.visible');
@@ -3995,7 +4028,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(3).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('li').type('This is a test to verify textarea control');
-        })
+        });
         //Add textarea inside a record list
         cy.get('[class="btn btn-primary"]').first().should('be.visible').click();
         cy.get('[class="modal-content"]').first().should('be.visible');
@@ -4010,7 +4043,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(4).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //Add textarea inside a record list first loop
         cy.get('[data-cy="loop-loop_2-add"]').first().should('be.visible').click();
         cy.get('[title="More..."]').eq(4).click();
@@ -4024,7 +4057,7 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(5).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         //Add textarea inside a record list second loop 2
         cy.get('[data-cy="loop-loop_4-add"]').first().should('be.visible').click();
         cy.get('[title="More..."]').eq(5).click();
@@ -4038,23 +4071,12 @@ export class Execution {
         cy.get('[class="tox-edit-area__iframe"]').eq(6).then(($iframe) => {
             const $body = $iframe.contents().find('body');
             cy.wrap($body).find('p').type('This is a test to verify textarea control');
-        })
+        });
         cy.xpath('//button[text() = "Ok"]').click((err, runnable) => {
             return false
         });
-        cy.get('.form-group > .btn').should('be.visible').click();
-        //Open next form task
-        cy.get('.breadcrumb > .active').should('be.visible');
-        request.openRequestByName(processName);
-        const taskName1 = 'Manual Task';
-        request.openTaskByTaskName(taskName1);
-        cy.get(':nth-child(1) > #tab-form > .card').should('be.visible');
-        cy.get('.card-footer > .btn').click();
-        //Review tab form
-        cy.get('[id="summary-tab"]').should('be.visible');
-        cy.get('[id="forms-tab"]').should('be.visible').click();
-        cy.get('[title="Details"]').first().click();
-        cy.get('[class="card-body h-100"]').should('be.visible');
+        cy.get('.form-group > .btn').should('exist').click();
+        request.verifyTaskIsCompletedB();
     }
     //TCP4-2309
     putLatestFileAtTopList(){
