@@ -1,4 +1,5 @@
 //import selectors from "#selectors/dataValidation";
+import selectors from "#selectors/admin"
 export class Collection {   
     /**
      * Fills the modal for creating a new collection with the provided data.
@@ -204,4 +205,109 @@ export class Collection {
             });
     }
 
+    /**
+     * This method is responsible for removing all active columns from a collection
+     * @param nameColumnsList: name of the column list to be removed
+     * @return nothing returns
+     */
+    deleteAllActiveColumnsFromCollection(nameColumnsList){
+        cy.xpath(selectors.collectionColumnsTab).click();
+        cy.get('[id="nav-columns"]').should('be.visible').within(()=>{
+            cy.get('.draggable-current').should('be.visible');
+            cy.get('.draggable-available').should('be.visible');
+            nameColumnsList.forEach(element => {
+                this.deleteActiveColumnFromCollection(element);
+            });
+        });
+    }
+    
+    /**
+     * This method is responsible for removing an active columns from a collection
+     * @param nameColumn: name of the column to be removed
+     * @return nothing returns
+     */
+    deleteActiveColumnFromCollection(nameColumn){
+        cy.xpath(selectors.activeColumns_coulumnLinkDelete.replace('nameColumn', nameColumn)).should('be.visible').click();
+        cy.xpath(selectors.activeColumns_coulumnLinkDelete.replace('nameColumn', nameColumn)).should('not.be.visible');
+    }
+
+    /**
+     * This method is responsible for save changes on colecction configuration
+     * @return nothing returns
+     */
+    saveChangesOnConfigCollection(){
+        cy.xpath("//div[@id='nav-columns']//div[@class='d-flex justify-content-end']//button[text()='Save']").should('be.visible').click();
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
+    }
+
+    /**
+     * This method is responsible for reset to default configuration from a collection
+     * @return nothing returns
+     */
+    resetToDefaultColumnsCollection(){
+        cy.xpath(selectors.activeColumns_resetToDefaultBtn).click();
+        cy.xpath("//button[text()='Confirm']").should('be.visible').click();
+    }
+
+    /**
+     * This method is responsible for add a new column in collection configuration
+     * @param label: value to label input
+     * @param field: value to field input
+     * @param format: value to format select list
+     * @return nothing returns
+     */
+    addActiveColumnInCollection(label, field, format){
+        cy.xpath(selectors.activeColumns_addCustomColumnLink).click();
+        cy.xpath(selectors.customColumn_field).should('be.visible');
+        cy.xpath(selectors.customColumn_label).type(label).should('have.value',label);
+        cy.xpath(selectors.customColumn_field).type(field).should('have.value',field);
+        cy.xpath('//legend[text()="Format"]/parent::fieldset//div[@class="multiselect__tags"]').click();
+        cy.xpath('//legend[text()="Format"]/parent::fieldset//input').type(format).type('{enter}');
+        cy.xpath(selectors.customColumn_save).click();
+    }
+
+    /**
+     * Deletes a collection by its name.
+     * @param {string} collectionName - The name of the collection to delete.
+     */
+    deleteCollection(collectionName){
+        cy.xpath(selectors.deleteCollectionBtn.replace('collectionName', collectionName)).click({ force: true });
+        cy.xpath(selectors.confirXPATH).should('be.visible').click();
+    }
+
+    /**
+     * Opens the record view for a specified collection.
+     * @param {string} collectionName - The name of the collection to open.
+     */
+    openRecordCollection(collectionName){
+        cy.xpath(selectors.RecordBtnForGivenCollection.replace('collectionName', collectionName)).click({ force: true });
+    }
+
+    /**
+     * Navigates to the configuration page for a specified collection.
+     * @param {string} collectionName - The name of the collection to configure.
+     */
+    goToConfigCollection(collectionName){
+        cy.xpath(selectors.configCollectionBtn.replace('collectionName', collectionName)).click({ force: true });
+    }
+
+    /**
+     * Searches for a collection by its name and performs an action based on the specified option.
+     * @param {string} collectionName - The name of the collection to search for.
+     * @param {string} [option="edit"] - The action to perform (edit, delete, or config).
+     */
+    searchForCollection(collectionName,option="edit") {
+		cy.get(selectors.RecordsBtn).should('be.visible');
+		cy.get(selectors.searchInputBox).type(collectionName).should('have.value', collectionName);
+		cy.xpath(selectors.searchctrl).click({
+			multiple: true
+		});
+		cy.wait(5000);
+		cy.xpath(selectors.collectionNameInput.replace('collectionName', collectionName)).should('be.visible');
+		switch (option) {
+            case "edit": this.openRecordCollection(collectionName);break;
+            case "delete": this.deleteCollection(collectionName);break;
+            case "config": this.goToConfigCollection(collectionName);break;
+        }
+	}
 }

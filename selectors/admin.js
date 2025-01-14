@@ -144,7 +144,7 @@ export default{
     deleteCollectionBtn: "//span[text()[normalize-space()='collectionName']]//ancestor::tr//button[@title='Delete']",
     collectionColumnsTab:"//a[text()='Columns']",
     collection_configButton:"[title='Configure Collection']",
-    activeColumns_coulumnLinkDelete: "//span[text()='nameColumn']/parent::div/following-sibling::div/a",
+    activeColumns_coulumnLinkDelete: "//div[@id='nav-columns']//span[text()='nameColumn']/parent::div/following-sibling::div/a",
     activeColumns_resetToDefaultBtn: "//text()[contains(.,'Reset to Default')]/ancestor::button[1]",
     activeColumns_addCustomColumnLink: "//div[contains(text(),'Add Custom Column')]/parent::a",
     customColumn_label: "//legend[text()='Label']/parent::fieldset//input",
