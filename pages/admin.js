@@ -1,9 +1,12 @@
 import selectors from "#selectors/admin"
 import promisify from 'cypress-promise'
 import { NavigationHelper } from "#helpers/navigationHelper";
+import { RPA } from "#pages/RPA";
 
 var date = new Date();
 const navHelper = new NavigationHelper();
+const rpa = new RPA();
+
 export class Admin {
 
 	searchForCollection(collectionName,option="edit") {
@@ -1808,9 +1811,7 @@ createIDPIfNotConfigured(serverIDPType){
             createRPAIfNotConfigured(serverRPAType){
                 var ServerRPA = Cypress.env("defaultRPASettings").tenantID;
             
-                cy.get('[data-target="#collapseOne2"]').click();
-                cy.xpath('//div[contains(text(),"Robotic Process Automation")]').should('be.visible');
-                cy.xpath('//div[contains(text(),"Robotic Process Automation")]').click();
+                rpa.clickOnUiPath();
                 cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Tenant ID")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
                     .then(elem => {
                         if(elem.trim() === ServerRPA){
