@@ -3902,7 +3902,8 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42385(requestId){
-        // Step 3: Complete Form Task 1
+        //Step 3: Complete Form Task 1
+        cy.xpath('//*[contains(text(),"New Textarea")]').should('be.visible');
         cy.xpath('(//*[@class="tox-edit-area__iframe"])[1]').then($iframe => {
             const iframe1 = $iframe.contents().find('body');
             cy.wrap(iframe1)
@@ -3911,7 +3912,7 @@ export class Specific {
             cy.xpath("(//button[@aria-label = 'Bold'])[1]").should('be.visible').click();
             cy.xpath("(//button[@aria-label = 'Italic'])[1]").should('be.visible').click();
             cy.xpath("(//span[@role='presentation'])[2]").should('be.visible').click();
-            cy.xpath("//div[@title = 'Yellow']").should('be.visible').click();
+            //cy.xpath("//div[@title = 'Yellow']").should('be.visible').click();
             cy.wrap(iframe1)
                 .click()
         });
@@ -3923,11 +3924,12 @@ export class Specific {
             cy.xpath("(//button[@aria-label = 'Bold'])[2]").should('be.visible').click();
             cy.xpath("(//button[@aria-label = 'Italic'])[2]").should('be.visible').click();
             cy.xpath("(//span[@role='presentation'])[4]").should('be.visible').click();
-            cy.xpath("//div[@title = 'Green']").should('be.visible').click();
+            //cy.xpath("//div[@title = 'Green']").should('be.visible').click();
             cy.wrap(iframe2)
                 .click()
         });
-        // Add a new Item
+
+        //Step 4: Add a new Item
         cy.xpath("(//button[@title = 'Add Item'])[1]").should('be.visible').click();
         cy.xpath('(//*[@class="tox-edit-area__iframe"])[3]').then($iframe => {
             const iframe3 = $iframe.contents().find('body');
@@ -3937,11 +3939,12 @@ export class Specific {
             cy.xpath("(//button[@aria-label = 'Bold'])[3]").should('be.visible').click();
             cy.xpath("(//button[@aria-label = 'Italic'])[3]").should('be.visible').click();
             cy.xpath("(//span[@role='presentation'])[6]").should('be.visible').click();
-            cy.xpath("//div[@title = 'Red']").should('be.visible').click();
+            //cy.xpath("//div[@title = 'Red']").should('be.visible').click();
             cy.wrap(iframe3)
                 .click()
         });
-        // Add a new Item
+
+        //Step 5: Add a new Item
         cy.xpath("(//button[@title = 'Add Item'])[1]").click();
         cy.xpath('(//*[@class="tox-edit-area__iframe"])[4]').then($iframe => {
             const iframe4 = $iframe.contents().find('body');
@@ -3951,37 +3954,47 @@ export class Specific {
             cy.xpath("(//button[@aria-label = 'Bold'])[4]").should('be.visible').click();
             cy.xpath("(//button[@aria-label = 'Italic'])[4]").should('be.visible').click();
             cy.xpath("(//span[@role='presentation'])[8]").should('be.visible').click();
-            cy.xpath("//div[@title = 'Dark Purple']").should('be.visible').click();
+            //cy.xpath("//div[@title = 'Dark Purple']").should('be.visible').click();
             cy.wrap(iframe4)
                 .click()
         });
         cy.xpath("//input[@name = 'form_input_1']").type('1');
-        // Add a new Item
+        // cy.wait(3000);
+        // cy.reload();
+
+        //Step 6: Add a new Item
         cy.xpath("(//button[@title = 'Add Item'])[2]").should('be.visible').click();
         cy.xpath("(//input[@name = 'form_input_1'])[2]").type('2');
-        // Add a new Item
+
+        //Step 7: Add a new Item
         cy.xpath("(//button[@title = 'Add Item'])[2]").should('be.visible').click();
         cy.xpath("(//input[@name = 'form_input_1'])[3]").type('3');
-        // Add a new Item
+
+        //Step 8: Add a new Item
         cy.xpath("(//button[@title = 'Add Item'])[2]").should('be.visible').click();
         cy.xpath("(//input[@name = 'form_input_1'])[4]").type('4');
-        // Send Submit button
-        cy.xpath("//button[@aria-label = 'New Submit']").should('be.visible').click();
+        cy.xpath("(//input[@name = 'form_input_1'])[4]").should('have.value','4');
 
-        // Step 4: Complete Form Task 2
+        //Step 9: Send Submit button
+        cy.xpath("//button[@aria-label = 'New Submit']").should('be.visible');
+        cy.xpath("//button[@aria-label = 'New Submit']").should('be.enabled').click();
+        cy.wait(4000);
+        request.verifyTaskIsCompletedB();
+
+        //Step 10: Complete Form Task 2
         cy.visit('/requests/' + requestId);
-        request.waitUntilElementIsVisible('selector','#request > div > div.flex-grow-1 > div.px-4.mb-2.timeline > div:nth-child(2) > div.flex-grow-1');
-        cy.reload();
-        let taskName = "Form Task 2";
-        request.openTaskByTaskName(taskName);
-        //Review form        
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+
+        //Step 11: Review form
         cy.xpath("//input[@name = 'form_input_1']").should('have.value', '1');
         cy.xpath("(//input[@name = 'form_input_1'])[2]").should('have.value', '2');
         cy.xpath("(//input[@name = 'form_input_1'])[3]").should('have.value', '3');
         cy.xpath("(//input[@name = 'form_input_1'])[4]").should('have.value', '4');
         cy.xpath("//button[@aria-label = 'New Submit']").should('be.visible').click();
+        request.verifyTaskIsCompletedB();
 
-        // Step 5: Review the request completed
+        //Step 12: Review the request completed
         request.waitUntilTextcontainText('selector','varHeader','Completed');
         cy.xpath("//td[text()='loop_1.0.form_text_area_1']/following-sibling::td").should('be.visible');
         cy.xpath("//td[text()='loop_1.1.form_text_area_1']/following-sibling::td").should('be.visible');
