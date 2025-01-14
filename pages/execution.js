@@ -7601,6 +7601,7 @@ export class Execution {
     }
 
     actionsAndAssertionsCorrectValuesTCP42505(){
+        cy.get('[data-cy="screen-field-Accepted"]').should('be.visible');
         this.typeInTextArea('Textarea Accepted','yes');
         this.typeInTextArea('Textarea alpha','alpha');
         this.typeInTextArea('Textarea Alpha-Numeric','alpha123');
@@ -7616,7 +7617,7 @@ export class Execution {
         this.typeInTextArea('Textarea Same Accepted','yes');
         this.typeInTextArea('Textarea URL','https://www.processmaker.com');
         cy.get('button[aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
     }
 
     actionsAndAssertionsIncorrectValuesTCP42505(){
@@ -7684,7 +7685,7 @@ export class Execution {
 
         cy.xpath("//label[text()='Date Pickerthis is a mustache test in label']").should('be.visible');
         cy.xpath("//label[text()='Date Pickerthis is a mustache test in label']//ancestor::div[@data-cy='screen-field-form_date_picker_1']//input").type('11/11/2022' + '{enter}', {force:true}, {delay:2000});
-        
+
         cy.xpath("//label[text()='Date Picker Time this is a mustache test in label']").should('be.visible');
         admin.changeWriteTimeZone(11,11,2022,20,12,timezone_format,'form_date_picker_2');
         cy.xpath("//label[text()='Textarea this is a mustache test in label ']").should('be.visible');
@@ -7696,7 +7697,7 @@ export class Execution {
         cy.xpath('//i[@class="uploader-file-icon"]').should('be.visible');
         cy.wait(2000);
         cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
-        
+
         //Go to review request form task
         request.verifyTaskIsCompleted();
         cy.visit('/requests/'+ requestId);
@@ -7712,28 +7713,28 @@ export class Execution {
         cy.xpath("//label[text()='Checkbox this is a mustache test in label']").should('be.visible');
         cy.xpath("//label[text()='Date Pickerthis is a mustache test in label']").should('be.visible');
         cy.xpath("//label[text()='Date Pickerthis is a mustache test in label']//ancestor::div[@data-cy='screen-field-form_date_picker_1']//input").invoke('val')
-        .then(val=>{    
-          const myVal = val;      
-          expect(myVal).to.contain('2022');
-        })
+            .then(val=>{
+                const myVal = val;
+                expect(myVal).to.contain('2022');
+            })
         cy.xpath("//label[text()='Date Picker Time this is a mustache test in label']").should('be.visible');
         cy.xpath("//label[text()='Date Picker Time this is a mustache test in label']//ancestor::div[@data-cy='screen-field-form_date_picker_2']//input").invoke('val')
-        .then(val=>{    
-          const myVal = val;      
-          expect(myVal).to.contain('2022');
-        })
+            .then(val=>{
+                const myVal = val;
+                expect(myVal).to.contain('2022');
+            })
         cy.xpath("//label[text()='Date Picker Time this is a mustache test in label']//ancestor::div[@data-cy='screen-field-form_date_picker_2']//input").invoke('val')
-        .then(val=>{    
-          const myVal = val;      
-          expect(myVal).to.contain('20:12');
-        })
+            .then(val=>{
+                const myVal = val;
+                expect(myVal).to.contain('20:12');
+            })
         cy.xpath("//label[text()='Textarea this is a mustache test in label ']").should('be.visible');
         cy.xpath("//textarea[@name='form_text_area_1']").should('be.visible').should('have.value','test case 2474');
         cy.xpath("//label[text()='File Upload this is a mustache test in label']").should('be.visible');
         cy.get('.text-truncate').should('be.visible');
         //Submit
         cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
-        
+
         //Review Completed task
         cy.xpath("//a[contains(text(),'Completed')]").should("be.visible").click();
         cy.contains('Form Task').should('be.visible');
@@ -7839,6 +7840,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42524(){
+        cy.xpath('//label[text()="Accepted"]//parent::div//input').should('be.visible');
         cy.xpath('//label[text()="Accepted"]//parent::div//input').type('yes').should('have.value','yes');
         cy.xpath('//label[text()="Accepted"]//parent::div//div').should('not.exist');
         cy.xpath('//label[text()="After date  2020-10-10"]//parent::div//input').type('2020-10-11').should('have.value','2020-10-11');
