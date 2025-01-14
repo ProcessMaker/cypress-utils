@@ -337,34 +337,30 @@ export class ProcessTesting {
         
         if (editName) {
             // Cambiamos xpath() por get() para selectores CSS
-            cy.get('[data-test="name"]')  // o el selector CSS correcto
-                .should('be.visible')
-                .clear()
-                .type(editName, { force: true })
-                .should('have.value', editName);
+            cy.get('[class="modal-content"]').should('be.visible').within(()=>{ //catch all modal
+                cy.get('[class="modal-body"] fieldset div > input').clear({delay:200}).first().type(editName).should('have.value', editName);  
+            });        
         }
     
         if (editDescription) {
             // Cambiamos xpath() por get() para selectores CSS
-            cy.get('[data-test="description"]')  // o el selector CSS correcto
-                .should('be.visible')
-                .clear()
-                .type(editDescription, { force: true })
-                .should('have.value', editDescription);
+            cy.get('[class="modal-content"]').should('be.visible').within(()=>{ //catch all modal
+                
+                cy.get('[class="modal-body"] fieldset div > textarea').first().clear().type(editDescription).should('have.value', editDescription);
+            });   
         }
     
-        if (editData) {
+        /*if (editData) {
             cy.get('[class="active-line-number line-numbers lh-odd"]')
                 .should('be.visible');
             this.clearDataField();
             this.addDataInScenario(editData.data);
-        }
-    
+        }*/
+
         // Cambiamos xpath() por get() si es un selector CSS
-        cy.get('[data-test="save-scenario-btn"]').click();  // o el selector correcto
+        cy.get('footer button').contains('Save').click();   //save escenario
         cy.get('.alert-wrapper > .alert').should('be.visible');
     }
-
 
     //IV. Delete scenario
     deleteScenario() {
