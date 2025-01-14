@@ -7,6 +7,14 @@ const process = new Process();
 
 export class RPA {
 
+
+
+    clickOnUiPath(){
+      cy.get('[data-target="#collapseOne2"]').click();
+      cy.xpath('//div[contains(text(),"UiPath")]').should('be.visible');
+      cy.xpath('//div[contains(text(),"UiPath")]').click();
+    }
+
     deleteOrganizationName(){
 
         let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Clear"]';
@@ -98,5 +106,5 @@ export class RPA {
         //cy.xpath(editBtn).first().click({ force: true });
         
     }  
-    
-           }
+
+  }
