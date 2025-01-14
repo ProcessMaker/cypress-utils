@@ -39,7 +39,7 @@ export class ProcessTesting {
         cy.iframe(iframeSelector).xpath(selectors.containerSP).click({force:true});
         cy.iframe(iframeSelector).find(selectors.inputSP).type(`{backspace}${startingPoint}`).should('have.value', startingPoint);
         cy.iframe(iframeSelector).xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
-        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}', {force:true, delay: 1000});
+        cy.iframe(iframeSelector).find(selectors.inputSP).type('{enter}', {force:true, delay: 500});
     }
 
     //Manual Resume Point from Modeler
@@ -448,8 +448,8 @@ export class ProcessTesting {
 
     //2E. Test Run
     clickOnTestRunsTab() {
-        cy.get(selectors.testRunTabScenarios).should('be.visible');
-        cy.get(selectors.testRunTabScenarios).click();
+        cy.get(selectors.testRunTabScenarios).should('be.visible').click();
+       //cy.get(selectors.testRunTabScenarios).click();
     }
 
     clickOnTestRunTabScenarios() {
@@ -506,7 +506,7 @@ export class ProcessTesting {
         cy.xpath(selectors.labelSP).should('be.visible');
         cy.xpath(selectors.containerSP).should('be.visible');
         cy.xpath(selectors.containerSP).click({force:true});
-        cy.get(selectors.inputSP).type(`{backspace}${startingPoint}`, {delay: 1000}).should('have.value', startingPoint);
+        cy.get(selectors.inputSP).type(`{backspace}${startingPoint}`, {delay: 500}).should('have.value', startingPoint);
         cy.xpath(selectors.itemSP).should('have.attr', 'aria-label').and('equal', `${startingPoint}. `);
         cy.get(selectors.inputSP).type('{enter}');
 
