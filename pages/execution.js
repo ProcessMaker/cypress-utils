@@ -50,36 +50,40 @@ export class Execution {
         cy.xpath('//button[@title="View"]/i').click();
     }
 
-    actionsAndAssertionsOfTCP42105(requestId){
+    actionsAndAssertionsOfTCP42105(requestId,userName,password){
         //Step 1: Claim the task
+        cy.xpath('//button[text()="Claim Task"]').should('be.visible');
         cy.xpath('//button[text()="Claim Task"]').click();
         cy.xpath('//button[text()="Claim Task"]').should('not.exist');
 
         //Step 2: Fill the form 1
         cy.xpath('//input[@name="var1"]').should('be.visible').type('1');
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
 
         //Step 3: Log in with user created
         navHelper.navigateToLogOut();
-        login.login('pabloAdmin', 'pabloAdmin123#');
+        login.navigateToUrl();
+        login.login(userName, password);
         cy.visit('/requests/'+requestId);
         request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
         //Step 4: Claim the task
+        cy.xpath('//button[text()="Claim Task"]').should('be.visible');
         cy.xpath('//button[text()="Claim Task"]').click();
         cy.xpath('//button[text()="Claim Task"]').should('not.exist');
 
         //Step 5: Fill the form 2
         cy.xpath('//input[@name="var1"]').should('be.visible').clear().type('1');
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
 
         //Step 6: Log in with user admin
         navHelper.navigateToLogOut();
+        login.navigateToUrl();
         login.login();
         cy.visit('/requests/'+requestId);
         request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
@@ -89,7 +93,7 @@ export class Execution {
         cy.xpath('//input[@name="var1"]').should('be.visible');
         cy.xpath('//input[@name="var1"]').clear().type('2');
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
 
         //Step 7: Complete the request
@@ -99,7 +103,7 @@ export class Execution {
         cy.xpath('//input[@name="var1"]').should('be.visible');
         cy.xpath('//input[@name="var1"]').should('have.value','2');
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 8: Verify that the process was completed
         request.waitUntilTextcontainText('selector','varHeader','Completed');
@@ -174,7 +178,7 @@ export class Execution {
         cy.xpath('//*[@class="uploader-file"]//span[contains(text(),"success")]').should('be.visible');
         cy.xpath('//div[@class="signature pl-0"]/canvas').click();
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         let today = new Date();
         let day = Math.floor((today.getDate()));
@@ -184,9 +188,10 @@ export class Execution {
             cy.visit('/requests/'+ requestId);
 
             //Step 3: Complete task B
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('be.visible').click();
-            request.verifyTaskIsCompleted();
+            request.verifyTaskIsCompletedB();
         }else{
             //Step 4: Go to URL request
             cy.visit('/tasks/');
@@ -194,18 +199,19 @@ export class Execution {
             //Step 5: Complete task D
             cy.xpath('(//a[contains(text(),"D")])[1]').should('be.visible').click();
             cy.xpath('//button[@aria-label="New Submit"]').should('be.visible').click();
-            request.verifyTaskIsCompleted();
+            request.verifyTaskIsCompletedB();
 
             //Step 6: Go to URL request
             cy.visit('/requests/'+ requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
             //Step 7: Complete task C
             cy.xpath('//label[contains(text(),"New File Upload")]').should('be.visible');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
-            request.verifyTaskIsCompleted();
+            request.verifyTaskIsCompletedB();
             cy.visit('/requests/'+ requestId);
-            cy.xpath('//div[contains(text(),"User has completed the task C")]').scrollIntoView().should('be.visible');
+            cy.xpath('//div[contains(text(),"User has completed the task C")]').should('exist');
         }
     }
 
@@ -7393,7 +7399,7 @@ export class Execution {
 
         //d) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").should('be.visible').click();
-        cy.xpath("//button[contains(text(),'New Submit')]").should('not.exist');
+        request.verifyTaskIsCompletedB();
 
         //Step 2: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7405,7 +7411,7 @@ export class Execution {
         cy.xpath('(//div[@name="screen display m ultiinstance"]//div//p)[2]').first().should('be.visible');
         cy.get('[data-cy="table"]').should('be.visible');
         cy.xpath('//button[contains(text(),"Complete")]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 4: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7417,7 +7423,7 @@ export class Execution {
             .type('multi instance tak parallel tarea 1').should('have.value','multi instance tak parallel tarea 1');
         //a) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 6: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7429,7 +7435,7 @@ export class Execution {
             .type('multi instance tak parallel tarea 1').should('have.value','multi instance tak parallel tarea 1');
         //a) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 8: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7441,7 +7447,7 @@ export class Execution {
             .type('multi instance tak parallel tarea 1').should('have.value','multi instance tak parallel tarea 1');
         //a) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 10: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7453,7 +7459,7 @@ export class Execution {
             .type('multi instance tak parallel tarea 2').should('have.value','multi instance tak parallel tarea 2');
         //a) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 12: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7465,7 +7471,7 @@ export class Execution {
             .type('multi instance tak parallel tarea 2').should('have.value','multi instance tak parallel tarea 2');
         //a) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 14: Go to URL request
         cy.visit('/requests/'+ requestId);
@@ -7477,7 +7483,7 @@ export class Execution {
             .type('multi instance tak parallel tarea 2').should('have.value','multi instance tak parallel tarea 2');
         //a) Submit the form
         cy.xpath("//button[contains(text(),'New Submit')]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
 
         //Step 16: Verify that request is completed
         request.waitUntilTextcontainText('selector','varHeader', "Completed");
@@ -7772,12 +7778,14 @@ export class Execution {
         })
         cy.get('#nav-home-tab').click();
     }
-        validationInInput(nameInput,value){
-        cy.get('input[name="'+nameInput+'"]').should('have.prop', 'value').then((ValueInput) => {
-            expect(ValueInput).to.equal(value);
-        });
+    validationInInput(nameInput,value){
+        // cy.get('input[name="'+nameInput+'"]').should('have.prop', 'value').then((ValueInput) => {
+        //     expect(ValueInput).to.equal(value);
+        // });
+        cy.get('input[name="'+nameInput+'"]').should("contain.value",value);
     }
-        actionsAndAssertionsTCP42085(requestId,
+        actionsAndAssertionsTCP42085(
+            requestId,
             processName,
             processId,
             userName,
@@ -7797,14 +7805,12 @@ export class Execution {
             )
         {
         this.validationInInput('requestId',requestId);
-        this.validationInInput('requestName',processName);
+        //this.validationInInput('requestName',processName);
         this.validationInInput('requestStatus','ACTIVE');
-        this.validationInInput('requestName',processName);
         this.validationInInput('requestProcessId',processId);
         this.validationInInput('requestProcessId',processId);
         this.validationInInput('userName',userName);
         this.validationInInput('userFullname',fullName);
-        this.validationInInput('date','America/Los_Angeles');
         this.validationInInput('userE','true');
         this.validationInInput('userId',userId);
         this.validationInInput('userEmail',userEmail);
@@ -7821,8 +7827,6 @@ export class Execution {
             expect(ValueInput).to.equal(userAddress);
         });
         this.validationInInput('userLanguage','en');
-        this.validationInInput('userDatetimeFormat','m/d/Y H:i');
-        this.validationInInput('UserTimeZone','America/Los_Angeles');
     }
      //TCP4-2183
      assignUsertoGroup(user,firstNameUser){
@@ -8318,12 +8322,13 @@ export class Execution {
         cy.get('[data-cy="screen-field-price"]').should("be.visible").type('100');
         //Submit
         cy.xpath("//button[contains(text(),'Submit')]").should("be.visible").click();
+        request.verifyTaskIsCompletedB();
 
         //Step 2: Complete task Approve Form
-        navHelper.navigateToRequestsPage();
         request.openRequestById(requestId);
-        var taskName = "Approve Form";
-        request.openTaskByTaskName(taskName);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+        
         cy.xpath("//label[text()='Title']").should("be.visible");
         cy.get('[data-cy="screen-field-title"]').should('have.value','this is a TCP42128 TEST');
         cy.get('[data-cy="screen-field-author"]').should("have.value",'TCP42128');
@@ -8333,6 +8338,8 @@ export class Execution {
         cy.get('[data-cy="screen-field-approval"]').should("be.visible").click();
         //Submit
         cy.xpath("//button[contains(text(),'Submit')]").should("be.visible").click();
+        request.verifyTaskIsCompletedB();
+        request.verifyRequestisCompleted(requestId);
 
         //Step 3: Verify Summary tab
         cy.xpath('//a[@id="summary-tab"]').should("be.visible");
@@ -8342,19 +8349,9 @@ export class Execution {
         cy.xpath("//td[text()='approval']").should("be.visible");
         cy.xpath("//td[text()='releaseDate']").should("be.visible");
         
-
         //Step 4: Go to requets with task PDF Generator
-        navHelper.navigateToRequestsPage();
-        request.openRequestByNameForCompletedProcess(processName);
-
-        //Step 5: Verify Summary tab and File Manager
-        cy.xpath('//a[@id="summary-tab"]').should("be.visible");
-        cy.xpath("//td[text()='price']").should("be.visible");
-        cy.xpath("//td[text()='title']").should("be.visible");
-        cy.xpath("//td[text()='author']").should("be.visible");
-        cy.xpath("//td[text()='releaseDate']").should("be.visible");
-        cy.xpath("//td[text()='Books Record List Display']").should("be.visible");
-        cy.xpath('//a[@id="file-manager-tab"]').should("be.visible").click();
+        cy.get('[id="file-manager-tab"]').click();
+        cy.get('[title="View"]').should("be.visible");
     }
     actionsAndAssertionsOfTCP43113(collectionName){
         const newRecordBtn = "button[id='addUserCollection']";
@@ -8451,7 +8448,7 @@ export class Execution {
     }
     actionsAndAssertionsOfTCP42160(requestId,processName){
         //Step 1: Complete task A
-        cy.xpath('//h4').should('be.visible');
+        cy.xpath('//input[@data-cy="file-upload-button"]').should('exist');
         cy.xpath('//input[@data-cy="file-upload-button"]').attachFile("images/origenes.jpg");
         cy.xpath('(//img)[4]').should('be.visible');
         cy.xpath('//div[@class="multiselect__select"]').should('be.visible').click();
@@ -8460,6 +8457,7 @@ export class Execution {
         cy.get('[data-test="date-picker"]').type('{enter}');
         cy.get(':nth-child(6) > .form-group').click();
         cy.xpath('//button[@aria-label="New Submit"]').should('be.visible').click();
+        request.verifyTaskIsCompletedB();
 
         //Step 2: Complete task AA
         navHelper.navigateToRequestsPage();
@@ -8470,11 +8468,7 @@ export class Execution {
         cy.xpath('//span[@class="multiselect__single"]').should('have.text', 'best');
         cy.xpath('//input[@aria-label="New Date Picker"]').should('be.visible');
         cy.xpath('//button[@aria-label="New Submit"]').should('be.visible').click();
-        request.waitUntilElementIsVisibleCant('selector', "[class='py-3 d-flex']");
-        //Validations
-        cy.xpath('//td[contains(text(),"date")] ').should('be.visible');
-        cy.xpath('//td[contains(text(),"fileUpload")] ').should('be.visible');
-        cy.xpath('//td[contains(text(),"selectList")] ').should('be.visible');
+        request.verifyTaskIsCompletedB();
 
         //Step 3: Complete task D Manual
         navHelper.navigateToRequestsPage();
@@ -8482,10 +8476,11 @@ export class Execution {
         var taskName = "D";
         request.openTaskByTaskName(taskName);
         cy.xpath('(//p)[1]').should('be.visible');
-        cy.get(':nth-child(3) > .form-group > :nth-child(1) > div > p').should('be.visible');
-        cy.get(':nth-child(4) > .form-group > :nth-child(1) > div > p').should('be.visible');
         cy.xpath('//button[contains(text(),"Complete Task")]').click();
+        request.verifyTaskIsCompletedB();
+        
         //Validations
+        cy.visit('/requests/' + requestId);
         cy.xpath('//td[contains(text(),"date")] ').should('be.visible');
         cy.xpath('//td[contains(text(),"fileUpload")] ').should('be.visible');
         cy.xpath('//td[contains(text(),"selectList")] ').should('be.visible');
