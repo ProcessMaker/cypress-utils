@@ -306,8 +306,7 @@ export class Specific {
         login.login(user,pass);
 
         //Step 2: Verify tha request was started by user created
-        cy.visit("/requests/in_progress");
-        cy.xpath("//a[contains(text(),"+requestId+")]").should("be.visible").click();
+        request.openRequestById(requestId);
         request.clickOnTaskName(1, 1);
 
         //Step 3: Complete the form
