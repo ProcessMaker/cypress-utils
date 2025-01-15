@@ -10,9 +10,10 @@ export class RPA {
 
 
     clickOnUiPath(){
-      cy.get('[data-target="#collapseOne2"]').click();
+
+      cy.get('[data-target="#collapseOne2"]').click({delay: 500});
       cy.xpath('//div[contains(text(),"UiPath")]').should('be.visible');
-      cy.xpath('//div[contains(text(),"UiPath")]').click();
+      cy.xpath('//div[contains(text(),"UiPath")]').click({force: true});
     }
 
     deleteOrganizationName(){
