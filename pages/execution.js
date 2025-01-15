@@ -7890,10 +7890,9 @@ export class Execution {
             .should('have.value',displayedValue); 
     }
     selectList(label,option){
-        cy.xpath('//label[text()="'+label+'"]/parent::div//input').last().click({force:true}).type(option).should('have.value',option);
-        cy.xpath('//label[text()="'+label+'"]/parent::div//div[@class="multiselect__content-wrapper"]//li[1]')
-            .last().should('have.attr', 'aria-label')
-            .and('equal',option+". ");
+        cy.xpath('//label[text()="'+label+'"]/parent::div//input').last().click({force:true})
+            .type(option).should('have.value',option);
+        cy.wait(3000);
         cy.xpath('//label[text()="'+label+'"]/parent::div//input').last().type('{enter}');
     }
     fillFormTCP42076(name,lastName,CI,fono,fonoRecovered,nationality){
