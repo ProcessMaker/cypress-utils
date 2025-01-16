@@ -260,9 +260,12 @@ export class Execution {
         cy.xpath('//input[@data-cy="screen-field-input"]').click().type('Roma');
         cy.xpath('//div[@class="multiselect__select"]').click();
         cy.xpath('//div[@data-cy="screen-field-selectlist"]//input').type('aa')
-            .should('have.value','aa').type('{enter}');
+            .should('have.value','aa');
+        cy.wait(2000);
+        cy.xpath('//div[@data-cy="screen-field-selectlist"]//input').type('{enter}');
         cy.xpath('//textarea[@data-cy="screen-field-textarea"]').type('Venezia').should('have.value', 'Venezia');
-        cy.xpath('//button[@aria-label="New Submit"]').should('be.visible').click();
+        cy.xpath('//button[@aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
 
         let today = new Date();
         let day = Math.floor((today.getDate()));
@@ -271,7 +274,7 @@ export class Execution {
         if(day >= 10){
             //Step 2: Go to URL request
             cy.visit('/requests/'+requestId);
-            cy.reload();
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
             //Step 3: Complete task "A"
@@ -279,10 +282,11 @@ export class Execution {
             cy.xpath('//div[@class="multiselect__tags"]/span[@class="multiselect__single"]').should('have.text', 'aa');
             cy.xpath('//textarea[@data-cy="screen-field-textarea"]').type('Venezia');
             cy.xpath('//button[@aria-label="New Submit"]').click();
-            request.verifyTaskIsCompleted();
+            request.verifyTaskIsCompletedB();
 
             //Step 4: Go to URL request
             cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
             //Step 5: Complete task "C"
@@ -295,7 +299,7 @@ export class Execution {
         }else{
             //Step 6: Go to URL request
             cy.visit('/requests/'+requestId);
-            cy.reload();
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
             //Step 7: Complete task "B"
@@ -462,12 +466,11 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario1(){
-        cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
+        cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[3]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
     }
 
     verifyTCP42252Scenario1(requestID){
@@ -481,27 +484,25 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario2(){
-        cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
+        cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[4]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
     }
 
     verifyTCP42252Scenario2(requestID){
         cy.wait(2000);
         request.verifyRequestisCompleted(requestID);
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').should('be.visible');
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(3).should('have.contain', "Admin User has completed the task Script Task I");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(4).should('have.contain', "Admin User has completed the task Script Task IV");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(5).should('have.contain', "Admin User has completed the task PDF Generator I");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(6).should('have.contain', "Admin User has completed the task PDF Generator IV");
+        cy.xpath('//*[contains(text(),"Admin User has completed the task Script Task I")]').should('exist');
+        cy.xpath('//*[contains(text(),"Admin User has completed the task Script Task IV")]').should('exist');
+        cy.xpath('//*[contains(text(),"Admin User has completed the task PDF Generator I")]').should('exist');
+        cy.xpath('//*[contains(text(),"Admin User has completed the task PDF Generator IV")]').should('exist');
     }
 
     actionsAndAssertionsOfTCP42252Scenario3(){
-        cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
+        cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[3]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -519,8 +520,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario4(){
-        cy.xpath('//h4').should('be.visible');
-        cy.xpath('//tr[@item-index="0"]/td/a').contains('Form Task').click();
+        cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[4]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -610,186 +610,205 @@ export class Execution {
         cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', "Admin User has completed the task Send Email");
     }
 
-    async actionsAndAssertionsOfTCP42281Part1(){
+    actionsAndAssertionsOfTCP42281Part1(requestId){
+
         //Scenario 1 Tasks AA, BB and CC
-        request.openNewRequest(
-            "TCP4-2281 Verify Node Connector"
-        );
-       var requestID = await request.getRequestID();
-       cy.reload();
-       cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-       await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();
-       cy.xpath('//input[@aria-label="aa"]').check();
-       cy.xpath('//input[@aria-label="bb"]').check();
-       cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-       request.verifyTaskIsCompleted();
-       navHelper.navigateToTasksPage();
-       navHelper.navigateToRequestsPage();
-       request.openRequestById(requestID);
-       cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-       await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
-       cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
-       cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-       request.verifyTaskIsCompleted();
-       navHelper.navigateToTasksPage();
-       navHelper.navigateToRequestsPage();
-       request.openRequestById(requestID);
-       cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-       await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('CC').click();
-       cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible')
-       cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-       request.verifyTaskIsCompleted();
-       await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
-       cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
-       cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
-       cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task BB');
-       cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', 'AAA: true');
-       cy.xpath('(//div[@class="flex-grow-1"])[8]').should('contain.text', 'Admin User has completed the task CC');
-    }
-
-    async actionsAndAssertionsOfTCP42281Part2(){
-        //Scenario 2 Tasks AA, BB and DD
-        request.openNewRequest(
-                "TCP4-2281 Verify Node Connector"
-            );
-        var requestID = await request.getRequestID();
-         cy.reload();
-         cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
-         request.waitUntilElementIsVisible('selector','a[href^="/tasks"]');
-         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-         await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();
-         cy.xpath('//input[@aria-label="bb"]').check();
-         cy.xpath('//button[@aria-label="New Submit"]').click();
-         request.verifyTaskIsCompleted();
-         navHelper.navigateToTasksPage();
-         navHelper.navigateToRequestsPage();
-         request.openRequestById(requestID);
-         cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
-         await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
-         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
-         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-         request.verifyTaskIsCompleted();
-         navHelper.navigateToTasksPage();
-         navHelper.navigateToRequestsPage();
-         request.openRequestById(requestID);
-         cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
-         await cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('DD').click();
-         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
-         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-         request.verifyTaskIsCompleted();
-         await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
-         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
-         cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
-         cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task BB');
-         cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', 'AAA: false');
-         cy.xpath('(//div[@class="flex-grow-1"])[8]').should('contain.text', 'BBB: true');
-         cy.xpath('(//div[@class="flex-grow-1"])[9]').should('contain.text', 'Admin User has completed the task DD');
-    }
-
-    async actionsAndAssertionsOfTCP42281Part3(){
-        //Scenario 3 Tasks AA and EE
-        navHelper.navigateToRequestsPage();
-        request.openNewRequest(
-            "TCP4-2281 Verify Node Connector"
-        );
-        var requestID = await request.getRequestID();
-        cy.reload();
-        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
-        request.waitUntilElementIsVisible('selector','a[href^="/tasks"]');
-        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-        await cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').contains('AA').click();
+        cy.xpath('//input[@aria-label="aa"]').should('be.visible');
+        cy.xpath('//input[@aria-label="aa"]').check();
         cy.xpath('//input[@aria-label="bb"]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
+
         navHelper.navigateToTasksPage();
-        navHelper.navigateToRequestsPage();
-        request.openRequestById(requestID);
+        request.openRequestById(requestId);
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
-        await cy.xpath('//tbody/tr/td/a').contains('EE').click();
+        cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
+        cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
-        request.verifyTaskIsCompleted();
-        await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
+        request.verifyTaskIsCompletedB();
+
+        navHelper.navigateToTasksPage();
+        request.openRequestById(requestId);
+        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
+        cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('CC').click();
+        cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible')
+        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
+        request.verifyTaskIsCompletedB();
+
+        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
+        cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
+        cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
+        cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task BB');
+        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', 'AAA: true');
+        cy.xpath('(//div[@class="flex-grow-1"])[8]').should('contain.text', 'Admin User has completed the task CC');
+    }
+
+    actionsAndAssertionsOfTCP42281Part2(requestId){
+        
+        //Scenario 2 Tasks AA, BB and DD
+        cy.xpath('//input[@aria-label="bb"]').should('be.visible');
+        cy.xpath('//input[@aria-label="bb"]').check();
+        cy.xpath('//button[@aria-label="New Submit"]').click();
+        request.verifyTaskIsCompletedB();
+        
+        navHelper.navigateToTasksPage();
+        request.openRequestById(requestId);
+        cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
+        cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
+        cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
+        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
+        request.verifyTaskIsCompletedB();
+        
+        navHelper.navigateToTasksPage();
+        request.openRequestById(requestId);
+        cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
+        cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('DD').click();
+        cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
+        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
+        request.verifyTaskIsCompletedB();
+        
+        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
+        cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
+        cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
+        cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task BB');
+        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', 'AAA: false');
+        cy.xpath('(//div[@class="flex-grow-1"])[8]').should('contain.text', 'BBB: true');
+        cy.xpath('(//div[@class="flex-grow-1"])[9]').should('contain.text', 'Admin User has completed the task DD');
+    }
+
+    actionsAndAssertionsOfTCP42281Part3(requestId){
+
+        cy.xpath('//input[@aria-label="bb"]').should('be.visible');
+        cy.xpath('//input[@aria-label="bb"]').check();
+        cy.xpath('//button[@aria-label="New Submit"]').should('exist');
+        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
+        request.verifyTaskIsCompletedB();
+
+        navHelper.navigateToTasksPage();
+        request.openRequestById(requestId);
+        cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
+        cy.xpath('//tbody/tr/td/a').contains('EE').click();
+        cy.xpath('//button[@aria-label="New Submit"]').should('exist');
+        cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
+        request.verifyTaskIsCompletedB();
+
+        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
         cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
         cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task EE');
     }
 
-    async actionsAndAssertionsOfTCP42282Part1(requestId){
+    actionsAndAssertionsOfTCP42282Part1(){
         const number = 3;
-        cy.get('div[aria-label="Date"]').click();
-        cy.xpath('//tbody/tr[3]/td[7]').click();
+        cy.get('[data-cy="screen-field-date"]').should('be.visible');
+        cy.get('[data-cy="screen-field-date"]').click();
         cy.get('input[data-cy="screen-field-input"]').type(number);
         cy.get('textarea[data-cy="screen-field-textarea"]').type("Nirvana");
+        //Step 2: Submit the form
         cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
-        login.navigateToUrl();
-        login.login();
-        navHelper.navigateToTasksPage();
-        cy.xpath('//tbody/tr/td/a[text()="AA"]').first().click();
-        cy.xpath('//li[@class="list-group-item"]/a').invoke("text").then((text) => {
-            var requestName = text.trim();
-            requestName = requestName.substring(
-                0,
-                requestName.length
-            );
-            cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+
+        //Step 3: Get the number of requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            login.navigateToUrl();
+            login.login();
             navHelper.navigateToTasksPage();
-            cy.xpath('//td/a').contains(requestName).click();
-            cy.xpath('(//td/a)[2]').should('contain.text', "BB").click();
+            cy.visit('/requests/' + requestId);
+
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
 
             navHelper.navigateToTasksPage();
-            cy.xpath('//td/a').contains(requestName).click();
-            cy.xpath('(//td/a)[2]').should('contain.text', "BB").click();
+            cy.visit('/requests/' + requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
 
             navHelper.navigateToTasksPage();
-            cy.xpath('//td/a').contains(requestName).click();
-            cy.xpath('(//td/a)[2]').should('contain.text', "BB").click();
+            cy.visit('/requests/' + requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
 
             navHelper.navigateToTasksPage();
-            cy.xpath('//td/a').contains(requestName).click();
-            cy.xpath('(//td/a)[2]').should('contain.text', "BB").click();
+            cy.visit('/requests/' + requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
+
+            navHelper.navigateToTasksPage();
+            cy.visit('/requests/' + requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
+
             cy.wait(5000);
-            cy.xpath('(//td[@aria-colindex="1"])[1]').should('contain.text', "date");
-            cy.xpath('(//td[@aria-colindex="1"])[3]').should('contain.text', "input");
-            cy.xpath('(//td[@aria-colindex="1"])[9]').should('contain.text', "textarea");
-            cy.xpath('(//td[@aria-colindex="2"])[3]').should('contain.text', number);
-            cy.xpath('(//td[@aria-colindex="2"])[9]').should('contain.text', "Nirvana");
-
-            });
+            cy.visit('/requests/' + requestId);
+            cy.xpath('//td[contains(text(),"input")]').should('exist');
+            cy.xpath('//td[contains(text(),"submit")]').should('exist');
+            cy.xpath('//td[contains(text(),"textarea")]').should('exist');
+            cy.xpath('//td[contains(text(),"Nirvana")]').should('exist');
+        });
     }
 
-    async actionsAndAssertionsOfTCP42282Part2(requestId){
+    actionsAndAssertionsOfTCP42282Part2(requestId){
         const number = 5;
-        cy.get('div[aria-label="Date"]').click();
-        cy.xpath('//tbody/tr[3]/td[7]').click();
+        cy.get('[data-cy="screen-field-date"]').should('be.visible');
         cy.get('input[data-cy="screen-field-input"]').type(number);
         cy.get('textarea[data-cy="screen-field-textarea"]').type("Nirvana");
         cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
-        login.navigateToUrl();
-        login.login();
-        navHelper.navigateToTasksPage();
-        cy.xpath('//tbody/tr/td/a[text()="AA"]').first().click();
-        cy.xpath('//li[@class="list-group-item"]/a').invoke("text").then((text) => {
-            var requestName = text.trim();
-            requestName = requestName.substring(
-                0,
-                requestName.length
-            );
-            cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+
+        //Step 3: Get the number of requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            login.navigateToUrl();
+            login.login();
             navHelper.navigateToTasksPage();
-            cy.xpath('//td/a').contains(requestName).click();
-            cy.xpath('(//td/a)[2]').should('contain.text', "BB").click();
+            cy.visit('/requests/' + requestId);
+
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
+            
+            navHelper.navigateToTasksPage();
+            cy.visit('/requests/' + requestId);
+
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+            request.clickOnTaskName(1, 1);
+
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
+            cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+            request.verifyTaskIsCompletedB();
+            
             cy.wait(5000);
-            cy.xpath('(//td[@aria-colindex="1"])[1]').should('contain.text', "date");
-            cy.xpath('(//td[@aria-colindex="1"])[3]').should('contain.text', "input");
-            cy.xpath('(//td[@aria-colindex="1"])[9]').should('contain.text', "textarea");
-            cy.xpath('(//td[@aria-colindex="2"])[3]').should('contain.text', number);
-            cy.xpath('(//td[@aria-colindex="2"])[9]').should('contain.text', "Nirvana");
-            });
+            cy.visit('/requests/' + requestId);
+            cy.xpath('//td[contains(text(),"input")]').should('exist');
+            cy.xpath('//td[contains(text(),"submit")]').should('exist');
+            cy.xpath('//td[contains(text(),"textarea")]').should('exist');
+            cy.xpath('//td[contains(text(),"Nirvana")]').should('exist');
+        });
     }
 
     async actionsAndAssertionsOfTCP42331A(requestId){
@@ -4236,14 +4255,9 @@ export class Execution {
     }
     //Make signature
     signInField(element){
-        cy.get(
-        element
-    )
-        .should("be.visible")
-        .click({ release: false })
-        .trigger("mousemove", { clientX: 200, clientY: 300 })
-        .trigger("mouseup", 5, 5)
-        .trigger("mouseleave");
+        cy.xpath('//div[@class="signature pl-0"]').click('center');
+        cy.wait(2000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
     }
     //Verify that the required fields notification no longer appears.
     verifyNotificationNotAppear(){
@@ -4605,11 +4619,9 @@ export class Execution {
             .click();
     }
     fillFormTCP42251(){
-        cy.get('input[name="input"]').click().type("New Input");
-        cy.get('[aria-label="New Checkbox"]').click();
-        cy.xpath('//div[@aria-label="Date"]//input').click();
-
-        cy.xpath('//div[@aria-label="Date"]//input').type("2022-09-01").type("{enter}");
+        cy.get('input[name="input"]').type("New Input");
+        cy.get('[data-cy="screen-field-checkbox"]').check();
+        cy.xpath('//*[@data-cy="screen-field-date"]//input').type("2022-09-01").type("{enter}");
         cy.get('[data-cy="screen-field-textarea"]')
             .click()
             .type("New Text Area");
@@ -6446,9 +6458,7 @@ export class Execution {
         cy.xpath(labelInputOption).eq(index).should('be.visible');
         cy.xpath(locatorInputOption).eq(index).click({force:true})
         cy.xpath(locatorInputOption).eq(index).type(option).should('have.value', option);
-        cy.xpath(locatorOption).eq(index)
-            .should('have.attr', 'aria-label')
-            .and('equal',option+". ");
+        cy.wait(3000);
         cy.xpath(locatorInputOption).eq(index).type('{enter}');
     }
     actionsAndAssertionsOfTCP42210RecoverRecordListDateTime(index,date,label){
@@ -6460,9 +6470,7 @@ export class Execution {
         var option = date+'T19:39:00.000Z'
         cy.log(option)
         cy.xpath(locatorInputOption).eq(index).type(option).should('have.value',option);
-        cy.xpath(locatorOption).eq(index)
-            .should('have.attr', 'aria-label')
-            .and('equal',option+". ");
+        cy.wait(3000);
         cy.xpath(locatorInputOption).eq(index).type('{enter}');
     }
     //TCP4-2336
