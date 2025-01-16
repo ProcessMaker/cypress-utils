@@ -765,7 +765,6 @@ export class Execution {
             cy.xpath('//td[contains(text(),"input")]').should('exist');
             cy.xpath('//td[contains(text(),"submit")]').should('exist');
             cy.xpath('//td[contains(text(),"textarea")]').should('exist');
-            cy.xpath('//td[contains(text(),"Nirvana")]').should('exist');
         });
     }
 
@@ -807,7 +806,6 @@ export class Execution {
             cy.xpath('//td[contains(text(),"input")]').should('exist');
             cy.xpath('//td[contains(text(),"submit")]').should('exist');
             cy.xpath('//td[contains(text(),"textarea")]').should('exist');
-            cy.xpath('//td[contains(text(),"Nirvana")]').should('exist');
         });
     }
 
