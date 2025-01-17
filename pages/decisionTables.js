@@ -536,11 +536,10 @@ export class DecisionTable {
 
     //1.5 Pagination Decision tables
     selectItemsPerPageOnPaginationDT(option, numberItems) {
-        cy.xpath(selectors.selectPaginationInDT).should('be.exist');
-        cy.xpath(selectors.selectPaginationInDT).select(option, { force: true });
-        cy.xpath(selectors.selectPaginationInDT).should('have.value', option);
-        cy.get(selectors.loadingSpinnerDT).should('be.visible');
-        cy.get(selectors.loadingSpinnerDT).should('not.be.visible');
+        cy.xpath(selectors.selectPaginationInDT).should('be.exist').click();
+        cy.get('[class="dropdown-menu show"]').should('be.visible');
+        cy.xpath('//div[@class="dropdown-menu show"]//a[contains(text(),"'+option+'")][1]').click( { force: true })
+        cy.xpath('//div[@data-cy="datasource-pagination"]//button[@class="btn dropdown-toggle pagination-dropup"]').should('be.visible');
         cy.xpath(selectors.tableDT).find('tr').then(($Rows) => {
             expect($Rows).to.have.length(numberItems);
         });
@@ -577,7 +576,7 @@ export class DecisionTable {
 
     addItems(numberItems, { decisionTableName, description, option = "onlyRequiredFields" }) {
         for (let index = 0; index < numberItems; index++) {
-            this.modalCreateDecisionTable({ nameValue: decisionTableName + index, descriptionValue: description, option: "onlyRequiredFields" })
+            this.modalCreateDecisionTable({ nameValue: decisionTableName + index, descriptionValue: description, option: "onlyRequiredFields" });
             navHelper.navigateToDecisionTables();
         }
     }
