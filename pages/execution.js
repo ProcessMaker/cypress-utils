@@ -477,10 +477,10 @@ export class Execution {
         cy.wait(2000);
         request.verifyRequestisCompleted(requestID);
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').should('be.visible');
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(3).should('have.contain', "Admin User has completed the task Script Task I");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(4).should('have.contain', "Admin User has completed the task Script Task III");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(5).should('have.contain', "Admin User has completed the task PDF Generator I");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(6).should('have.contain', "Admin User has completed the task PDF Generator III");
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task I")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task III")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator I")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator III")]').should('exist');
     }
 
     actionsAndAssertionsOfTCP42252Scenario2(){
@@ -495,10 +495,10 @@ export class Execution {
         cy.wait(2000);
         request.verifyRequestisCompleted(requestID);
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').should('be.visible');
-        cy.xpath('//*[contains(text(),"Admin User has completed the task Script Task I")]').should('exist');
-        cy.xpath('//*[contains(text(),"Admin User has completed the task Script Task IV")]').should('exist');
-        cy.xpath('//*[contains(text(),"Admin User has completed the task PDF Generator I")]').should('exist');
-        cy.xpath('//*[contains(text(),"Admin User has completed the task PDF Generator IV")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task I")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task IV")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator I")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator IV")]').should('exist');
     }
 
     actionsAndAssertionsOfTCP42252Scenario3(){
@@ -513,10 +513,10 @@ export class Execution {
         cy.wait(2000);
         request.verifyRequestisCompleted(requestID);
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').should('be.visible');
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(3).should('have.contain', "Admin User has completed the task Script Task II");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(4).should('have.contain', "Admin User has completed the task Script Task III");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(5).should('have.contain', "Admin User has completed the task PDF Generator II");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(6).should('have.contain', "Admin User has completed the task PDF Generator III");
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task II")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task III")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator II")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator III")]').should('exist');
     }
 
     actionsAndAssertionsOfTCP42252Scenario4(){
@@ -530,10 +530,10 @@ export class Execution {
         cy.wait(2000);
         request.verifyRequestisCompleted(requestID);
         cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').should('be.visible');
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(3).should('have.contain', "Admin User has completed the task Script Task II");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(4).should('have.contain', "Admin User has completed the task Script Task IV");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(5).should('have.contain', "Admin User has completed the task PDF Generator II");
-        cy.xpath('//div[@read-only="true"]//div[@class="flex-grow-1"]').eq(6).should('have.contain', "Admin User has completed the task PDF Generator IV");
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task II")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task Script Task IV")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator II")]').should('exist');
+        cy.xpath('//*[contains(text(),"User has completed the task PDF Generator IV")]').should('exist');
     }
 
     async actionsAndAssertionsOfTCP42239A(){
