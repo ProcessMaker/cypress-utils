@@ -12,7 +12,7 @@ export default{
     exportDTbutton:'//div[@data-cy="decision-table-ellipsis"]//ul//li//*[contains(text(),"Export")]//parent::div//i',
     addToProjectDTbutton:'//div[@data-cy="decision-table-ellipsis"]//ul//li//*[contains(text(),"Add to Project")]//parent::div//i',
     deleteDTbutton:'//div[@data-cy="decision-table-ellipsis"]//ul//li//*[contains(text(),"Delete")]//parent::div//i',
-    selectPaginationInDT:'(//select[@aria-label="Per page"])[1]',
+    selectPaginationInDT:'//div[@data-cy="datasource-pagination"]//button[@class="btn dropdown-toggle pagination-dropup"]',
     tableDT:'(//div[@class="data-table"]//tbody)[1]',
     uncategorized:'//label[text()="Category"]//parent::div//span[text()="Uncategorized"]',
     currentPage:'(//div[@class="pagination-nav-item item active large"])[1]',
