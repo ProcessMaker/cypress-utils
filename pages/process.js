@@ -169,7 +169,7 @@ export class Process {
     }
 
     dragRPA(selector, offsetX, offsetY) {
-        cy.get('#nodeTypesList > div > div:nth-child(21) > span').trigger('mousedown')
+        cy.get('[data-test="processmaker-communication-rpa"]').trigger('mousedown')
             .trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
