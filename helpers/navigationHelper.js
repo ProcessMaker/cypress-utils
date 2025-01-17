@@ -71,6 +71,7 @@ export class NavigationHelper {
 
     navigateToDesignerPage() {
         cy.visit('/designer');
+        cy.wait(500);
         cy.title().should('eq', 'Designer - ProcessMaker');
     }
 
