@@ -311,7 +311,7 @@ export class Process {
     enterProcessName(name) {
         cy.get(selectors.nameTxtBx)
             .should("be.visible")
-            .type(name, { delay: 200 })
+            .type(name, { delay: 500 })
             .should("have.value", name);
     }
 
