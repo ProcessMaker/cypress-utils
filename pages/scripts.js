@@ -80,6 +80,7 @@ export class Scripts {
      * @return nothing returns
      */
     pressSaveScript() {
+
         cy.xpath(Selectors.CreateSaveBtn).click({force:true});
     }
 
