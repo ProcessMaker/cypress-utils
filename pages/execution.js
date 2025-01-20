@@ -8277,6 +8277,7 @@ export class Execution {
         //Step1: Review nested screen
         navHelper.navigateToProcessPage();
         process.searchProcessAndSelectOptions(processName,"edit");
+        process.openAlternativeModeler();
         process.openScreenofElementFromModeler("Form Task", "FormTaskNest")
         cy.xpath('(//div[@data-cy="screen-renderer-container"])[1]').should('be.visible');
         cy.xpath('(//div[@data-cy="screen-renderer-container"])[2]').should('be.visible');
@@ -8289,13 +8290,13 @@ export class Execution {
 
         //Step 2: Export Process
         navHelper.navigateToProcessPage();
-
+        var option = "export";
         var exportType = "basic";
         var passwordOption = "yes";
         var password = "12345678";
         cy.reload();
-        process.searchProcessAndSelectOptions(processName,exportType, passwordOption, password);
-
+        process.searchProcessAndSelectOptions(processName, option, exportType, passwordOption, password);
+        cy.wait(2000);
         navHelper.navigateToAdminPage();
 
         //Step 3: Verify that the process was exported
