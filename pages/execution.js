@@ -339,7 +339,7 @@ export class Execution {
         cy.xpath("//div[contains(text(),'has completed the task Send Email')]").should('be.visible');
     }
     actionsAndAssertionsOfTCP42163(requestId){
-        request.waitUntilElementIsVisible('selector','a[href^="/tasks"]');
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
         cy.xpath('//input[@data-cy="screen-field-AGENCY_NAME"]').type('Rome Athens');
         cy.xpath('//input[@data-cy="screen-field-EMAIL_TO"]').type('athena@athena.com');
@@ -347,19 +347,20 @@ export class Execution {
         cy.xpath('//input[@data-cy="screen-field-JOB_TITLE"]').type('Mathematician');
         cy.xpath('//textarea[@data-cy="screen-field-COMMENTS"]').type('Viva la vida');
         cy.xpath('//button[@aria-label="Terminate"]').click();
-        cy.xpath("//div[contains(text(),'has completed the task Set Variables')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'has completed the task Terminate Agreement')]").should('be.visible');
+        request.verifyTaskIsCompletedB();
     }
 
-    actionsAndAssertionsOfTCP42164(){
-        cy.xpath('//li[@data-cy="In Progress"]/a/i[@class="fas nav-icon fa-clipboard-list"]').should('be.visible').click({force:true});
-        cy.xpath('(//input[@aria-label="Search"])[1]').type('TCP4-2164 Verify Signal Script Task Timer Event and Terminate Event B').type('{enter}');
-        cy.xpath('(//span[text()="TCP4-2164 Verify Signal Script Task Timer Event and Terminate Event B"]/ancestor::tr/td)[1]').should('be.visible').click();
-        request.waitUntilElementIsVisible('selector','a[href^="/tasks"]');
-        request.clickOnTaskName(1, 1);
+    actionsAndAssertionsOfTCP42164(processName){
+        navHelper.navigateToAllRequests();
+        request.addRequestNameToSelectList(processName);
+        cy.wait(4000);
+        cy.xpath('//*[contains(text(),"'+processName+'")]/ancestor::tr//a[contains(text(),"AA")]')
+            .first()
+            .should('be.visible')
+            .click();
+        cy.xpath('//button[@aria-label="New Submit"]').should('be.visible');
         cy.xpath('//button[@aria-label="New Submit"]').click();
-        cy.xpath("//div[contains(text(),'has completed the task Set Email and PDF Variables')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'has completed the task GetFiles')]").should('be.visible');
+        request.verifyTaskIsCompletedB();
     }
 
     actionsAndAssertionsOfTCP42227A(requestId){

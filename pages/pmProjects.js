@@ -143,14 +143,15 @@ export class PMProjects {
 
     searchProjects(name) {
         const tableProject = '[data-cy="project-listing-table"]';
-        const editBtnProject =
-            '//*[@id="projectList"]/div[2]/div/table/tbody//button[@aria-haspopup="menu"]';
+        const editBtnProject = '//*[@data-cy="project-listing-table"]//a[contains(text(),"projectName")]/ancestor::tr//*[@data-cy="project-list-ellipsis"]';
 
         cy.get(tableProject).should("be.visible");
         cy.xpath(selectors.searchProjects).should("be.visible");
-        cy.xpath(selectors.searchProjects).type(`${name}{enter}`).should("have.value", name);
-        cy.xpath(selectors.searchProjects).type(' ').type('{backspace}');
-        cy.xpath(editBtnProject).first().click({ force: true });
+        cy.xpath(selectors.searchProjects).type(name,{delay:60}).should("have.value", name);
+        cy.xpath(selectors.searchProjects).type('{enter}');
+        cy.wait(4000);
+        cy.get(tableProject).should('be.visible');
+        cy.xpath(editBtnProject.replace('projectName',name)).first().click({ force: true });
         this.selectMenuOptionRowProjects("Open");
     }
 
@@ -329,23 +330,25 @@ export class PMProjects {
     }
 
     verifyPresenceOfProjectAndImportProject(nameProject, projectPath) {
-            var editBtn =
-            '//div[@id="projectsCategorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="projectsCategorizedList"]/descendant::div[@id="projectList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
-            cy.xpath(editBtn).should("be.visible");
-            cy.xpath(selectors.searchProjects)
-        .type(`${nameProject}`, {delay:60})
-        .should("have.value", nameProject);
+        var editBtn ='//div[@id="projectsCategorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="projectsCategorizedList"]/descendant::div[@id="projectList"]//table/tbody/tr//button[@aria-haspopup="menu"]';
+
+        let listTableSelector = '[data-cy="project-listing-table"]';
+        cy.wait(3000);
+        cy.get(listTableSelector).should("be.visible");
+        cy.xpath(selectors.searchProjects).type(nameProject, {delay:60}).should("have.value", nameProject);
         cy.xpath(selectors.searchProjects).type('{enter}');
-        cy.wait(2000);
+        cy.wait(4000);
         cy.xpath(selectors.loadingSpinnerProject).should("not.be.visible");
+
         cy.xpath('//table[@class="vuetable table table-hover table-responsive text-break"]//tbody//tr', { timeout: 10000 })
-        .find("td")
-        .then(($loadedTable) => {
-            if ($loadedTable.length === 1) {
-                this.importProjects(projectPath);
-            } else return;
-        });
+            .find("td")
+            .then(($loadedTable) => {
+                if ($loadedTable.length === 1) {
+                    this.importProjects(projectPath);
+                } else return;
+            });
     }
+
     verifyPresenceOfProjectAndCreate(project) {
         var editBtn =
         '//div[@id="main"]//div[@id="projectList"]//tbody//button[@aria-haspopup="menu"]';

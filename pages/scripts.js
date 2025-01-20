@@ -204,6 +204,12 @@ export class Scripts {
         this.selectMenuOptionRow("Add to Project");
         cy.xpath(Selectors.addProjectModel).should("be.visible");
 	}
+    deleteProject() {
+        this.selectMenuOptionRow("Delete");
+        cy.get('[data-test="confirm-btn-ok"]').should('be.visible').click();
+        cy.wait(3000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+    }
 
     showVersioningOnly() {
         cy.get(Selectors.onlyShowNamedVersion).eq(0).check({ force: true });
@@ -330,6 +336,7 @@ export class Scripts {
         cy.get(Selectors.searchField)
             .type(scriptName, { delay: 1}).type(" ",{ delay: 800}).type("{backspace}").type(" ").type("{backspace}")
             .should("have.value", scriptName);
+        cy.wait(4000);
         cy.xpath(Selectors.scriptTable, { timeout: 10000 }).then(
             ($loadedTable) => {
                 if ($loadedTable.length === 1) {
@@ -359,6 +366,7 @@ export class Scripts {
                         case "copy":
                             break;
                         case "delete":
+                            this.deleteProject();
                             break;
                     }
                 } 

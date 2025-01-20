@@ -57,7 +57,7 @@ export default {
     // projects
     addProjectModel: '//div[@class="modal-body"]',
     modalScript: '//div[@class="modal-body"]',
-    chooseLanguage: '//label[contains(text(),"Choose a language")]',
+    chooseLanguage: '//label[contains(text(),"Choose")]',
     imgSrc: '//div[@class="card-body"]/p/div/img[@src="srch"]',
     imgAlt: '//div[@class="card-body"]/p/div/img[@alt="altt"]',
     scriptMustBeUnique: '//small[text()="The script name must be unique."]',
