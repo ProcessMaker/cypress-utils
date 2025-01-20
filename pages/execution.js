@@ -5199,15 +5199,17 @@ export class Execution {
             .type('automation.pm4@gmail.com')
             .should('have.value','automation.pm4@gmail.com');
         
-        cy.xpath('//label[text()="Date_1"]//ancestor::div[@class="col-sm-4"]//input')
+        cy.get('input[aria-label="Date_1"]')
             .should('be.visible')
             .click()
             .type('10/20/2022',{delay:100});
+        cy.get('input[aria-label="Date_1"]').type('{enter}');
         
-        cy.xpath('//label[text()="Date_2"]//ancestor::div[@class="col-sm-4"]//input')
+        cy.get('input[aria-label="Date_2"]')
             .should('be.visible')
             .click()
-            .type('10/20/2010{enter}',{delay:150});
+            .type('10/20/2010',{delay:100});
+        cy.get('input[aria-label="Date_2"]').type('{enter}');
 
         cy.xpath('//label[text()="Select"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath('//label[text()="Select"]/parent::div//input').should('be.visible').type('Bolivia').should('have.value','Bolivia');
