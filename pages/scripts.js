@@ -8,6 +8,7 @@ export class Scripts {
      */
     pressScriptBtn() {
         cy.xpath(Selectors.newScriptBtn).should("be.visible").click({force:true});
+        cy.xpath('//*[@id="createScript"]//span[contains(text(),"Uncategorized")]').should('be.visible');
     }
 
     /**
