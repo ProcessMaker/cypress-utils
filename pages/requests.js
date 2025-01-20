@@ -48,6 +48,7 @@ export class Requests {
     }
 
     addRequestNameToSelectList(processName) {
+        cy.get('[class="jumbotron jumbotron-fluid"]').should('not.be.visible');
         cy.get(selectors.filterTextArea).should('be.visible');
         cy.get(selectors.filterTextArea).type(processName,{delay:100}).should('have.value', processName);
         cy.get(selectors.filterTextArea).type('{enter}');
