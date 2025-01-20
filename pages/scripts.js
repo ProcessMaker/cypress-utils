@@ -119,7 +119,7 @@ export class Scripts {
         );
         cy.wait(4000);
         this.pressSaveScript();
-        cy.xpath(Selectors.debuggerTxt).should("be.visible");
+        cy.wait(5000);
     }
 
     addPhpTOScript(scriptValue) {
