@@ -5212,7 +5212,7 @@ export class Execution {
             .should('be.visible')
             .click()
             .clear()
-            .type('10/10/2020', {delay: 500})
+            .type('10/10/2019', {delay: 500})
             .type('{enter}')
             .should('have.value', '10/10/2020');
 
