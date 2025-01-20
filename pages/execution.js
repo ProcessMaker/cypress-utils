@@ -5194,23 +5194,27 @@ export class Execution {
     }
     actionsAndAssertionsOfTCP42250(requestId){
         //Complete task form 1
-        cy.xpath('//div[@class="card card-body border-top-0 h-100 form-screen"]').should('be.visible');
+        cy.xpath('//div[@class="card card-body border-top-0 h-100 form-screen"]').should('be.visible');  
+        
         cy.get('[data-cy="screen-field-email"]')
             .should('be.visible')
             .type('automation.pm4@gmail.com')
             .should('have.value','automation.pm4@gmail.com');
-        
+            
         cy.get('input[aria-label="Date_1"]')
             .should('be.visible')
             .click()
-            .type('10/20/2022',{delay:100});
-        cy.get('input[aria-label="Date_1"]').type('{enter}');
-        
+            .clear()
+            .type('10/20/2022', {delay: 500})
+            .type('{enter}');
+
         cy.get('input[aria-label="Date_2"]')
             .should('be.visible')
             .click()
-            .type('10/20/2010',{delay:100});
-        cy.get('input[aria-label="Date_2"]').type('{enter}');
+            .clear()
+            .type('10/10/2020', {delay: 500})
+            .type('{enter}')
+            .should('have.value', '10/10/2020');
 
         cy.xpath('//label[text()="Select"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath('//label[text()="Select"]/parent::div//input').should('be.visible').type('Bolivia').should('have.value','Bolivia');
