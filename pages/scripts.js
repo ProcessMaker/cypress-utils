@@ -80,7 +80,7 @@ export class Scripts {
      * @return nothing returns
      */
     pressSaveScript() {
-        cy.xpath(Selectors.CreateSaveBtn).click();
+        cy.xpath(Selectors.CreateSaveBtn).click({force:true});
     }
 
     /**
@@ -116,6 +116,7 @@ export class Scripts {
             retryAttempts,
             retryWaitTime
         );
+        cy.wait(4000);
         this.pressSaveScript();
         cy.xpath(Selectors.debuggerTxt).should("be.visible");
     }
