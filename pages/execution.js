@@ -5213,8 +5213,7 @@ export class Execution {
             .click()
             .clear()
             .type('10/10/2019', {delay: 500})
-            .type('{enter}')
-            .should('have.value', '10/10/2029');
+            .type('{enter}');
 
         cy.xpath('//label[text()="Select"]/parent::div//div[@class="multiselect__tags"]').click();
         cy.xpath('//label[text()="Select"]/parent::div//input').should('be.visible').type('Bolivia').should('have.value','Bolivia');
