@@ -3403,42 +3403,29 @@ export class Execution {
         cy.get('[name="ciDoctor"]').should('have.value','123456789');
     }
 
-    requestsForSaveSearch(taskName){
-        request.openNewRequest("TCP4-2342 Save Search");
-        request.openTask(taskName);
-        cy.get('[data-cy="screen-field-form_input_1"]').type('test1');
-        cy.get('[data-cy="screen-field-form_input_2"]').type('test2');
-        cy.get('[data-cy="screen-field-form_input_3"]').type('test3');
-        cy.get('.form-group > .btn').click();
-    }
-
-    setConfigurationSaveSearch(name){
-        cy.xpath('//a[@title="Configure Saved Search"]').should('be.visible')
-        cy.xpath('//a[@title="Configure Saved Search"]').click()
-        cy.get('[class="pmql-input"]').clear().type('(request = "TCP4-2342 Save Search") AND (status = "Completed")');
+    setConfigurationSaveSearch(){
+        cy.xpath('//a[@title="Configure Saved Search"]').should('be.visible');
+        cy.xpath('//a[@title="Configure Saved Search"]').click();
+        cy.get('[class="pmql-input"]').clear().type('(request = "TCP4-2342 Verify the Reset to defaults in Active Columns in a Saved Search for a request") AND (status = "Completed")');
         cy.get('#nav-config > .d-flex > .btn-secondary').click();
         cy.get('#nav-config > .d-flex > .btn-outline-secondary').click();
-        //cy.xpath('//a[@title="View"]').should('be.visible')
-        //saveSearch.viewSaveSearch(name);
         cy.xpath('//a[@title="Configure Saved Search"]').click();
         cy.xpath('//a[text()="Columns"]').click();
         cy.get('h5').eq(0).should('have.text','Active Columns');
         cy.get('h5').eq(1).should('have.text','Available Columns');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9);
         //verify available column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',4)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',4);
         //move element
         cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
         cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',11)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',11);
         //verify available column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',2)
-
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',2);
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
         cy.get('.mt-3 > .d-flex > .btn-outline-secondary').click();
-        //saveSearch.viewSaveSearch(name);
         cy.xpath('//a[@title="Configure Saved Search"]').click()
         cy.get('#nav-columns-tab').click();
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-current"]//div/span[text()="Line 1"]').should('have.text','Line 1');
@@ -3449,9 +3436,9 @@ export class Execution {
         cy.wait(500);
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-available"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9);
         //verify available column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3)
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3);
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
         cy.get('.mt-3 > .d-flex > .btn-outline-secondary').click();
     }
