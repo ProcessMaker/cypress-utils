@@ -15,6 +15,7 @@ export class ProcessLaunchpad {
     }
     saveLauchpPad(){
         cy.xpath(selectors.settings_saveConfiguration).click();
+        cy.wait(3000);
         cy.xpath(selectors.settings_saveConfiguration).should('not.exist',{ timeout: 15000 });
     }
     cancelLauchpPad(){
@@ -229,8 +230,11 @@ export class ProcessLaunchpad {
     }
     
     selectLaunchScreen(screen){
-        cy.xpath(selectors.inputLaunchScreen).click({force:true}).clear();       
-        cy.xpath(selectors.inputLaunchScreen).type(screen).should('have.value', screen);
+        cy.xpath('//div/input[@placeholder="Type to search Screen"]/parent::*[@class="multiselect__tags"]').click();       
+        cy.xpath(selectors.inputLaunchScreen).type(screen,{delay:100}).should('have.value', screen);
+        cy.xpath(selectors.inputLaunchScreen).type(' ').type('{backspace}');
+        cy.wait(5000);
+        //cy.xpath('//li[@aria-label="'+screen+'. "]').should('be.visible');
         cy.xpath(selectors.inputLaunchScreen).type('{enter}');
     } 
 
@@ -244,5 +248,11 @@ export class ProcessLaunchpad {
     waitLaunchPageLoad(){
         cy.get('[id="pie-chart"]').should('be.visible');
         cy.wait(2000);
+    }
+    verifyModalSettingsIsOpen(){
+        cy.xpath(selectors.modalSettings).should('be.visible');
+        cy.wait(5000);
+        cy.xpath('//*[@aria-placeholder="Select Icon"]/parent::div//*[contains(@src,"/img/launchpad-images")]').should('be.visible');
+        cy.xpath('//*[contains(@class,"alert d-none d-lg-block")]').should('not.exist');
     }
 } 
