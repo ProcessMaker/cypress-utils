@@ -7,8 +7,19 @@ export default {
     itemTenantID: '//*[@class="settings-listing data-table"]//div[contains(text(),"Tenant ID")]/ancestor::tr/td[@aria-colindex="1"]',
     itemSelectAvailableFolders: '//*[@class="settings-listing data-table"]//div[contains(text(),"Select Available Folders")]/ancestor::tr/td[@aria-colindex="1"]',
     authorizeAccountButton: '[data-cy="rpa.authorization"]',
-
-
-
-
+    RPAfolderDropdown: '//label[text()="RPA Folder"]//following-sibling::div/div[@class="multiselect__select"]',
+    RPAfolderTxtBx: '[placeholder="Select a Folder"]',
+    RPADropdownOption: '//li[@role="option"]//span[text()="RPAfolderName"]',
+    RPAprocessDropdown: '//label[text()="RPA Process"]//following-sibling::div/div[@class="multiselect__select"]',
+    RPAprocessTxtBx: '[placeholder="Select a Process"]',
+    RPADropdownOptionProcess: '//li[@role="option"]//span[text()="RPAprocessName"]',
+    RPAmachineDropdown: '//label[text()="RPA Machine"]//following-sibling::div/div[@class="multiselect__select"]',
+    RPAmachineTxtBx: '[placeholder="Select a Machine"]',
+    RPAmachineDropdownOption: '//li[@role="option"]//span[text()="RPAmachineName"]',
+    RPAbotDropdown: '//label[text()="RPA Bot"]//following-sibling::div/div[@class="multiselect__select"]',
+    RPAbotTxtBx: '[placeholder="Select a Bot"]',
+    RPAbotDropdownOption: '//li[@role="option"]//span[text()="RPAbot"]',
+    SelectFolderDropdown: '//div[@class="multiselect__select"]',
+    SelectFolderTxtBx: '[placeholder="Type to search"]',
+    SaveSelectAvailableFolders: '//button[@class="btn btn-secondary"]',
 }
