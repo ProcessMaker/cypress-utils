@@ -12,6 +12,7 @@ export default {
     settings_dragButton: '[id="dropdownMenuUpload"]',
     addReports: '//button[@aria-label="Add Reports"]',
     publishSuccessAlert: '[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]',
+    modalSettings: '//div[contains(@id,"launchpadSettingsModal")][@class="modal-body"]',
 
     launch_category: '//*[@class="menu"]//*[contains(text(),"category")]',
     launch_searchProcess: '[class="processes-info"]>* [class="search"]>* input',
