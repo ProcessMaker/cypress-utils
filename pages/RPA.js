@@ -7,11 +7,9 @@ const process = new Process();
 
 export class RPA {
 
-
-
     clickOnUiPath(){
-
-      cy.get('[data-target="#collapseOne2"]').click({delay: 500});
+      cy.wait(1000);
+      cy.xpath('//*[@class="fas fa-puzzle-piece"]').click({force: true});
       cy.xpath('//div[contains(text(),"UiPath")]').should('be.visible');
       cy.xpath('//div[contains(text(),"UiPath")]').click({force: true});
     }
