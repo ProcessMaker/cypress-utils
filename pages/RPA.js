@@ -98,11 +98,6 @@ export class RPA {
         cy.xpath(selectors.SelectFolderDropdown).should('be.visible');
         cy.xpath(selectors.SelectFolderDropdown).click();
         cy.get(selectors.SelectFolderTxtBx).type(rpaFolderName, {delay: 100}).type('{enter}'); 
-        //cy.get(selectors.SelectFolderTxtBx).should('be.visible').click().clear().type(rpaFolderName, { delay: 100 }).wait(500).should('have.value', rpaFolderName);
-        
-        //cy.get(selectors.SelectFolderTxtBx).should('have.value', rpaFolderName);
-        //.should('have.value', rpaFolderName);
-        //cy.xpath(selectors.RPADropdownOption.replace('rpaFolderName', rpaFolderName)).click({force: true});
         cy.get('.btn-secondary').click();
       }
 
@@ -125,8 +120,7 @@ export class RPA {
         cy.xpath(selectors.searchItemRPA).should("be.visible");
         cy.xpath(selectors.searchItemRPA).type(`${item}{enter}`).should("have.value", item);
         cy.xpath(selectors.searchItemRPA).type(' ').type('{backspace}');
-        //cy.xpath(editBtn).first().click({ force: true });
-        
+            
     }
 
   addRPAfolder(RPAfolderName) {
@@ -135,7 +129,7 @@ export class RPA {
     cy.xpath(selectors.RPAfolderDropdown).click();
     cy.get(selectors.RPAfolderTxtBx).type(RPAfolderName).should('have.value', RPAfolderName);
     cy.xpath(selectors.RPADropdownOption.replace('RPAfolderName', RPAfolderName)).click({ force: true });
-     
+    
   }
 
   addRPAprocess(RPAprocessName) {
@@ -164,16 +158,5 @@ addRPAbot(RPAbot) {
   cy.xpath(selectors.RPAbotDropdownOption.replace('RPAbot', RPAbot)).click({ force: true });
   
 }
-    
-    configureRPAInModeler(){
-      cy.get('[data-cy="inspector-button"]').click();
-      cy.get('[for="rpa-folder-select"]').should('be.visible');
-      cy.get('[aria-owns="listbox-0"] > .multiselect__select').click({force: true});
-      
-
-      //cy.xpath('//*[@id="processmaker-communication-rpa"]').click();
-   
-
-    }
-
+  
   }
