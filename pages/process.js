@@ -2145,6 +2145,7 @@ export class Process {
             }
         });
         cy.wait(500);
+        this.openAlternativeModeler();
         cy.xpath(selectors.processRailBottomXpath).should("be.visible");
     }
 
