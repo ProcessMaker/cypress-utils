@@ -96,7 +96,7 @@ export class RPA {
         cy.xpath(selectors.SelectFolderDropdown).should('be.visible');
         cy.xpath(selectors.SelectFolderDropdown).click();
         cy.get(selectors.SelectFolderTxtBx).type(rpaFolderName, {delay: 100}).type('{enter}'); 
-        cy.get('.btn-secondary').click();
+        cy.get('.btn-secondary').click({ multiple: true });
       }
 
       clickSaveSelectAvailableFolders(){
