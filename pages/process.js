@@ -1237,7 +1237,8 @@ export class Process {
                         .then(text => {
                             if (text !== groupName) {
                                 cy.xpath(startPemrissions_opSelectListSelector.replace('nameType', 'group')).click();
-                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'group')).type(groupName);
+                                cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'group')).type(groupName, {delay:500});
+                                cy.wait(2000);
                                 cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'group')).type('{enter}');
                             }
                         });
