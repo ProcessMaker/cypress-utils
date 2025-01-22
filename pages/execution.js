@@ -3429,11 +3429,12 @@ export class Execution {
         cy.xpath('//a[@title="Configure Saved Search"]').click()
         cy.get('#nav-columns-tab').click();
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-current"]//div/span[text()="Line 1"]').should('have.text','Line 1');
+        cy.wait(5000);
         cy.get('.mr-auto > .btn').click();
         cy.xpath('//div[@class="modal-content"]').should('be.visible');
-        cy.wait(500);
+        cy.wait(5000);
         cy.xpath('//button[text()="Confirm"]').click();
-        cy.wait(500);
+        cy.wait(5000);
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-available"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         //verify active column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9);
