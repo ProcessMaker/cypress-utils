@@ -3407,10 +3407,15 @@ export class Execution {
         cy.xpath('//a[@title="Configure Saved Search"]').should('be.visible');
         cy.xpath('//a[@title="Configure Saved Search"]').click();
         cy.get('[class="pmql-input"]').clear().type('(request = "TCP4-2342 Verify the Reset to defaults in Active Columns in a Saved Search for a request") AND (status = "Completed")');
-        cy.get('#nav-config > .d-flex > .btn-secondary').click();
-        cy.get('#nav-config > .d-flex > .btn-outline-secondary').click();
-        cy.xpath('//a[@title="Configure Saved Search"]').click();
-        cy.xpath('//a[text()="Columns"]').click();
+        cy.get('#nav-config > .d-flex > .btn-secondary')
+            .should('exist')
+            .click();
+        cy.xpath('//a[@title="Configure Saved Search"]')
+            .should('be.visible')
+            .click();
+        cy.xpath('//a[text()="Columns"]')
+            .should('exist')
+            .click();
         cy.get('h5').eq(0).should('have.text','Active Columns');
         cy.get('h5').eq(1).should('have.text','Available Columns');
         //verify active column
@@ -3424,16 +3429,23 @@ export class Execution {
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',11);
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',2);
-        cy.get('.mt-3 > .d-flex > .btn-secondary').click();
-        cy.get('.mt-3 > .d-flex > .btn-outline-secondary').click();
+        cy.get('.mt-3 > .d-flex > .btn-secondary')
+            .should('exist')
+            .click();
         cy.xpath('//a[@title="Configure Saved Search"]').click()
-        cy.get('#nav-columns-tab').click();
+        cy.get('#nav-columns-tab')
+            .should('exist')
+            .click();
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-current"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         cy.wait(5000);
-        cy.get('.mr-auto > .btn').click();
+        cy.get('.mr-auto > .btn')
+            .should('exist')
+            .click();
         cy.xpath('//div[@class="modal-content"]').should('be.visible');
         cy.wait(5000);
-        cy.xpath('//button[text()="Confirm"]').click();
+        cy.xpath('//button[text()="Confirm"]')
+            .should('exist')
+            .click();
         cy.wait(5000);
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-available"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         //verify active column
