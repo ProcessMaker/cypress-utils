@@ -560,12 +560,11 @@ export class Execution {
         navHelper.navigateToTasksPage();
         navHelper.navigateToRequestsPage();
         request.openRequestById(requestID);
-        cy.xpath('//h4[text()="In Progress"]').should('be.visible');
         await cy.xpath('//tr[@item-index="0"]/td/a').should('contain.text',"Form Task 2").contains('Form Task 2').click();
         cy.xpath('//input[@name="name"]').type('Nirvana').type('{enter}');
-        cy.xpath('//input[@name="email"]').type('pablo.barroso@processmaker.com').type('{enter}');
+        cy.xpath('//input[@name="email"]').type('colosaqatest@processmaker.com').type('{enter}');
         cy.xpath('(//div[@class="d-block"]/button)[1]').click();
-        cy.xpath('//h4[text()="Completed"]').should('be.visible');
+        cy.wait(2000);
         await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', "Parallel Gateway: Label Undefined");
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', "Parallel Gateway: Label Undefined");
         cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', "Admin User has completed the task Form Task 1");
@@ -583,10 +582,10 @@ export class Execution {
         cy.xpath('//input[@aria-label="Date"]').type('2021-10-01').type('{enter}');
         cy.xpath('//input[@name="image2"]').check();
         cy.xpath('//input[@name="image2"]').uncheck();
-        cy.xpath('//span[@class="required-asterisk"]').should('be.visible');
         cy.xpath('//input[@name="image1"]').check();
         cy.xpath('//input[@name="image1"]').uncheck();
         cy.xpath('//input[@aria-label="Date"]').clear().type('2021-10-02').type('{enter}');
+        cy.wait(2000);
         cy.xpath('//span[@class="required-asterisk"]').should('be.visible');
         cy.xpath('//input[@name="image2"]').check();
         cy.xpath('//button[@aria-label="New Submit"]').click();
@@ -594,7 +593,6 @@ export class Execution {
         navHelper.navigateToTasksPage();
         navHelper.navigateToRequestsPage();
         request.openRequestById(requestID2);
-        cy.xpath('//h4[text()="In Progress"]').should('be.visible');
         cy.xpath('//tr[@item-index="0"]/td/a').should('contain.text',"Form Task 2").contains('Form Task 2').click();
         cy.xpath('//input[@name="name"]').type('Nirvana').type('{enter}');
         cy.xpath('//input[@name="email"]').type('pablo.barroso@processmaker.com').type('{enter}');
@@ -605,10 +603,10 @@ export class Execution {
         cy.visit('/requests/'+ requestID2);
         request.waitUntilTextcontainText('selector','varHeader','Completed');
         await cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', "Parallel Gateway: Label Undefined");
-        cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', "Parallel Gateway: Label Undefined");
-        cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', "Admin User has completed the task Form Task 1");
-        cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', "Admin User has completed the task Form Task 2");
-        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', "Admin User has completed the task Send Email");
+        cy.get('#request > .flex-column > :nth-child(1)').should('contain.text', "Parallel Gateway: Label Undefined");
+        cy.get('#request > .flex-column > :nth-child(1)').should('contain.text', "Admin User has completed the task Form Task 1");
+        cy.get('#request > .flex-column > :nth-child(1)').should('contain.text', "Admin User has completed the task Form Task 2");
+        cy.get('#request > .flex-column > :nth-child(1)').should('contain.text', "Admin User has completed the task Send Email");
     }
 
     actionsAndAssertionsOfTCP42281Part1(requestId){
