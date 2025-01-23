@@ -560,6 +560,7 @@ export class Execution {
         navHelper.navigateToTasksPage();
         navHelper.navigateToRequestsPage();
         request.openRequestById(requestID);
+        cy.reload();
         await cy.xpath('//tr[@item-index="0"]/td/a').should('contain.text',"Form Task 2").contains('Form Task 2').click();
         cy.xpath('//input[@name="name"]').type('Nirvana').type('{enter}');
         cy.xpath('//input[@name="email"]').type('colosaqatest@processmaker.com').type('{enter}');
