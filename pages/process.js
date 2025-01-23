@@ -1379,7 +1379,7 @@ export class Process {
         const elementStartEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.startEvent.Shape']";
         const elementTaskEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
         const weBtnSelector = "[id='accordion-button-webentry']";
-        const linkScreenAssociatedXpath = "//label[text()='Screen For Completed']/parent::div//a";
+        const linkScreenAssociatedXpath = "//label[text()='Screen Associated']/parent::div//a";
         cy.get('[data-cy="inspector-button"]').should('exist');
         cy.url().then(url => {
             cy.get('[data-cy="inspector-button"]').click();

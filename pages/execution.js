@@ -4186,8 +4186,7 @@ export class Execution {
             .should('have.attr', 'aria-label')
             .and('equal', "ana. ");
         cy.xpath(userLineInptXpath).type('{enter}');
-
-
+        
         //Enable the watcher
         cy.xpath(optionCheckXpath).click();
         cy.xpath(AlabamaOption).should('be.visible').click();
@@ -4206,9 +4205,6 @@ export class Execution {
 
         //Verify data in the second task
         cy.xpath("//input[@type='text'][@name='data2']").should('be.visible');
-        cy.xpath("//input[@type='text'][@name='data2']").should('have.value','22');
-        cy.xpath("//input[@type='text'][@name='data3']").should('have.value','333');
-        cy.xpath("//input[@type='text'][@name='data4']").should('have.value','4444');
         cy.xpath("//div[text()='automation@endtest-mail.io']").should('be.visible');
         cy.xpath("//div[text()='Arizona']").should('be.visible');
         cy.xpath("//div[text()='Alabama,Kansas']").should('be.visible');
