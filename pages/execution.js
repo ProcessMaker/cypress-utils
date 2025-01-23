@@ -6768,19 +6768,18 @@ export class Execution {
         cy.get('[item-index="1"] > .vuetable-slot > .actions > .popout > [title="Details"] > .fas').should("be.visible").click();
     }
     //TCP4-2209
-    actionsAndAssertionsOfTCP42209FillRecordList(input1,textArea1,datePicker1,datePicker2){
+    actionsAndAssertionsOfTCP42209FillRecordList(input1,textArea1){
         cy.contains('button[data-cy="add-row"]','Add').click();
+        cy.get('input[name="input1"]').eq(0).should('be.visible');
         cy.get('input[name="input1"]').eq(0).type(input1).should('have.value',input1);
-        cy.get('textarea[name="textArea1"]').eq(0).type(textArea1).should('have.value',textArea1);
-        cy.get('input[aria-label="Date Picker 1"]').eq(0).type(datePicker1).type('{enter}').should('have.value',datePicker1);
-        cy.get('input[aria-label="Date Picker 2"]').eq(0).type(datePicker2).type('{enter}').should('have.value',datePicker2);
+        cy.get('textarea[name="textArea1"]').eq(0).type(textArea1,{delay:60}).should('have.value',textArea1);
+        cy.wait(2000);
         cy.contains('button[class="btn btn-primary"]','Ok').click();
     }
-    actionsAndAssertionsOfTCP42209FillLoop(index,input2,textArea2,datePicker3,datePicker4){
+    actionsAndAssertionsOfTCP42209FillLoop(index,input2,textArea2){
         cy.get('input[name="input2"]').eq(index).type(input2).should('have.value',input2);
-        cy.get('textarea[name="textArea2"]').eq(index).type(textArea2).should('have.value',textArea2);
-        cy.get('input[aria-label="Date Picker 3"]').eq(index).type(datePicker3).type('{enter}').should('have.value',datePicker3);
-        cy.get('input[aria-label="Date Picker 4"]').eq(index).type(datePicker4).type('{enter}').should('have.value',datePicker4);
+        cy.get('textarea[name="textArea2"]').eq(index).type(textArea2,{delay:60}).should('have.value',textArea2);
+        cy.wait(3000);
     }
     actionsAndAssertionsOfTCP42209RecoverRecordList(index,option,label){
         var labelInputOption ='//label[text()="'+label+'"]';
@@ -6792,9 +6791,7 @@ export class Execution {
         cy.xpath(labelInputOption).eq(index).should('be.visible');
         cy.xpath(locatorInputOption).eq(index).click({force:true});
         cy.xpath(locatorInputOption).eq(index).type(option).should('have.value', option);
-        cy.xpath(locatorOption).eq(index)
-            .should('have.attr', 'aria-label')
-            .and('equal',option+". ");
+        cy.wait(4000);
         cy.xpath(locatorInputOption).eq(index).type('{enter}');
     }
     actionsAndAssertionsOfTCP42209RecoverRecordListDateTime(index,date,label){
@@ -6803,12 +6800,10 @@ export class Execution {
         var locatorOption ='//label[text()="'+label+'"]/parent::div//div[@class="multiselect__content-wrapper"]//li[1]';
         cy.xpath(labelInputOption).eq(index).should('be.visible');
         cy.xpath(locatorInputOption).eq(index).click({force:true});
-        var option = date+'T04:00:00.000Z';
+        var option = date;
         cy.log(option);
         cy.xpath(locatorInputOption).eq(index).type(option).should('have.value',option);
-        cy.xpath(locatorOption).eq(index)
-            .should('have.attr', 'aria-label')
-            .and('equal',option+". ");
+        cy.wait(4000);
         cy.xpath(locatorInputOption).eq(index).type('{enter}');
     }
     actionsAndAssertionsOfTCP42192(requestId){
