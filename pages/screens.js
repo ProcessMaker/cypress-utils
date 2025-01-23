@@ -1122,11 +1122,13 @@ export class Screens {
             .should('be.visible').click();
         cy.xpath(Selectors.selectTheVaraible.replace('name', resource)).click();
         cy.xpath(Selectors.clickonOutput).click();
-        cy.xpath("//label[text()='Output Variable Property Mapping']/parent::div//button[text()[normalize-space()='+ Property']")
+        cy.xpath("//label[text()='Output Variable Property Mapping']/parent::div//button[contains(text(),'+ Property')]")
             .click();
         cy.xpath("//input[@type='text'][@name='value']").should('be.visible').type(output.source);
         cy.xpath("//input[@type='text'][@name='key']").should('be.visible').type(output.variable);
         cy.xpath(Selectors.clickonWatchersSaveBtn).click();
+        cy.wait(5000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
     }
     checkAllowMultipleUploads(check) {
         if (check) {
