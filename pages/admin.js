@@ -249,7 +249,7 @@ export class Admin {
 	}
 
 	addingDataToStudentCollection(date, ci, name, lastName, phone) {
-		cy.get(selectors.newRecordBtn).click();
+		this.clickOnAddNewRecordCollection();
 		cy.xpath(selectors.studentDateInputTxtBx).type(date).should('have.value', date);
 		cy.get(selectors.CIInputTxt).type(ci).should('have.value', ci);
 		cy.get(selectors.studentNameInputTxtBx).type(name).should('have.value', name);
@@ -260,6 +260,9 @@ export class Admin {
 		cy.get(selectors.submitBtn).click();
 		cy.get(selectors.navEditBtn).should('be.visible');
 	}
+	clickOnAddNewRecordCollection(){
+        cy.get(selectors.newRecordBtn).click();
+    }
 
 	searchForUser(userName) {
 		cy.xpath(selectors.userInputTxtBx).type(userName).should('have.value', userName);
@@ -392,13 +395,20 @@ export class Admin {
         }
 
 	enableCollectionSignals() {
-		//cy.xpath(selectors.configBtn).click();
-		cy.get(selectors.createSignalBtn).click();
+		this.enableCreateSignalCollection();
 		cy.get(selectors.updateSignalBtn).click();
 		cy.get(selectors.deleteSignalBtn).click();
-		cy.xpath(selectors.collectionSaveBtnSignl).click();
+		this.saveCollectionSignal();
 
 	}
+	
+	enableCreateSignalCollection(){
+        cy.get(selectors.createSignalBtn).click();
+    }
+    
+    saveCollectionSignal(){
+        cy.xpath(selectors.collectionSaveBtnSignl).click();
+    }
 
     verifyTitlePage (title) {
         cy.visit('/admin/users');
