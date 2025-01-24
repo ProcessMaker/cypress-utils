@@ -1814,7 +1814,7 @@ export class Process {
         const signalSelected = "//label[text()='Signal']/parent::div//div[@class='multiselect__tags']//span";
 
         cy.xpath(elementTaskXapth.replace('nameElem', signalEvent)).first().should('be.visible').click();
-        cy.wait(2000);
+        cy.wait(5000);
         cy.xpath(signalSelected).invoke('text')
             .then(text => {
                 if (text !== signal) {
