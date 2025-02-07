@@ -864,89 +864,42 @@ export class Execution {
         cy.get('div[class="flex-grow-1"]').eq(3).should('contain.text',"completed the task BB");
     }
 
-    async actionsAndAssertionsOfTCP42337(requestId){
-        request.openNewRequest(
-            "TCP4-2337 Verify Google"
-        );
-        cy.wait(10000);
-        cy.get(
-            'div[class="card"] > div[class="card-body"] > div[class="row"] > div[class="col-10"] > span')
-        .should(
-            "contain.text",
-            "TCP4-2337 Verify Google Places"
-        );
-        cy.wait(10000);
-        cy.get('a[class="btn btn-primary btn-sm"]').click();
-        cy.get(
-            'ul[id="requestTab"] > li[class="nav-item"] > a[id="pending-tab"]'
-        ).click();
-        cy.wait(5000);
-        cy.get(
-            'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-        )
-            .eq(1)
-            .contains("Form Task")
+    actionsAndAssertionsOfTCP42337 (requestId){
+        //Complete first task
+        cy.get('div[data-cy="screen-field-google"] > div > input[class="form-control pac-target-input"]').eq(0)
             .click();
-        cy.get(
-            'div[data-cy="screen-field-google"] > div > input[class="form-control pac-target-input"]'
-        )
-            .eq(0)
-            .click();
-        cy.get(
-            'div[data-cy="screen-field-google"] > div > input[class="form-control pac-target-input"]'
-        )
-            .eq(0)
+        cy.get('div[data-cy="screen-field-google"] > div > input[class="form-control pac-target-input"]').eq(0)
             .type("Duomo Di Milano");
         cy.get(".pac-item", { timeout: 10000 })
             .should("be.visible")
             .eq(0)
             .click();
-        cy.wait(5000);
-        cy.get(
-            'div[data-cy="screen-field-googleplaces"] > div > input[class="form-control pac-target-input"]'
-        ).click();
-        cy.get('div[data-cy="screen-field-googleplaces"] > div > input[class="form-control pac-target-input"]').eq(0).click();
-        cy.get(
-            'div[data-cy="screen-field-googleplaces"] > div > input[class="form-control pac-target-input"]'
-        )
-            .eq(0)
+        cy.wait(2000);
+        cy.get('div[data-cy="screen-field-googleplaces"] > div > input[class="form-control pac-target-input"]').click();
+        cy.get('div[data-cy="screen-field-googleplaces"] > div > input[class="form-control pac-target-input"]').eq(0)
             .type("Palazzo Ducale Venezia");
-        cy.get('.pac-item', { timeout: 10000 }).should('be.visible').eq(0).click();
-        cy.wait(5000);
-        cy.get('li[class="list-group-item"] > h5').contains("Assigned To").dblclick();
-        cy.get('div[class="card"] > ul > li > a')
-            .invoke("text")
-            .then((text) => {
-            var requestIDtext = text.trim();
-            requestIDtext = requestIDtext.substring(
-                0,
-                requestIDtext.length
-            );
-            cy.wait(5000);
-            cy.get('button[aria-label="New Submit"]').contains("New Submit").click();
-            navHelper.navigateToTasksPage();
-            cy.get('tbody[class="vuetable-body"]')
-                .get("tr")
-                .get('td[class="vuetable-slot"] > a[target="_self"]')
-                .contains(requestIDtext)
-                .click();
-        });
-        cy.wait(5000);
-        cy.get(
-            'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"] > a'
-        )
-            .eq(1)
-            .contains("Manual Task")
+        cy.get('.pac-item', { timeout: 10000 })
+            .should('be.visible')
+            .eq(0)
             .click();
+        //cy.get('button[aria-label="New Submit"]').scrollIntoView();
+        cy.get('button[aria-label="New Submit"]')
+            .contains("New Submit")
+            .click();
+        //Review manual task
         cy.get('div[class="form-group form-image"] > img').should('have.length',2);
         cy.get('button[class="btn btn-primary"]')
             .contains("Complete Task")
             .click();
         cy.reload();
-        cy.wait(5000);
-        cy.get('div[class="flex-grow-1"]').eq(2).contains("Admin User has completed the task Form Task");
-        cy.wait(5000);
-        cy.get('div[class="flex-grow-1"]').eq(3).contains("Admin User has completed the task Manual Task");
+        cy.get('div[class="flex-grow-1"]').eq(2)
+            .scrollIntoView()
+            .should('be.visible')
+            .contains("Admin User has completed the task Form Task");
+        cy.get('div[class="flex-grow-1"]').eq(3)
+            .scrollIntoView()
+            .should('be.visible')
+            .contains("Admin User has completed the task Manual Task");
     }
 
     actionsAndAssertionsOfTCP42330(requestId){
