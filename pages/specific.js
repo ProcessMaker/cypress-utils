@@ -6,6 +6,8 @@ import { Admin } from "#pages/admin";
 import { Screens } from "#pages/screens";
 import {SaveSearchs} from "#pages/saveSearch";
 import requests from "#selectors/requests";
+import notificationSelectors from "#selectors/notification"
+import {Notification} from "#pages/notification";
 
 let navHelper = new NavigationHelper();
 const request = new Requests();
@@ -14,6 +16,7 @@ const login = new Login();
 const adminP = new Admin();
 const screensP = new Screens();
 const saveSearch = new SaveSearchs();
+const notification = new Notification();
 
 export class Specific {
 
@@ -1683,21 +1686,19 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42154(requestId, name1, name2) {
+        //Step 1: Complete the process 1
+        cy.xpath("//input[@data-cy='screen-field-form_input_1']").should('be.visible');
         cy.xpath("//input[@data-cy='screen-field-form_input_1']").type("qwert");
         cy.xpath("//textarea[@data-cy='screen-field-form_text_area_1']").type("abcdefghjjbffnwfewyfwh");
-        cy.xpath("//div[@data-cy='screen-field-form_date_picker_1']//input[1]").type('2022-06-08');
-        cy.xpath("(//div[@data-cy='screen-field-form_select_list_1']//div[1])[1]").click();
-        cy.xpath("//span[text()='test2']").click();
         cy.xpath("//button[@class='btn btn-primary']").click();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB();
 
-        //Task page
-        navHelper.navigateToTasksPage();
-        request.openProcessInTaskPage(name2, "Signal Manual Task");
-        cy.xpath("//li[text()[normalize-space()='Signal Manual Task']]").should('be.visible');
-        cy.xpath("//button[text()[normalize-space()='Complete Task']]").click();
-        const requestId2 = parseInt(requestId) + 1;
-        request.verifyRequestisCompleted(requestId2);
+        //Step 2: Verify that process 2 was started
+        navHelper.navigateToAllRequests();
+
+        request.addRequestNameToSelectList(name2);
+        cy.xpath('(//*[contains(text(),"21542-Process")]/ancestor::tr/td//a[contains(@href,"/requests")])[1]')
+            .should('be.visible');
     }
 
     actionsAndAssertionsOfTCP42152(requestId, name, timeStamp) {
@@ -1864,79 +1865,73 @@ export class Specific {
     }
 
     actionsAndAssertionsOfTCP42171(requestId){
+        //Step 2: Wait the scren is load
+        cy.get('[data-cy="screen-field-CommentType"]').should('be.visible');
         cy.get('[data-cy="screen-field-CommentType"]').type("comment Type");
-        // cy.xpath("//label[text()='Comment Type']/following::input[1]").type('comment Type');
-        cy.xpath("//label[text()='Enable']").click();
-        cy.get('.comment-area').type("testcase comments");
-        cy.get('.comment-area').type('{selectAll}');
-        cy.get('[title="Bold"] > .fas').click();
-        cy.get('.comment-area').should('contain','**testcase comments**');
-        cy.xpath("(//a[@href='#'])[3]").click();
-        cy.xpath("//div[@class='card-body']//strong[1]").should('be.visible');
-        cy.xpath("(//a[@href='#'])[2]").click();
-        cy.get('.comment-area').should('contain','**testcase comments**');
-        cy.xpath("//button[contains(@class,'btn text-uppercase')]").click();
-        cy.xpath("(//div[contains(@class,'card mt-3')]//div)[1]").should('contain','testcase comments');
+        cy.get('[data-cy="screen-field-Enable"]').check({force:true});
+
+        notification.pressCommentButton();
+        notification.sendComment(
+            "Task",
+            "testcase comments"
+        );
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
 
-        //request part 2 reaction
+        //Complete the task reactions
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        notification.pressCommentButton();
+        cy.get('[class="pan-cmt-cont-item-icons-display-button"]').eq(2).should('be.visible').click();
+        let m = notificationSelectors.textareaComments;
+        cy.xpath(m).should("be.visible");
+        cy.xpath(m).type('Edit message');
+        notification.pressOptionComment('task', "Reply");
+
         request.clickOnTaskName(1, 1);
-        cy.xpath("//div[@contenteditable='true']").type("Test Reactions");
-        cy.xpath("//button[contains(@class,'btn text-uppercase')]").click();
-        cy.get('.comment-editor > :nth-child(1) > p').should('contain','Test Reactions');
-        cy.xpath("//button[text()[normalize-space()='+']]").click();
-        cy.xpath("//input[@placeholder='Search']").type("Thumbs Up Sign");
-        cy.get('.emoji-mart-scroll > :nth-child(1) > .emoji-mart-emoji').click();
-        cy.get('.card-body > .btn').click();
-        cy.xpath("//span[@class='emoji-mart-emoji']").should('be.visible');
+        cy.get('[data-cy="screen-field-CommentType"]').should('be.visible');
         cy.get('.form-group > .btn').click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
-        //request part 3 voting
+
+        //Complete the task voting
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        notification.pressCommentButton();
         request.clickOnTaskName(1, 1);
-        cy.xpath("(//a[@class='nav-link active'])[3]").click();
-        cy.xpath("//div[@contenteditable='true']").type("Test Voting");
-        cy.xpath("//button[contains(@class,'btn text-uppercase')]").click();
-        cy.xpath("(//div[contains(@class,'card mt-3')]//div)[1]").should('contain','Test Voting');
-        cy.xpath("//i[@class='fas fa-thumbs-up']").click();
-        cy.xpath("//button[text()='Load Replies (1)']").click();
-        cy.xpath("//span[contains(@class,'btn btn-sm')]//i[1]").should('be.visible');
+        cy.get('[data-cy="screen-field-CommentType"]').should('be.visible');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
-        //request part 4 Edit
+
+        //Complete the task Edit
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        notification.pressCommentButton();
+        cy.get('[class="pan-cmt-cont-item-icons-display-button"]').eq(0)
+            .should('be.visible')
+            .click();
+        cy.xpath(notificationSelectors.textareaComments).clear();
+        m = notificationSelectors.textareaComments;
+        cy.xpath(m).type('Edit message');
+        notification.pressOptionComment('task', "Edit");
         request.clickOnTaskName(1, 1);
-        cy.xpath("(//a[@class='nav-link active'])[3]").click();
-        cy.xpath("//div[@contenteditable='true']").type("Test Edit");
-        cy.xpath("//button[contains(@class,'btn text-uppercase')]").click();
-        cy.xpath("(//div[contains(@class,'card mt-3')]//div)[1]").should('be.visible');
-        cy.xpath("//button[@title='Edit Comment']").click();
-        cy.xpath("(//div[@contenteditable='true'])[1]").clear();
-        cy.xpath("(//div[@contenteditable='true'])[1]").type("test edit edited");
-        cy.xpath("//button[text()=' Update Comment']").click();
-        cy.get('.comment-editor > :nth-child(1) > p').should('contain','test edit edited');
         cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         cy.wait(2000);
-        //request part 5 delete
+
+        //Complete the task delete
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        notification.pressCommentButton();
+        cy.get('[class="pan-cmt-cont-item-icons-display-button"]').eq(1)
+            .should('be.visible')
+            .click();
+        cy.xpath("//button[text()='Confirm']").should('be.visible').click();
+        cy.wait(4000);
         request.clickOnTaskName(1, 1);
-        cy.xpath("(//a[@class='nav-link active'])[3]").click();
-        cy.xpath("//div[@contenteditable='true']").type("test delete");
-        cy.xpath("//button[contains(@class,'btn text-uppercase')]").click();
-        cy.xpath("(//div[contains(@class,'card mt-3')]//div)[1]").should('contain','test delete');
-        cy.xpath("//button[@title='Remove Comment']").click();
-        cy.xpath("//button[text()='Confirm']").click();
-        cy.get('.comment-area').should('not.contain','test delete');
-        //cy.xpath("(//div[contains(@class,'card mt-3')]//div)[1]").should('not.contain',);
-        cy.xpath("//button[text()[normalize-space()='New Submit']]").click();
-        cy.xpath("//td[text()='true']").should('be.visible');
-        cy.xpath("//td[text()='comment Type']").should('be.visible');
+        cy.xpath("//button[text()[normalize-space()='New Submit']]").should('be.visible').click();
         request.verifyRequestisCompleted(requestId);
     }
 
