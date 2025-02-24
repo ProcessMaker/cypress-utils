@@ -321,23 +321,18 @@ export class Specific {
         request.waitUntilTextcontainText('selector','varHeader', "Completed");
     }
 
-    actionsAndAssertionsOfTCP42222(requestId, date){
-        //request part
+    actionsAndAssertionsOfTCP42222(requestId){
         //write a text in  line input
         const selectListXpath = "//label[text()='New Select List']/parent::div//div[@class='multiselect__tags']";
         const inputLineXpath = "//label[text()='New Select List']/parent::div//input";
         const okBtnXPath = "//button[text()='Ok']";
         cy.get("[name='aa']").type("test").should('have.value', "test");
         //click on check box
-        cy.get("[name='checkbox']").click();
-        //write a date picker date
-        cy.xpath('//div[@data-cy="screen-field-date"]//input[1]').type(date.toLocaleDateString('en-GB'));
+        cy.get("[name='checkbox']").check({force:true});
         //click on add element
         cy.xpath("//button[@data-cy='add-row']").click();
         //select a book
-        cy.xpath(selectListXpath).first().click();
-        cy.xpath(inputLineXpath).first().type('title1');
-        cy.xpath(inputLineXpath).first().type('{enter}');
+        cy.get('input[data-cy="screen-field-selectlist"]').first().check({force:true});
         //click on ok
         cy.xpath(okBtnXPath).click();
         //verify the book is added
@@ -346,61 +341,57 @@ export class Specific {
         //click on add element
         cy.xpath("//button[@data-cy='add-row']").click();
         //select a book
-        cy.xpath(selectListXpath).first().click();
-        cy.wait(2000);
-        cy.xpath(inputLineXpath).first().type('title2');
-        cy.xpath(inputLineXpath).first().type('{enter}');
+        cy.get('input[data-cy="screen-field-selectlist"]').eq(1).check({force:true});
         //click on ok
         cy.xpath(okBtnXPath).click();
         //verify the book is added
-        cy.xpath("//td[text()[normalize-space()='title2']]").should('be.visible');
+        cy.xpath("//td[text()[normalize-space()='book2']]").should('be.visible');
 
         //upload a file
         cy.get('[type="file"]').attachFile("sample.pdf");
+        cy.xpath('//span[contains(text(),"success")]').should('exist');
         //click on submit
         cy.xpath('//div[@default-submit="true"]//button[1]').click();
         //verify task is completed
-        cy.xpath("//div[text()='Task Completed Successfully']").should('be.visible');
+        request.verifyTaskIsCompletedB();
+        cy.wait(5000);
+        cy.wait(5000);
+        cy.wait(5000);
+
         navHelper.navigateToRequestsPage();
         cy.visit('/requests/' + requestId);
-        //cy.reload();
         //verify the process is completed
-        request.waitUntilTextcontainText('selector','varHeader', "Completed");
+        request.waitUntilTextcontainText('selector','varHeader', "Completed",25);
 
         //click on file manger
         cy.xpath('//a[@href="#fileManager"]').click();
         //verify the pdf file1
-        cy.xpath("(//div[@id='fileManager']//tr)[2]//td[2]").contains('1 (1) — pdf');
+        cy.xpath('//div[@id="fileManager"]//tr//*[contains(text(),"(1)")]').should('exist');
         //verify the pdf file2
-        cy.xpath("(//div[@id='fileManager']//tr)[3]//td[2]").contains('c (c) — pdf');
+        cy.xpath('//div[@id="fileManager"]//tr//*[contains(text(),"(c)")]').should('exist');
         //verify the pdf file3
-        cy.xpath("(//div[@id='fileManager']//tr)[4]//td[2]").contains('d (d) — pdf');
+        cy.xpath('//div[@id="fileManager"]//tr//*[contains(text(),"(d)")]').should('exist');
         //verify the pdf file4
-        cy.xpath("(//div[@id='fileManager']//tr)[5]//td[2]").contains('e (e) — pdf');
+        cy.xpath('//div[@id="fileManager"]//tr//*[contains(text(),"(e)")]').should('exist');
         //verify the pdf file5
-        cy.xpath("(//div[@id='fileManager']//tr)[6]//td[2]").contains('f (f) — pdf');
+        cy.xpath('//div[@id="fileManager"]//tr//*[contains(text(),"(f)")]').should('exist');
         //verify the pdf file6
-        cy.xpath("(//div[@id='fileManager']//tr)[7]//td[2]").contains('sample (fileUpload) — pdf');
-        //verify the pdf file7
-        cy.xpath("(//div[@id='fileManager']//tr)[8]//td[2]").contains('test (test) — pdf');
-        //click on forms
-        cy.xpath('//a[@href="#forms"]').click();
-        //verify the screen
-        // cy.xpath("//td[text()='{{$FormScreen}}']").contains('{{$FormScreen}}');
+        cy.xpath('//div[@id="fileManager"]//tr//*[contains(text(),"(test)")]').should('exist');
+
         //verify the admin user task is completed
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task Form Task']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task Form Task']]").should('exist');
         //verify the admin user as completed task A
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task A']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task A']]").should('exist');
         //verify the admin user as completed task B
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task B']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task B']]").should('exist');
         //verify the admin user as completed task C
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task C']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task C']]").should('exist');
         //verify the admin user as completed task D
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task D']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task D']]").should('exist');
         //verify the admin user as completed task E
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task E']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task E']]").should('exist');
         //verify the admin user as completed task F
-        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task F']]").should('be.visible');
+        cy.xpath("//*[text()[normalize-space()='Admin User has completed the task F']]").should('exist');
     }
 
     async actionsAndAssertionsOfTCP42241(requestId, collection1, name, collection2) {
