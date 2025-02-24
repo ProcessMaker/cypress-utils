@@ -1812,56 +1812,40 @@ export class Specific {
         });
     }
 
-    actionsAndAssertionsOfTCP42172(coverstaion_screen_1, name, processId) {
-        cy.wait(2000);
-        //go to url
-        cy.visit('/webentry/' + processId + '/node_1');
+    actionsAndAssertionsOfTCP42172(processId) {
         //verify screen name
-        cy.get['[name="form_screen"]'.replace('form_screen', coverstaion_screen_1)];
+        cy.get('[name="CommentType"]').should('be.visible');
         cy.get('[name="CommentType"]').type('test web entry');
-        cy.get('[data-cy="screen-field-Enable"]').click();
+        cy.get('[data-cy="screen-field-Enable"]').click({force:true});
         cy.get('[class="btn btn-primary"]').click();
-        cy.wait(2000);
         cy.xpath("//strong[text()='Completed!!!!!!']").should('be.visible');
-        navHelper.navigateToAllRequests();
-        request.openInPogressProcessInAllRequests(name);
-        cy.url().then(url => {
+
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+
+        //Step 3: Get the number of requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            //Step 4: Log in
+            login.navigateToUrl();
+            login.login();
+
+            cy.visit('/requests/'+requestId);
+            request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
-            var requestId = url.split('/')[4].trim();
-            cy.get('[class="form-control"]').should('have.value', 'test web entry');
-            cy.get('[class="comment-area"]').type('test web entry comments');
-            cy.get('[class="btn text-uppercase btn-secondary btn-sm"]').click();
-            cy.xpath('//p[text()="test web entry comments"]').should('be.visible');
-            cy.xpath("//div[@contenteditable='true']").type('https://www.ecosia.org/');
-            cy.get('[class="btn text-uppercase btn-secondary btn-sm"]').click();
-            cy.wait(4000);
-            cy.get('#main').scrollTo('bottom');
-            cy.xpath("//a[text()='https://www.ecosia.org/']").should('be.visible');
-            cy.get('#main').scrollTo(0, 300);
-            cy.xpath('(//i[@class="fas fa-thumbs-down"])[1]').click();
-            cy.get('#main').scrollTo(0, 500);
-            cy.xpath("(//button[@class='btn btn-outline-secondary btn-sm'])[1]").click();
-            cy.wait(2000);
-            cy.get('#main').scrollTo(0, 500);
-            cy.xpath('(//i[@class="fas fa-thumbs-down"])[1]').should('be.visible');
-            cy.xpath("(//i[contains(@class,'far fa-smile')])[1]").click();
-            cy.xpath("//input[@placeholder='Search']").type('Smile');
-            cy.xpath("(//div[@class='emoji-mart-category']//span)[2]").click();
-            cy.wait(2000);
-            cy.xpath("(//button[@class='btn btn-outline-secondary btn-sm'])[1]").click();
-            cy.get('[class="emoji-mart-emoji"]').should('be.visible');
-            cy.xpath("(//button[@class='btn btn-info btn-sm'])[1]").click();
-            cy.xpath("(//div[@placeholder='Add a comment...'])[1]").clear();
-            cy.xpath('(//div[@placeholder="Add a comment..."])[1]').type('test web entry comments Edited');
-            cy.xpath('(//button[@class="btn text-uppercase btn-secondary btn-sm"])[1]').click();
-            cy.xpath("//p[text()='test web entry comments Edited']").should('be.visible');
-            cy.xpath('(//button[@class="btn btn-danger btn-sm"])[1]').click();
-            cy.xpath("//button[text()='Confirm']").click();
-            cy.xpath('//div[@role="alert"]').should('be.visible');
-            cy.get('#main').scrollTo('top');
+            cy.xpath("//button[normalize-space(text())='New Submit']").should('be.visible');
+            notification.pressCommentButton();
+            notification.sendComment(
+                "Task",
+                "testcase comments with WE"
+            );
             cy.xpath("//button[normalize-space(text())='New Submit']").click();
-            request.verifyRequestisCompleted(requestId, 0);
-        })
+            request.verifyTaskIsCompletedB();
+
+            cy.visit('/requests/'+requestId);
+            notification.pressCommentButton();
+            cy.xpath('//div[contains(text(),"testcase comments with WE")]').should('exist');
+
+        });
     }
 
     actionsAndAssertionsOfTCP42171(requestId){
