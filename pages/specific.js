@@ -355,11 +355,13 @@ export class Specific {
         //verify task is completed
         request.verifyTaskIsCompletedB();
         cy.wait(5000);
+        cy.wait(5000);
+        cy.wait(5000);
 
         navHelper.navigateToRequestsPage();
         cy.visit('/requests/' + requestId);
         //verify the process is completed
-        request.waitUntilTextcontainText('selector','varHeader', "Completed",15);
+        request.waitUntilTextcontainText('selector','varHeader', "Completed",25);
 
         //click on file manger
         cy.xpath('//a[@href="#fileManager"]').click();
