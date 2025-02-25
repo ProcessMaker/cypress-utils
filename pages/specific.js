@@ -2991,21 +2991,22 @@ export class Specific {
         cy.xpath('//li[@id="option-1-3"]//span[text()="Darth Vader"]').click();
         cy.xpath('(//input[@name="name"])[2]').should('have.value',"Darth Vader");
         cy.xpath('(//div[@class="multiselect__select"])[3]').click();
-        cy.xpath('//li[@id="option-2-1"]//span[text()="Tester2"]').click();
-        cy.xpath('//input[@name="lastName"]').should('have.value','QA2');
+        cy.xpath('//li//span[text()="ana"]').click();
+        cy.xpath('//input[@name="lastName"]').should('have.value','mauricio');
         cy.xpath('(//div[@class="multiselect__select"])[3]').click();
-        cy.xpath('//li[@id="option-2-0"]//span[text()="Tester1"]').click();
-        cy.xpath('(//input[@name="lastName"])[2]').should('have.value','QA1');
+        cy.xpath('//li//span[text()="Sofia"]').click();
+        cy.xpath('(//input[@name="lastName"])[2]').should('have.value','Suarez');
         cy.xpath('(//button[@aria-label="New Submit"])[1]').click();
+        request.verifyTaskIsCompletedB()
         request.openRequestById(requestId);
         request.clickOnTaskName(1,1);
         cy.get('[name="select1.content"]').should('have.value','Two');
         cy.xpath('(//input[@name="name"])[1]').should('have.value',"Luke Skywalker");
         cy.xpath('(//input[@name="name"])[2]').should('have.value',"Darth Vader");
-        cy.xpath('(//input[@name="lastName"])[1]').should('have.value','QA2');
-        cy.xpath('(//input[@name="lastName"])[2]').should('have.value','QA1');
+        cy.xpath('(//input[@name="lastName"])[1]').should('have.value','mauricio');
+        cy.xpath('(//input[@name="lastName"])[2]').should('have.value','Suarez');
         cy.xpath('(//button[@aria-label="New Submit"])[1]').click();
-        request.verifyRequestisCompleted(requestId);
+        request.verifyTaskIsCompletedB()
     }
     actionsAndAssertionsOfTCP42294(name,processId){
         cy.wait(2000);
