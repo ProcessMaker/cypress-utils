@@ -769,75 +769,30 @@ export class Specific {
         }
     }
 
-    actionsAndAssertionsOfTCP42366(form_screen, name, processId) {
-        //first Scenario
-        cy.wait(2000);
-        //go to url
-        cy.visit('/webentry/' + processId + '/node_2');
-        //verify screen name
-        cy.get['[name="form_screen"]'.replace('form_screen', form_screen)];
-        //click  on submit button
-        //request.clickOnSubmitButton();
-        cy.xpath('//button[@name="submit"]').click();
-        cy.wait(6000);
-        //go to all requests
-        navHelper.navigateToAllRequests();
-        //open request by name and verify process is completed
-        request.openRequestByNameForCompletedProcess(name);
-        //verify the web entry is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User started this request from a web entry']]").should('be.visible');
-        ////verify the Data Connector B is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Data Connector B']]").should('be.visible');
-        //Verify the Script B is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Script B']]").should('be.visible');
-        //Verify the Script C is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Script C']]").should('be.visible');
+    actionsAndAssertionsOfTCP42366(processId) {
 
+        //Step 1: Wait the page is laod and click on submit button
+        cy.xpath('//button[@aria-label="New Submit"]').should('be.visible').click();
 
-        //Second Scenario
-        cy.wait(2000);
-        //go to url
-        cy.visit('/webentry/' + processId + '/node_2');
-        //verify screen name
-        cy.get['[name="form_screen"]'.replace('form_screen', form_screen)];
-        //click on select list
-        cy.xpath("(//div[@data-cy='screen-field-selectlist']//div)[1]").click();
-        //add title1 to the select list
-        cy.xpath("//span[text()='title1']").click();
-        //click on select list
-        cy.xpath("(//div[@data-cy='screen-field-selectlist']//div)[1]").click();
-        //add title1 to the select list
-        cy.xpath("//span[text()='title2']").click();
-        //click on select list
-        cy.xpath("(//div[@data-cy='screen-field-selectlist']//div)[1]").click();
-        //add title1 to the select list
-        cy.xpath("//span[text()='title3']").click();
-        //click  on submit button
-        // request.clickOnSubmitButton();
-        cy.xpath('//button[@name="submit"]').click();
-        cy.wait(6000);
-        //go to all requests
-        navHelper.navigateToAllRequests();
-        //open request by name and verify process is completed
-        request.openRequestByNameForCompletedProcess(name);
-        cy.get('[id="main"]').scrollTo('bottom');
-        //verify the web entry is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User started this request from a web entry']]").should('be.visible');
-        //Verify the Script A is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Script A']]").should('be.visible');
-        //verify the Data Connector A is completed
-        cy.xpath("(//div[text()[normalize-space()='Admin User has completed the task Data Connector A']])[1]").should('be.visible');
-        //verify the second Data Connector A is completed
-        cy.xpath("(//div[text()[normalize-space()='Admin User has completed the task Data Connector A']])[2]").should('be.visible');
-        //verify the third Data Connector A is completed
-        cy.xpath("(//div[text()[normalize-space()='Admin User has completed the task Data Connector A']])[3]").should('be.visible');
-        //verify the Data Connector B is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Data Connector B']]").should('be.visible');
-        //Verify the Script B is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Script B']]").should('be.visible');
-        //Verify the Script C is completed
-        cy.xpath("//div[text()[normalize-space()='Admin User has completed the task Script C']]").should('be.visible');
+        cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
+        //Step 2: Get the number of requests
+        cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=> {
 
+            //Step 3: Log in
+            login.navigateToUrl();
+            login.login();
+
+            cy.visit('/requests/' + requestId);
+            request.waitUntilTextcontainText('selector', 'varHeader', 'Completed');
+            //verify the web entry is completed
+            cy.xpath("//div[contains(text(),'started this request from a web entry')]").should('be.visible');
+            ////verify the Data Connector B is completed
+            cy.xpath("//div[contains(text(),'has completed the task DCB')]").should('be.visible');
+            //Verify the Script B is completed
+            cy.xpath("//div[contains(text(),'has completed the task Script A')]").should('be.visible');
+            //Verify the Script C is completed
+            cy.xpath("//div[contains(text(),'has completed the task Script C')]").should('be.visible');
+        });
     }
 
     actionsAndAssertionsOfTCP42440(requestId, processName) {
