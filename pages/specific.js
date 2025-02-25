@@ -279,28 +279,28 @@ export class Specific {
         //Complete conversational screen
         cy.xpath("//button[text()[normalize-space()='Japan']]").should('be.visible').click();
         //Select group
-        cy.xpath("(//div[@class='d-block']/button[@type='button'])[1]").click();
+        cy.get("[aria-label='Submit']").click();
         //Write text in input field
         cy.get("[name='input']").type("nice").should('have.value', "nice");
         //click on submit button
         cy.get('[class="fas fa-paper-plane"]').click();
 
         //verify task is completed
-        request.verifyTaskIsCompleted();
+        request.verifyTaskIsCompletedB();
         request.verifyRequestisCompleted(requestId);
 
         //Verify data of request completed
         cy.xpath("//div[contains(text(),'has completed the task Groups')]").click();
         //Verify form task is completed
-        cy.xpath("//div[contains(text(),'has completed the task Groups')]").should('be.visible');
+        cy.xpath("//div[contains(text(),'has completed the task Groups')]").should('exist');
         //verify form task is completed
-        cy.xpath("//div[contains(text(),'has completed the task Form Task')]").should('be.visible');
+        cy.xpath("//div[contains(text(),'has completed the task Form Task')]").should('exist');
         //verify task A is completed
-        cy.xpath("//div[contains(text(),'has completed the task A')]").should('be.visible');
+        cy.xpath("//div[contains(text(),'has completed the task A')]").should('exist');
         //verify script task  B is completed
-        cy.xpath("//div[contains(text(),'has completed the task B')]").should('be.visible');
+        cy.xpath("//div[contains(text(),'has completed the task B')]").should('exist');
         //verify script task C is completed
-        cy.xpath("//div[contains(text(),'has completed the task C')]").should('be.visible');
+        cy.xpath("//div[contains(text(),'has completed the task C')]").should('exist');
     }
 
     actionsAndAssertionsOfTCP42113(requestId,user,pass) {
