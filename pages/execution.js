@@ -1159,97 +1159,55 @@ export class Execution {
     }
 
 
-    async actionsAndAssertionsOfTCP42338(requestId){
-        request.openNewRequest(
-            "TCP4-2338 Check pdf generator and send email sequentially with google places control"
-        );
-        cy.wait(10000);
-        cy.get('div[class="col-10"] > span').contains(
-            "TCP4-2338 Check pdf generator and send email sequentially with google places control"
-        );
-        cy.get(
-            'div[class="col-2 text-right"] > a[class="btn btn-primary btn-sm"]'
-        )
-            .contains("Start")
-            .click();
-            cy.get(
-                'ul[class="list-group list-group-flush w-100"] > li[class="list-group-item"]'
-            ).should("be.visible");
-        cy.wait(5000);
-        cy.get(
-            'tbody[class="vuetable-body"] > tr[item-index="0"] > td[class="vuetable-slot"]'
-        )
-            .eq(1)
-            .contains("Form Task")
-            .click();
-        cy.get('input[name="form_input_1"]').type("Bolivia");
-        cy.get('input[name="form_input_2"]').type("2020-01-01");
-        cy.xpath(
-            '//*[@id="tab-form"]/div/div/div/div/div/div/div[2]/div/div[1]/div[1]/div/div/input'
-        ).type("Turín, Italia");
+    actionsAndAssertionsOfTCP42338(processName){
+        //Complete first tasks
+        cy.get('input[name="form_input_1"]')
+            .should('be.visible')
+            .type("Bolivia");
+        cy.get('input[name="form_input_2"]')
+            .should('be.visible')
+            .type("2020-01-01");
+        cy.get('[id="google_places_1"]')
+            .should('be.visible')
+            .type("Turín, Italia");
         cy.get('div[class="signature pl-0"] > canvas').dblclick();
-        cy.wait(3000);
-        cy.xpath(
-            '//*[@id="tab-form"]/div/div/div/div/div/div/div[2]/div/div[1]/div[2]/div/div/input'
-        ).type("Roma, Italia");
-        cy.get('input[name="form_input_2"]').click();
-        cy.get(
-            'div[class="card"] > ul[class="list-group list-group-flush w-100"] > li[class="list-group-item"] > a'
-        )
-            .invoke("text")
-            .then((text) => {
-                var requestIDtext = text.trim();
-                requestIDtext = requestIDtext.substring(
-                    0,
-                    requestIDtext.length
-                );
-            cy.get('button[aria-label="New Submit"]').click();
-            cy.wait(5000);
-            navHelper.navigateToTasksPage();
-            cy.get('span[class="multiselect__tag"] > span')
-                .contains("In Progress")
-                .get('i[aria-label="Remove Element"]')
-                .click();
-            cy.wait(5000);
-            cy.get('div[class="multiselect__select"]').eq(2).click();
-            cy.xpath('//*[@id="option-2-2"]/span/span').click();
-            cy.xpath(
-                '//*[@id="search-bar"]/div/div/div/div[2]/button[2]'
-            ).click();
-            cy.wait(5000);
-            cy.get('tbody[class="vuetable-body"]')
-                .get('tr[item-index="0"]')
-                .get('td[class="vuetable-slot"]')
-                .should("be.visible", requestIDtext)
-                .contains(requestIDtext)
-                .click();
-            cy.wait(5000);
-            cy.reload();
-        });
-        cy.get('div[class="flex-grow-1"]')
+        cy.wait(2000);      
+        
+        cy.get('[id="google_places_2"]')
+            .should('be.visible')
+            .type("Roma, Italia");
+
+        cy.get('button[aria-label="New Submit"]').click();
+        
+        //Open Summary
+        request.openRequestByNameForCompletedProcess(processName);
+        //request.openRequestByNameForAllCompletedProcess(processName);
+        //Review Summary
+        cy.reload();
+        cy.get('div[class="flex-grow-1"]').eq(9)
+            .scrollIntoView()
             .contains("Admin User has completed the task PDF Generator 1")
             .should("be.visible");
-        cy.get('div[class="flex-grow-1"]')
+        cy.get('div[class="flex-grow-1"]').eq(6)
             .contains("Admin User has completed the task Send Email 1")
             .should("be.visible");
-        cy.get('div[class="flex-grow-1"]')
+        cy.get('div[class="flex-grow-1"]').eq(10)    
             .contains("Admin User has completed the task PDF Generator 2")
             .should("be.visible");
-        cy.get('div[class="flex-grow-1"]')
+        cy.get('div[class="flex-grow-1"]').eq(8) 
             .contains("Admin User has completed the task Send Email 2")
             .should("be.visible");
-        cy.get('ul[class="nav nav-tabs"] > li[class="nav-item"]')
-            .eq(3)
-            .contains("File Manager")
+        //Review File manager
+        cy.get('[id="file-manager-tab"]') 
+            .contains("File Manager")   
             .click();
-        cy.get('tr[role="row"]')
-            .eq(0)
-            .get('td[aria-colindex="2"] > span')
+        cy.get('td[aria-colindex="2"] > span').eq(0)    
             .contains("PDF-1");
         cy.get('tr[role="row"]')
             .eq(1)
-            .get('td[aria-colindex="2"] > span')
+            .get('td[aria-colindex="2"] > span').eq(2)
             .contains("PDF-2");
+        //Review PDF
         cy.get('button[class="btn btn-link"]').eq(0).click();
     }
 
