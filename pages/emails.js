@@ -55,13 +55,13 @@ export class Emails {
      * @param {string} messageId - The ID of the message to retrieve.
      * @returns {Promise} - A promise that resolves with the email body.
      */
-    mailtrapObtainHtmlEmailbyMessageIdAPI(accountId, inboxId, messageId) {
+    mailtrapObtainHtmlEmailbyMessageIdAPI(accountId, inboxId, messageId, token) {
         return cy.request({
             method: 'GET',
             url: `https://mailtrap.io/api/accounts/${accountId}/inboxes/${inboxId}/messages/${messageId}/body.htmlsource`,
             headers: {
             'Accept': 'application/json',
-            'Api-Token': Cypress.env("defaultMailTrap").ApiToken,
+            'Api-Token': token,
             },
         });
     };
@@ -90,13 +90,13 @@ export class Emails {
      * @param {string} subject - The subject to search for.
      * @returns {Promise} - A promise that resolves with the search results.
      */
-    mailtrapSearchEmailBySubjectAPI (accountId, inboxId, subject) {
+    mailtrapSearchEmailBySubjectAPI(accountId, inboxId, subject, token) {
         return cy.request({
             method: 'GET',
             url: `https://mailtrap.io/api/accounts/${accountId}/inboxes/${inboxId}/messages?search=${subject}`,
             headers: {
                 'Accept': 'application/json',
-                'Api-Token': Cypress.env("defaultMailTrap").ApiToken,
+                'Api-Token': token,
             },
         });
     };
@@ -108,13 +108,13 @@ export class Emails {
      * @param {string} messageId - The ID of the message to retrieve attachments from.
      * @returns {Promise} - A promise that resolves with the attachments.
      */
-    mailtrapObtainAttachedFileByMessageIdAPI (accountId, inboxId, messageId) {
+    mailtrapObtainAttachedFileByMessageIdAPI(accountId, inboxId, messageId, token) {
         return cy.request({
             method: 'GET',
             url: `https://mailtrap.io/api/accounts/${accountId}/inboxes/${inboxId}/messages/${messageId}/attachments`,
             headers: {
                 'Accept': 'application/json',
-                'Api-Token': Cypress.env("defaultMailTrap").ApiToken,
+                'Api-Token': token,
             },
         });
     };
