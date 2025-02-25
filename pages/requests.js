@@ -200,7 +200,7 @@ export class Requests {
         navHelper.navigateToCompletedRequests();
         this.addRequestNameToSelectList(processName);
         cy.xpath(selectors.requestInputOption.replace('processName', processName)).click();
-        cy.xpath('//div[@id="details"]//span[text()="Completed"]').should('be.visible');
+        cy.xpath('//div[@id="details"]//span[text()="Completed"]').scrollIntoView().should('be.visible');
     }
 
     /**
