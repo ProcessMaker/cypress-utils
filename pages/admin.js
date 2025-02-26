@@ -455,8 +455,10 @@ export class Admin {
     }
 
 	switchChangePassword(){
-		cy.get(':nth-child(6) > .grouped > .custom-control').click('left');
+		cy.get('[id="switch_force_change_password"]').check({force:true});
 		cy.get(selectors.saveUserBtn).click();
+		cy.wait(3000);
+		cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist')
 	}
 
     openUserSignalTab(){
