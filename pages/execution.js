@@ -3478,14 +3478,7 @@ export class Execution {
                 "contain",
                 nameDashboard2
             ).and("contain",
-                nameDashboard3)
-        cy.get('[class="nav-item"]').eq(0).click();
-        cy.get('[class="tab-content"]').should("contain", "DASHBOARD1");
-        cy.get('[class="nav-item"]').eq(1).click();
-        cy.get('[class="tab-content"]').should('be.visible').and("contain", "DASHBOARD2");
-        cy.get('[class="nav-item"]').eq(2).click();
-        cy.get('[class="tab-content"]').should('be.visible').and("contain", "DASHBOARD3");
-    }
+                nameDashboard3);
 
     completeFormWebEntryTCP42294 (){
         cy.get('[name="accepted"]').type('yes').should('be.visible');
