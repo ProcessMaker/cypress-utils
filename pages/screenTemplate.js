@@ -267,7 +267,7 @@ searchForAScreenMyTemplate(screenTemplateMyTemplate) {
     }
 
 importScreenTemplate(screenTemplatePath) {
-    
+    cy.wait(3000);
     cy.xpath(selectors.ImportButtonMyTemplate).should('be.visible');
 	cy.xpath(selectors.ImportButtonMyTemplate).click();
 
