@@ -3478,7 +3478,8 @@ export class Execution {
                 "contain",
                 nameDashboard2
             ).and("contain",
-                nameDashboard3);
+            nameDashboard3);
+    }
 
     completeFormWebEntryTCP42294 (){
         cy.get('[name="accepted"]').type('yes').should('be.visible');
