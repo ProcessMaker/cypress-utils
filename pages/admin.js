@@ -563,7 +563,7 @@ export class Admin {
     editMenu(linkName, url) {
         cy.xpath(
             '//button//span[@class="text-capitalize screen-toolbar-button"]'
-        ).click();
+        ).first().click();
         cy.xpath('//span[normalize-space()="Edit Menu"]').click();
         cy.get('[aria-label="Create Link"]').click();
         cy.get("#package-dynamic-ui-menu-link-add___BV_modal_content_")
