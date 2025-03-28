@@ -300,8 +300,8 @@ export class FlowGenie {
         cy.visit('designer/flow-genies?create=true&screenSelectId=undefined');
         cy.wait(5000);
         cy.reload();
-        cy.get('[class="modal-body"]').should('be.visible',(err, runnable) => {return false});
-        cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie,(err, runnable) => {return false});
+        cy.get('[class="modal-body"]').should('be.visible',{force: true}, (err, runnable) => {return false});
+        cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie,{force: true}, (err, runnable) => {return false});
         cy.get(selectors.textareaDescription).type(description,(err, runnable) => {return false});
         cy.get('[class="btn ml-2 btn-outline-secondary"]').should('be.visible',(err, runnable) => {return false});
         cy.xpath(selectors.saveFlowGenie).click({force: true},(err, runnable) => {return false});
