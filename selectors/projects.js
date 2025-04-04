@@ -47,6 +47,7 @@ export default {
     addScreenAssetButton: '//li[contains(@class, "asset_type_screen")]',
     addDecisiontableAssetButton:
         '//li[contains(@class, "asset_type_decision_table")]',
+    addDataConnectorAssetButton: '//li[contains(@class, "column-dropdown-item text-center asset_type_data_source")]',
     newAssetButton: '[data-cy="asset-search-menu"] button.btn.addBtn',
     assetListingTable: '[data-cy="asset-listing-table"]',
     addAssetPmqlInput: 'textarea[aria-label="Search PM"].pmql-input',
@@ -59,4 +60,25 @@ export default {
     searchAssetScriptInProject: "//*[@class='pmql-input']",
     exportScreenInProject:"//button[contains(@class, 'btn btn-secondary ml-2') and contains(text(), 'Download')]",
     confirmDeleteAsset:"//button[text()='Confirm']",
+    addProcessBtn: '[aria-label="Create Process"]',
+    blankProcessBtbXpath:'//div[@id="template-options"]//h5[text()="Build Your Own"]',
+    nameTxtBx: '[name="name"]',
+    descriptionTxtBx: '[name="description"]',
+    processCategoryFieldXpath:'//div[@class="modal-body"]/div[@name="category"]',
+     processCategoryInputXpath:'//div[@class="modal-body"]/div[@name="category"]//input',
+     managerFieldXpath: '//div[@class="modal-body"]/fieldset//div[@name="process_manager_id"]',
+     managerFieldTxtXpath:'//div[@class="modal-body"]//legend[contains(text(),"Process Manager")]/following-sibling::div//input',
+     saveBtnInPopUp: '//button[text()="Save"]',
+     connectorTypeDropdownXpath: '(//div[@aria-owns="listbox-1"]/div)[1]',
+     connectorTypeInput: '[name="type"]',
+     RESTService: '//span[text()="REST Service"]',
+     authType: '//span[text()="AuthType"]',
+     authenticatonDropdown: '[aria-label="Authentication Type"]',
+     authenticatonDropdownXpath: '(//div[@aria-owns="listbox-2"]/div)[1]',
+     authenticationTypeInput: '[name="authtype"]',
+     nameInput: '#title',
+     descriptionInput: '#description', 
+     saveBtn: "(//button[normalize-space()='Save'])[1]",   
+     
+
 };
