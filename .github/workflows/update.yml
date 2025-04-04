@@ -10,14 +10,30 @@ jobs:
   publish:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: Configure Git
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git with SSH signing
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          mkdir -p ~/.ssh
+          echo "${SSH_SIGNING_KEY}" > ~/.ssh/signing_key
+          chmod 600 ~/.ssh/signing_key
+
+          git config --global user.name "ProcessMaker Bot"
+          git config --global user.email "206180840+processmaker-bot@users.noreply.github.com"
+          git config --global gpg.format ssh
+          git config --global user.signingkey ~/.ssh/signing_key
+          git config --global commit.gpgsign true
+          git config --global commit.status true
+        env:
+          SSH_SIGNING_KEY: ${{ secrets.SSH_SIGNING_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,11 +45,12 @@ jobs:
 
       - name: Bump package version
         run: npm version patch
-        
+
       - name: Push version change
-        run: git push && git push --tags
+        run: |
+          git push origin HEAD --follow-tags
 
       - name: Publish to npm
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
