@@ -31,7 +31,6 @@ jobs:
           git config --global gpg.format ssh
           git config --global user.signingkey ~/.ssh/signing_key
           git config --global commit.gpgsign true
-          git config --global commit.status true
         env:
           SSH_SIGNING_KEY: ${{ secrets.SSH_SIGNING_KEY }}
 
