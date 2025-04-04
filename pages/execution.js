@@ -577,8 +577,7 @@ export class Execution {
         //Second Scenario with select option "no", email sent
         navHelper.navigateToRequestsPage();
         request.openNewRequest(
-            "TCP4-2239 Verify Conversational Screen and Send Email"
-        );
+            "TCP4-2239 Verify Conversational Screen and Send Email");
         var requestID2 = await request.getRequestID();
         await cy.xpath(('//tr[@item-index="0"]/td/a')[1]).contains('Form Task 1').click();
         cy.xpath('//input[@aria-label="Date"]').type('2021-10-01').type('{enter}');
