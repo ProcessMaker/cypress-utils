@@ -1,4 +1,5 @@
 export default {
+
     addDataConnector: '[aria-label="Create Data Connector"]',
     nameInput: '#title',
     descriptionInput: '#description', 
@@ -53,4 +54,5 @@ export default {
     resourceRetryAttemptsDC: "//legend[text()='Retry Attempts']/following-sibling::div//input[@type='number']",
     resourceRetryWaitTimeDC: "//legend[text()='Retry Wait Time']/following-sibling::div//input[@type='number']",
     resourceSaveBtnDC: '//div[@class="card-body"]//button[contains(text(),"Save")]',
+    arrowConnectorType: '(//div[@class="multiselect__select"])[1]',
 }

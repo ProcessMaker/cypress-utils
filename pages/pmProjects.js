@@ -1,8 +1,12 @@
+import dataConnectors from "#selectors/dataConnectors.js";
 import selectors from "#selectors/projects";
 import "#support/commands";
 import {Scripts} from "./scripts";
+import {Dataconnectors} from "./dataConnectors";
 
 const scripts = new Scripts();
+//const dataConnectors = new Dataconnectors();
+
 export class PMProjects {
     /**
      * This method is responsible to create a new Project.
@@ -182,9 +186,10 @@ export class PMProjects {
             cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
             cy.xpath(selectors.searchProjects).type(`${projectName}{enter}`).should("have.value", projectName);
             //cy.get(selectors.loadingSpinnerProcess).should("be.visible");
+            
             cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
             cy.xpath(selectors.threePointsBtnXpathProjects).first().should("be.visible");
-            cy.xpath(selectors.threePointsBtnXpathProjects).first().click({force:true});
+            cy.xpath(selectors.threePointsBtnXpathProjects).first().click({force:true}, {delay: 1000});
         
         }
         //cy.xpath('//td//a[contains(text(),"'+projectName+'")]').should("be.visible");
@@ -433,6 +438,100 @@ export class PMProjects {
                     break; 
 
         }
+    }
+
+    createProcessFromProject(name, description, category = "", username = "") {
+                
+        cy.get(selectors.addAssetButton).click();
+        cy.xpath(selectors.addProcessAssetButton).click();
+        cy.get(selectors.newAssetButton).click();
+        cy.xpath(selectors.blankProcessBtbXpath).should("be.visible").click();
+        this.enterProcessName(name);
+        this.enterProcessDescription(description);
+        if (category != "") this.enterProcessCategory(category);
+        if (username != "") this.enterProcessManager(username);
+        this.clickOnSaveInAddProcessModal();
+        cy.wait(3000);
+        
+    }
+
+    clickOnAddProcess() {
+        cy.get(selectors.addProcessBtn).click();
+    }
+
+    enterProcessName(name) {
+        cy.get(selectors.nameTxtBx).should("be.visible").type(name, { delay: 500 }).should("have.value", name);
+    }
+
+    enterProcessDescription(description) {
+        cy.get(selectors.descriptionTxtBx).type(description).should("have.value", description);
+    }
+
+    enterProcessCategory(category) {
+        cy.xpath(selectors.processCategoryFieldXpath).click();
+        cy.xpath(selectors.processCategoryInputXpath).type(category, {
+            delay: 200,
+        });
+        cy.xpath(
+            selectors.selectCategoryListXpath.replace("categoryName", category)
+        )
+            .should("be.visible")
+            .click();
+    }
+    
+    enterProcessManager(username) {
+        cy.xpath(selectors.managerFieldXpath).click();
+        cy.xpath(selectors.managerFieldTxtXpath)
+            .type(username, { delay: 100 })
+            .should("have.value", username)
+            .type("{enter}");
+    }
+    
+    
+    clickOnSaveInAddProcessModal() {
+        cy.xpath(selectors.saveBtnInPopUp).click();
+    }
+
+    createDataConnectorFromProject(name, description, connectorType, type){
+        cy.get(selectors.addAssetButton).click();
+        cy.xpath(selectors.addDataConnectorAssetButton).click();
+        cy.get(selectors.newAssetButton).click();
+        this.enterDataConnectorName(name);
+        this.enterDataConnectorDescription(description);
+        cy.wait(3000);
+        this.selectConnectorType(connectorType);
+        this.selectAuthType(type);
+        this.ClickSaveBtn();
+        
+    }
+
+
+    enterDataConnectorName(name) {
+        cy.get(selectors.nameTxtBx).type(name).should('have.value', name);
+    }
+
+    enterDataConnectorDescription(description) {
+        cy.get(selectors.descriptionTxtBx).type(description).should('have.value', description);
+    }
+
+    selectConnectorType(connectorType) {
+        cy.xpath(selectors.connectorTypeDropdownXpath).should('be.visible');
+        cy.xpath(selectors.connectorTypeDropdownXpath).click();
+        //cy.get(selectors.connectorTypeInput).should('be.visible');
+        cy.get(selectors.connectorTypeInput).type(connectorType).should('have.value',connectorType);
+        cy.wait(3000);
+        cy.get(selectors.connectorTypeInput.replace('connectorType', connectorType)).type('{enter}');
+        //cy.get(selectors.connectorTypeInput.replace('connectorType', connectorType)).click({force: true});
+    }
+    selectAuthType(type) {
+        cy.xpath(selectors.authenticatonDropdownXpath).should('be.visible');
+        cy.xpath(selectors.authenticatonDropdownXpath).click();
+        cy.get(selectors.authenticationTypeInput).type(type).should('have.value',type);
+        cy.get(selectors.authenticationTypeInput.replace('AuthType', type)).type('{enter}');
+    }
+
+    ClickSaveBtn() {
+        cy.xpath(selectors.saveBtn).should('be.visible').click();
     }
 
     searchAssetScriptAndSelectOptions(
