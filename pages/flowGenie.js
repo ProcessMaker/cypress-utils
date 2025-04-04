@@ -297,15 +297,38 @@ export class FlowGenie {
         cy.get('[class="asset-link"]')
             .should('be.visible')
             .click();        
-        cy.visit('designer/flow-genies?create=true&screenSelectId=undefined');
-        cy.wait(5000);
-        cy.reload();
-        cy.get('[class="modal-body"]').should('be.visible',{force: true}, (err, runnable) => {return false});
-        cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie,{force: true}, (err, runnable) => {return false});
-        cy.get(selectors.textareaDescription).type(description,(err, runnable) => {return false});
-        cy.get('[class="btn ml-2 btn-outline-secondary"]').should('be.visible',(err, runnable) => {return false});
-        cy.xpath(selectors.saveFlowGenie).click({force: true},(err, runnable) => {return false});
-        cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
+        cy.visit('designer/flow-genies?create=true&screenSelectId=undefined', {
+            timeout: 10000,
+            retryOnStatusCodeFailure: true
+        });
+
+        cy.window().then(win => {
+            cy.wrap(win).its('document').its('readyState').should('eq', 'complete');
+        });
+        
+        cy.get('[class="modal-body"]', { timeout: 10000 })
+        .should('exist')
+        .should('be.visible')
+        .then(() => {
+            // Continuar con el flujo una vez que el modal esté visible
+            cy.get(selectors.inputNameFlowGenie)
+                .should('be.visible')
+                .type(nameFlowGenie, { force: true });
+            
+            cy.get(selectors.textareaDescription)
+                .should('be.visible')
+                .type(description, { force: true });
+            
+            cy.get('[class="btn ml-2 btn-outline-secondary"]')
+                .should('be.visible');
+            
+            cy.xpath(selectors.saveFlowGenie)
+                .should('be.visible')
+                .click({ force: true });
+            
+            cy.contains(selectors.flowGenieStudio, 'FlowGenie Studio')
+                .should('be.visible');
+        });
     }
     
     //Configuration task FlowGenie
