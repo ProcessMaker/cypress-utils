@@ -550,20 +550,14 @@ export class Admin {
 
     searchMenu(name) {
         cy.wait(3000);
-        cy.get('[placeholder="Search"]')
-            .clear()
-            .click()
-            .type(name)
-            .should('have.value',name);
-        cy.wait(2000);
+        cy.get('[placeholder="Search"]').clear().click().type(name).should('have.value',name);
+        cy.wait(3000);
         cy.xpath('//*[@class="data-table"]//td/*[contains(text(),"menu")]'.replace('menu',name)).eq(0)
             .should('be.visible');
     }
 
     editMenu(linkName, url) {
-        cy.xpath(
-            '//button//span[@class="text-capitalize screen-toolbar-button"]'
-        ).first().click();
+        cy.xpath('//button//span[@class="text-capitalize screen-toolbar-button"]').first().click();
         cy.xpath('//span[normalize-space()="Edit Menu"]').click();
         cy.get('[aria-label="Create Link"]').click();
         cy.get("#package-dynamic-ui-menu-link-add___BV_modal_content_")
@@ -582,9 +576,7 @@ export class Admin {
             .children()
             .eq(0)
             .type(url);
-        cy.get(
-            "#package-dynamic-ui-menu-link-add___BV_modal_footer_ > .w-100 > .btn-secondary"
-        ).click();
+        cy.get("#package-dynamic-ui-menu-link-add___BV_modal_footer_ > .w-100 > .btn-secondary").click();
     }
 
     searchGroupAndEdit(nameGroup) {
