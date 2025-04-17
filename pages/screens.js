@@ -1264,8 +1264,65 @@ export class Screens {
 		if(response)
 			cy.xpath('//div[text()[normalize-space()="'+response+'"]]').should('be.visible');
 	}
+	
+	getScreenByIdAPI(screenID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/screens/'+screenID).then(response => {
+				//cy.log("screenData="+JSON.stringify(response.data));
+                return response.data;
+            });
+        });
+    }
 
-	importScreenAPI(path, mode = 'update') {
+	deleteScreenAPI(screenID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/screens/'+screenID).then(response => {
+                return "screen " + screenID + "was deleted";
+            });
+        });
+    }
+
+    /**
+     * Gets a screen by name using the API
+     * @method getScreenByNameAPI
+     * @param {string} screenName - The name of the screen to find
+     * @returns {Cypress.Chainable} A chainable that resolves with the screen object
+     */
+    getScreenByNameAPI(screenName) {
+        return cy.window().then((win) => {
+            return win.ProcessMaker.apiClient.get('/screens', { 
+                params: { filter: screenName } 
+            }).then((response) => {
+                return response.data.data.find(screen => screen.title === screenName);
+            });
+        });
+    }
+
+	/**
+     * Imports a screen if it doesn't already exist
+     * @method importScreenIfNotExistApi
+     * @param {string} screenName - The name of the screen to check/import
+     * @returns {Promise<string>} A promise that resolves with the screen ID
+     */
+    importScreenIfNotExistApi(screenName) {
+        return new Promise((resolve) => {
+            this.getScreenByNameAPI(screenName).then((result) => {
+                if (result) {
+                    resolve(result.id);
+                } else {
+					resolve(0)
+                }
+            })
+        });
+    }
+
+    /**
+     * Imports a screen using the API
+     * @method importScreenAPI
+     * @param {string} screenPath - The path to the screen file to import
+     * @returns {Cypress.Chainable} A chainable that resolves with the import response
+     */
+    importScreenAPI(path, mode = 'update') {
 		let formData = new FormData();
         let win;
         return cy.fixture(path, null)
@@ -1288,22 +1345,5 @@ export class Screens {
             .then(response => {
                 return response.data;
             });
-    }
-
-	getScreenByIdAPI(screenID){
-        return cy.window().then(win => {
-            return win.ProcessMaker.apiClient.get('/screens/'+screenID).then(response => {
-				//cy.log("screenData="+JSON.stringify(response.data));
-                return response.data;
-            });
-        });
-    }
-
-	deleteScreenAPI(screenID){
-        return cy.window().then(win => {
-            return win.ProcessMaker.apiClient.delete('/screens/'+screenID).then(response => {
-                return "screen " + screenID + "was deleted";
-            });
-        });
     }
 }
