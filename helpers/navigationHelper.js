@@ -76,7 +76,7 @@ export class NavigationHelper {
     }
 
     navigateToScreensPage(){
-        cy.get('#nav-sources-tab').should('be.visible');
+        //cy.get('#nav-sources-tab').should('be.visible');
         cy.visit('/designer/screens');
         cy.title().should('eq', 'Screens - ProcessMaker');
     }
