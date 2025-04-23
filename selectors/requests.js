@@ -50,5 +50,5 @@ export default{
     headerCompleted:'.list-group > .card-header',
 
     //Cases page
-    cardRequests:'//div[contains(@class,"tw-flex")]//div[contains(text(),"name")]'
+    cardRequests:'//*[contains(@class,"card flex-row")]//*[contains(text(),"name")]'
 };
