@@ -196,10 +196,11 @@ export class ProcessTesting {
 
     //I.Search scenario
     searchScenario(scenarioName) {
-        cy.wait(1000);
-        cy.get(selectors.searchScenario).first().clear().type(scenarioName, { delay: 80, force: true });
-        cy.get(selectors.searchScenario).first().type('  ', { force: true });
-        cy.get(selectors.searchScenario).first().type('{backspace}{backspace}', { force: true })
+        cy.wait(2000);
+        cy.get(selectors.searchScenario).first().clear().type(scenarioName, { delay: 90, force: true });
+        cy.reload();
+        //cy.get(selectors.searchScenario).first().type('  ', { force: true });
+        //cy.get(selectors.searchScenario).first().clear().type('{backspace}{backspace}', { force: true })
     }
 
     //Search scenario and select edit or delete
@@ -700,7 +701,8 @@ export class ProcessTesting {
     }
 
     clickOnEllipsisScenario() {
-        cy.xpath(selectors.menuScenario).first().click({ force: true });
+        cy.xpath(selectors.menuScenario).first().should('be.visible');
+        cy.xpath(selectors.menuScenario).first().click();
     }
 
     load() {
