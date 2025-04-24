@@ -147,19 +147,20 @@ export class PMProjects {
 
     searchProjects(name) {
         const tableProject = '[data-cy="project-listing-table"]';
-        const editBtnProject = '//*[@data-cy="project-listing-table"]//a[contains(text(),"projectName")]/ancestor::tr//*[@data-cy="project-list-ellipsis"]';
+        const editBtnProject = '//div[@data-cy="project-listing-table"]//a[contains(text(),"projectName")]/ancestor::tr//div[@data-cy="project-list-ellipsis"]';
 
         cy.get(tableProject).should("be.visible");
         cy.xpath(selectors.searchProjects).should("be.visible");
         cy.xpath(selectors.searchProjects).type(name,{delay:60}).should("have.value", name);
-        cy.xpath(selectors.searchProjects).type('{enter}');
-        cy.wait(4000);
+        cy.xpath(selectors.searchProjects).type('{enter}');  cy.wait(4000);
         cy.get(tableProject).should('be.visible');
-        cy.xpath(editBtnProject.replace('projectName',name)).first().click({ force: true });
+        cy.xpath(editBtnProject.replace("projectName",name)).first().should('be.visible');
+        cy.xpath(editBtnProject.replace("projectName",name)).first().click();
         this.selectMenuOptionRowProjects("Open");
     }
 
     selectMenuOptionRowProjects(nameOption2) {
+
         const optionCatXpath2 = `//*[@id="projectList"]/div[2]/div/table/tbody//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
         cy.xpath(optionCatXpath2).should("be.visible");
         cy.wait(3000);
@@ -184,11 +185,11 @@ export class PMProjects {
         passwordOption = "no",
         password = "123456"
     ) {
-        
+        cy.wait(3000);
         {
             cy.wait(3000);
             cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
-            
+            cy.wait(3000);
             cy.xpath(selectors.searchProjects).type(`${projectName}{enter}`).should("have.value", projectName);
             //cy.get(selectors.loadingSpinnerProcess).should("be.visible");
             cy.wait(3000);
