@@ -40,8 +40,9 @@ export class Templates {
             .type(`${templateName}`,{delay: 500})
             .should("have.value", templateName);
         cy.xpath(selectors.searchBoxTemplate).type('{enter}');
-            cy.get('[id="nav-templates"]>* [class="jumbotron jumbotron-fluid"]').should("not.be.visible");
-        cy.xpath(selectors.threePointsBtnXpathTemplate).first().click({ force: true });
+        cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
+        cy.xpath(selectors.threePointsBtnXpathTemplate).first().should("be.visible");
+        cy.xpath(selectors.threePointsBtnXpathTemplate).first().click({force:true});
 
         switch (option) {
             case "documentation":
