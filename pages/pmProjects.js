@@ -161,11 +161,10 @@ export class PMProjects {
 
     selectMenuOptionRowProjects(nameOption2) {
 
-        const optionCatXpath2 = `//*[@id="projectList"]/div[2]/div/table/tbody//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
+        const optionCatXpath2 = `//div[@id="projectList"]/div[2]/div/table/tbody//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
         cy.xpath(optionCatXpath2).should("be.visible");
         cy.wait(3000);
-        cy.xpath(optionCatXpath2).first();
-        cy.xpath(optionCatXpath2).click({force: true});
+        cy.xpath(optionCatXpath2).first().click();
     }
 
     selectMenuOptionScreenProjects(nameOptionScreen) {
