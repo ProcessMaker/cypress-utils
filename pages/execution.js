@@ -2344,6 +2344,7 @@ export class Execution {
         request.verifyTaskIsCompletedB();
 
         cy.visit('/requests/'+requestID);
+        request.waitUntilTextcontainText('selector','varHeader','Completed');
         cy.location('href').should('include', '/requests/'+requestID);
 
         //Verify that 2 threads are displayed in the Main
