@@ -8261,8 +8261,8 @@ export class Execution {
         cy.xpath("//td[text()='releaseDate']").should("be.visible");
         
         //Step 4: Go to requets with task PDF Generator
-        cy.get('[id="file-manager-tab"]').click();
-        cy.get('[title="View"]').should("be.visible");
+        cy.visit('/requests/'+requestId+'/files');
+        request.waitUntilElementIsVisible('selector','[title="View"]');
     }
     actionsAndAssertionsOfTCP43113(collectionName){
         const newRecordBtn = "button[id='addUserCollection']";
