@@ -6230,7 +6230,8 @@ export class Execution {
         cy.get('[id="password-input"]').should('be.visible');
         cy.get('[id="password-input"]').type(password);
         cy.get('button[class="btn btn-primary"]').click();
-        admin.selectFileInFileManager(filePathImage);
+        cy.get('[data-cy="file-upload-button"]').attachFile(filePathImage);
+        cy.xpath('//div//*[contains(text(),"success")]').should('exist');
         var locator ='input[name="'+option+'"]'
         cy.get(locator).click({force:true});
         cy.get('button[aria-label="New Submit"]').click();
