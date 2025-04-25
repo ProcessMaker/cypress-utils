@@ -34,11 +34,9 @@ export class Templates {
         exportType = "basic"
     ) {
         cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
-        cy.xpath('//*[@id="templatesIndex"]').should('be.visible');
-        
-        cy.xpath(selectors.searchBoxTemplate)
-            .type(`${templateName}`,{delay: 500})
-            .should("have.value", templateName);
+        //cy.xpath('//*[@id="templatesIndex"]').should('be.visible');
+        cy.xpath(selectors.indexTemplate).should('be.visible');
+        cy.xpath(selectors.searchBoxTemplate).type(`${templateName}`,{delay: 600}).should("have.value", templateName);
         cy.xpath(selectors.searchBoxTemplate).type('{enter}');
         cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
         cy.xpath(selectors.threePointsBtnXpathTemplate).first().should("be.visible");

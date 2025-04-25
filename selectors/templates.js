@@ -22,5 +22,6 @@ export default {
     descriptionTemp: '[name="description"]',
     versionTemp:'[name="version"]',
     saveTemp: 'button[class="btn ml-2 btn-primary"]',
+    indexTemplate: '//div[@id="templatesIndex"]',
 
 }
