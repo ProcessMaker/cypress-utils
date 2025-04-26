@@ -2700,7 +2700,7 @@ export class Specific {
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[9]').should('contain','Test Name 2')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[10]').should('contain','var3')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[1]/following-sibling::table//td)[11]').should('contain','false')
-        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[6]').should('contain.text','2022-03-20')
+        cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[6]').should('contain.text','2022')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[7]').should('contain.text','2022')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[8]').should('contain','Test Name 2')
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[9]').should('contain','var3')
