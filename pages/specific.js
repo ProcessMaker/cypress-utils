@@ -1878,6 +1878,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("2");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/2.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1885,6 +1886,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("3");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/3.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1892,6 +1894,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("4");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/4.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1899,6 +1902,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("5");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/5.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1906,6 +1910,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("6");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/6.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1913,6 +1918,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("7");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/7.png');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1920,6 +1926,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("8");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/8.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1927,6 +1934,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("9");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/9.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1934,6 +1942,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("10");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/10.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1941,6 +1950,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("11");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/11.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1948,6 +1958,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("12");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/12.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1955,6 +1966,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("13");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/13.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1962,6 +1974,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("14");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/14.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1969,6 +1982,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("15");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/15.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1976,6 +1990,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("16");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/16.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1983,6 +1998,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("17");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/17.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1990,6 +2006,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("18");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/18.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -1997,6 +2014,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("19");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/19.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2004,6 +2022,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("20");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/20.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2011,6 +2030,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("21");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/21.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2018,6 +2038,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("22");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/22.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2025,6 +2046,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("23");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/23.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2032,6 +2054,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("24");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/24.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2039,6 +2062,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("25");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/25.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2046,6 +2070,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("26");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/26.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2053,6 +2078,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("27");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/27.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2060,6 +2086,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("28");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/28.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2067,6 +2094,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("29");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/29.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
@@ -2074,6 +2102,7 @@ export class Specific {
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
         cy.xpath("(//input[@aria-label = 'Name'])[1]").type("30");
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
         cy.get('input[type="file"]').attachFile('images/30.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
