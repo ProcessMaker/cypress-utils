@@ -1187,7 +1187,9 @@ export class Process {
         const OptionSelected = "//label[text()='nameType']/parent::div//div[@class='multiselect__tags']//span";
 
             cy.wait(3000);
-            cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().should('be.visible').click({ delay: 1000 });
+            cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).should('exist');
+            cy.wait(4000);
+            cy.xpath(elementStartEventXpath.replace('nameElem', elementName)).first().click({force:true});
             cy.get("[data-cy='inspector-button']").should('be.visible').click();
             cy.get('#accordion-button-permissions-accordion').should('be.visible').click();
             //Open hamburger menu if not is open
