@@ -306,7 +306,7 @@ export class Specific {
     actionsAndAssertionsOfTCP42113(requestId,user,pass) {
         //Step 1: Log out & Log in with user
         login.navigateToUrl();
-        login.login(user,pass);
+        login.login();
 
         //Step 2: Verify tha request was started by user created
         request.openRequestById(requestId);
