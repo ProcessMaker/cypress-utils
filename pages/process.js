@@ -1219,8 +1219,10 @@ export class Process {
                         .then(text => {
                             if (text !== fullName) {
                                 cy.xpath(startPemrissions_opSelectListSelector.replace('nameType', 'user')).click();
+                                cy.xpath('//*[@class="multiselect__content-wrapper"]//li[1]').should('be.visible');
+                                cy.wait(5000);
                                 cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'user')).type(userName).should('have.value', userName);
-                                cy.wait(4000);
+                                cy.wait(5000);
                                 cy.xpath('//div[@class="multiselect__content-wrapper"]//ul[contains(@style," inline")]/li[1]')
                                     .should('have.attr', 'aria-label') // yields the "href" attribute
                                     .and('equal', fullName + ". ");
