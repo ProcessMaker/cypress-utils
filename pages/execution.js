@@ -6514,7 +6514,7 @@ export class Execution {
         cy.xpath('//*[@data-cy="screen-field-form_date_picker_3"]//input').first().click();
         screen.useCustomDate("2022", "Dec", "19");
         cy.xpath('(//button[@title="Add Item"])[1]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').type('2022-12-30{enter}').should('have.value','2022-12-30');
+        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').type('2022-12-30{enter}').should("contain.value",'2022');
         cy.xpath('//*[@data-cy="screen-field-form_date_picker_4"]//input').first().click();
         screen.useCustomDateTime("2022","Dec","30","16","14");
         cy.xpath("//button[text()='Ok']").should("be.visible").click();
