@@ -7314,6 +7314,9 @@ export class Execution {
 
         //Step 2: Go to URL request
         cy.visit('/requests/'+ requestId);
+        request.waitUntilElementIsVisibleCant('selector', 'tbody>* td:nth-child(2) >a',7);
+        cy.wait(4000);
+        cy.visit('/requests/'+ requestId);
 
         //Step 3: Complete the task "Manual task"
         let taskName = 'Manual Task';
