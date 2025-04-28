@@ -40,6 +40,7 @@ export class DecisionTable {
                 break;
         }
         this.clickOnSave();
+        this.loadPreview();
     }
 
     selectCategory(nameCategory) {
