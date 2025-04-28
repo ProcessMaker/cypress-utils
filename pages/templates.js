@@ -36,11 +36,10 @@ export class Templates {
         cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
         //cy.xpath('//*[@id="templatesIndex"]').should('be.visible');
         cy.xpath(selectors.indexTemplate).should('be.visible');
-        cy.xpath(selectors.searchBoxTemplate).type(`${templateName}`,{delay: 600}).should("have.value", templateName);
+        cy.xpath(selectors.searchBoxTemplate).type(`${templateName}`,{delay: 650}).should("have.value", templateName);
         cy.xpath(selectors.searchBoxTemplate).type('{enter}');
-        cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
         cy.xpath(selectors.threePointsBtnXpathTemplate).first().should("be.visible");
-        cy.xpath(selectors.threePointsBtnXpathTemplate).first().click({force:true});
+        cy.xpath(selectors.threePointsBtnXpathTemplate).first().click();
 
         switch (option) {
             case "documentation":
