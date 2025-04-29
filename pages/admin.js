@@ -1150,43 +1150,44 @@ export class Admin {
     addLinkToMenu(linkText, iconName, color, url) {
         //Add Link
         cy.get('button[aria-label="Create Link"]').click();
+        
         //text
         cy.xpath('//legend[text()="Link Text"]/parent::fieldset//input')
             .should("be.visible")
-            .click();
-        cy.xpath('//legend[text()="Link Text"]/parent::fieldset//input').type(
-            linkText
-        );
+            .click()
+            .type(linkText);
+
         //icon
-        cy.xpath(
-            '//legend[text()="Icon"]/parent::fieldset//div[@class="multiselect__select"]'
-        ).click();
+        cy.xpath('//legend[text()="Icon"]/parent::fieldset//div[@class="multiselect__select"]').click();
         cy.xpath(
             '//legend[contains(text(),"Icon")]/parent::fieldset//div[@class="multiselect__content-wrapper"]//i[@class="fas fa-fw fa-' +
-                iconName +
-                '"]'
+            iconName +
+            '"]'
         ).click();
+        
+        //Verify icon is selected
         cy.xpath(
             '//div[@class="modal-content"]//legend[text()="Icon"]//following-sibling::div//div[@class="multiselect__tags"]//span/i'
         ).should("have.class", "fas fa-fw fa-" + iconName);
-        cy.xpath(
-            '//div[@class="modal-content"]//legend[text()="Icon"]//following-sibling::div//span/i'
-        ).should("have.class", "fas fa-fw fa-" + iconName);
+        
         //color variant
         cy.get('[class="custom-select"]')
             .select(color)
             .should("have.value", color);
+        
         //URL
         cy.xpath('//legend[text()="URL"]/parent::fieldset//input')
             .should("be.visible")
-            .click();
-        cy.xpath('//legend[text()="URL"]/parent::fieldset//input').type(url);
+            .click()
+            .type(url);
+        
         //Check Open in new window
         cy.get('[type="checkbox"]').click({ force: true });
-        //save
-        cy.xpath(
-            '//footer[@class="modal-footer"]//button[@class="btn btn-secondary ml-3"]'
-        ).click();
+        
+        //Wait for save button to be enabled and click
+        cy.xpath('//footer[@class="modal-footer"]//button[@class="btn btn-secondary ml-3"]')
+            .should('not.be.disabled')
+            .click({ timeout: 10000 });
     }
 
     /**
@@ -1766,7 +1767,6 @@ createIDPIfNotConfigured(serverIDPType){
                 let optionConfigXpath = '//div[contains(text(),"optionName")]/ancestor::tr//button[@aria-label="Edit"]';
                 let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
 
-
                 //edit client ID
                 cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
@@ -1775,14 +1775,13 @@ createIDPIfNotConfigured(serverIDPType){
                 cy.xpath('//div[@role="alert"]').should('exist');
                 cy.xpath('//div[@role="alert"]').should('not.exist');
                 cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
-           
+
                 //edit Client Secret
                 cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
-                cy.xpath('//div[@role="alert"]').should('not.exist');
-
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@role="alert"]').should('not.exist'); 
 
                 //edit server host
                 cy.xpath(optionConfigXpath.replace('optionName','Host URL')).click();
@@ -1792,7 +1791,6 @@ createIDPIfNotConfigured(serverIDPType){
                 cy.xpath('//div[@role="alert"]').should('exist');
                 cy.xpath('//div[@role="alert"]').should('not.exist');
                 cy.xpath(optionColumnXpath.replace('optionColumn','Host URL')).should('have.contain',hostURLTxt);
-
 
                 //edit token
                 cy.xpath(optionConfigXpath.replace('optionName','Token URL')).click();
@@ -1804,13 +1802,12 @@ createIDPIfNotConfigured(serverIDPType){
                 cy.xpath(optionColumnXpath.replace('optionColumn','Token URL')).should('have.contain',tokenURLTxt);
                                 
                 }
-           
                             
         });
 
         
 }
- 
+
 
             createRPAIfNotConfigured(serverRPAType){
                 var ServerRPA = Cypress.env("defaultRPASettings").tenantID;
