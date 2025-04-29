@@ -1870,240 +1870,100 @@ export class Specific {
         cy.xpath("//button[@data-cy = 'add-row']").should('be.visible');
         cy.wait(2000);
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("1");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("1",{delay:100});
         cy.get('input[type="file"]').attachFile('images/1.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("2");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("2",{delay:100});
         cy.get('input[type="file"]').attachFile('images/2.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("3");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("3",{delay:100});
         cy.get('input[type="file"]').attachFile('images/3.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("4");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("4",{delay:100});
         cy.get('input[type="file"]').attachFile('images/4.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("5");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("5",{delay:100});
         cy.get('input[type="file"]').attachFile('images/5.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("6");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("6",{delay:100});
         cy.get('input[type="file"]').attachFile('images/6.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("7");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("7",{delay:100});
         cy.get('input[type="file"]').attachFile('images/7.png');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("8");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("8",{delay:100});
         cy.get('input[type="file"]').attachFile('images/8.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("9");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("9",{delay:100});
         cy.get('input[type="file"]').attachFile('images/9.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
 
         cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("10");
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").should('be.visible');
+        cy.wait(2000);
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("10",{delay:100});
         cy.get('input[type="file"]').attachFile('images/10.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("11");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/11.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("12");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/12.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("13");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/13.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("14");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/14.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("15");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/15.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("16");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/16.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("17");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/17.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("18");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/18.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("19");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/19.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("20");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/20.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("21");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/21.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("22");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/22.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("23");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/23.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("24");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/24.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("25");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/25.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("26");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/26.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("27");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/27.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("28");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/28.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("29");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/29.jfif');
-        cy.xpath('//span[contains(text(),"success")]').should('exist');
-        cy.wait(2000);
-        cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
-
-        cy.xpath("//button[@data-cy = 'add-row']").click();
-        cy.xpath("(//input[@aria-label = 'Name'])[1]").type("30");
-        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
-        cy.get('input[type="file"]').attachFile('images/30.jfif');
         cy.xpath('//span[contains(text(),"success")]').should('exist');
         cy.wait(2000);
         cy.xpath("//button[text()[normalize-space() = 'Ok']]").click();
@@ -2134,26 +1994,6 @@ export class Specific {
         cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.7.name']").should('exist');
         cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.8.name']").should('exist');
         cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.9.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.10.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.11.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.12.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.13.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.14.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.15.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.16.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.17.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.18.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.19.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.20.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.21.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.22.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.23.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.24.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.25.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.26.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.27.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.28.name']").should('exist');
-        cy.xpath("//td[text()='upload_documents_grid_cash_drawer_setup.29.name']").should('exist');
 
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task AA']]").should('exist');
         cy.xpath("//div[text()[normalize-space() = 'Admin User has completed the task BB']]").should('exist');
