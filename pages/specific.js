@@ -2969,10 +2969,10 @@ export class Specific {
         cy.xpath('//li[@id="option-0-1"]//span[text()="Two"]').click();
         cy.get('[name="select1.content"]').should('have.value','Two');
         cy.xpath('(//div[@class="multiselect__select"])[2]').click();
-        cy.xpath('//li[@id="option-1-0"]//span[text()="Luke Skywalker"]').click();
+        cy.xpath('//li//span[text()="Luke Skywalker"]').click();
         cy.xpath('(//input[@name="name"])[1]').should('have.value',"Luke Skywalker");
         cy.xpath('(//div[@class="multiselect__select"])[2]').click();
-        cy.xpath('//li[@id="option-1-3"]//span[text()="Darth Vader"]').click();
+        cy.xpath('//li//span[text()="Darth Vader"]').click();
         cy.xpath('(//input[@name="name"])[2]').should('have.value',"Darth Vader");
         cy.xpath('(//div[@class="multiselect__select"])[3]').click();
         cy.xpath('//li//span[text()="ana"]').click();
