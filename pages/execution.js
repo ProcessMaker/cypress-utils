@@ -622,7 +622,7 @@ export class Execution {
         request.verifyTaskIsCompletedB();
 
         navHelper.navigateToTasksPage();
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
@@ -631,7 +631,7 @@ export class Execution {
         request.verifyTaskIsCompletedB();
 
         navHelper.navigateToTasksPage();
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('CC').click();
@@ -656,7 +656,7 @@ export class Execution {
         request.verifyTaskIsCompletedB();
         
         navHelper.navigateToTasksPage();
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
@@ -665,7 +665,7 @@ export class Execution {
         request.verifyTaskIsCompletedB();
         
         navHelper.navigateToTasksPage();
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('DD').click();
@@ -691,7 +691,7 @@ export class Execution {
         request.verifyTaskIsCompletedB();
 
         navHelper.navigateToTasksPage();
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a').contains('EE').click();
