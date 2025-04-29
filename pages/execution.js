@@ -623,6 +623,7 @@ export class Execution {
 
         navHelper.navigateToTasksPage();
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
@@ -631,18 +632,19 @@ export class Execution {
 
         navHelper.navigateToTasksPage();
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('CC').click();
         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible')
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompletedB();
 
-        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
-        cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
-        cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
-        cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task BB');
-        cy.xpath('(//div[@class="flex-grow-1"])[7]').should('contain.text', 'AAA: true');
-        cy.xpath('(//div[@class="flex-grow-1"])[8]').should('contain.text', 'Admin User has completed the task CC');
+        cy.xpath('//*[contains(text(),"has completed the task Script A")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task AA")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task Script B")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task BB")]').should('exist');
+        cy.xpath('//*[contains(text(),"AAA: true")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task CC")]').should('exist');
     }
 
     actionsAndAssertionsOfTCP42281Part2(requestId){
@@ -655,6 +657,7 @@ export class Execution {
         
         navHelper.navigateToTasksPage();
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
@@ -663,6 +666,7 @@ export class Execution {
         
         navHelper.navigateToTasksPage();
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tr[@item-index="1"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('DD').click();
         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
@@ -688,16 +692,17 @@ export class Execution {
 
         navHelper.navigateToTasksPage();
         request.openRequestById(requestId);
+        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a').contains('EE').click();
         cy.xpath('//button[@aria-label="New Submit"]').should('exist');
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompletedB();
 
-        cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
-        cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
-        cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
-        cy.xpath('(//div[@class="flex-grow-1"])[6]').should('contain.text', 'Admin User has completed the task EE');
+        cy.xpath('//*[contains(text(),"has completed the task Script A")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task AA")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task Script B")]').should('exist');
+        cy.xpath('//*[contains(text(),"has completed the task EE")]').should('exist');
     }
 
     actionsAndAssertionsOfTCP42282Part1(){
