@@ -1500,7 +1500,8 @@ export class Specific {
         cy.get(addRecordBTn).should('be.visible').click();
         cy.xpath(selectListXpath).first().should('be.visible').click();
         cy.wait(2000);
-        cy.xpath(inputLineXpath).first().type('title1').should('have.value','title1');
+        cy.xpath(inputLineXpath).first().type('title1',{delay:100}).should('have.value','title1');
+        cy.wait(2000);
         cy.xpath(inputLineXpath).first().type('{enter}');
         //add file
         cy.get("[type='file']").attachFile("drone.jpg");
@@ -1515,7 +1516,8 @@ export class Specific {
         cy.get(addRecordBTn).should('be.visible').click();
         cy.xpath(selectListXpath).first().should('be.visible').click();
         cy.wait(3000);
-        cy.xpath(inputLineXpath).first().type('title2').should('have.value','title2');
+        cy.xpath(inputLineXpath).first().type('title2',{delay:100}).should('have.value','title2');
+        cy.wait(2000);
         cy.xpath(inputLineXpath).first().type('{enter}');
         //add file
         cy.get("[type='file']").attachFile("data.json");
@@ -1534,7 +1536,8 @@ export class Specific {
         cy.get(addRecordBTn).eq(1).should('be.visible').click();
         cy.xpath(selectListXpath).eq(2).should('be.visible').click();
         cy.wait(3000);
-        cy.xpath(inputLineXpath).eq(2).type('title2').should('have.value','title2');
+        cy.xpath(inputLineXpath).eq(2).type('title2',{delay:100}).should('have.value','title2');
+        cy.wait(2000);
         cy.xpath(inputLineXpath).eq(2).type('{enter}');
         //add file
         cy.get("[type='file']").eq(2).attachFile("drone.jpg");
@@ -1549,7 +1552,8 @@ export class Specific {
         cy.get(addRecordBTn).eq(1).should('be.visible').click();
         cy.xpath(selectListXpath).eq(2).should('be.visible').click();
         cy.wait(5000);
-        cy.xpath(inputLineXpath).eq(2).type('title3').should('have.value','title3');
+        cy.xpath(inputLineXpath).eq(2).type('title3',{delay:100}).should('have.value','title3');
+        cy.wait(2000);
         cy.xpath(inputLineXpath).eq(2).type('{enter}');
         //add file
         cy.get("[type='file']").eq(2).attachFile("data.json");
@@ -1570,7 +1574,8 @@ export class Specific {
         cy.get(addRecordBTn).eq(2).should('be.visible').click();
         cy.xpath(selectListXpath).eq(4).should('be.visible').click();
         cy.wait(4000);
-        cy.xpath(inputLineXpath).eq(4).type('title3').should('have.value','title3');
+        cy.xpath(inputLineXpath).eq(4).type('title3',{delay:100}).should('have.value','title3');
+        cy.wait(2000);
         cy.xpath(inputLineXpath).eq(4).type('{enter}');
         //add file
         cy.get("[type='file']").eq(4).attachFile("drone.jpg");
@@ -1584,7 +1589,8 @@ export class Specific {
         cy.get(addRecordBTn).eq(2).should('be.visible').click();
         cy.xpath(selectListXpath).eq(4).should('be.visible').click();
         cy.wait(4000);
-        cy.xpath(inputLineXpath).eq(4).type('title4').should('have.value','title4');
+        cy.xpath(inputLineXpath).eq(4).type('title4',{delay:100}).should('have.value','title4');
+        cy.wait(2000);
         cy.xpath(inputLineXpath).eq(4).type('{enter}');
         //add file
         cy.get("[type='file']").eq(4).attachFile("drone.jpg");
