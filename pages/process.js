@@ -2321,8 +2321,13 @@ export class Process {
     }
     openAlternativeModeler(alternative = "A") {
         cy.url().then(($url) => {
-            let processID = $url.split("/")[4].trim();
-            cy.visit("/modeler/" + processID + "/alternative/" + alternative);
+            let segments = $url.split("/");
+            if (segments.length >= 5 && segments[4]) {
+                let processID = segments[4].trim();
+                cy.visit("/modeler/" + processID + "/alternative/" + alternative);
+            } else {
+                throw new Error("No se pudo obtener el ID del proceso de la URL");
+            }
         });
     }
     verifyPresenceOfProcessAndCreate(processName, description) {
