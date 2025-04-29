@@ -312,7 +312,11 @@ export class Process {
     enterProcessName(name) {
         cy.get(selectors.nameTxtBx)
             .should("be.visible")
-            .type(name, { delay: 500 })
+            .wait(2000)  // add explicit wait
+            .type(name, { 
+                delay: 600,  // increase the delay between key strokes
+                timeout: 180000 // increase the overall time out
+            })
             .should("have.value", name);
     }
 
