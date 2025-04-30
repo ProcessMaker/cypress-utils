@@ -30,8 +30,9 @@ export class FlowGenie {
         cy.get(selectors.modalNewFlowGenie).should('be.visible');
         cy.get(selectors.inputNameFlowGenie).type(nameFlowGenie,{timeout: 200});
         cy.get(selectors.textareaDescription).type(description, {timeout: 200});
+        this.load();
         if (category != "") this.enterFlowGenieCategory(category);
-        cy.wait(2000);
+        this.load();
         cy.get('[class="btn ml-2 btn-outline-secondary"]').should('be.visible');
         this.ClickSaveFlowGenie();
         cy.contains(selectors.flowGenieStudio,'FlowGenie Studio').should('be.visible');
@@ -210,7 +211,7 @@ export class FlowGenie {
     attachImage(file){
         cy.xpath("//span[contains(text(),'Image')]").should('exist');
         cy.get(selectors.fileOption).eq(0).attachFile(file,{timeout: 10000});
-        cy.wait(1000);
+        this.load();
         this.ClickAddBtn();
     }
     //Option Pdf
@@ -219,7 +220,7 @@ export class FlowGenie {
         cy.get(selectors.fileOption)
             .eq(1)
             .attachFile(file,{timeout: 10000});
-        cy.wait(2000);
+        this.load();
         this.ClickAddBtn();
     }
     //Option CSV
@@ -228,7 +229,7 @@ export class FlowGenie {
         cy.get(selectors.fileOption)
             .eq(2)
             .attachFile(file,{timeout: 15000});
-        cy.wait(1000);
+        this.load();
         this.ClickAddBtn();
     }
 
@@ -236,13 +237,13 @@ export class FlowGenie {
     attachUrl(file){
         cy.xpath("//button[contains(text(),'URL Link')]").should('exist').click();
         cy.get(selectors.urlInput).type(file,{timeout: 50});
-        cy.wait(2000);
+        this.load();
         this.ClickAddBtn();
     }
 
     //Delete nessages
     deleteMessage(){
-        cy.wait(1000);
+        this.load();
         cy.get(selectors.deleteMessage)
             .first()
             .should('be.visible')
@@ -284,7 +285,7 @@ export class FlowGenie {
         cy.xpath(selectors.searchInputCategories)
             .type(nameCat)
             .should("have.value",nameCat);
-        cy.wait(2000);
+        this.load();
         cy.xpath(categoryXpath.replace("categoryName",nameCat)).should('be.visible');
         cy.xpath(categoryXpath.replace("categoryName",nameCat)).first().click();
         cy.xpath("//*[contains(text(),'Delete Category')]").click();
@@ -332,5 +333,10 @@ export class FlowGenie {
     }
     
     //Configuration task FlowGenie
+
+    //load
+    load(){
+        cy.wait(3000);
+    }
 
 }    
