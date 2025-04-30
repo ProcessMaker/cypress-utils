@@ -1389,6 +1389,7 @@ export class Process {
         const elementTaskEventXpath = "//*[contains(text(),'nameElem')]/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
         const weBtnSelector = "[id='accordion-button-webentry']";
         const linkScreenAssociatedXpath = "//label[text()='Screen Associated']/parent::div//a";
+        this.openAlternativeModeler();
         cy.get('[data-cy="inspector-button"]').should('exist');
         cy.url().then(url => {
             cy.get('[data-cy="inspector-button"]').click();
