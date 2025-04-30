@@ -33,31 +33,55 @@ export class Templates {
         option = "config",
         exportType = "basic"
     ) {
-        cy.xpath(selectors.threePointsBtnXpathTemplate).should("be.visible");
-        //cy.xpath('//*[@id="templatesIndex"]').should('be.visible');
-        cy.xpath(selectors.indexTemplate).should('be.visible');
-        cy.xpath(selectors.searchBoxTemplate).type(`${templateName}`,{delay: 650}).should("have.value", templateName);
-        cy.xpath(selectors.searchBoxTemplate).type('{enter}');
-        cy.xpath(selectors.threePointsBtnXpathTemplate).first().should("be.visible");
-        cy.xpath(selectors.threePointsBtnXpathTemplate).first().click();
+        // Wait for the template table to be visible and loaded
+        cy.get('#templatesIndex')
+            .should('be.visible')
+            .should('not.have.class', 'loading');
+        
+        // Search for the template
+        cy.xpath(selectors.searchBoxTemplate)
+            .should('be.visible')
+            .clear()
+            .wait(1000)  // Add wait to ensure the clear took effect
+            .type(templateName, { delay: 650 })
+            .should("have.value", templateName)
+            .type('{enter}');
+        
+        // Wait for search results and loading spinner to disappear
+        cy.get('.jumbotron.jumbotron-fluid').should('not.be.visible');
+        
+        // Check for results in the table
+        cy.xpath(selectors.templateTableBody)
+            .should('be.visible')
+            .then($tbody => {
+                if ($tbody.find('tr').length > 0) {
+                    // Find and click the menu button
+                    cy.xpath('//div[@id="templatesIndex"]//tbody//tr[1]//button[@aria-haspopup="menu"]')
+                        .should("be.visible")
+                        .click({force: true});
 
-        switch (option) {
-            case "documentation":
-                this.goTodocumentationTemplate();
-                break;
-            case "edit":
-                this.goToEditTemplate();
-                break;
-            case "export":
-                this.downloadTemplate(templateName, exportType);
-                break;
-            case "config":
-                this.goToConfigTemplate();
-                break;
-            case "delete":
-                this.goToDeleteTemplate();
-                break;
-        }
+                    // Select the appropriate option
+                    switch (option) {
+                        case "documentation":
+                            this.goTodocumentationTemplate();
+                            break;
+                        case "edit":
+                            this.goToEditTemplate();
+                            break;
+                        case "export":
+                            this.downloadTemplate(templateName, exportType);
+                            break;
+                        case "config":
+                            this.goToConfigTemplate();
+                            break;
+                        case "delete":
+                            this.goToDeleteTemplate();
+                            break;
+                    }
+                } else {
+                    throw new Error(`Template "${templateName}" not found in the table`);
+                }
+            });
     }
     goTodocumentationTemplate(){
         this.selectMenuOptionRow("Template Documentation");
