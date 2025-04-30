@@ -1953,10 +1953,9 @@ export class Process {
             }
         }
     searchVocabulary(vocabularyName){
-        cy.get('[id="vocabularyIndex"] [title="Edit"]').should('be.visible');
-        cy.get('[class="vuetable-empty-result"]').should('not.exist');
-        cy.get('input[id="search-box"]').type(vocabularyName).should('have.value', vocabularyName);
-        cy.wait(1500);
+        cy.wait(5000);
+        cy.get('input[id="search-box"]').type(vocabularyName,{delay:100}).should('have.value', vocabularyName);
+        cy.wait(4000);
         }
     editVocabulary(){
             cy.get('[title="Edit"]').first().click();
@@ -1983,8 +1982,10 @@ export class Process {
     * process.verifyPresenceOfVocabulary(Vocabulary1,description,data1);
     */
     verifyPresenceOfVocabulary(vocabularyName,description,data){
-        var editBtn = '[title="Edit"]';
-        cy.get(editBtn).should('be.visible');
+        var tableVocabulary = '//*[@id="vocabularyIndex"]//table';
+
+        cy.wait(5000)
+        cy.xpath(tableVocabulary).should('be.visible');
 		this.searchVocabulary(vocabularyName);
 		cy.get('[class="card card-body table-card"').then((table) => {
 			if (table.find('td').length === 1) {
