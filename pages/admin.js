@@ -486,11 +486,11 @@ export class Admin {
         cy.get('button[aria-label="Create Configuration Dashboard"]').should('be.visible');
         cy.get('button[aria-label="Create Configuration Dashboard"]').click();
         cy.xpath("//legend[text()='Name']/following-sibling::div/input").should('be.visible');
-        cy.xpath("//legend[text()='Name']/following-sibling::div/input").type(name,{delay:50}).should('have.value',name);
+        cy.xpath("//legend[text()='Name']/following-sibling::div/input").type(name,{delay:300}).should('have.value',name);
         cy.xpath("//legend[text()='Screen']/following-sibling::div//div[@class='multiselect__spinner']").should('not.be.visible');
         cy.xpath("//legend[text()='Screen']/following-sibling::div//div[@class='multiselect__select']").click();
-		cy.xpath("//legend[text()='Screen']/following-sibling::div//input").type(screen,{delay:50}).should('have.value',screen);
-		cy.wait(4000);
+		cy.xpath("//legend[text()='Screen']/following-sibling::div//input").type(screen,{delay:300}).should('have.value',screen);
+		cy.wait(2000);
 		cy.xpath("//legend[text()='Screen']/following-sibling::div//div[@class='multiselect__content-wrapper']//li[1]")
 			.should('have.attr', 'aria-label')
 			.and('contain', screen);
