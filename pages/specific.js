@@ -312,11 +312,21 @@ export class Specific {
         request.openRequestById(requestId);
         request.clickOnTaskName(1, 1);
 
-        //Step 3: Complete the form
+        //Step 3: Complete form task 1
+        cy.get('[data-cy="screen-field-name"]').should("be.visible");
+        cy.get('[data-cy="screen-field-name"]').type(user,{delay:200}).should('have.value',user);
+        cy.xpath('//button[contains(text(),"Submit")]').click();
+        request.verifyTaskIsCompletedB();
+
+        //Step 4: Open form task 2
+        request.openRequestById(requestId);
+        request.clickOnTaskName(1, 1);
+
+        //Step 5: Complete the form
         cy.get('[data-cy="screen-field-text"]').should("be.visible");
         cy.get('[data-cy="screen-field-text"]').type("test").should('have.value', "test");
 
-        //Step 4: Click on submit button
+        //Step 6: Click on submit button
         cy.xpath('//button[contains(text(),"Submit")]').click();
         request.waitUntilTextcontainText('selector','varHeader', "Completed");
     }
