@@ -2537,6 +2537,7 @@ export class Specific {
         //Step 1: Complete the Form 1
         cy.xpath("//button[@data-cy = 'add-row']").should('be.visible');
         cy.xpath("//button[@data-cy = 'add-row']").click();
+        cy.xpath("//button[text() = 'Ok']").should('be.visible');
         cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
         screensP.useCustomDate("2022", "Mar", "20");
         cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
@@ -2561,6 +2562,7 @@ export class Specific {
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[5]').should('contain','true');
         //second record
         cy.xpath("//button[@data-cy = 'add-row']").click();
+        cy.xpath("//button[text() = 'Ok']").should('be.visible');
         cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
         screensP.useCustomDate("2022", "Mar", "20");
         cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
@@ -2582,6 +2584,7 @@ export class Specific {
         cy.xpath('((//div[@class="row mb-2 ml-0 mr-0"])[2]/following-sibling::table//td)[10]').should('contain','false')
         //Third record
         cy.xpath("//button[@data-cy = 'add-row']").click();
+        cy.xpath("//button[text() = 'Ok']").should('be.visible');
         cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
         screensP.useCustomDate("2020", "Mar", "20");
         cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
@@ -2607,11 +2610,13 @@ export class Specific {
         request.verifyTaskIsCompletedB();
 
         //Step 2: Open by request ID
-        request.openRequestById(requestId);
+        cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
 
+        request.waitUntilElementIsVisible('selector', '[data-cy = "add-row"]');
         cy.xpath("//button[@data-cy = 'add-row']").click();
+        cy.xpath("//button[text() = 'Ok']").should('be.visible');
         cy.xpath("(//input[@aria-label = 'Date'])[1]").click();
         screensP.useCustomDate("2019", "Mar", "20");
         cy.xpath("(//input[@aria-label = 'DateTime'])[1]").click();
