@@ -7834,7 +7834,8 @@ export class Execution {
         this.fillFormTCP42076(name4,lastName,'4445556660','4444444444','(444) 444-4444','Peru');
         cy.get('button[title="Add Item"]').click();
         this.fillFormTCP42076(name5,lastName,'5556667770','5555555555','(555) 555-5555','Argentina');
-        cy.get('[aria-label="Submit"]').last().click({force:true});
+        cy.wait(5000);
+        cy.get('[aria-label="Submit"]').last().click();
         //verify screen display appear
         cy.xpath('//strong[text()="Thank You!"]').should('be.visible');
     }
