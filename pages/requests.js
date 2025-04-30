@@ -35,7 +35,7 @@ export class Requests {
     openRequestById(requestId) {
         cy.wait(2000);
         cy.visit('/requests/' + requestId);
-        cy.xpath("(//div[@id='pending']//*[@class='vuetable-slot'])[1]").should('be.visible');
+        this.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
     }
 
     openRequestByName(processName) {
