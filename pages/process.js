@@ -2325,12 +2325,27 @@ export class Process {
     }
     openAlternativeModeler(alternative = "A") {
         cy.url().then(($url) => {
-            let segments = $url.split("/");
-            if (segments.length >= 5 && segments[4]) {
-                let processID = segments[4].trim();
+            //  Verify that the URL is not empty
+            if (!$url) {
+                throw new Error("The URL is empty");
+            }
+
+            // Extract the process ID from the URL
+            const match = $url.match(/\/modeler\/(\d+)/);
+            if (match && match[1]) {
+                let processID = match[1];
+                cy.wait(2000);
                 cy.visit("/modeler/" + processID + "/alternative/" + alternative);
             } else {
-                throw new Error("No se pudo obtener el ID del proceso de la URL");
+                // If we are not on the modeler page, try to get the ID in another way
+                let segments = $url.split("/");
+                if (segments.length >= 5 && segments[4]) {
+                    let processID = segments[4].trim();
+                    cy.wait(2000);
+                    cy.visit("/modeler/" + processID + "/alternative/" + alternative);
+                } else {
+                    throw new Error("Could not get the process ID. Current URL: " + $url);
+                }
             }
         });
     }
