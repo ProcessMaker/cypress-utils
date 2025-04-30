@@ -1149,8 +1149,9 @@ export class Process {
                 if (text !== dataConnectorName) {
                     // Set data connector
                     cy.xpath('//label[text()="Select a Data Connector"]/parent::div//div[@class="multiselect__tags"]').click();
+                    cy.wait(4000);
                     cy.xpath('//label[text()="Select a Data Connector"]/parent::div//input').type(dataConnectorName,{delay : 100}).should('have.value', dataConnectorName);
-                    cy.wait(2000);
+                    cy.wait(4000);
                     cy.xpath('//label[text()="Select a Data Connector"]/parent::div//div[@class="multiselect__content-wrapper"]//li[1]')
                         .should('have.attr', 'aria-label') // yields the "href" attribute
                         .and('equal', dataConnectorName + ". ");
