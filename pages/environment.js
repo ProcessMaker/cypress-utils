@@ -145,4 +145,59 @@ export class Environment {
             .eq(nro)
             .click();
     }
+
+    /**
+     * Retrieves an environment variable by name using the API
+     * @method getEnvironmentVariableByNameAPI
+     * @param {string} variableName - The name of the environment variable to retrieve
+     * @returns {<Object|string>} A promise that resolves with the environment variable object or a message if it does not exist
+     */
+    getEnvironmentVariableByNameAPI(variableName) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/environment_variables', { params: {filter: variableName} }).then(response => {
+                const envVariable = response.data.data.find(envVariable => envVariable.name === variableName);
+                if(envVariable != null)
+                    return envVariable;
+                else
+                    return "Environment variable does not exist";
+            });
+        });
+    }
+
+    /**
+     * Creates a new environment variable using the API
+     * @method createEnvironmentVariableAPI
+     * @param {Object} payload - The payload containing the environment variable data
+     * @param {boolean} [ignoreTakenError=true] - Whether to ignore the error if the name is already taken
+     * @returns {<Object>} A promise that resolves with the created environment variable object or the existing one if the name is taken
+     */
+    createEnvironmentVariableAPI(payload, ignoreTakenError=true) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.post('/environment_variables', payload)
+            .then(response => {
+                return response.data;
+            }).catch((err) => {
+                if (ignoreTakenError && err.response.data.message.toLowerCase() === 'the name has already been taken.') {
+                    return this.getEnvironmentVariableByNameAPI(payload.name);
+                }
+            });
+        });
+    }
+
+    /**
+     * Deletes an environment variable by ID using the API
+     * @method deleteEnvironmentVariableAPI
+     * @param {string} varEnvID - The ID of the environment variable to delete
+     * @returns {<string>} A promise that resolves with a message indicating the result of the deletion
+     */
+    deleteEnvironmentVariableAPI(varEnvID) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/environment_variables/'+varEnvID)
+            .then(response => {
+                return 'varEnv with ID='+varEnvID+' was deleted with status: '+response.statusText;
+            }).catch((err) => {
+                return 'ID='+ varEnvID + ' was not deleted, error:'+err.response.data.error;
+            });
+        });
+    }
 }

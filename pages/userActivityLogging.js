@@ -2,70 +2,6 @@ import selectors from "#selectors/userActivityLogging";
 import selectorsAdmin from "#selectors/admin";
 
 export class userActivityLogging{
-
-    /**
-    * This method is responsible to check validations in Security Logs
-    * @param elementList: object of elements to verify for labels
-    * @return nothing returns
-    */
-
-    checkLabelsSecurityLogsLabels(elementList=[]) {
-        cy.get('[id="showLogInfo"] [class="modal-body"] p > b').each(($el, index)=>{
-            expect($el.text().trim()).to.be.eq(elementList[index])
-        });
-    }
-
-    /**
-    * This method is responsible to access Security Logs
-    * @return nothing returns
-    */
-
-    accessToSecurityLogs(){
-        cy.xpath(selectors.securityLogsMenu).should("be.visible");
-        cy.xpath(selectors.securityLogsMenu).click();
-    }
-
-    /**
-    * This method is responsible to access Security Logs
-    * @log log to be searched in Security Logs
-    * @return nothing returns
-    */
-
-    accessToSpecificSecurityLog(log){
-        const xpath = selectors.securityLog.replace('log', log);
-        cy.xpath(xpath).should('be.visible');
-        cy.xpath((selectors.securityLog.replace('log', log))).should('be.visible');
-        cy.xpath((selectors.securityLog.replace('log', log))).click({force:true});
-    }
-
-    /**
-    * This method is responsible to check validations in Security Logs for span selectors
-    * @param elementArray: object of elements to verify
-    * @return nothing returns
-    */
-
-    checkLabelsSecurityLogsSpan(elementArray=[]){
-        let len = elementArray.length;
-        for (var i = 0; i < len; i++) {
-            cy.xpath(selectors.userActivityLoggingSpan.replace('element', elementArray[i])).should('have.text', elementArray[i]);           
-        }
-    }
-
-    /**
-    * This method is responsible to check validations in Security Logs for href selectors
-    * @param elementList: object of elements to verify
-    * @return nothing returns
-    */
-
-    checkLabelsSecurityLogsHref(elementList=[]){
-        let len = elementList.length;
-        for (var i = 0; i < len; i++) {
-            cy.xpath(selectors.userActivityLoggingHref.replace('element',elementList[i]))
-            .should('be.visible').should("have.attr","href");
-            cy.xpath(selectors.userActivityLoggingHref.replace('element',elementList[i])).click();
-        }
-    }
-
     /**
      * This method is responsible to search by a specific event
      * @param event: event name such as: TokenCreated, FolderAccessed
@@ -83,5 +19,68 @@ export class userActivityLogging{
             .find("td")
             .its("length")
             .should("be.greaterThan", 0);
+    }
+
+    /**
+     * Clicks on the `User Activity` tab
+     * @method pressUserActivityTab
+     */
+    pressUserActivityTab(){
+        cy.get('[class="nav nav-tabs"] [id="nav-logs-tab"]').should('be.visible').click()
+    }
+
+    /**
+     * Presses the play button on a specific row in the activity log
+     * @method pressPlayButton
+     * @param {number} [row=0] - The row index of the play button to click
+     */
+    pressPlayButton(row=0){
+        cy.wait(3000)
+        cy.get('[id="nav-logs"] table > tbody td > span > button').should('exist').eq(row).click();
+    }
+
+    /**
+     * Validates the content of the activity log modal
+     * @method validateActivityLogModal
+     * @param {Object} data - The data object containing expected values for validation
+     * @param {string} data.title - The expected title of the modal
+     * @param {Array<string>} data.labels - The expected labels in the modal
+     * @param {Array<string>} data.valueName - The expected names in the modal
+     * @param {Array<string>} data.values - The expected values in the modal
+     */
+    validateActivityLogModal(data){
+        cy.get('[id="showLogInfo"] [class="modal-content"]').should('be.visible').within(() => {    
+            //verify title
+            cy.get('header > h5 > p').invoke('text').then(($title)=>{
+                expect($title.trim().replace(/\s+/g, "")).to.eq(data.title)
+            })
+            //verify labels
+            cy.get('[class="modal-body"] p > b').each(($el, index)=>{
+                if(data.labels[index] != "-")
+                    expect($el.text().trim()).to.be.eq(data.labels[index])
+            });
+            //varify name title
+            if(data.title.toLowerCase().indexOf('deleted') === -1 && data.valueName[0]!= "-"){
+                cy.get('[class="modal-body"] p > a').each(($el, index)=>{
+                    if(data.valueName[index] != "-")
+                        expect($el.text().trim()).to.be.eq(data.valueName[index])
+                });
+            }
+            //verify values
+            cy.get('[class="modal-body"] p > span').each(($el, index)=>{
+                if(data.values[index] != "-")
+                    expect($el.text().trim()).to.be.eq(data.values[index])
+            });
+        })
+    }
+
+    /**
+     * Opens a URL from the activity log modal
+     * @method openURLfromModal
+     */
+    openURLfromModal(){
+        cy.get('[id="showLogInfo"] [class="modal-content"]').should('be.visible').within(() => {
+            cy.get('[class="modal-body"] p > a').should('be.visible').click()
+        })
     }
 }

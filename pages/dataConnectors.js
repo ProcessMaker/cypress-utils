@@ -351,9 +351,10 @@ export class Dataconnectors {
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.get('/data_sources', { params: { filter: dataSourceName} }).then(response => {
                 const dc = response.data.data.find(dc => dc.name === dataSourceName);
-                //console.log('DC-id: ', dc.id);
-                // return cy.wrap(user);
-                return dc;
+                if(dc != null)
+                    return dc;
+                else
+                    return "Data Source does not exist";
             });
         });
     }
@@ -383,6 +384,8 @@ export class Dataconnectors {
             return win.ProcessMaker.apiClient.delete('/data_sources/'+dc_id).then(response => {
                 console.log(JSON.stringify(response));
                 return "data source: " + dc_id + " was deleted";
+            }).catch((err) => {
+                return 'ID='+ dc_id + ' was not deleted because an error occured with status: '+err.response.data.status;
             });
         });
     }
