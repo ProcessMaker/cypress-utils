@@ -739,6 +739,7 @@ export class Execution {
             request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
+            request.waitUntilElementIsVisible('selector', '[data-test="date-picker"]');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
             request.verifyTaskIsCompletedB();
@@ -748,6 +749,7 @@ export class Execution {
             request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
+            request.waitUntilElementIsVisible('selector', '[data-test="date-picker"]');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
             request.verifyTaskIsCompletedB();
@@ -757,6 +759,7 @@ export class Execution {
             request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
+            request.waitUntilElementIsVisible('selector', '[data-test="date-picker"]');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
             request.verifyTaskIsCompletedB();
@@ -766,6 +769,7 @@ export class Execution {
             request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
+            request.waitUntilElementIsVisible('selector', '[data-test="date-picker"]');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
             request.verifyTaskIsCompletedB();
@@ -784,10 +788,13 @@ export class Execution {
         cy.get('input[data-cy="screen-field-input"]').type(number);
         cy.get('textarea[data-cy="screen-field-textarea"]').type("Nirvana");
         cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
+        cy.wait(4000);
         cy.get('[name=request-id]').invoke('attr', 'content').should('not.be.empty');
 
         //Step 3: Get the number of requests
         cy.get("[name='request-id']").invoke('attr', 'content').then((requestId)=>{
+
+            cy.wait(5000);
 
             login.navigateToUrl();
             login.login();
@@ -797,6 +804,7 @@ export class Execution {
             request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
+            request.waitUntilElementIsVisible('selector', '[data-test="date-picker"]');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
             request.verifyTaskIsCompletedB();
@@ -807,6 +815,7 @@ export class Execution {
             request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
             request.clickOnTaskName(1, 1);
 
+            request.waitUntilElementIsVisible('selector', '[data-test="date-picker"]');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').should('exist');
             cy.xpath('(//button[@aria-label="New Submit"])[2]').click();
             request.verifyTaskIsCompletedB();
