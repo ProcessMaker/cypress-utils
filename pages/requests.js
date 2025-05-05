@@ -222,7 +222,7 @@ export class Requests {
             cy.get(selectorXPath).should('be.visible').invoke('text')
                 .then($val => {
                     if ($val !== text) {  // do your condition check synchronously
-                        cy.wait(3000);
+                        cy.wait(5000);
                         cy.reload();
                         this.waitUntilTextcontainText(type,selectorXPath,text,maxAttempts, attempts+1);
                     }
