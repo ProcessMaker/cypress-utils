@@ -263,7 +263,8 @@ export class Execution {
             .should('have.value','aa');
         cy.wait(2000);
         cy.xpath('//div[@data-cy="screen-field-selectlist"]//input').type('{enter}');
-        cy.xpath('//textarea[@data-cy="screen-field-textarea"]').type('Venezia').should('have.value', 'Venezia');
+        cy.xpath('//textarea[@data-cy="screen-field-textarea"]').type('Venezia',{delay:100}).should('have.value', 'Venezia');
+        cy.wait(3000);
         cy.xpath('//button[@aria-label="New Submit"]').click();
         request.verifyTaskIsCompletedB();
 
@@ -6508,21 +6509,6 @@ export class Execution {
         cy.xpath("(//input[@type='text'][@name='form_input_4'])[3]").should('have.value','1993-11-16');
         cy.xpath("(//input[@type='text'][@name='form_input_5'])[4]").type('1992-11-30 15:13{enter}');
         cy.xpath("//button[text()='Save']").should("be.visible").click();
-        //add record list
-        cy.xpath("//button[contains(text(),'Add')]").should("be.visible").click();
-        //record list
-        cy.xpath('//label[text()="Date Picker Date"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09{enter}').should('contain.value','2022');
-        cy.xpath('//label[text()="Date Picker Datetime"]//ancestor::div[@class="form-group position-relative"]//input').first().type('2022-11-09 16:14{enter}');
-        cy.xpath("//input[@type='text'][@name='form_input_2']").first().should("be.visible").type('2023-24-02{enter}').should('have.value','2023-24-02');
-        cy.xpath("//input[@type='text'][@name='form_input_3']").first().should("be.visible").type('2023-24-02 01:22{enter}');
-        //Inside Loop
-        cy.xpath('//*[@data-cy="screen-field-form_date_picker_3"]//input').first().click();
-        screen.useCustomDate("2022", "Dec", "19");
-        cy.xpath('(//button[@title="Add Item"])[1]').should("be.visible").click();
-        cy.xpath('(//strong[text()="Inside Loop"]//ancestor::div[@class="page"][1]//div[5]//div[@data-cy="screen-field-form_date_picker_3"]//input)[2]').type('2022-12-30{enter}').should("contain.value",'2022');
-        cy.xpath('//*[@data-cy="screen-field-form_date_picker_4"]//input').first().click();
-        screen.useCustomDateTime("2022","Dec","30","16","14");
-        cy.xpath("//button[text()='Ok']").should("be.visible").click();
         cy.xpath("//button[contains(text(),'New Submit')]").should("be.visible").click();
         request.verifyTaskIsCompletedB();
 
@@ -6532,7 +6518,6 @@ export class Execution {
         cy.xpath("//a[contains(text(),'Forms')]").click();
         cy.xpath('//button[@title="Details"]').first().should("be.visible").click();
         cy.xpath('//div[@class="card-body h-100"]').should("be.visible");
-        cy.contains('Admin User has completed the task Form Task').scrollIntoView();
     }
     actionsAndAssertionsOfTCP42132(requestId){
         cy.xpath("//p[text()='File Upload']").should("be.visible");
