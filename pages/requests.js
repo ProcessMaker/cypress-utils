@@ -264,7 +264,7 @@ export class Requests {
             throw new Error("Timed out waiting for report to be generated");
         }
         if(type === 'selector'){
-            cy.wait(3000);
+            cy.wait(5000);
             cy.xpath('//body')
                 .then($body => {
                     if ($body.find(selectorXPath).length <= 0) {
