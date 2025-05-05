@@ -7459,11 +7459,12 @@ export class Execution {
 
             //Step 10: Complete manual task
             cy.xpath("//button[contains(text(),'Complete Task')]").click();
-            request.verifyTaskIsCompleted();
+            request.verifyTaskIsCompletedB();
 
             //Step 11: Wait the requests is completed
+            cy.wait(5000);
             cy.visit('/requests/'+requestId);
-            request.waitUntilTextcontainText('selector','varHeader','Completed');
+            request.waitUntilTextcontainText('selector','varHeader','Completed',18,0);
 
             //Step 12: Review File Manager
             cy.xpath("//a[contains(text(),'File Manager')]").click();
