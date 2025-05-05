@@ -3797,6 +3797,7 @@ export class Specific {
         request.verifyTaskIsCompletedB();
 
         //Step 10: Complete Form Task 2
+        cy.wait(8000);
         cy.visit('/requests/' + requestId);
         request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
         request.clickOnTaskName(1, 1);
