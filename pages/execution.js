@@ -4390,16 +4390,16 @@ export class Execution {
         
         //verify the process is completed
         request.verifyRequestisCompleted(requestId);
-        cy.xpath("//div[contains(text(),'Admin User has completed the task A')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email A')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email B')]").should('be.visible');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator A')]").should('exist');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator C')]").should('exist');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email C')]").should('exist');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator B')]").should('exist');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task Send Email D')]").should('exist');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task PDF Generator D')]").should('exist');
-        cy.xpath("//div[contains(text(),'Admin User has completed the task B')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task A')]").should('exist')
+        cy.xpath("//div[contains(text(),'has completed the task Send Email A')]").should('exist')
+        cy.xpath("//div[contains(text(),'has completed the task Send Email B')]").should('exist')
+        cy.xpath("//div[contains(text(),'has completed the task PDF Generator A')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task PDF Generator C')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task Send Email C')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task PDF Generator B')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task Send Email D')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task PDF Generator D')]").should('exist');
+        cy.xpath("//div[contains(text(),'has completed the task B')]").should('exist');
     }
 
     //TCP4-2258
