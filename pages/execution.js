@@ -171,7 +171,7 @@ export class Execution {
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', "Admin User has completed the task B");
     }
 
-    actionsAndAssertionsOfTCP42158(requestId){
+    actionsAndAssertionsOfTCP42158(requestId, processName){
         //Step 1: Complete the task "A"
         cy.xpath('//button[@aria-label="New Submit"]').should('be.visible');
         cy.xpath('//input[@data-cy="file-upload-button"]').attachFile("images/sanambrosio.jpg");
@@ -194,7 +194,9 @@ export class Execution {
             request.verifyTaskIsCompletedB();
         }else{
             //Step 4: Go to URL request
-            cy.visit('/tasks/');
+            navHelper.navigateToAllRequests();
+            request.addRequestNameToSelectList(processName);
+            cy.wait(4000);
 
             //Step 5: Complete task D
             cy.xpath('(//a[contains(text(),"D")])[1]').should('be.visible').click();
