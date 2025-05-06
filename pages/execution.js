@@ -702,6 +702,8 @@ export class Execution {
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompletedB();
 
+        cy.visit('/requests/' + requestId);
+        request.waitUntilTextcontainText('selector','varHeader', "Completed");
         cy.xpath('//*[contains(text(),"has completed the task Script A")]').should('exist');
         cy.xpath('//*[contains(text(),"has completed the task AA")]').should('exist');
         cy.xpath('//*[contains(text(),"has completed the task Script B")]').should('exist');
