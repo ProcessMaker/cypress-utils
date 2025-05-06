@@ -1827,6 +1827,7 @@ createIDPIfNotConfigured(serverIDPType){
                             let optionColumnXpath = '//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
             
                             //edit organization name
+                            cy.wait(4000);
                             cy.xpath(optionConfigXpath.replace('optionName','Organization Name')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(organizationName).should('have.value',organizationName);
