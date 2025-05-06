@@ -105,6 +105,9 @@ export class PMProjects {
             cy.get(selector).type(`${member}{enter}`, {
                 delay: 200,
             });
+            // Close the multiselect after each selection
+            cy.get('body').click(0, 0);
+            cy.wait(500);
         });
     }
 
