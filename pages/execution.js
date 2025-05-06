@@ -626,7 +626,7 @@ export class Execution {
 
         navHelper.navigateToTasksPage();
         cy.visit('/requests/' + requestId);
-        request.waitUntilElementIsVisible('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.waitUntilElementIsVisibleCant('selector', '#pending >* td:nth-child(1) >a[href^="/tasks"]',2);
         cy.xpath('(//tbody/tr[@item-index="0"]/td/a)[2]').should('be.visible');
         cy.xpath('//tbody/tr/td/a[@target="_self"]').contains('BB').click();
         cy.xpath('//div/ul/li[@class="list-group-item"]/a').should('be.visible');
