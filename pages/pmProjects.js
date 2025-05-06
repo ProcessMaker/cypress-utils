@@ -22,7 +22,15 @@ export class PMProjects {
         this.clickOnSaveProjects();
     }
     clickOnSaveProjects() {
-        cy.xpath(selectors.addButtonProject).click();
+        // Close the multiselect by clicking off it
+        cy.get('body').click(0, 0);
+        // Wait a moment for the multiselect to close
+        cy.wait(1000);
+        // Click on the button
+        cy.xpath(selectors.addButtonProject)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .click({force: true});
     }
 
     selectProjectInProcess(name) {
@@ -30,7 +38,7 @@ export class PMProjects {
     cy.xpath(selectors.projectCategoryFieldXpath)
         .should("be.visible")
         .type(name, {delay: 100});         
-    // Esperar a que el elemento sea visible y luego hacer clic
+    // Wait for the element to be visible and then click
     cy.xpath(selectors.projectName.replace('projectName', name))
         .should('be.visible',{ timeout: 10000 }).first().click();
     }
