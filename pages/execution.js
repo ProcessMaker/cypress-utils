@@ -642,6 +642,8 @@ export class Execution {
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompletedB();
 
+        cy.visit('/requests/' + requestId);
+        request.waitUntilTextcontainText('selector','varHeader', "Completed");
         cy.xpath('//*[contains(text(),"has completed the task Script A")]').should('exist');
         cy.xpath('//*[contains(text(),"has completed the task AA")]').should('exist');
         cy.xpath('//*[contains(text(),"has completed the task Script B")]').should('exist');
@@ -676,6 +678,8 @@ export class Execution {
         cy.xpath('//button[@aria-label="New Submit"]').click({force:true});
         request.verifyTaskIsCompletedB();
         
+        cy.visit('/requests/' + requestId);
+        request.waitUntilTextcontainText('selector','varHeader', "Completed");
         cy.xpath('(//div[@class="flex-grow-1"])[3]').should('contain.text', 'Admin User has completed the task Script A');
         cy.xpath('(//div[@class="flex-grow-1"])[4]').should('contain.text', 'Admin User has completed the task AA');
         cy.xpath('(//div[@class="flex-grow-1"])[5]').should('contain.text', 'Admin User has completed the task Script B');
