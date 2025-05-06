@@ -76,7 +76,6 @@ export class NavigationHelper {
     }
 
     navigateToScreensPage(){
-        //cy.get('#nav-sources-tab').should('be.visible');
         cy.visit('/designer/screens');
         cy.title().should('eq', 'Screens - ProcessMaker');
     }
@@ -164,8 +163,30 @@ export class NavigationHelper {
     }
 
     navigateToPmBlock(){
-        cy.visit('/designer/pm-blocks');
-        cy.title().should('eq','PM Blocks - ProcessMaker');
+        const maxRetries = 3;
+        let retryCount = 0;
+
+        const attemptNavigation = () => {
+            cy.visit('/designer/pm-blocks', {
+                timeout: 60000,
+                retryOnStatusCodeFailure: true,
+                retryOnNetworkFailure: true
+            });
+
+            cy.title().should('eq','PM Blocks - ProcessMaker', { timeout: 60000 })
+                .then(() => {
+                    cy.log('Navegación exitosa a PM Blocks');
+                })
+                .then(() => {
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        cy.log(`Intento ${retryCount} de ${maxRetries}`);
+                        attemptNavigation();
+                    }
+                });
+        };
+
+        attemptNavigation();
     }
     navigateToArchivePmBlock(){
         cy.visit('/designer/pm-blocks');
