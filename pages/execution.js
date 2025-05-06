@@ -6727,7 +6727,7 @@ export class Execution {
 
         //Validation 1: Review Summary
         cy.visit('/requests/'+requestId+'/files');
-        request.waitUntilTextcontainText('selector','varHeader','Completed');
+        request.waitUntilTextcontainText('selector','varHeader','Completed',18,0);
         cy.visit('/requests/'+requestId);
         cy.xpath("//a[contains(text(),'Summary')]").should("be.visible");
         cy.xpath("//td[text()='form_input_1']").should("be.visible");
