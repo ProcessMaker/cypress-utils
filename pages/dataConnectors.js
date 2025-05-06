@@ -145,7 +145,7 @@ export class Dataconnectors {
         this.ClickSaveBtn();
         cy.xpath('//textarea[@id="tokenInput"]').type(token, {force: true});
         cy.xpath('//input[@type="checkbox"]').uncheck({force:true});
-        cy.xpath('//button[@class="btn btn-secondary ml-3"]').click({force:true});
+        cy.xpath('//button[@class="btn btn-secondary ml-3"]').should('not.be.disabled').click();
     }
 
     clickOnAddResourceWithBearerToken(){
