@@ -1228,7 +1228,7 @@ export class Admin {
                         cy.xpath(optionConfigXpath.replace('optionName','Sender Email')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
                         cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderEmailTxt).should('have.value',senderEmailTxt);
-                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                         cy.xpath('//div[@role="alert"]').should('exist');
                         cy.xpath('//div[@role="alert"]').should('not.exist');
                         cy.xpath(optionColumnXpath.replace('optionColumn','Sender Email')).should('have.contain',senderEmailTxt);
@@ -1237,7 +1237,7 @@ export class Admin {
                         cy.xpath(optionConfigXpath.replace('optionName','Sender Name')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
                         cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderNameTxt);
-                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                         cy.xpath('//div[@role="alert"]').should('exist');
                         cy.xpath('//div[@role="alert"]').should('not.exist');
                         cy.xpath(optionColumnXpath.replace('optionColumn','Sender Name')).should('have.contain',senderNameTxt);
@@ -1246,7 +1246,7 @@ export class Admin {
                         cy.xpath(optionConfigXpath.replace('optionName','Server Host')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
                         cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverHostTxt);
-                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                         cy.xpath('//div[@role="alert"]').should('exist');
                         cy.xpath('//div[@role="alert"]').should('not.exist');
                         cy.xpath(optionColumnXpath.replace('optionColumn','Server Host')).should('have.contain',serverHostTxt);
@@ -1258,7 +1258,7 @@ export class Admin {
                                 cy.xpath(optionConfigXpath.replace('optionName','Server Port')).click();
                                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverPortTxt);
-                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                                 cy.xpath('//div[@role="alert"]').should('exist');
                                 cy.xpath('//div[@role="alert"]').should('not.exist');
                             }
@@ -1272,7 +1272,7 @@ export class Admin {
                                 cy.xpath(optionConfigXpath.replace('optionName','Use secure connection')).click();
                                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                                 cy.xpath('//label[text()="'+secureOption+'"]').click();
-                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                                 cy.xpath('//div[@role="alert"]').should('exist');
                                 cy.xpath('//div[@role="alert"]').should('not.exist');
                             }
@@ -1285,7 +1285,7 @@ export class Admin {
                                 cy.xpath(optionConfigXpath.replace('optionName','User Account')).click();
                                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccount);
-                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                                 cy.xpath('//div[@role="alert"]').should('exist');
                                 cy.xpath('//div[@role="alert"]').should('not.exist');
                             }
@@ -1296,7 +1296,7 @@ export class Admin {
                         cy.xpath(optionConfigXpath.replace('optionName','User Password')).click();
                         cy.xpath('//div[@class="modal-content"]').should('be.visible');
                         cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccountPass);
-                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
+                        cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click({force:true});
                         cy.xpath('//div[@role="alert"]').should('not.exist');
         
                         break;
@@ -1585,7 +1585,7 @@ export class Admin {
                     cy.xpath(optionConfigXpath.replace('optionName','Sender Email')).click();
                     cy.xpath('//div[@class="modal-content"]').should('be.visible');
                     cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderEmailTxt).should('have.value',senderEmailTxt).type(" ");
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                     cy.xpath('//div[@role="alert"]').should('exist');
                     cy.xpath('//div[@role="alert"]').should('not.exist');
                     cy.xpath(optionColumnXpath.replace('optionColumn','Sender Email')).should('have.contain',senderEmailTxt);
@@ -1594,7 +1594,7 @@ export class Admin {
                     cy.xpath(optionConfigXpath.replace('optionName','Sender Name')).click();
                     cy.xpath('//div[@class="modal-content"]').should('be.visible');
                     cy.xpath('//div[@class="modal-content"]//div/input').clear().type(senderNameTxt);
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                     cy.xpath('//div[@role="alert"]').should('exist');
                     cy.xpath('//div[@role="alert"]').should('not.exist');
                     cy.xpath(optionColumnXpath.replace('optionColumn','Sender Name')).should('have.contain',senderNameTxt);
@@ -1603,7 +1603,7 @@ export class Admin {
                     cy.xpath(optionConfigXpath.replace('optionName','Server Host')).click();
                     cy.xpath('//div[@class="modal-content"]').should('be.visible');
                     cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverHostTxt);
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                     cy.xpath('//div[@role="alert"]').should('exist');
                     cy.xpath('//div[@role="alert"]').should('not.exist');
                     cy.xpath(optionColumnXpath.replace('optionColumn','Server Host')).should('have.contain',serverHostTxt);
@@ -1615,7 +1615,7 @@ export class Admin {
                             cy.xpath(optionConfigXpath.replace('optionName','Server Port')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(serverPortTxt);
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                         }
@@ -1629,7 +1629,7 @@ export class Admin {
                             cy.xpath(optionConfigXpath.replace('optionName','Use secure connection')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//label[text()="'+secureOption+'"]').click();
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                         }
@@ -1642,7 +1642,7 @@ export class Admin {
                             cy.xpath(optionConfigXpath.replace('optionName','User Account')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccount);
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                         }
@@ -1653,7 +1653,7 @@ export class Admin {
                     cy.xpath(optionConfigXpath.replace('optionName','User Password')).click();
                     cy.xpath('//div[@class="modal-content"]').should('be.visible');
                     cy.xpath('//div[@class="modal-content"]//div/input').clear().type(userAccountPass);
-                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
+                    cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click({force:true});
                     cy.xpath('//div[@role="alert"]').should('not.exist');
                 }
             });
@@ -1771,7 +1771,7 @@ createIDPIfNotConfigured(serverIDPType){
                 cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientIDTxt).should('have.value',clientIDTxt).type(" ");
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                 cy.xpath('//div[@role="alert"]').should('exist');
                 cy.xpath('//div[@role="alert"]').should('not.exist');
                 cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
@@ -1780,14 +1780,14 @@ createIDPIfNotConfigured(serverIDPType){
                 cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                 cy.xpath('//div[@role="alert"]').should('not.exist'); 
 
                 //edit server host
                 cy.xpath(optionConfigXpath.replace('optionName','Host URL')).click();
                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(hostURLTxt);
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                 cy.xpath('//div[@role="alert"]').should('exist');
                 cy.xpath('//div[@role="alert"]').should('not.exist');
                 cy.xpath(optionColumnXpath.replace('optionColumn','Host URL')).should('have.contain',hostURLTxt);
@@ -1796,7 +1796,7 @@ createIDPIfNotConfigured(serverIDPType){
                 cy.xpath(optionConfigXpath.replace('optionName','Token URL')).click();
                 cy.xpath('//div[@class="modal-content"]').should('be.visible');
                 cy.xpath('//div[@class="modal-content"]//div/input').clear().type(tokenURLTxt).should('have.value',tokenURLTxt).type(" ");
-                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                 cy.xpath('//div[@role="alert"]').should('exist');
                 cy.xpath('//div[@role="alert"]').should('not.exist');
                 cy.xpath(optionColumnXpath.replace('optionColumn','Token URL')).should('have.contain',tokenURLTxt);
@@ -1830,7 +1830,7 @@ createIDPIfNotConfigured(serverIDPType){
                             cy.xpath(optionConfigXpath.replace('optionName','Organization Name')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(organizationName).should('have.value',organizationName);
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                             cy.xpath(optionColumnXpath.replace('optionColumn','Organization Name')).should('have.contain',organizationName);
@@ -1840,7 +1840,7 @@ createIDPIfNotConfigured(serverIDPType){
                             cy.xpath(optionConfigXpath.replace('optionName','Client ID')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientIDTxt).should('have.value',clientIDTxt).type(" ",{force:true});
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                             cy.xpath(optionColumnXpath.replace('optionColumn','Client ID')).should('have.contain',clientIDTxt);
@@ -1849,7 +1849,7 @@ createIDPIfNotConfigured(serverIDPType){
                             cy.xpath(optionConfigXpath.replace('optionName','Client Secret')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(clientSecretTxt);
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click({force:true});
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click({force:true});
                             cy.xpath('//div[@role="alert"]').should('not.exist');
             
             
@@ -1857,7 +1857,7 @@ createIDPIfNotConfigured(serverIDPType){
                             cy.xpath(optionConfigXpath.replace('optionName','Tenant ID')).click();
                             cy.xpath('//div[@class="modal-content"]').should('be.visible');
                             cy.xpath('//div[@class="modal-content"]//div/input').clear().type(tenantIDTxt);
-                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
+                            cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').should('not.be.disabled').click();
                             cy.xpath('//div[@role="alert"]').should('exist');
                             cy.xpath('//div[@role="alert"]').should('not.exist');
                             cy.xpath(optionColumnXpath.replace('optionColumn','Tenant ID')).should('have.contain',tenantIDTxt);
