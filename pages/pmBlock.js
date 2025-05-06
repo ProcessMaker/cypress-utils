@@ -33,7 +33,7 @@ export class PMBlock {
 
     }
     clickOnSaveInAddPublish() {
-        cy.xpath(selectors.saveBtnPublish).should("be.visible").click();
+        cy.contains('button', 'Publish').should('be.visible').should('not.be.disabled').click();
     }
 
     enterPMBlockManager(username) {
