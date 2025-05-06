@@ -1869,7 +1869,64 @@ createIDPIfNotConfigured(serverIDPType){
                     });
      
                  
-    }        
+    }       
+
+    deleteRPAConfigured(serverRPAType){
+        var ServerRPA = Cypress.env("defaultRPASettings").tenantID;
+    
+        rpa.clickOnUiPath();
+        cy.xpath('//*[@class="settings-listing data-table"]//div[contains(text(),"Organization Name")]/ancestor::tr/td[@aria-colindex="2"]').invoke('text')
+            .then(elem => {
+                if(elem.trim() === ServerRPA){
+                    cy.log('RPA deleted configuration exists: '+ serverRPAType);
+                }else{
+                                       
+                    //Clear Organization name
+
+                    cy.xpath('//div[@class="settings-listing data-table"]').should('be.visible');
+                    cy.xpath('//td[@class="align-middle td-name settings-listing-td1"]').should('be.visible');
+                    cy.wait(2000);
+                    cy.get('[data-cy="clear-rpa.organization_name"] > .fa-lg').should('be.visible');
+                    cy.get('[data-cy="clear-rpa.organization_name"] > .fa-lg').click();
+
+                    //clear client ID
+                    cy.xpath('//div[@class="settings-listing data-table"]').should('be.visible');
+                    cy.get('[aria-rowindex="2"] > .td-name').should('be.visible');
+                    cy.wait(2000);
+                    cy.get('[data-cy="clear-rpa.client_id"] > .fa-lg').should('be.visible');
+                    cy.get('[data-cy="clear-rpa.client_id"] > .fa-lg').click();
+               
+                    //Clear Client Secret
+                    cy.xpath('//div[@class="settings-listing data-table"]').should('be.visible');
+                    cy.xpath('//td[@class="align-middle td-name settings-listing-td1"]').should('be.visible');
+
+                    cy.wait(2000);
+                    cy.get('[data-cy="clear-rpa.client_secret"] > .fa-lg').should('be.visible');
+                    cy.get('[data-cy="clear-rpa.client_secret"] > .fa-lg').click();
+    
+    
+                    //Clear Tenant ID
+                    cy.xpath('//div[@class="settings-listing data-table"]').should('be.visible');
+                    cy.xpath('//td[@class="align-middle td-name settings-listing-td1"]').should('be.visible');
+                    cy.wait(2000);
+                    cy.get('[data-cy="clear-rpa.tenant_id"] > .fa-lg').should('be.visible');
+                    cy.get('[data-cy="clear-rpa.tenant_id"] > .fa-lg').click();
+
+                    //Clear Select Available Folders
+                    cy.xpath('//div[@class="settings-listing data-table"]').should('be.visible');
+                    cy.xpath('//td[@class="align-middle td-name settings-listing-td1"]').should('be.visible');
+                    cy.wait(2000);
+                    cy.get('[data-cy="clear-rpa.folders"] > .fa-lg').should('be.visible');
+                    cy.get('[data-cy="clear-rpa.folders"] > .fa-lg').click();
+           
+                          
+}
+
+                         
+            });
+
+         
+}        
 
 	assignSpecificPemrissionToUser(permission){
     	let permissionCategoryXPATH = '//button[contains(@data-target,"category")]';
