@@ -191,7 +191,7 @@ export class Dataconnectors {
                     );
                 } else {
                     cy.get(selectors.optionBtn).should("be.visible");
-                    cy.get(selectors.optionBtn).click();
+                    cy.get(selectors.optionBtn).scrollIntoView().click({ force: true });
                     cy.get(selectors.modalOptions).should("be.visible");
                     this.selectMenuOptionRow(action);
 
