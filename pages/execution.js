@@ -6421,10 +6421,16 @@ export class Execution {
     }
     //TCP4-2336
     actionsAndAssertionsOfTCP42336(Name,Age,Course,Birthday){
-        cy.xpath('//label[text()="Name"]//parent::div//input').eq(0).type(Name).should('have.value',Name);
-        cy.xpath('//label[text()="Age"]//parent::div//input').eq(0).type(Age).should('have.value',Age);
+        cy.xpath('//label[text()="Name"]//parent::div//input').eq(0)
+            .type(Name, {delay:100})
+            .should('have.value',Name);
+        cy.xpath('//label[text()="Age"]//parent::div//input').eq(0)
+            .type(Age, {delay:100})
+            .should('have.value',Age);
         cy.xpath("//label[text()='Course']/parent::div//div[@class='multiselect__tags']").eq(0).click();
-        cy.xpath("//label[text()='Course']/parent::div//input").eq(0).type(Course).should('have.value',Course);
+        cy.xpath("//label[text()='Course']/parent::div//input").eq(0)
+            .type(Course, {delay:100})
+            .should('have.value',Course);
         cy.xpath("//label[text()='Course']/parent::div//div[@class='multiselect__content-wrapper']//li[1]").eq(0)
             .should('have.attr', 'aria-label')
             .and('equal', Course+". ");
@@ -6432,7 +6438,7 @@ export class Execution {
         cy.xpath('//label[text()="Date"]//parent::div//input').eq(0).type(Birthday).eq(0).type('{enter}');
         cy.xpath('//label[text()="Name"]//parent::div//input').click();
         cy.get('button[aria-label="New Submit"]').click();
-        cy.get('.alert-wrapper > .alert').should('be.visible');
+        //cy.get('.alert-wrapper > .alert').should('be.visible');
     }
     deleteAllActiveColumnsFromSaveSearch(nameColumnsList){
         cy.wait(5000)

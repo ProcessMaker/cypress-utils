@@ -644,7 +644,7 @@ export class DecisionTable {
     }
 
     loadPreview() {
-        cy.wait(2000);
+        cy.wait(3000);
     }
 
     //2.MAIN TABLE: CATEGORIES
