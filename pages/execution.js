@@ -61,6 +61,11 @@ export class Execution {
         cy.xpath('//button[@aria-label="New Submit"]').click();
         request.verifyTaskIsCompletedB();
         cy.wait(2000);
+        cy.visit('/requests/'+requestId);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+        cy.xpath('//button[contains(text(),"Complete")]').should('be.visible').click();
+        request.verifyTaskIsCompletedB();
 
         //Step 3: Log in with user created
         navHelper.navigateToLogOut();
@@ -80,6 +85,12 @@ export class Execution {
         cy.xpath('//button[@aria-label="New Submit"]').click();
         request.verifyTaskIsCompletedB();
         cy.wait(2000);
+
+        cy.visit('/requests/'+requestId);
+        request.waitUntilElementIsVisible('selector','#pending >* td:nth-child(1) >a[href^="/tasks"]');
+        request.clickOnTaskName(1, 1);
+        cy.xpath('//button[contains(text(),"Complete")]').should('be.visible').click();
+        request.verifyTaskIsCompletedB();
 
         //Step 6: Log in with user admin
         navHelper.navigateToLogOut();
