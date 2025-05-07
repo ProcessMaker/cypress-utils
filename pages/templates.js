@@ -34,7 +34,7 @@ export class Templates {
         exportType = "basic"
     ) {
         // Wait for the template table to be visible and loaded
-        cy.get('#templatesIndex')
+        cy.get('#templatesIndex', { timeout: 60000 })
             .should('be.visible')
             .should('not.have.class', 'loading');
         
@@ -50,9 +50,14 @@ export class Templates {
         // Wait for search results and loading spinner to disappear
         cy.get('.jumbotron.jumbotron-fluid').should('not.be.visible');
         
-        // Check for results in the table
-        cy.xpath(selectors.templateTableBody)
+        // Wait for table to be populated
+        cy.get('#templatesIndex table', { timeout: 60000 })
+            .should('exist')
             .should('be.visible')
+            .find('tbody')
+            .should('exist')
+            .should('be.visible')
+            .should('have.length.greaterThan', 0)
             .then($tbody => {
                 if ($tbody.find('tr').length > 0) {
                     // Find and click the menu button
