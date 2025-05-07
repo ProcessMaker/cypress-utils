@@ -3796,7 +3796,7 @@ export class Execution {
     }
     completeFormTCP42286 (requestId){
         //first textarea
-        cy.xpath('//*[contains(text(),"sin loop")]').first().should('be.visible');
+        cy.xpath('//label[contains(text(),"sin loop")]').should('be.visible');
         cy.get('[title="Bold"]').first().click();
         cy.get('[title="Italic"]').first().click();
         cy.get('[class="tox-tbtn tox-split-button__chevron"]').first().click();
