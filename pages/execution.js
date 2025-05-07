@@ -2899,8 +2899,8 @@ export class Execution {
         request.verifyTaskIsCompletedB();
 
         //Review Summary
+        cy.visit('/requests/' + requestId);
         cy.get('[id="summary-tab"]').should('be.visible').click();
-        cy.get('[id="completed-tab"]').should('be.visible').click();
     }
     actionsTCP42345(example){
         //Step 1: Complete the form 1 by WE
