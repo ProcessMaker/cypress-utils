@@ -363,9 +363,8 @@ export class Dataconnectors {
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.post('/data_sources', payload)
             .then(response => {
-                console.log("Created DC: ", response.data);
-                // return cy.wrap(response.data.data);
-                return response.data.data;
+                //console.log("Created DC: ", response.data);
+                return response.data;
             })
             .catch(err => {
                 if (
