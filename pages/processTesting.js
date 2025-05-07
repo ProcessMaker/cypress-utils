@@ -230,8 +230,16 @@ export class ProcessTesting {
       */
 
     clickOnPlusScenario() {
-        cy.wait(3000);
-        cy.get(selectors.plusScenarioBtn).click();
+        // Esperar a que la pestaña de escenarios esté activa
+        cy.get('#scenarios-edit-tab').should('be.visible');
+        cy.get('#test_runs').should('be.visible');
+        
+        // Esperar a que el botón esté disponible
+        cy.get(selectors.plusScenarioBtn)
+            .should('exist')
+            .should('be.visible')
+            .should('not.be.disabled')
+            .click({ force: true, timeout: 10000 });
     }
 
     fillName(name) { 
@@ -714,5 +722,29 @@ export class ProcessTesting {
             this.searchScenarioAndSelectOption(`${scenarioName} - ${index}`, 'delete');
             cy.wait(100)
         }
+    }
+
+    createScenarioByUploadFile(nameScenario, scenarioDescription, nameFile, filePath) {
+        // Navegar a la pestaña de escenarios
+        this.goToScenariosTab();
+        
+        // Esperar a que la pestaña esté completamente cargada
+        cy.get('#scenarios-edit-tab').should('be.visible');
+        cy.get('#test_runs').should('be.visible');
+        
+        // Intentar hacer clic en el botón de crear escenario
+        this.clickOnPlusScenario();
+        
+        // Verificar que el modal de creación esté visible
+        cy.get('.modal-content').should('be.visible');
+        
+        this.fillName(nameScenario);
+        this.fillDescription(scenarioDescription);
+        this.selectScenarioCreationType('Document Upload');
+        this.uploadFile(nameFile, filePath);
+        this.load();
+        this.saveCreateScenario();
+        cy.get('.alert-wrapper > .alert').should("be.visible");
+        cy.get('.alert-wrapper > .alert').should("contain", "The process test scenario was created.");
     }
 }
