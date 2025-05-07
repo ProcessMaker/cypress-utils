@@ -470,6 +470,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario1(){
+        request.waitUntilElementIsVisible('selector', '[data-cy="screen-field-select"]');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[3]').check();
@@ -488,6 +489,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario2(){
+        request.waitUntilElementIsVisible('selector', '[data-cy="screen-field-select"]');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[1]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[4]').check();
@@ -506,6 +508,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario3(){
+        request.waitUntilElementIsVisible('selector', '[data-cy="screen-field-select"]');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[3]').check();
@@ -524,6 +527,7 @@ export class Execution {
     }
 
     actionsAndAssertionsOfTCP42252Scenario4(){
+        request.waitUntilElementIsVisible('selector', '[data-cy="screen-field-select"]');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').should('be.visible');
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[2]').check();
         cy.xpath('(//div[@class="form-check"]/input[@type="radio"])[4]').check();
