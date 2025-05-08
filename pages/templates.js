@@ -260,7 +260,8 @@ export class Templates {
         cy.xpath('//*[@aria-controls="nav-templates"]').should('be.visible');
         cy.xpath('//input[@class="pl-0 form-control"]').should("be.visible").type(templateName,{delay:300});
         cy.xpath('//input[@class="pl-0 form-control"]').type('{backspace}');
-        cy.xpath('//div[@class="card template-select-card"]').should("be.visible",{delay:300}).click();
+        cy.xpath('//div[@class="card template-select-card"]').should("be.visible",{delay:300});
+        cy.xpath('//div[@class="card template-select-card"]').click();
         cy.xpath('//span[@class="badge category-badge mb-2 mr-1 badge-secondary badge-pill"]').should("be.visible");
 	}
     
