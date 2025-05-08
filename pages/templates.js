@@ -11,7 +11,8 @@ export class Templates {
      * @return : nothing return
      */
     importTemplates(templatePath) {
-        cy.xpath(selectors.importButtonTemplates).first().click();
+        cy.xpath(selectors.importButtonTemplates).should('be.visible');
+        cy.xpath(selectors.importButtonTemplates).click();
         cy.xpath(selectors.inputToFileUploadTemplates).attachFile(templatePath);
         cy.xpath(selectors.importBtnTemplates)
             .parent()
@@ -170,7 +171,7 @@ export class Templates {
             var editBtn =
             '//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="nav-templates"]//table/tbody/tr//button[@aria-haspopup="menu"]';
             cy.xpath(editBtn).should("be.visible");
-            cy.xpath(selectors.searchBoxTemplate).type(`${templateName}`,{delay:100}).should("have.value", templateName);
+            cy.xpath(selectors.searchBoxTemplate).type(`${templateName}`,{delay:150}).should("have.value", templateName);
             cy.xpath(selectors.searchBoxTemplate).type('{enter}');
             cy.get('[id="nav-templates"]>* [class="jumbotron jumbotron-fluid"]').should("not.be.visible");
             cy.xpath(selectors.templateTableBody, { timeout: 10000 })
