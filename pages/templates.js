@@ -309,4 +309,8 @@ export class Templates {
         cy.get(selectors.versionTemp).should('be.visible').type(version);
         cy.get(selectors.saveTemp).should('be.visible').click();
     }
+
+    load() {
+        cy.wait(5000);
+    }
 }
