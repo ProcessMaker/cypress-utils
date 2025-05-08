@@ -3111,7 +3111,7 @@ export class Specific {
         //Step 1: Verify that PDF will be generated
         cy.wait(80000);
 
-        request.waitUntilTextcontainText('selector','varHeader', "Completed");
+        request.waitUntilTextcontainText('selector','varHeader', "Completed",20,0);
         cy.get('#file-manager-tab').click();
         cy.xpath('(//*[@title="View"])[1]').click();
         cy.wait(2000);
