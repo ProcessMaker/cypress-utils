@@ -33,59 +33,106 @@ export class Templates {
         option = "config",
         exportType = "basic"
     ) {
-        // Wait for the template table to be visible and loaded
+        // Esperar a que la tabla esté completamente cargada
         cy.get('#templatesIndex', { timeout: 60000 })
+            .should('exist')
             .should('be.visible')
-            .should('not.have.class', 'loading');
+            .should('not.have.class', 'loading')
+            .should('have.css', 'opacity', '1')
+            .then($container => {
+                cy.log('Contenedor de tabla encontrado');
+                // Verificar que el contenedor tiene dimensiones válidas
+                const rect = $container[0].getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) {
+                    throw new Error('El contenedor de la tabla tiene dimensiones inválidas');
+                }
+            });
         
-        // Search for the template
+        // Buscar la plantilla
         cy.xpath(selectors.searchBoxTemplate)
             .should('be.visible')
+            .should('not.be.disabled')
+            .should('have.css', 'opacity', '1')
             .clear()
-            .wait(1000)  // Add wait to ensure the clear took effect
+            .wait(1000)
             .type(templateName, { delay: 650 })
             .should("have.value", templateName)
-            .type('{enter}');
-        
-        // Wait for search results and loading spinner to disappear
-        cy.get('.jumbotron.jumbotron-fluid').should('not.be.visible');
-        
-        // Wait for table to be populated
-        cy.get('#templatesIndex table', { timeout: 60000 })
-            .should('exist')
-            .should('be.visible')
-            .find('tbody')
-            .should('exist')
-            .should('be.visible')
-            .should('have.length.greaterThan', 0)
-            .then($tbody => {
-                if ($tbody.find('tr').length > 0) {
-                    // Find and click the menu button
-                    cy.xpath('//div[@id="templatesIndex"]//tbody//tr[1]//button[@aria-haspopup="menu"]')
-                        .should("be.visible")
-                        .click({force: true});
-
-                    // Select the appropriate option
-                    switch (option) {
-                        case "documentation":
-                            this.goTodocumentationTemplate();
-                            break;
-                        case "edit":
-                            this.goToEditTemplate();
-                            break;
-                        case "export":
-                            this.downloadTemplate(templateName, exportType);
-                            break;
-                        case "config":
-                            this.goToConfigTemplate();
-                            break;
-                        case "delete":
-                            this.goToDeleteTemplate();
-                            break;
-                    }
-                } else {
-                    throw new Error(`Template "${templateName}" not found in the table`);
+            .type('{enter}')
+            .then($input => {
+                cy.log('Búsqueda realizada para:', templateName);
+                // Verificar que el input tiene el valor correcto
+                if ($input.val() !== templateName) {
+                    throw new Error(`El valor del campo de búsqueda no coincide: ${$input.val()} !== ${templateName}`);
                 }
+            });
+        
+        // Esperar a que el spinner de carga desaparezca y la tabla esté lista
+        cy.wait(2000); // Esperar un momento para que la búsqueda comience
+        cy.get('.jumbotron.jumbotron-fluid', { timeout: 30000 })
+            .should('not.be.visible')
+            .then(() => {
+                cy.log('Spinner de carga desaparecido');
+                // Esperar a que la tabla esté lista
+                cy.get('#templatesIndex table', { timeout: 30000 })
+                    .should('exist')
+                    .should('be.visible')
+                    .should('have.css', 'opacity', '1')
+                    .then($table => {
+                        cy.log('Tabla encontrada');
+                        
+                        // Verificar que la tabla tiene dimensiones válidas
+                        const rect = $table[0].getBoundingClientRect();
+                        if (rect.width === 0 || rect.height === 0) {
+                            throw new Error('La tabla tiene dimensiones inválidas');
+                        }
+                        
+                        // Verificar que hay filas en la tabla
+                        const rows = $table.find('tr');
+                        if (rows.length > 0) {
+                            cy.log('Filas encontradas:', rows.length);
+                            
+                            // Encontrar y hacer clic en el botón del menú
+                            cy.wrap($table)
+                                .find('button[aria-haspopup="menu"]')
+                                .first()
+                                .should("be.visible")
+                                .should('not.be.disabled')
+                                .should('have.css', 'opacity', '1')
+                                .click({force: true})
+                                .then($button => {
+                                    cy.log('Botón de menú clickeado');
+                                    // Verificar que el botón está en un estado válido
+                                    if ($button.prop('disabled')) {
+                                        throw new Error('El botón del menú está deshabilitado después del clic');
+                                    }
+                                });
+
+                            // Seleccionar la opción apropiada
+                            switch (option) {
+                                case "documentation":
+                                    this.goTodocumentationTemplate();
+                                    break;
+                                case "edit":
+                                    this.goToEditTemplate();
+                                    break;
+                                case "export":
+                                    this.downloadTemplate(templateName, exportType);
+                                    break;
+                                case "config":
+                                    this.goToConfigTemplate();
+                                    break;
+                                case "delete":
+                                    this.goToDeleteTemplate();
+                                    break;
+                                default:
+                                    cy.log('Opción no reconocida:', option);
+                                    throw new Error(`Opción no reconocida: ${option}`);
+                            }
+                        } else {
+                            cy.log('No se encontraron filas en la tabla');
+                            throw new Error(`Template "${templateName}" not found in the table`);
+                        }
+                    });
             });
     }
     goTodocumentationTemplate(){
