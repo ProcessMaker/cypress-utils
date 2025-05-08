@@ -171,7 +171,6 @@ export class Scripts {
     //Add a Script with name and details @param {string} @return {string}
     addPhpToScriptAndSaveWithNameOfVersion(script, versionName, details) {
         cy.xpath(Selectors.areaInputScript).clear().clear().type(script); //.should('contain',"return ['Hello word'];");
-        cy.get(Selectors.runScript).click();
         cy.xpath(Selectors.scriptPublishBtn).click();
         cy.get(Selectors.inputName).type(versionName);
         cy.get(Selectors.inputDetail).type(details);
@@ -623,5 +622,20 @@ export class Scripts {
                 });
             })
     }
+
+    /**
+     * Delete script using the API
+     * @method deleteScriptAPI
+     * @param {string} scriptID - Id of the script
+     * @returns {Cypress.Chainable} Message
+    */
+    deleteScriptAPI(scriptID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/scripts/'+scriptID).then(response => {
+                return "script " + scriptID + "was deleted";
+            });
+        });
+    }
+
 
 }
