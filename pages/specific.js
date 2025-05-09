@@ -2740,6 +2740,7 @@ export class Specific {
         request.clickOnTaskName(1, 1);
 
         //Step 6: Complete the form 2
+        request.waitUntilElementIsVisible('selector', '[name = "form_input_1"]');
         cy.xpath("//input[@name = 'form_input_1']").should('be.visible');
         cy.xpath("//input[@name = 'form_input_1']").type('QA-Testing');
         cy.xpath("//button[@aria-label = 'New Submit']").click();

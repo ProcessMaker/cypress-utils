@@ -4556,6 +4556,9 @@ export class Execution {
     completedTask(){
         cy.get('[class="btn btn-primary"]')
             .should("contain", "Complete Task")
+        cy.wait(4000);
+        cy.get('[class="btn btn-primary"]')
+            .should("contain", "Complete Task")
             .click();
     }
     fillFormTCP42251(){
