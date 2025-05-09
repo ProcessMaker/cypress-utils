@@ -75,6 +75,8 @@ export class Requests {
         cy.xpath(selectors.taskAlertTxt).should('not.exist');
     }
     clickOnSubmitButton() {
+        cy.get(selectors.submitBtn).should('exist');
+        cy.wait(4000)
         cy.get(selectors.submitBtn).click({ force: true });
     }
 

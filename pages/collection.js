@@ -193,13 +193,14 @@ export class Collection {
      * @param {string} filePath - The path to the file to be imported if the collection is found.
      */
     verifyPresenceOfCollectionAndImportCollection(collectionName, filePath) {
-        cy.get('[id="search"] input]').should('be.visible').type(collectionName).should('have.value', collectionName);
+        cy.get('[id="search"] input').should('be.visible');
         cy.wait(5000);
-        cy.xpath('div[id="collectionIndex"] [class="data-table"] table tbody tr', { timeout: 10000 })
+        cy.get('[id="search"] input').type(collectionName).should('have.value', collectionName);
+        cy.get('div[id="collectionIndex"] [class="data-table"] table tbody tr', { timeout: 10000 })
             .find('td')
             .then(($loadedTable) => {
                 if ($loadedTable.length === 1) {
-                    this.importCollection(filePath);
+                    this.importCollectionAPI(filePath);
                 }
                 else return;
             });

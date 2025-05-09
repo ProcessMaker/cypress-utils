@@ -615,6 +615,7 @@ export class Process {
                                 }
                             });
                     }
+            cy.wait(9000);
         });
     }
 
