@@ -195,7 +195,8 @@ export class Collection {
     verifyPresenceOfCollectionAndImportCollection(collectionName, filePath) {
         cy.get('[id="search"] input').should('be.visible');
         cy.wait(5000);
-        cy.get('[id="search"] input').type(collectionName).should('have.value', collectionName);
+        cy.get('[id="search"] input').type(collectionName,{delay:100}).should('have.value', collectionName);
+        cy.wait(8000);
         cy.get('div[id="collectionIndex"] [class="data-table"] table tbody tr', { timeout: 10000 })
             .find('td')
             .then(($loadedTable) => {
