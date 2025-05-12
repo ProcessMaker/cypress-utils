@@ -477,7 +477,9 @@ previewTemplate(nameTemplate) {
     
 }
 
-
+load() {
+    cy.wait(5000);
+}
 
 clickOnSave() {
     cy.get(selectors.saveBtn).should('be.visible').click({force:true});
