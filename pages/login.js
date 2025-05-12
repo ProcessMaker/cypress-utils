@@ -12,11 +12,55 @@ export class Login {
   }
 
   login(username = Cypress.env("username"), password = Cypress.env("password")) {
+    // Verify that we are on the login page
+    cy.url().should('include', '/login');
+    
+    // Clean and write the credentials
     this.enterUsername(username);
     this.enterPassword(password);
+    
+    // Go to click on login button
     this.clickOnLogin();
-    cy.xpath('//*[@id="navbar1"]').should('be.visible');
-    cy.get(headerSelectors.userAvatarBtn).should('be.visible');
+    
+    // Wait for the page to load completely
+    cy.wait(2000);
+    
+    // Verify that the login was successful
+    cy.get('body').then($body => {
+      // Verify if there are error messages
+      if ($body.find('.alert-danger').length > 0) {
+        throw new Error('Error in login: Invalid credentials');
+      }
+    });
+    
+    // Verify that the navbar is present and visible
+    cy.get('#navbar1', { timeout: 30000 })
+      .should('exist')
+      .should('be.visible')
+      .should('have.css', 'opacity', '1')
+      .then($navbar => {
+        // Verify that the navbar has valid dimensions
+        const rect = $navbar[0].getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) {
+          throw new Error('The navbar has invalid dimensions');
+        }
+      });
+    
+    // Verify that the user avatar is present
+    cy.get(headerSelectors.userAvatarBtn, { timeout: 30000 })
+      .should('exist')
+      .should('be.visible')
+      .should('have.css', 'opacity', '1')
+      .then($avatar => {
+        // Verify that the avatar has valid dimensions
+        const rect = $avatar[0].getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) {
+          throw new Error('The user avatar has invalid dimensions');
+        }
+      });
+    
+    // Verify that the URL changed after the login
+    cy.url().should('not.include', '/login');
   }
 
     //web Entry login with credentials
