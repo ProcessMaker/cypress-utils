@@ -18,6 +18,7 @@ export class ABTesting {
                 this.clickOnConfirmEnableBtn({ force: true });
             }
         })
+        this.load();
     }
 
     clickOnPlusBtn() {
@@ -42,16 +43,20 @@ export class ABTesting {
     replaceAlternativeAWithDataOfAlternativeB(iframeOption) {
         this.clickOnAlternativeA(iframeOption);
         this.clickOnReplaceAlternative();
+        this.load();
+        
     }
 
     replaceAlternativeBWithDataOfAlternativeA(iframeOption) {
         this.clickOnAlternativeB(iframeOption);
         this.clickOnReplaceAlternative(iframeOption);
+        this.load();
     }
 
     confirmReplaceAlternative(iframeOption = 'a'){
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         cy.iframe(iframeSelector).find(selectors.confirmReplaceAlt).click();
+        this.load();
     }
 
     clickOnAlternativeA(iframeOption = 'a') {
@@ -420,6 +425,7 @@ export class ABTesting {
         const elementTaskXapth = "//*[text()='nameElem']/ancestor::*[@data-type='processmaker.components.nodes.task.Shape']";
        // cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().should('be.visible');
         cy.iframe(iframeSelector).xpath(elementTaskXapth.replace('nameElem', elementName)).first().click();
+        this.load();
         this.clickOnInspectorBtn(iframeOption);
         this.clickOnAssignmentRules(iframeOption);
         switch (assignmentType) {
