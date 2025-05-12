@@ -71,7 +71,7 @@ export class SaveSearchs {
         // Seleccionar frecuencia
         cy.get(selectors.selectday)
             .should('be.visible')
-            .click();
+            .click({force: true});
 
         // Configurar hora
         cy.xpath("//label[contains(text(),'Time')]")
@@ -79,20 +79,21 @@ export class SaveSearchs {
         cy.xpath(selectors.selecttime)
             .should('exist')
             .should('be.visible');
-        cy.get('[aria-label="clock"]').click();
+        cy.get('[aria-label="clock"]',{timeout: 10000}).click({force: true});
+        cy.wait(1000);
         
         // Esperar que el dropdown esté visible
-        cy.get('[class="dropdown-menu show"]')
+        cy.get('[class="dropdown-menu show"]',{timeout: 10000})
             .should('be.visible');
 
         // Seleccionar hora específica
         cy.xpath(selectors.selecthour)
             .should('be.visible')
             .first()
-            .click();
+            .click({force: true});
         cy.xpath(selectors.closehour)
             .should('be.visible')
-            .click();
+            .click({force: true});
         cy.wait(1000);
         // Llenar formulario
         cy.xpath(selectors.sendto2)
