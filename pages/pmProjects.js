@@ -552,6 +552,10 @@ export class PMProjects {
         cy.xpath(selectors.saveBtn).should('be.visible').click();
     }
 
+    load() {
+        cy.wait(5000);
+    }
+
     searchAssetScriptAndSelectOptions(
         nameAssert,
         option = "config",
