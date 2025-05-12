@@ -172,12 +172,13 @@ export class Specific {
         request.openRequestById(requestId);
 
         request.clickOnTaskName(1, 1);
-        //Verify that value was recovered
-        //cy.xpath('//div[@class="multiselect__tags"]//span[contains(text(),"Latin America & Caribbean")]').should('be.visible');
         //click on submit button
         cy.xpath('//button[@class="btn btn-primary"]').click();
         //verify task is completed
         request.verifyTaskIsCompletedB();
+        
+        //Wait to the data connector will be completed
+        cy.wait(15000);
 
         //Go to Inprogress
         //open request by ID

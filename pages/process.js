@@ -2262,13 +2262,14 @@ export class Process {
     createCategory(name, status){
         cy.xpath("//a[contains(@href,'categories')]").click();
         this.clickOnNewCategory();
-        cy.get('[name="name"]').type(name).should("have.value", name);
+        cy.xpath('//div[@id="createCategoryModal"]//*[@name="name"]').type(name).should("have.value", name);
         if(status === "Inactive" || status === "inactive" || status === "INACTIVE")
             cy.get['[name="status"]'].select("INACTIVE");
-        cy.xpath("//*[contains(text(),'Save')]").click();
+        cy.xpath("//div[@id='createCategoryModal']//button[contains(text(),'Save')]").click();
     }
     clickOnNewCategory(){
         cy.get("[aria-label='Create Category']").click();
+        cy.xpath('//div[@id="createCategoryModal"]').should('be.visible');
     }
     deleteCategory(name){
         let categoryXpath = "//*[contains(text(),'categoryName')]/ancestor::tr//*[@data-cy='category-ellipsis']/button";
@@ -2422,5 +2423,52 @@ export class Process {
         } else {
             //custom export
         }
+    }
+
+    /**
+    * This method is responsible to create category by API
+    * @param payload: 
+    * @return nothing returns
+    */
+    createCategoryAPI(payload,ignoreTakenError){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.post('/process_categories', payload).then(response => {
+                const category = response.data.data;
+                console.log('THIS IS RESULT OF CATEGORY: ', category);
+                return category;
+            })
+            .catch(err => {
+                if (
+                    ignoreTakenError && 
+                    err.response.data.message.toLowerCase() === 'The Name has already been taken.') {
+                        return this.getCategoryByNameAPI(payload.name);
+                } else {
+                    return this.getCategoryByNameAPI(payload.name);
+                }
+            });
+        });
+    }
+
+    getCategoryByNameAPI(categoryName){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.get('/process_categories', { params: {filter: categoryName} }).then(response => {
+                const category = response.data.data.find(category => category.name === categoryName);
+                return category;
+            });
+        });
+    }
+
+    /**
+     * Deletes a category by API
+     * @param {string} categoryID - The ID of the category to delete.
+     * @returns {Promise} - A promise that resolves with a confirmation message.
+     */
+    deleteCategoryByIdAPI(categoryID){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.delete('/process_categories/'+categoryID).then(response => {
+                //console.log(JSON.stringify(response));
+                return "category " + categoryID + " was deleted";
+            });
+        });
     }
 }
