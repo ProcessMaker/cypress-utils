@@ -32,18 +32,39 @@ export class ScreenTemplate {
 		cy.wait(1500);
 	}
     
-    searchScreensAndSelectOptions(screenName,option = "config",) 
-    {
-        cy.xpath(selectors.threePointsBtnXpathScreen).should("be.visible");
-        cy.get(selectors.searchInputScreen).type(`${screenName}{enter}`,{delay:100}).should("have.value", screenName);
-        cy.get(selectors.searchInputScreen).type('{enter}');
-        cy.wait(3000);
-        cy.xpath(selectors.threePointsBtnXpathScreen).should("be.visible");
-        cy.xpath(selectors.threePointsBtnXpathScreen).first().click();
+    searchScreensAndSelectOptions(screenName, option = "config") {
+        // verify that the table is loaded
+        cy.get(selectors.screenTableBx).should('be.visible');
+        
+        // clear and search the screen
+        cy.get(selectors.searchInputScreen)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .clear()
+            .type(screenName, { delay: 150 })
+            .should('have.value', screenName)
+            .type('{enter}');
 
+        // wait for the search to complete and verify results
+        cy.get(selectors.screenTableBx).should('be.visible');
+        
+        // verify that the menu button is available
+        cy.xpath(selectors.threePointsBtnXpathScreen)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .first()
+            .click({ force: true });
+
+        // wait for the menu to be visible
+        cy.wait(1000);
+
+        // handle the selected option
         switch (option) {
             case "SaveTemplate":
                 this.saveAsTemplate();
+                break;
+            default:
+                cy.log(`Option not handled: ${option}`);
                 break;
         }
     }
@@ -205,18 +226,35 @@ export class ScreenTemplate {
         passwordOption = "no",
         password = "123456"
     ) {
+        // verify that the table is loaded
+        cy.get(selectors.tableScreenSharedTemplate).should('be.visible');
         
-        {
-            cy.xpath(selectors.searchInputScreenTemplatePublic).type(`${nameScreenTemplate}{enter}`).should("have.value", nameScreenTemplate);
-            cy.wait(3000);
-            cy.get("[data-cy=public-templates-table-td-0-4]").first().trigger("mouseover", { force: true });
-            cy.wait(3000);
-            cy.xpath(selectors.menuOptionScreenTemplatePublic).should("be.visible");
-            cy.xpath(selectors.menuOptionScreenTemplatePublic).first().should('be.visible');
-            cy.wait(3000);
-            cy.xpath(selectors.menuOptionScreenTemplatePublic).first().click();
-        }
-                
+        // clear and search the template
+        cy.xpath(selectors.searchInputScreenTemplatePublic)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .clear()
+            .type(nameScreenTemplate, { delay: 150 })
+            .should('have.value', nameScreenTemplate)
+            .type('{enter}');
+
+        // wait for search results and verify
+        cy.get(selectors.tableScreenSharedTemplate).should('be.visible');
+        
+        // verify and interact with the menu
+        cy.get("[data-cy=public-templates-table-td-0-4]")
+            .first()
+            .should('be.visible')
+            .trigger('mouseover', { force: true });
+
+        // wait for menu to be visible and click
+        cy.xpath(selectors.menuOptionScreenTemplatePublic)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .first()
+            .click({ delay: 250, force: true });
+
+        // handle the selected option
         switch (option) {
             case "editPublicScreenTemplate":
                 this.editScreenTemplatePublic();
@@ -226,6 +264,9 @@ export class ScreenTemplate {
                 break;
             case "deletePublicScreenTemplate":
                 this.deletePublicTemplate();
+                break;
+            default:
+                cy.log(`Option not handled: ${option}`);
                 break;
         }
     }
@@ -243,8 +284,24 @@ export class ScreenTemplate {
     }
 
     selectMenuOptionRowScreenTemplatePublic(nameOption3) {
-        const optionCatXpath3 = `//div[@id="publicTemplatesIndex"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption3}")]`;
-        cy.xpath(optionCatXpath3).should("be.visible").first().click();
+        // verify that the menu is visible before interacting
+        cy.get("[data-cy='public-templates-table-td-0-4']").first().should('be.visible').trigger('mouseover', { force: true });
+
+        // wait for the menu to be visible
+        cy.wait(1500);
+
+        // build the XPath more robustly
+        const optionCatXpath3 = `//div[@id="publicTemplatesIndex"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[normalize-space(text())="${nameOption3}"]`;
+
+        // verify that the option is visible and click
+        cy.xpath(optionCatXpath3)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .first()
+            .click({delay:150},{ force: true });
+
+        // verify that the menu is closed after the click
+        cy.xpath(optionCatXpath3).should('not.exist');
     }
 
     verifyPresenceOfScreentemplateAndImport(screenTemplateMyTemplate, screenTemplatePath) {
