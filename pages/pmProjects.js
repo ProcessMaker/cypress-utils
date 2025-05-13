@@ -195,18 +195,18 @@ export class PMProjects {
         passwordOption = "no",
         password = "123456"
     ) {
-        cy.wait(3000);
+        this.load();
         {
-            cy.wait(3000);
+            this.load();
             cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
-            cy.wait(3000);
+            this.load();
             cy.xpath(selectors.searchProjects).type(`${projectName}{enter}`).should("have.value", projectName);
             //cy.get(selectors.loadingSpinnerProcess).should("be.visible");
-            cy.wait(3000);
+            this.load();
             cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
-            cy.wait(3000);
+            this.load();
             cy.xpath(selectors.threePointsBtnXpathProjects).first().should("be.visible");
-            cy.wait(3000);
+            this.load();
             cy.xpath(selectors.threePointsBtnXpathProjects).first().click({force:true}, {delay: 1000});
         
         }
