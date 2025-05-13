@@ -93,22 +93,49 @@ export class Dataconnectors {
         cy.xpath(selectors.addBtn).click();
     }
     verifyPresenceOfDataConnectorAndCreate(name, description, type, sourcesParameter={}){
-        cy.wait(3000);
-        cy.xpath(selectors.dataSourceIndex).should('be.visible');
-        cy.xpath(selectors.dataSourceIndex).type(name)
+        // wait for the main container to be ready
+        cy.xpath(selectors.dataSourceIndex)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .as('searchInput');
+
+        // perform the search
+        cy.get('@searchInput')
+            .clear()
+            .type(name)
             .should('have.value', name);
-        cy.xpath(selectors.dataSourceIndexLoading).should('be.visible');
-        cy.wait(6000);
-        cy.xpath('//div[@id="dataSourceIndex"]//div[@id="table-container"]//tbody', { timeout: 10000 })
-            .then(($rowsTable) => {
-                if ($rowsTable.find("tr").length <= 0) {
+
+        // wait for the table to be updated
+        cy.get('[data-cy="datasource-pagination"]')
+            .should('exist')
+            .as('pagination');
+
+        // verify if there are results
+        cy.get('@pagination')
+            .find('[class="pagination-total"]')
+            .eq(1)
+            .invoke('text')
+            .then((text) => {
+                const count = parseInt(text.trim().replace(/[^0-9]/g, ""));
+                
+                if (count === 0) {
+                    // create the connector if it does not exist
                     this.createADataConnector(name, description, type);
-                    cy.xpath(selectors.resourcesTitle).should('be.visible');
-                    cy.xpath(selectors.resourcesTitle).click();
-                    if (Object.keys(sourcesParameter).length > 0)
-                        this.AddAListResource(sourcesParameter.description, sourcesParameter.method, sourcesParameter.URL)
+                    
+                    // wait for the resources page to be ready
+                    cy.xpath(selectors.resourcesTitle)
+                        .should('be.visible')
+                        .click();
+
+                    // add resources if they are specified
+                    if (Object.keys(sourcesParameter).length > 0) {
+                        this.AddAListResource(
+                            sourcesParameter.description, 
+                            sourcesParameter.method, 
+                            sourcesParameter.URL
+                        );
+                    }
                 }
-                else return;
             });
     }
  
