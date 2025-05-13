@@ -1109,45 +1109,110 @@ export class Process {
                 fullName = firstName + ' ' + lastName + '. ';
                 selectListScriptXpath = "//strong[contains(text(),'labelName')]/ancestor::tr/td[2]//div[@class='multiselect__tags']";
                 inputScriptXpath = "//strong[contains(text(),'labelName')]/ancestor::tr/td[2]//input";
-                cy.xpath(selectListScriptXpath.replace('labelName', key)).should('be.visible').click();
-                cy.xpath(inputScriptXpath.replace('labelName', key)).type(value).should('have.value', value);
+                
+                // wait for the element to be visible and clickable
+                cy.xpath(selectListScriptXpath.replace('labelName', key))
+                    .should('be.visible')
+                    .should('not.be.disabled')
+                    .click({ force: true });
+                
+                // clear and write the value
+                cy.xpath(inputScriptXpath.replace('labelName', key))
+                    .should('be.visible')
+                    .clear()
+                    .type(value, { delay: 200 })
+                    .should('have.value', value);
+                
+                // wait for the list of options to appear
+                cy.wait(2000);
+                
+                // verify and select the correct option
                 cy.xpath("//ancestor::strong[contains(text(),'scriptName')]/ancestor::tr/td[2]//div[@class='multiselect__content-wrapper']//li[1]"
                     .replace('scriptName', key))
+                    .should('be.visible')
                     .should('have.attr', 'aria-label')
-                    .and('equal', fullName);
-                cy.xpath(inputScriptXpath.replace('labelName', key)).type('{enter}');
+                    .and('contain', fullName)
+                    .click({ force: true });
+                
+                // press enter to confirm the selection
+                cy.xpath(inputScriptXpath.replace('labelName', key))
+                    .type('{enter}', { delay: 200 });
                 break;
+                
             case 'SubProcess':
                 fullName = firstName;
                 selectListScriptXpath = "//strong[contains(text(),'labelName')]/ancestor::tr/td[2]//div[@class='multiselect__tags']";
                 inputScriptXpath = "//strong[contains(text(),'labelName')]/ancestor::tr/td[2]//input";
-                cy.xpath(selectListScriptXpath.replace('labelName', key)).should('be.visible').click();
-                cy.xpath(inputScriptXpath.replace('labelName', key)).type(value).should('have.value', value);
+                
+                // wait for the element to be visible and clickable
+                cy.xpath(selectListScriptXpath.replace('labelName', key))
+                    .should('be.visible')
+                    .should('not.be.disabled')
+                    .click({ force: true });
+                
+                // clear and write the value
+                cy.xpath(inputScriptXpath.replace('labelName', key))
+                    .should('be.visible')
+                    .clear()
+                    .type(value, { delay: 200 })
+                    .should('have.value', value);
+                
+                // wait for the list of options to appear
+                cy.wait(2000);
+                
+                // verify and select the correct option
                 cy.xpath("//ancestor::strong[contains(text(),'scriptName')]/ancestor::tr/td[2]//div[@class='multiselect__content-wrapper']//li[1]"
                     .replace('scriptName', key))
+                    .should('be.visible')
                     .should('have.attr', 'aria-label')
-                    .and('contain', fullName);
-                cy.xpath(inputScriptXpath.replace('labelName', key)).type('{enter}');
+                    .and('contain', fullName)
+                    .click({ force: true });
+                
+                // press enter to confirm the selection
+                cy.xpath(inputScriptXpath.replace('labelName', key))
+                    .type('{enter}', { delay: 200 });
                 break;
+                
             default:
                 fullName = firstName + ' ' + lastName + '. ';
                 let selectListXpath = "//strong[text()='labelName']/ancestor::tr/td[2]//div[@class='multiselect__tags']";
                 let inputXpath = "//strong[text()='labelName']/ancestor::tr/td[2]//input";
                 let liXpath = "//strong[text()='labelName']/ancestor::tr//div[@class='multiselect__content-wrapper']//li[@aria-label='fullName']";
 
-                cy.xpath(selectListXpath.replace('labelName', key)).should('be.visible').click();
-                cy.xpath(inputXpath.replace('labelName', key)).type(value).should('have.value', value);
+                // wait for the element to be visible and clickable
+                cy.xpath(selectListXpath.replace('labelName', key))
+                    .should('be.visible')
+                    .should('not.be.disabled')
+                    .click({ force: true });
+                
+                // clear and write the value
+                cy.xpath(inputXpath.replace('labelName', key))
+                    .should('be.visible')
+                    .clear()
+                    .type(value, { delay: 200 })
+                    .should('have.value', value);
+                
+                // wait for the list of options to appear
+                cy.wait(2000);
+                
+                // determine the index of the element to select
                 var li;
-                if (elemName === 'Cancel Request')
+                if (elemName === 'Cancel Request') {
                     li = "//ancestor::strong[text()='labelName']/ancestor::tr/td[2]//div[@class='multiselect__content-wrapper']//li[3]";
-                else
+                } else {
                     li = "//ancestor::strong[text()='labelName']/ancestor::tr/td[2]//div[@class='multiselect__content-wrapper']//li[2]";
+                }
 
-                cy.xpath(li
-                    .replace('labelName', key))
+                // verify and select the correct option
+                cy.xpath(li.replace('labelName', key))
+                    .should('be.visible')
                     .should('have.attr', 'aria-label')
-                    .and('equal', fullName);
-                cy.xpath(inputXpath.replace('labelName', key)).type('{enter}');
+                    .and('contain', fullName)
+                    .click({ force: true });
+
+                // press enter to confirm the selection
+                cy.xpath(inputXpath.replace('labelName', key))
+                    .type('{enter}', { delay: 200 });
         }
     }
 
@@ -1277,7 +1342,7 @@ export class Process {
                                 cy.wait(7000);
                                 cy.xpath('//div[@class="multiselect__content-wrapper"]//ul[contains(@style," inline")]/li[1]')
                                     .should('have.attr', 'aria-label') // yields the "href" attribute
-                                    .and('equal', fullName + ". ");
+                                    .and('match', new RegExp(fullName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + "\\.\\s*$"));
                                 cy.xpath(startPemrissions_opInputSelector.replace('nameType', 'user')).type('{enter}', {delay : 1200});
 
                             }

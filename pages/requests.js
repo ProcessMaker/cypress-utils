@@ -39,11 +39,36 @@ export class Requests {
     }
 
     openRequestByName(processName) {
+        // navigate to the in progress requests page
         navHelper.navigateToInprogressRequests();
+        
+        // wait for the table to be loaded
+        cy.get('[data-cy="requests-table"]').should('be.visible');
+        
+        // add the process name to the selection list
         this.addRequestNameToSelectList(processName);
+        
+        // wait for the loading spinner to disappear
+        cy.get('[class="spinner-border spinner-border-sm"]').should('not.exist');
+        
+        // verify that the table has been updated
+        cy.get('[data-cy="requests-table"]').should('be.visible');
+        
+        // search and click on the process option
         cy.xpath(selectors.requestInputOption.replace('processName', processName))
-            .should('be.visible').click();
-        cy.xpath("(//*[@class='vuetable-slot'])[1]").should('be.visible');
+            .should('be.visible')
+            .should('not.be.disabled')
+            .click({ force: true });
+        
+        // wait for the table to be updated after the click
+        cy.wait(2000);
+        
+        // verify that the first cell of the table is visible
+        cy.xpath("(//*[@class='vuetable-slot'])[1]")
+            .should('be.visible')
+            .should('exist');
+        
+        // get the request ID
         this.getRequestID();
     }
 
