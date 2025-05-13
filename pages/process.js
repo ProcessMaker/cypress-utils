@@ -169,12 +169,13 @@ export class Process {
     }
 
     dragRPA(selector, offsetX, offsetY) {
-        cy.get('[data-test="processmaker-communication-rpa"]').trigger('mousedown')
-            .trigger('mousemove', {
+        // store reference to the element to drag
+        cy.wait(1000);
+        cy.get('[data-test="processmaker-communication-rpa"]').trigger('mousedown').trigger('mousemove', {
                 pageX: offsetX,
                 pageY: offsetY,
                 force: true
-            });
+            });     
         cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
     }
 
@@ -206,25 +207,70 @@ export class Process {
             cy.get('.main-paper').then($paperContainer => {
                 const { x, y } = $paperContainer[0].getBoundingClientRect();
                 const mouseEvent = { clientX: position.x + x + tx, clientY: position.y + y + ty };
+                
+                // break the chain of commands to avoid problems with the updated DOM
                 cy.get('.control-add').eq(0).click();
+                
+                // wait for the explorer rail to be visible
+                cy.get('[data-test=explorer-rail]').should('be.visible');
+                
+                // click on the node
                 cy.get('[data-test=explorer-rail]').find(`[data-test=${node}]`).click();
+                
+                // close the explorer rail
                 cy.get('[id="explorer-rail"]>* [class="close--container"]>svg').click();
+                
+                // wait for the explorer rail to be hidden
+                cy.get('[data-test=explorer-rail]').should('not.be.visible');
+                
+                // store paper container reference
+                cy.get('.paper-container').as('paperContainer');
+                
+                // move the mouse
                 cy.document().trigger('mousemove', mouseEvent);
                 cy.wait(300);
-                cy.get('.paper-container').trigger('mousedown', mouseEvent);
+                
+                // perform the mousedown
+                cy.get('@paperContainer').trigger('mousedown', mouseEvent);
                 cy.wait(300);
-                cy.get('.paper-container').trigger('mouseup', mouseEvent);
-
+                
+                // perform the mouseup
+                cy.get('@paperContainer').trigger('mouseup', mouseEvent);
             });
         });
     }
     dragEventByOffSet(selector, offsetX, offsetY) {
-        cy.get('[class="node-types__container"]').find('#nodeTypesList > div > div:nth-child(5) > span').trigger('mousedown')
-            .trigger('mousemove', {
-                pageX: offsetX,
-                pageY: offsetY
-            });
-        cy.get('[data-test="paper"]').first().trigger('mouseup', offsetX, offsetY);
+        // store reference to the container
+        cy.get('[class="node-types__container"]').as('nodeTypesContainer');
+        
+        // store reference to the element to drag
+        cy.get('@nodeTypesContainer')
+            .find('#nodeTypesList > div > div:nth-child(5) > span')
+            .as('dragElement');
+            
+        // store reference to the paper
+        cy.get('[data-test="paper"]').first().as('paperElement');
+        
+        // perform mousedown
+        cy.get('@dragElement').trigger('mousedown');
+        
+        // wait for the DOM to update
+        cy.wait(100);
+        
+        // perform mousemove
+        cy.get('@dragElement').trigger('mousemove', {
+            pageX: offsetX,
+            pageY: offsetY
+        });
+        
+        // wait for the DOM to update
+        cy.wait(100);
+        
+        // perform mouseup
+        cy.get('@paperElement').trigger('mouseup', {
+            pageX: offsetX,
+            pageY: offsetY
+        });
     }
 
     clickOnZoomOut() {

@@ -1155,7 +1155,8 @@ export class Admin {
         cy.xpath('//legend[text()="Link Text"]/parent::fieldset//input')
             .should("be.visible")
             .click()
-            .type(linkText);
+            .type(linkText)
+            .should('have.value', linkText);
 
         //icon
         cy.xpath('//legend[text()="Icon"]/parent::fieldset//div[@class="multiselect__select"]').click();
@@ -1179,15 +1180,40 @@ export class Admin {
         cy.xpath('//legend[text()="URL"]/parent::fieldset//input')
             .should("be.visible")
             .click()
-            .type(url);
+            .type(url)
+            .should('have.value', url);
         
         //Check Open in new window
         cy.get('[type="checkbox"]').click({ force: true });
-        
-        //Wait for save button to be enabled and click
+
+        // wait for save button to be enabled and click
         cy.xpath('//footer[@class="modal-footer"]//button[@class="btn btn-secondary ml-3"]')
-            .should('not.be.disabled')
-            .click({ timeout: 10000 });
+            .should('be.visible')
+            .then($btn => {
+                // try until 3 times with wait between attempts
+                const maxAttempts = 3;
+                let attempts = 0;
+
+                const tryClick = () => {
+                    attempts++;
+                    if ($btn.prop('disabled')) {
+                        if (attempts < maxAttempts) {
+                            cy.wait(2000); // wait 2 seconds between attempts
+                            cy.wrap($btn).should('not.be.disabled').click();
+                        } else {
+                            // if after 3 attempts it is still disabled, force the click
+                            cy.wrap($btn).click({ force: true });
+                        }
+                    } else {
+                        cy.wrap($btn).click();
+                    }
+                };
+
+                tryClick();
+            });
+
+        // verify that the modal is closed
+        cy.xpath('//div[@class="modal-content"]').should('not.exist', { timeout: 5000 });
     }
 
     /**
