@@ -104,6 +104,15 @@ export class ScreenTemplate {
         cy.get(".jumbotron.jumbotron-fluid").should("not.be.visible");
 	}
 
+    searchScreenPublicTemplate(nameScreenTemplate) {
+        cy.xpath('//*[@id="nav-publicTemplates"]/div').should("be.visible");
+        cy.get(selectors.tableScreenSharedTemplate).should("be.visible");
+        cy.get('#publicTemplatesIndex > #search-bar > :nth-child(1) > .flex-grow-1 > :nth-child(1) > :nth-child(1) > .align-items-start > .search-bar > .search-bar-container > .pmql-input').should('be.visible');
+        cy.get('#publicTemplatesIndex > #search-bar > :nth-child(1) > .flex-grow-1 > :nth-child(1) > :nth-child(1) > .align-items-start > .search-bar > .search-bar-container > .pmql-input').click().clear();
+        cy.get('#publicTemplatesIndex > #search-bar > :nth-child(1) > .flex-grow-1 > :nth-child(1) > :nth-child(1) > .align-items-start > .search-bar > .search-bar-container > .pmql-input').type(`${nameScreenTemplate}`,{delay:100}).type('{enter}').should("have.value", nameScreenTemplate);
+        cy.get(".jumbotron.jumbotron-fluid").should("not.be.visible");
+	}
+
     searchScreenSharedTemplate(nameScreenTemplate) {
         cy.xpath('//*[@id="nav-publicTemplates"]/div').should("be.visible");
         cy.get(selectors.tableScreenSharedTemplate).should("be.visible");
