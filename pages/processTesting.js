@@ -233,11 +233,11 @@ export class ProcessTesting {
       */
 
     clickOnPlusScenario() {
-        // Esperar a que la pestaña de escenarios esté activa
+        // Wait for the scenarios tab to be active
         cy.get('#scenarios-edit-tab').should('be.visible');
         cy.get('#test_runs').should('be.visible');
         
-        // Esperar a que el botón esté disponible
+        // Wait for the plus scenario button to be available
         cy.get(selectors.plusScenarioBtn)
             .should('exist')
             .should('be.visible')
@@ -246,12 +246,30 @@ export class ProcessTesting {
     }
 
     fillName(name) { 
-        
-        cy.get(selectors.nameScenarioBP)
-            .should("be.visible")
-            .type(name, { delay: 200, force: true })
-            .should("have.value", name);
+        // Ensure that name is a string
+        let nameString;
+        if (typeof name === 'object') {
+            nameString = JSON.stringify(name);
+        } else {
+            nameString = String(name);
+        }
 
+        // Wait for the modal to be visible
+        cy.get('[class="modal-content"]').should('be.visible');
+        
+        // Wait and verify that the name field is ready
+        cy.get(selectors.nameScenarioBP)
+            .should('exist')
+            .should('be.visible')
+            .should('not.be.disabled')
+            .clear({ force: true })
+            .type(nameString, { 
+                delay: 200, 
+                force: true,
+                parseSpecialCharSequences: false 
+            })
+            .should('have.value', nameString)
+            .wait(500); // Small pause to ensure the value is set
     }
 
     fillDescription(description) {
@@ -267,7 +285,31 @@ export class ProcessTesting {
     }
 
     addDataInScenario(data) {
-        cy.get(selectors.dataScenarioBP).type(`{{}${data}}`);
+        // Ensure that data is a string
+        const dataString = typeof data === 'object' ? JSON.stringify(data) : String(data);
+        
+        // Wait for the Monaco editor to be ready
+        cy.get(selectors.dataScenarioBP)
+            .should('exist')
+            .should('be.visible')
+            .then($el => {
+                // Find the textarea within the Monaco editor
+                const textarea = $el.closest('.monaco-editor').find('textarea');
+                
+                // Click on the editor to activate it
+                cy.wrap(textarea)
+                    .click({ force: true })
+                    .then(() => {
+                        // Use the type command in the textarea
+                        cy.wrap(textarea)
+                            .type('{selectall}{backspace}', { force: true })
+                            .type(dataString, { 
+                                delay: 200, 
+                                force: true,
+                                parseSpecialCharSequences: false 
+                            });
+                    });
+            });
     }
 
     clearDataField() {
@@ -303,12 +345,12 @@ export class ProcessTesting {
     selectMenuOptionRowScenario(nameOption2) {
         const optionCatXpath2 = `//div[@id="scenarios-edit-tab"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
         
-        // Esperar a que la fila esté visible y hacer hover
+        // Wait for the row to be visible and make hover
         cy.xpath('//*[@id="row-222"]/td[4]')
             .should('be.visible')
             .trigger('mouseover', { force: true });
             
-        // Esperar a que el menú esté visible y hacer clic
+        // Wait for the menu to be visible and click
         cy.xpath(optionCatXpath2)
             .should('be.visible')
             .should('not.be.disabled')
@@ -322,12 +364,11 @@ export class ProcessTesting {
         
         {
             cy.xpath(selectors.searchInputScenario).type(`${nameScenario}{enter}`).should("have.value", nameScenario);
-            //cy.get('[id="element-0-3"]').type('{enter}');
-            cy.wait(3000);
-
+            this.load();
+            
             cy.xpath(selectors.selectMenuOptionRowScenario).should("be.visible");
             cy.xpath(selectors.selectMenuOptionRowScenario).first().should('be.visible');
-            cy.wait(3000);
+            this.load();
             cy.xpath(selectors.selectMenuOptionRowScenario).first().click();
             
         }
@@ -357,14 +398,14 @@ export class ProcessTesting {
         } = scenarioConfig;
         
         if (editName) {
-            // Cambiamos xpath() por get() para selectores CSS
+            // Change xpath() to get() for CSS selectors
             cy.get('[class="modal-content"]').should('be.visible').within(()=>{ //catch all modal
                 cy.get('[class="modal-body"] fieldset div > input').clear({delay:200}).first().type(editName).should('have.value', editName);  
             });        
         }
     
         if (editDescription) {
-            // Cambiamos xpath() por get() para selectores CSS
+            // Change xpath() to get() for CSS selectors
             cy.get('[class="modal-content"]').should('be.visible').within(()=>{ //catch all modal
                 
                 cy.get('[class="modal-body"] fieldset div > textarea').first().clear().type(editDescription).should('have.value', editDescription);
@@ -378,7 +419,7 @@ export class ProcessTesting {
             this.addDataInScenario(editData.data);
         }*/
 
-        // Cambiamos xpath() por get() si es un selector CSS
+        // Change xpath() to get() if it is a CSS selector
         cy.get('footer button').contains('Save').click();   //save escenario
         cy.get('.alert-wrapper > .alert').should('be.visible');
     }
@@ -435,10 +476,40 @@ export class ProcessTesting {
 
     //2D Modal to create scenario 
     createScenarioByProcess(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {         
+        // Navigate to the scenarios tab and wait for it to be ready
         this.goToScenariosTab();
-        this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath)
-        cy.get('.alert-wrapper > .alert').should("be.visible");
-        cy.get('.alert-wrapper > .alert').should("contain","The process test scenario was created.");
+        cy.get('#scenarios-edit-tab').should('be.visible');
+        cy.get('#test_runs').should('be.visible');
+        
+        // Create the scenario with error handling
+        try {
+            this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
+            
+            // wait 30 seconds to the modal disappear
+            cy.get('.modal-content', { timeout: 30000 })
+                .should('not.exist');
+            
+            // wait 60 seconds to the alert appear
+            cy.get('.alert-wrapper', { timeout: 60000 })
+                .should('exist')
+                .should('be.visible')
+                .within(() => {
+                    cy.get('.alert')
+                        .should('be.visible')
+                        .should('contain', 'The process test scenario was created.')
+                        .then($alert => {
+                            cy.log('Escenario creado exitosamente:', $alert.text());
+                        });
+                });
+                
+            // wait 60 seconds to the alert disappear
+            cy.get('.alert-wrapper > .alert', { timeout: 60000 })
+                .should('not.exist');
+                
+        } catch (error) {
+            cy.log('Error al crear el escenario:', error.message);
+            throw error;
+        }
     }
 
     createScenarioIfNotExist(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
@@ -486,7 +557,7 @@ export class ProcessTesting {
 
     //Search Test Run
     searchTestRun(value) {
-        // Esperar a que el campo de búsqueda esté visible y disponible
+        // Wait for the search field to be visible and available
         cy.get(selectors.searchTestRun)
             .should('be.visible')
             .should('not.be.disabled')
@@ -706,13 +777,13 @@ export class ProcessTesting {
         runTestFromProcessConfigure(runTestConfig, manualOrAdvanced, singleOrMassive, query) {
             const { alternative, startingPoint, manualResumePoint, scenario, additionalData, isEnabledBypass } = runTestConfig
             
-            // Espera a que la página se cargue
+            // Wait for the page to load
             cy.wait(2000);
             
-            // Crea el test run
+            // Create the test run
             this.createRunTest();
             
-            // Verifica que el elemento existe (usando el selector más flexible)
+            // Verifies that the element exists (using the most flexible selector)
             cy.xpath('//label[contains(text(),"Alternative")]', { timeout: 30000 })
                 .should('exist')
                 .should('be.visible')
@@ -720,12 +791,12 @@ export class ProcessTesting {
                     cy.log('Elemento encontrado:', $el.text());
                 });
             
-            // Verifica el contenedor
+            // Verifies the container
             cy.xpath(selectors.containerSP)
                 .should('exist')
                 .should('contain', 'Start Event');
             
-            // ... resto del código ...
+            
         }
 
     openLastTestFromConfigOfProcess(processName) {
@@ -752,8 +823,20 @@ export class ProcessTesting {
     }
 
     clickOnEllipsisScenario() {
-        cy.xpath(selectors.menuScenario).first().should('be.visible');
-        cy.xpath(selectors.menuScenario).first().click();
+        // Wait for the scenarios table to be loaded
+        cy.get('#scenarios-edit-tab').should('be.visible');
+        
+        // Wait for the ellipsis menu to be present and visible
+        cy.xpath(selectors.menuScenario, { timeout: 30000 })
+            .should('exist')
+            .should('be.visible')
+            .should('not.be.disabled')
+            .first()
+            .click({ force: true });
+            
+        // Verify that the dropdown menu appeared
+        cy.xpath('//div[@data-test="scenario-ellipsis"]//button[@aria-haspopup="menu"]/following-sibling::ul')
+            .should('be.visible');
     }
 
     load() {
@@ -768,17 +851,17 @@ export class ProcessTesting {
     }
 
     createScenarioByUploadFile(nameScenario, scenarioDescription, nameFile, filePath) {
-        // Navegar a la pestaña de escenarios
+        // Navigate to the scenarios tab
         this.goToScenariosTab();
         
-        // Esperar a que la pestaña esté completamente cargada
+        // Wait for the tab to be fully loaded
         cy.get('#scenarios-edit-tab').should('be.visible');
         cy.get('#test_runs').should('be.visible');
         
-        // Intentar hacer clic en el botón de crear escenario
+        // Try to click on the create scenario button
         this.clickOnPlusScenario();
         
-        // Verificar que el modal de creación esté visible
+        // Verify that the creation modal is visible
         cy.get('.modal-content').should('be.visible');
         
         this.fillName(nameScenario);
@@ -794,16 +877,16 @@ export class ProcessTesting {
     runTestSingleOrMassiveInManualMode(runTestConfig, singleOrMassive) {
         const { alternative, startingPoint, manualResumePoint, scenario, additionalData, isEnabledBypass } = runTestConfig;
         
-        // Crear el test run
+        // Create the test run
         this.createRunTest();
         
-        // Esperar a que la página se cargue completamente
+        // Wait for the page to load completely
         cy.wait(2000);
         
-        // Tomar screenshot para depuración
+        // Take screenshot for debugging
         cy.screenshot('antes-de-buscar-modal');
         
-        // Verificar que el modal existe y está visible
+        // Verify that the modal exists and is visible
         cy.get('.modal-content', { timeout: 30000 })
             .should('exist')
             .should('be.visible')
@@ -814,7 +897,7 @@ export class ProcessTesting {
                 // Verificar que los elementos principales están presentes
                 cy.get('.modal-body').should('exist').should('be.visible');
                 
-                // Esperar a que los elementos estén visibles dentro del modal
+                // Wait for the elements to be visible within the modal
                 cy.xpath(selectors.labelAlternative)
                     .should('exist')
                     .should('be.visible')
