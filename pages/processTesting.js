@@ -514,16 +514,27 @@ export class ProcessTesting {
 
     createScenarioIfNotExist(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
         this.goToScenariosTab();
-        this.searchScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
+        this.searchScenario(nameScenario);
         this.load();
-        cy.xpath('//div[@id="scenarios-edit-tab"]//div[@class="data-table"]').invoke('text').then($element => {
-            cy.log($element)
-            if ($element.includes('No Data Available')) {
-                this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
-            } else {
-                cy.log('brenda')
-            }
-        })
+        
+        // Wait for the table to be fully loaded
+        cy.get('#scenarios-edit-tab').should('be.visible');
+        cy.get('#test_runs').should('be.visible');
+        
+        // Verify the content of the table
+        cy.xpath('//div[@id="scenarios-edit-tab"]//div[@class="data-table"]')
+            .should('exist')
+            .should('be.visible')
+            .invoke('text')
+            .then($text => {
+                // If there is no data or it is loading, create the scenario
+                if ($text.includes('No Data Available') || $text.includes('Loading')) {
+                    cy.log('Creating new scenario...');
+                    this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
+                } else {
+                    cy.log('The scenario already exists');
+                }
+            });
     }
 
     //Create scenario by request
