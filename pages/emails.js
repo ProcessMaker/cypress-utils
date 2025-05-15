@@ -10,7 +10,12 @@ export class Emails {
         let optionColumnXpath = '//table/tbody//div[contains(text(),"optionColumn")]/ancestor::tr/td[2]';
         cy.xpath(optionConfigXpath.replace('optionName', optionName)).click();
         cy.xpath('//div[@class="modal-content"]').should('be.visible');
-        cy.xpath('//div[@class="modal-content"]//div/input').clear().type(value).should('have.value', value);
+        if(optionName == "Use secure connection"){
+            cy.wait(2000)
+            cy.xpath('//div[@class="modal-content"]//div/label[contains(text(), "' + value + '")]/preceding-sibling::input').click({force:true});
+        }else{
+            cy.xpath('//div[@class="modal-content"]//div/input').clear().type(value).should('have.value', value);
+        }
         cy.xpath('//div[@class="modal-content"]//footer//button[contains(text(),"Save")]').click();
         cy.xpath('//div[@role="alert"]').should('exist');
         cy.xpath('//div[@role="alert"]').should('not.exist');
