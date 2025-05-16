@@ -673,10 +673,54 @@ export class ProcessTesting {
        
     }
 
-    selectAllScenarios(nameToFilter) {
-        cy.xpath(selectors.containerScenario).click();
-        cy.get(selectors.inputScenario).click().type(nameToFilter).should('have.value', nameToFilter);
-        cy.get('[aria-label="-- Select All --. "]').click();
+    /**
+     * Selecciona todos los escenarios que coincidan con el filtro especificado
+     * @param {string} nameToFilter - Nombre o patrón para filtrar los escenarios
+     * @returns {Promise<void>}
+     */
+    async selectAllScenarios(nameToFilter) {
+        try {
+            // Wait for the container of scenarios to be ready
+            await cy.xpath(selectors.containerScenario)
+                .should('exist')
+                .should('be.visible')
+                .should('not.be.disabled')
+                .click({ force: true });
+
+            // Wait for the input to be ready and write the filter
+            await cy.get(selectors.inputScenario)
+                .should('exist')
+                .should('be.visible')
+                .should('not.be.disabled')
+                .click({ force: true })
+                .clear({ force: true })
+                .type(nameToFilter, { delay: 100, force: true })
+                .should('have.value', nameToFilter);
+
+            // Wait for the results to appear
+            await cy.wait(1000);
+
+            // Verify that the "Select All" option is available and click
+            await cy.get('[aria-label="-- Select All --. "]')
+                .should('exist')
+                .should('be.visible')
+                .should('not.be.disabled')
+                .click({ force: true });
+
+            // Verify that the selection has been made correctly
+            await cy.get(selectors.inputScenario)
+                .should('have.value')
+                .then($input => {
+                    const value = $input.val();
+                    if (!value || value === nameToFilter) {
+                        cy.log('Warning: No scenarios were detected');
+                    }
+                });
+
+        } catch (error) {
+            cy.log('Error selecting all scenarios:', error.message);
+            throw error;
+        }
     }
 
     //Additional Data from process configure
@@ -885,82 +929,109 @@ export class ProcessTesting {
         cy.get('.alert-wrapper > .alert').should("contain", "The process test scenario was created.");
     }
 
-    runTestSingleOrMassiveInManualMode(runTestConfig, singleOrMassive) {
-        const { alternative, startingPoint, manualResumePoint, scenario, additionalData, isEnabledBypass } = runTestConfig;
-        
-        // Create the test run
-        this.createRunTest();
-        
-        // Wait for the page to load completely
-        cy.wait(2000);
-        
-        // Take screenshot for debugging
-        cy.screenshot('antes-de-buscar-modal');
-        
-        // Verify that the modal exists and is visible
-        cy.get('.modal-content', { timeout: 30000 })
-            .should('exist')
-            .should('be.visible')
-            .then($modal => {
-                cy.log('Modal encontrado:', $modal.text());
-            })
-            .within(() => {
-                // Verificar que los elementos principales están presentes
-                cy.get('.modal-body').should('exist').should('be.visible');
-                
-                // Wait for the elements to be visible within the modal
-                cy.xpath(selectors.labelAlternative)
-                    .should('exist')
-                    .should('be.visible')
-                    .then($el => {
-                        cy.log('Label Alternative encontrado:', $el.text());
-                    });
-                    
-                cy.xpath(selectors.containerSP)
-                    .should('exist')
-                    .should('contain', 'Start Event')
-                    .then($el => {
-                        cy.log('Container SP encontrado:', $el.text());
-                    });
-                
-                // Resto del código...
-                if (alternative !== null) {
+    /**
+     * Ejecuta una prueba en modo manual, ya sea individual o masiva
+     * @param {Object} runTestConfig - Configuración de la prueba
+     * @param {string} runTestConfig.alternative - Alternativa a seleccionar
+     * @param {Object} runTestConfig.startingPoint - Punto de inicio
+     * @param {Object} runTestConfig.manualResumePoint - Punto de reanudación manual
+     * @param {Object} runTestConfig.scenario - Escenario a ejecutar
+     * @param {Object} runTestConfig.additionalData - Datos adicionales
+     * @param {boolean} runTestConfig.isEnabledBypass - Si se debe habilitar el bypass
+     * @param {string} singleOrMassive - Tipo de ejecución ('Single' o 'Massive')
+     * @returns {Promise<void>}
+     */
+    async runTestSingleOrMassiveInManualMode(runTestConfig, singleOrMassive) {
+        try {
+            const {
+                alternative,
+                startingPoint,
+                manualResumePoint,
+                scenario,
+                additionalData,
+                isEnabledBypass
+            } = runTestConfig;
+
+            // Create the test
+            await this.createRunTest();
+
+            // Wait for the modal to be ready
+            await cy.get('.modal-content', { timeout: 30000 })
+                .should('exist')
+                .should('be.visible')
+                .as('modal');
+
+            // Validate main elements of the modal
+            await cy.get('@modal').within(() => {
+                // Validate required elements
+                const requiredElements = [
+                    { selector: selectors.labelAlternative, name: 'Label Alternative' },
+                    { selector: selectors.containerSP, name: 'Container SP', expectedText: 'Start Event' }
+                ];
+
+                requiredElements.forEach(({ selector, name, expectedText }) => {
+                    cy.xpath(selector)
+                        .should('exist')
+                        .should('be.visible')
+                        .then($el => {
+                            if (expectedText) {
+                                cy.wrap($el).should('contain', expectedText);
+                            }
+                            cy.log(`${name} encontrado:`, $el.text());
+                        });
+                });
+
+                // Configure alternative if it exists
+                if (alternative) {
                     this.selectAlternativeFromProcessConfigure(alternative.alternative);
                 }
-                
-                if (startingPoint !== null) {
+
+                // Configure starting point if it exists
+                if (startingPoint) {
                     cy.wait(3000);
                     this.selectStartingPoint(startingPoint.startingPointOption);
                 }
-                
-                if (manualResumePoint !== null) {
+
+                // Configure manual resume point if it exists
+                if (manualResumePoint) {
                     this.selectManualResumePoint(manualResumePoint.stopPointOption);
                 }
-                
+
+                // Select manual mode
                 this.selectManualOrAdvanced('Manual');
-                
-                if (scenario !== null) {
-                    switch (singleOrMassive) {
-                        case "Single":
-                            this.selectScenario(scenario.scenarioOption);
-                            break;
-                        case "Massive":
-                            this.selectAllScenarios(scenario.scenarioOption);
-                            break;
-                        default:
-                            break;
+
+                // Configure scenario if it exists
+                if (scenario) {
+                    if (singleOrMassive === 'Single') {
+                        this.selectScenario(scenario.scenarioOption);
+                    } else if (singleOrMassive === 'Massive') {
+                        this.selectAllScenarios(scenario.scenarioOption);
                     }
                 }
-                
-                if (additionalData !== null) {
+
+                // Add additional data if it exists
+                if (additionalData) {
                     this.addAdditionalData(additionalData.data);
                 }
-                
+
+                // Enable bypass if it is necessary
                 if (isEnabledBypass) {
                     this.enableBypassCheckbox();
                 }
-                
+
+                // Run the test
                 this.clickOnRunBtn();
             });
+
+            // Wait for the test to complete
+            await cy.get('.alert-wrapper', { timeout: 60000 })
+                .should('exist')
+                .should('be.visible')
+                .should('contain', 'Test run completed successfully');
+
+        } catch (error) {
+            cy.log('Error executing the test:', error.message);
+            throw error;
+        }
     }
 }
