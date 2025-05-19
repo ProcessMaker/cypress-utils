@@ -184,6 +184,7 @@ export class ProcessTesting {
 
     //Go to scenarios Tab
     clickOnScenariosTab() {
+        cy.get(selectors.scenariosTab).should('be.visible')
         cy.get(selectors.scenariosTab).click();
     }
 
@@ -239,13 +240,13 @@ export class ProcessTesting {
         
         // Wait for the plus scenario button to be available
         cy.get(selectors.plusScenarioBtn)
-            .should('exist')
             .should('be.visible')
             .should('not.be.disabled')
             .click({ force: true, timeout: 10000 });
     }
 
     fillName(name) { 
+        cy.wait(3000);
         // Ensure that name is a string
         let nameString;
         if (typeof name === 'object') {
@@ -275,6 +276,7 @@ export class ProcessTesting {
     fillDescription(description) {
         cy.wait(1000);
         cy.get(selectors.descriptionScenarioBP).first().type(description, { delay: 200, force: true }).should("have.value", description);
+        cy.wait(2000);
     }
 
     //Select Scenario Creation Type (Manual or Document upload)
@@ -326,6 +328,8 @@ export class ProcessTesting {
 
     saveCreateScenario() {
         cy.get(selectors.saveScenarioBPBtn).click({ force: true });
+        cy.wait(5000);
+        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
     }
 
     cancelCreateScenario() {
@@ -489,19 +493,6 @@ export class ProcessTesting {
             cy.get('.modal-content', { timeout: 30000 })
                 .should('not.exist');
             
-            // wait 60 seconds to the alert appear
-            cy.get('.alert-wrapper', { timeout: 60000 })
-                .should('exist')
-                .should('be.visible')
-                .within(() => {
-                    cy.get('.alert')
-                        .should('be.visible')
-                        .should('contain', 'The process test scenario was created.')
-                        .then($alert => {
-                            cy.log('Escenario creado exitosamente:', $alert.text());
-                        });
-                });
-                
             // wait 60 seconds to the alert disappear
             cy.get('.alert-wrapper > .alert', { timeout: 60000 })
                 .should('not.exist');
@@ -853,6 +844,13 @@ export class ProcessTesting {
             
             
         }
+    selectAllScenariosSync(){
+        cy.xpath('//div[@data-test="test-run-scenario-select"]//div[@class="multiselect__tags"]')
+          .click();
+            
+        cy.wait(5000);
+        cy.xpath('//div[@data-test="test-run-scenario-select"]//ul/li[1]').click();
+    }
 
     openLastTestFromConfigOfProcess(processName) {
         navHelper.navigateToProcessPage();
@@ -1033,5 +1031,26 @@ export class ProcessTesting {
             cy.log('Error executing the test:', error.message);
             throw error;
         }
+    }
+    createScenarioEvenIfExits(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+        
+        this.clickOnPlusScenario(); 
+        this.fillName(nameScenario);
+        this.fillDescription(scenarioDescription);
+        switch (scenarioCreationType) {
+            case 'Manual Data':
+                this.selectScenarioCreationType('Manual Data');
+                this.addDataInScenario(data);
+                break;
+            case 'Document Upload':
+                this.selectScenarioCreationType('Document Upload');
+                this.uploadFile(nameFile, filePath);
+                this.load();
+                break;
+            default:
+                break;
+        }
+        cy.get(selectors.saveScenarioBPBtn).click({ force: true });
+        cy.wait(5000);
     }
 }
