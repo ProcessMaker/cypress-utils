@@ -118,9 +118,42 @@ export class ProcessLaunchpad {
         cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible');
         cy.xpath(selectors.processLabel.replace('label',process)).should('be.visible').click();
     }
-    clickOnEllipsisMenu(){
-        cy.xpath(selectors.ellipsisMenu).should('be.visible');
-        cy.xpath(selectors.ellipsisMenu).click();
+    clickOnEllipsisMenu(force = false) {
+        // wait for the ellipsis button to be visible
+        cy.xpath(selectors.ellipsisMenu)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .then($el => {
+                // verify if the element is in the viewport
+                const rect = $el[0].getBoundingClientRect();
+                const isInViewport = (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+
+                // if the element is not in the viewport, scroll to it
+                if (!isInViewport) {
+                    cy.wrap($el).scrollIntoView();
+                }
+
+                // click with force option
+                cy.wrap($el).click({ force: force });
+            });
+
+        // verify that the menu opened correctly using a more specific selector
+        cy.get('body').then($body => {
+            if ($body.find('.dropdown-menu.show').length > 0) {
+                cy.get('.dropdown-menu.show')
+                    .should('be.visible')
+                    .should('have.class', 'show');
+            } else {
+                cy.xpath('//div[contains(@class, "dropdown-menu") and contains(@class, "show")]')
+                    .should('be.visible')
+                    .should('have.class', 'show');
+            }
+        });
     }
     validateEllipsisMenu(optionList=[]){
         let len = optionList.length;
