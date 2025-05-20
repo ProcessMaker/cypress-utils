@@ -2543,19 +2543,30 @@ export class Process {
     */
     createCategoryAPI(payload,ignoreTakenError){
         return cy.window().then(win => {
-            return win.ProcessMaker.apiClient.post('/process_categories', payload).then(response => {
-                const category = response.data.data;
-                console.log('THIS IS RESULT OF CATEGORY: ', category);
-                return category;
-            })
-            .catch(err => {
-                if (
-                    ignoreTakenError && 
-                    err.response.data.message.toLowerCase() === 'The Name has already been taken.') {
-                        return this.getCategoryByNameAPI(payload.name);
-                } else {
-                    return this.getCategoryByNameAPI(payload.name);
-                }
+            // wait for ProcessMaker to be available
+            return new Cypress.Promise((resolve) => {
+                const checkProcessMaker = () => {
+                    if (win.ProcessMaker && win.ProcessMaker.apiClient) {
+                        resolve(win.ProcessMaker.apiClient.post('/process_categories', payload)
+                            .then(response => {
+                                const category = response.data.data;
+                                console.log('THIS IS RESULT OF CATEGORY: ', category);
+                                return category;
+                            })
+                            .catch(err => {
+                                if (
+                                    ignoreTakenError && 
+                                    err.response.data.message.toLowerCase() === 'The Name has already been taken.') {
+                                        return this.getCategoryByNameAPI(payload.name);
+                                } else {
+                                    return this.getCategoryByNameAPI(payload.name);
+                                }
+                            }));
+                    } else {
+                        setTimeout(checkProcessMaker, 100);
+                    }
+                };
+                checkProcessMaker();
             });
         });
     }
