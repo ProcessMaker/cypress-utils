@@ -286,21 +286,42 @@ export class Requests {
      * @param attempts: it is not change
      * @return nothing returns
      */
-    waitUntilElementIsVisible(type,selectorXPath,maxAttempts=18, attempts=0){
+    waitUntilElementIsVisible(type, selectorXPath, maxAttempts = 18, attempts = 0) {
         if (attempts > maxAttempts) {
-            throw new Error("Timed out waiting for report to be generated");
-        }
-        if(type === 'selector'){
-            cy.wait(5000);
-            cy.xpath('//body')
-                .then($body => {
-                    if ($body.find(selectorXPath).length <= 0) {
-                        cy.reload();
-                        this.waitUntilElementIsVisible(type,selectorXPath,maxAttempts, attempts+1);
-                    }
-                })
+            throw new Error(`Element not found after ${maxAttempts} attempts: ${selectorXPath}`);
         }
 
+        if (type === 'selector') {
+            cy.wait(5000);
+            cy.get('body').then($body => {
+                if ($body.find(selectorXPath).length <= 0) {
+                    cy.log(`Intento ${attempts + 1} de ${maxAttempts}: Element not found, reloading page...`);
+                    cy.reload();
+                    // wait for the page to reload completely
+                    cy.get('body').should('be.visible');
+                    this.waitUntilElementIsVisible(type, selectorXPath, maxAttempts, attempts + 1);
+                } else {
+                    cy.log('Element found successfully');
+                    // verify that the element is interactive
+                    cy.get(selectorXPath).should('be.visible').should('not.be.disabled');
+                }
+            });
+        } else if (type === 'xpath') {
+            cy.wait(5000);
+            cy.get('body').then($body => {
+                if ($body.find(selectorXPath).length <= 0) {
+                    cy.log(`Intento ${attempts + 1} de ${maxAttempts}: Elemento no encontrado, recargando página...`);
+                    cy.reload();
+                    // wait for the page to reload completely
+                    cy.get('body').should('be.visible');
+                    this.waitUntilElementIsVisible(type, selectorXPath, maxAttempts, attempts + 1);
+                } else {
+                    cy.log('Elemento encontrado exitosamente');
+                    // verify that the element is interactive
+                    cy.xpath(selectorXPath).should('be.visible').should('not.be.disabled');
+                }
+            });
+        }
     }
     openRequestByNameForAllCompletedProcess(processName) {
         navHelper.navigateToCompletedRequests();
