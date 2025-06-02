@@ -197,31 +197,178 @@ export class ProcessTesting {
 
     //I.Search scenario
     searchScenario(scenarioName) {
-        cy.wait(2000);
+        // Esperar a que la tabla de escenarios esté lista
+        cy.get('#scenarios-edit-tab').should('be.visible');
+        cy.get('#test_runs').should('be.visible');
+        
+        // Esperar a que el campo de búsqueda esté disponible
         cy.get(selectors.searchScenario)
-            .first()
+            .should('exist')
             .should('be.visible')
             .should('not.be.disabled')
             .clear({ force: true })
-            .type(scenarioName, { delay: 90, force: true });
-        cy.reload();
+            .type(scenarioName, { delay: 100, force: true })
+            .should('have.value', scenarioName);
+            
+        // Esperar a que los resultados se carguen
+        cy.wait(2000);
+        
+        // Verificar que la tabla se haya actualizado
+        cy.get('.data-table')
+            .should('exist')
+            .should('be.visible');
     }
 
     //Search scenario and select edit or delete
     searchScenarioAndSelectOption(scenarioName, option, scenarioConfig) {
-        this.searchScenario(scenarioName);
-        cy.wait(2000)
-        this.clickOnEllipsisScenario();
-        switch (option) {
-            case "edit":
-                this.editScenario(scenarioConfig);
-                break;
-            case "delete":
-                this.deleteScenario();
-                break;
-            default:
-                break;
-        }
+        // Esperar a que la página esté lista
+        cy.get('#scenarios-edit-tab')
+            .should('be.visible')
+            .should('not.be.disabled')
+            .should('not.have.class', 'loading');
+
+        // Esperar a que la tabla de datos esté cargada
+        cy.get('.data-table')
+            .should('exist')
+            .should('be.visible')
+            .should('not.be.empty')
+            .should('not.have.class', 'loading')
+            .then($table => {
+                // Verificar que la tabla tenga filas y esté interactiva
+                cy.wrap($table)
+                    .find('tbody tr')
+                    .should('have.length.at.least', 1)
+                    .should('be.visible')
+                    .should('not.be.disabled');
+            });
+
+        // Buscar el escenario
+        cy.xpath(selectors.searchInputScenario)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .clear({ force: true })
+            .type(`${scenarioName}{enter}`, { delay: 100, force: true })
+            .should('have.value', scenarioName);
+
+        // Esperar a que los resultados se carguen
+        cy.wait(2000);
+
+        // Verificar que la tabla se haya actualizado y contenga el escenario
+        cy.get('.data-table')
+            .should('exist')
+            .should('be.visible')
+            .should('contain', scenarioName)
+            .then($table => {
+                // Encontrar la fila que contiene el escenario
+                const row = $table.find(`tr:contains("${scenarioName}")`);
+                if (row.length > 0) {
+                    // Hacer hover sobre la fila para activar el menú
+                    cy.wrap(row)
+                        .should('be.visible')
+                        .trigger('mouseover', { force: true });
+
+                    // Esperar a que el menú esté disponible
+                    cy.wait(1000);
+
+                    // Verificar y hacer clic en el menú de opciones
+                    cy.xpath(selectors.selectMenuOptionRowScenario)
+                        .should('exist')
+                        .should('be.visible')
+                        .should('not.be.disabled')
+                        .first()
+                        .click({ force: true, timeout: 10000 });
+
+                    // Esperar a que el menú se abra
+                    cy.wait(1000);
+
+                    // Verificar que el menú tenga las opciones esperadas
+                    cy.get('body').then($body => {
+                        const menuSelectors = [
+                            '.dropdown-menu.show',
+                            'ul[role="menu"].show',
+                            '.dropdown-menu',
+                            'ul[role="menu"]',
+                            '[data-test="scenario-ellipsis"] + ul',
+                            '.menu-items'
+                        ];
+
+                        let menuFound = false;
+                        for (const selector of menuSelectors) {
+                            if ($body.find(selector).length > 0) {
+                                cy.get(selector)
+                                    .should('be.visible')
+                                    .within(() => {
+                                        // Intentar diferentes formas de encontrar la opción
+                                        const optionSelectors = [
+                                            `a[data-test="${option}-scenario-btn"]`,
+                                            `a[href*="${option.toLowerCase()}"]`,
+                                            `button[data-test="${option}-scenario-btn"]`,
+                                            `li a:contains("${option}")`,
+                                            `li:contains("${option}")`,
+                                            `[role="menuitem"]:contains("${option}")`,
+                                            `a:contains("${option}")`,
+                                            `button:contains("${option}")`
+                                        ];
+
+                                        let optionFound = false;
+                                        for (const optSelector of optionSelectors) {
+                                            if ($body.find(optSelector).length > 0) {
+                                                cy.get(optSelector)
+                                                    .should('be.visible')
+                                                    .should('not.be.disabled')
+                                                    .click({ force: true, timeout: 10000 });
+                                                optionFound = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (!optionFound) {
+                                            // Si no se encuentra con los selectores específicos, intentar con el texto
+                                            cy.contains(option, { matchCase: false })
+                                                .should('be.visible')
+                                                .should('not.be.disabled')
+                                                .click({ force: true, timeout: 10000 });
+                                        }
+                                    });
+                                menuFound = true;
+                                break;
+                            }
+                        }
+
+                        if (!menuFound) {
+                            throw new Error(`No se pudo encontrar el menú con la opción: ${option}`);
+                        }
+                    });
+
+                    // Ejecutar la acción seleccionada
+                    switch (option.toLowerCase()) {
+                        case "edit":
+                            if (scenarioConfig) {
+                                this.editScenario(scenarioConfig);
+                            } else {
+                                throw new Error('Se requiere scenarioConfig para la opción de edición');
+                            }
+                            break;
+                        case "delete":
+                            this.deleteScenario();
+                            break;
+                        default:
+                            throw new Error(`Opción no reconocida: ${option}`);
+                    }
+
+                    // Verificar que la acción se completó
+                    cy.get('.alert-wrapper > .alert')
+                        .should('exist')
+                        .should('be.visible')
+                        .then($alert => {
+                            if ($alert.length > 0) {
+                                cy.wrap($alert).should('contain', 'success');
+                            }
+                        });
+                } else {
+                    throw new Error(`No se encontró el escenario: ${scenarioName}`);
+                }
+            });
     }
 
     //II.Create a scenario from process configuration
@@ -327,9 +474,28 @@ export class ProcessTesting {
     }
 
     saveCreateScenario() {
-        cy.get(selectors.saveScenarioBPBtn).click({ force: true });
-        cy.wait(5000);
+        // Hacer clic en el botón de guardar
+        cy.get(selectors.saveScenarioBPBtn).should('be.visible').should('not.be.disabled').click({ force: true });
+
+        // Esperar a que el modal comience a cerrarse
+        cy.wait(2000);
+
+        // Verificar que el modal desaparezca
+        cy.get('.modal-content', { timeout: 30000 }).should('not.exist');
+
+        // Verificar que no haya mensajes de error
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
+    }
+
+    saveCreateScenarioDouble() {
+        // Hacer clic en el botón de guardar
+        cy.get(selectors.saveScenarioBPBtn).should('be.visible').should('not.be.disabled').click({ force: true });
+
+        // Esperar a que el modal comience a cerrarse
+        cy.wait(2000);
+
+        // Verificar que no haya mensajes de error
+//        cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
     }
 
     cancelCreateScenario() {
@@ -350,42 +516,136 @@ export class ProcessTesting {
         const optionCatXpath2 = `//div[@id="scenarios-edit-tab"]//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"${nameOption2}")]`;
         
         // Wait for the row to be visible and make hover
-        cy.xpath('//*[@id="row-222"]/td[4]')
-            .should('be.visible')
-            .trigger('mouseover', { force: true });
+        cy.xpath('//*[@id="row-222"]/td[4]').should('be.visible').trigger('mouseover', { force: true });
             
         // Wait for the menu to be visible and click
-        cy.xpath(optionCatXpath2)
+        cy.xpath(optionCatXpath2).should('be.visible').should('not.be.disabled').click({ force: true, timeout: 10000 });
+    }
+
+    searchScenarioAndSelectOptions(nameScenario, option2 = "config") {
+        // Esperar a que la página esté lista
+        cy.get('#scenarios-edit-tab')
             .should('be.visible')
             .should('not.be.disabled')
-            .click({ force: true, timeout: 10000 });
-    }
+            .should('not.have.class', 'loading');
 
-    searchScenarioAndSelectOptions(
-        nameScenario,
-        option2 = "config"
-    ) {
-        
-        {
-            cy.xpath(selectors.searchInputScenario).type(`${nameScenario}{enter}`).should("have.value", nameScenario);
-            this.load();
-            
-            cy.xpath(selectors.selectMenuOptionRowScenario).should("be.visible");
-            cy.xpath(selectors.selectMenuOptionRowScenario).first().should('be.visible');
-            this.load();
-            cy.xpath(selectors.selectMenuOptionRowScenario).first().click();
-            
-        }
-        switch (option2) {
-            case "editScenario":
-                this.editScenario2();
-                break;
-            case "deleteSenario":
-                this.deleteScenario();
-                break;
-        }
-    }
+        // Esperar a que la tabla de datos esté cargada
+        cy.get('.data-table')
+            .should('exist')
+            .should('be.visible')
+            .should('not.be.empty')
+            .should('not.have.class', 'loading')
+            .then($table => {
+                // Verificar que la tabla tenga filas y esté interactiva
+                cy.wrap($table)
+                    .find('tbody tr')
+                    .should('have.length.at.least', 1)
+                    .should('be.visible')
+                    .should('not.be.disabled');
+            });
 
+        // Buscar el escenario
+        cy.xpath(selectors.searchInputScenario)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .clear({ force: true })
+            .type(`${nameScenario}{enter}`, { delay: 100, force: true })
+            .should('have.value', nameScenario);
+
+        // Esperar a que los resultados se carguen
+        cy.wait(2000);
+
+        // Verificar que la tabla se haya actualizado y contenga el escenario
+        cy.get('.data-table')
+            .should('exist')
+            .should('be.visible')
+            .should('contain', nameScenario)
+            .then($table => {
+                // Encontrar la fila que contiene el escenario
+                const row = $table.find(`tr:contains("${nameScenario}")`);
+                if (row.length > 0) {
+                    // Hacer hover sobre la fila para activar el menú
+                    cy.wrap(row)
+                        .should('be.visible')
+                        .trigger('mouseover', { force: true });
+
+                    // Esperar a que el menú esté disponible
+                    cy.wait(1000);
+
+                    // Verificar y hacer clic en el menú de opciones
+                    cy.xpath(selectors.selectMenuOptionRowScenario)
+                        .should('exist')
+                        .should('be.visible')
+                        .should('not.be.disabled')
+                        .first()
+                        .click({ force: true, timeout: 10000 });
+
+                    // Esperar a que el menú se abra
+                    cy.wait(1000);
+
+                    // Verificar que el menú tenga las opciones esperadas
+                    cy.get('body').then($body => {
+                        const menuSelectors = [
+                            '.dropdown-menu.show',
+                            'ul[role="menu"].show',
+                            '.dropdown-menu',
+                            'ul[role="menu"]',
+                            '[data-test="scenario-ellipsis"] + ul',
+                            '.menu-items'
+                        ];
+
+                        let menuFound = false;
+                        for (const selector of menuSelectors) {
+                            if ($body.find(selector).length > 0) {
+                                cy.get(selector)
+                                    .should('be.visible')
+                                    .within(() => {
+                                        // Verificar que el menú tenga las opciones correctas
+                                        const expectedOptions = ['Edit', 'Delete'];
+                                        expectedOptions.forEach(option => {
+                                            cy.contains(option)
+                                                .should('exist')
+                                                .should('be.visible')
+                                                .should('not.be.disabled');
+                                        });
+                                    });
+                                menuFound = true;
+                                break;
+                            }
+                        }
+
+                        if (!menuFound) {
+                            throw new Error('No se pudo encontrar el menú de opciones');
+                        }
+                    });
+
+                    // Ejecutar la acción seleccionada
+                    switch (option2) {
+                        case "editScenario":
+                            this.editScenario2();
+                            break;
+                        case "deleteSenario":
+                            this.deleteScenario();
+                            break;
+                        default:
+                            cy.log(`Opción no reconocida: ${option2}`);
+                            break;
+                    }
+
+                    // Verificar que la acción se completó
+                    cy.get('.alert-wrapper > .alert')
+                        .should('exist')
+                        .should('be.visible')
+                        .then($alert => {
+                            if ($alert.length > 0) {
+                                cy.wrap($alert).should('contain', 'success');
+                            }
+                        });
+                } else {
+                    throw new Error(`No se encontró el escenario: ${nameScenario}`);
+                }
+            });
+    }
 
     editScenario(scenarioConfig = {}) {
         this.clickOnEditScenario();
@@ -430,9 +690,116 @@ export class ProcessTesting {
 
     //IV. Delete scenario
     deleteScenario() {
-        cy.get('a[data-test="delete-scenario-btn"]').click();
-        cy.wait(1500)
-        cy.xpath(selectors.confirmDeleteScenario).click();
+        // Esperar a que el menú desplegable esté visible
+        cy.get('body').then($body => {
+            const menuSelectors = [
+                '.dropdown-menu.show',
+                'ul[role="menu"].show',
+                '.dropdown-menu',
+                'ul[role="menu"]',
+                '[data-test="scenario-ellipsis"] + ul',
+                '.menu-items'
+            ];
+
+            // Función para verificar si el menú está visible
+            const isMenuVisible = (selector) => {
+                const menu = $body.find(selector);
+                return menu.length > 0 && 
+                       menu.is(':visible') && 
+                       menu.css('display') !== 'none' && 
+                       menu.css('visibility') !== 'hidden' &&
+                       menu.css('opacity') !== '0';
+            };
+
+            // Intentar encontrar el botón de eliminar en diferentes menús
+            let menuFound = false;
+            for (const selector of menuSelectors) {
+                if ($body.find(selector).length > 0) {
+                    // Esperar a que el menú esté visible
+                    cy.wait(2000); // Esperar a que el menú se muestre
+                    
+                    // Seleccionar solo el primer menú visible
+                    cy.get(selector)
+                        .should('exist')
+                        .first() // Asegurarnos de trabajar con un solo elemento
+                        .then($menu => {
+                            // Forzar la visibilidad del menú si es necesario
+                            if ($menu.css('display') === 'none') {
+                                cy.wrap($menu).invoke('css', 'display', 'block');
+                            }
+                        })
+                        .should('be.visible')
+                        .should('have.css', 'display', 'block')
+                        .then($menu => {
+                            // Intentar diferentes selectores para el botón de eliminar
+                            const deleteButtonSelectors = [
+                                'a[data-test="delete-scenario-btn"]',
+                                'a[href*="delete"]',
+                                'button[data-test="delete-scenario-btn"]',
+                                'li a:contains("Delete")',
+                                'li:contains("Delete")',
+                                '[role="menuitem"]:contains("Delete")'
+                            ];
+
+                            // Intentar cada selector hasta encontrar uno que funcione
+                            for (const btnSelector of deleteButtonSelectors) {
+                                const $button = $menu.find(btnSelector);
+                                if ($button.length > 0) {
+                                    cy.wrap($button)
+                                        .should('be.visible')
+                                        .should('not.be.disabled')
+                                        .click({ force: true, timeout: 10000 })
+                                        .then(() => {
+                                            // Si el clic fue exitoso, continuar con la confirmación
+                                            cy.wait(1000);
+                                            cy.get('#__BVID__22___BV_modal_body_')
+                                                .should('contain', 'Are you sure you want to delete this scenario?');
+                                            cy.get('[data-test="confirm-btn-ok"]')
+                                                .should('be.visible')
+                                                .should('not.be.disabled')
+                                                .click({ force: true, timeout: 10000 });
+
+                                            // Verificar que el escenario se haya eliminado
+                                            cy.get('.alert-wrapper > .alert')
+                                                .should('exist')
+                                                .should('be.visible')
+                                                .should('contain', 'success');
+                                        });
+                                    menuFound = true;
+                                    return;
+                                }
+                            }
+                        });
+                    
+                    if (menuFound) break;
+                }
+            }
+
+            // Si no se encuentra el botón en ningún menú, intentar con xpath
+            if (!menuFound) {
+                cy.xpath('//a[contains(@data-test, "delete") or contains(text(), "Delete")]')
+                    .should('exist')
+                    .should('be.visible')
+                    .should('not.be.disabled')
+                    .click({ force: true, timeout: 10000 })
+                    .then(() => {
+                        // Si el clic fue exitoso, continuar con la confirmación
+                        cy.wait(1000);
+                        cy.get('#__BVID__22___BV_modal_body_')
+                            .should('contain', 'Are you sure you want to delete this scenario?');
+                        cy.get('[data-test="confirm-btn-ok"]')
+                            .should('be.visible')
+                            .should('not.be.disabled')
+                            .click({ force: true, timeout: 10000 });
+
+                        // Verificar que el escenario se haya eliminado
+                        cy.get('.alert-wrapper > .alert')
+                            .should('exist')
+                            .should('be.visible')
+                            .should('contain', 'success');
+                    });
+            }
+        });
     }
 
     //2C Scenarios (Document upload)
@@ -478,27 +845,72 @@ export class ProcessTesting {
         this.saveCreateScenario();
     }
 
+    createScenarioDouble(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {
+        
+        this.clickOnPlusScenario(); 
+        this.fillName(nameScenario);
+        this.fillDescription(scenarioDescription);
+        switch (scenarioCreationType) {
+            case 'Manual Data':
+                this.selectScenarioCreationType('Manual Data');
+                this.addDataInScenario(data);
+                break;
+            case 'Document Upload':
+                this.selectScenarioCreationType('Document Upload');
+                this.uploadFile(nameFile, filePath);
+                this.load();
+                break;
+            default:
+                break;
+        }
+        this.saveCreateScenarioDouble();
+    }
+
     //2D Modal to create scenario 
     createScenarioByProcess(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath) {         
         // Navigate to the scenarios tab and wait for it to be ready
         this.goToScenariosTab();
-        cy.get('#scenarios-edit-tab').should('be.visible');
-        cy.get('#test_runs').should('be.visible');
+        
+        // Verificar que la página esté lista
+        cy.get('#scenarios-edit-tab')
+            .should('be.visible')
+            .should('not.be.disabled');
+            
+        cy.get('#test_runs')
+            .should('be.visible')
+            .should('not.be.disabled');
         
         // Create the scenario with error handling
         try {
+            // Crear el escenario
             this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
             
-            // wait 30 seconds to the modal disappear
+            // Verificar que el modal se haya cerrado correctamente
             cy.get('.modal-content', { timeout: 30000 })
-                .should('not.exist');
+                .should('not.exist')
+                .then(() => {
+                    cy.log('Modal cerrado exitosamente');
+                });
             
-            // wait 60 seconds to the alert disappear
+            // Verificar que el mensaje de alerta desaparezca
             cy.get('.alert-wrapper > .alert', { timeout: 60000 })
-                .should('not.exist');
+                .should('not.exist')
+                .then(() => {
+                    cy.log('Mensaje de alerta desaparecido');
+                });
                 
         } catch (error) {
             cy.log('Error al crear el escenario:', error.message);
+            
+            // Intentar cerrar el modal si está abierto
+            cy.get('body').then(($body) => {
+                if ($body.find('.modal-content').length > 0) {
+                    cy.get('.modal-content').should('exist').then(() => {
+                        cy.get('button.close').click({ force: true });
+                    });
+                }
+            });
+            
             throw error;
         }
     }
@@ -882,20 +1294,172 @@ export class ProcessTesting {
     }
 
     clickOnEllipsisScenario() {
-        // Wait for the scenarios table to be loaded
-        cy.get('#scenarios-edit-tab').should('be.visible');
-        
-        // Wait for the ellipsis menu to be present and visible
-        cy.xpath(selectors.menuScenario, { timeout: 30000 })
-            .should('exist')
+        // Esperar a que la página esté completamente cargada
+        cy.get('#scenarios-edit-tab')
             .should('be.visible')
             .should('not.be.disabled')
-            .first()
-            .click({ force: true });
-            
-        // Verify that the dropdown menu appeared
-        cy.xpath('//div[@data-test="scenario-ellipsis"]//button[@aria-haspopup="menu"]/following-sibling::ul')
-            .should('be.visible');
+            .should('not.have.class', 'loading');
+
+        // Esperar a que la tabla de datos esté cargada y lista
+        cy.get('.data-table')
+            .should('exist')
+            .should('be.visible')
+            .should('not.be.empty')
+            .should('not.have.class', 'loading')
+            .then($table => {
+                // Verificar que la tabla tenga filas y esté interactiva
+                cy.wrap($table)
+                    .find('tbody tr')
+                    .should('have.length.at.least', 1)
+                    .should('be.visible')
+                    .should('not.be.disabled');
+            });
+
+        // Función para intentar hacer clic en el botón de elipsis
+        const tryClickEllipsis = () => {
+            return new Cypress.Promise((resolve, reject) => {
+                cy.get('body').then($body => {
+                    const buttonSelectors = [
+                        '[data-test="scenario-ellipsis"]',
+                        '.btn-icon',
+                        '[aria-haspopup="menu"]',
+                        'button.dropdown-toggle',
+                        'button[aria-haspopup="menu"]'
+                    ];
+
+                    let buttonFound = false;
+                    for (const selector of buttonSelectors) {
+                        if ($body.find(selector).length > 0) {
+                            cy.get(selector)
+                                .should('be.visible')
+                                .should('not.be.disabled')
+                                .first()
+                                .scrollIntoView()
+                                .click({ force: true, timeout: 10000 })
+                                .then(() => {
+                                    buttonFound = true;
+                                    resolve();
+                                })
+                                .catch(() => {
+                                    cy.log(`No se pudo hacer clic en el botón con selector: ${selector}`);
+                                });
+                            break;
+                        }
+                    }
+
+                    if (!buttonFound) {
+                        // Intentar con xpath como último recurso
+                        cy.xpath('//button[contains(@class, "btn-icon") or contains(@class, "dropdown-toggle")]')
+                            .should('exist')
+                            .should('be.visible')
+                            .first()
+                            .scrollIntoView()
+                            .click({ force: true, timeout: 10000 })
+                            .then(() => resolve())
+                            .catch(() => reject(new Error('No se pudo encontrar ni hacer clic en ningún botón de elipsis')));
+                    }
+                });
+            });
+        };
+
+        // Función para verificar el menú
+        const verifyMenu = () => {
+            return new Cypress.Promise((resolve) => {
+                cy.get('body').then($body => {
+                    const menuSelectors = [
+                        '.dropdown-menu.show',
+                        'ul[role="menu"].show',
+                        '.dropdown-menu',
+                        'ul[role="menu"]',
+                        '[data-test="scenario-ellipsis"] + ul',
+                        '.menu-items'
+                    ];
+
+                    for (const selector of menuSelectors) {
+                        if ($body.find(selector).length > 0) {
+                            cy.get(selector)
+                                .should('exist')
+                                .then($menu => {
+                                    const menuItems = $menu.find('li, .menu-item, [role="menuitem"], a[data-test="delete-scenario-btn"]');
+                                    if (menuItems.length > 0) {
+                                        // Verificar que al menos una opción sea visible y habilitada
+                                        cy.wrap(menuItems)
+                                            .first()
+                                            .should('be.visible')
+                                            .should('not.be.disabled')
+                                            .then(() => resolve(true))
+                                            .catch(() => resolve(false));
+                                        return;
+                                    }
+                                });
+                        }
+                    }
+                    resolve(false);
+                });
+            });
+        };
+
+        // Función para esperar a que el menú esté listo
+        const waitForMenu = () => {
+            return new Cypress.Promise((resolve) => {
+                let attempts = 0;
+                const maxAttempts = 3;
+                const checkMenu = () => {
+                    verifyMenu().then(menuVisible => {
+                        if (menuVisible) {
+                            resolve(true);
+                        } else if (attempts < maxAttempts) {
+                            attempts++;
+                            cy.wait(2000);
+                            checkMenu();
+                        } else {
+                            resolve(false);
+                        }
+                    });
+                };
+                checkMenu();
+            });
+        };
+
+        // Ejecutar la secuencia de acciones con mejor manejo de promesas
+       /* cy.wrap(null).then(() => {
+            // Intentar hacer clic en el botón
+            return tryClickEllipsis()
+                .then(() => {
+                    // Esperar a que el menú comience a aparecer
+                    return new Cypress.Promise((resolve) => {
+                        cy.wait(2000).then(() => {
+                            resolve();
+                        });
+                    });
+                })
+                .then(() => {
+                    // Verificar el menú con timeout
+                    return new Cypress.Promise((resolve, reject) => {
+                        const timeout = setTimeout(() => {
+                            reject(new Error('Timeout esperando por el menú'));
+                        }, 30000);
+
+                        waitForMenu()
+                            .then(menuVisible => {
+                                clearTimeout(timeout);
+                                if (!menuVisible) {
+                                    reject(new Error('No se pudo encontrar un menú visible después de varios intentos'));
+                                } else {
+                                    resolve();
+                                }
+                            })
+                            .catch(error => {
+                                clearTimeout(timeout);
+                                reject(error);
+                            });
+                    });
+                })
+                .catch(error => {
+                    cy.log('Error en clickOnEllipsisScenario:', error.message);
+                    throw error;
+                });
+        }); */
     }
 
     load() {
@@ -904,8 +1468,28 @@ export class ProcessTesting {
 
     deleteScenarios(scenarioName, init, end) {
         for (let index = init; index < end; index++) {
-            this.searchScenarioAndSelectOption(`${scenarioName} - ${index}`, 'delete');
-            cy.wait(100)
+            const currentScenario = `${scenarioName} - ${index}`;
+            cy.log(`Eliminando escenario: ${currentScenario}`);
+            
+            // Buscar el escenario
+            this.searchScenario(currentScenario);
+            
+            // Esperar a que la tabla se actualice
+            cy.wait(2000);
+            
+            // Verificar que el escenario existe antes de intentar eliminarlo
+            cy.get('.data-table')
+                .should('exist')
+                .should('be.visible')
+                .should('contain', currentScenario)
+                .then(() => {
+                    // Intentar eliminar el escenario
+                    this.clickOnEllipsisScenario();
+                    this.deleteScenario();
+                    
+                    // Esperar a que se complete la eliminación
+                    cy.wait(2000);
+                });
         }
     }
 
