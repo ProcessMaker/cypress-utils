@@ -101,6 +101,15 @@ export default {
         '[data-test="scenario-ellipsis"] + ul',
         '.menu-items'
     ],
+    alertSelectors = [
+        '.alert-wrapper > .alert',
+        '.alert-success',
+        '.alert',
+        '[role="alert"]',
+        '.notification-success',
+        '.alertBox',
+        '.alert-dismissible'
+    ],
     deleteButtonSelectors: [
         'a[data-test="delete-scenario-btn"]',
         'a[href*="delete"]',
