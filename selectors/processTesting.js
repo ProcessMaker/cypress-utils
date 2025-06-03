@@ -93,8 +93,25 @@ export default {
     completedBtn: '//button[text()[normalize-space()="Complete Task"]]',
     searchInputScenario: '//div[@id="scenarios-edit-tab"]//input[@placeholder="Search"]',
     selectMenuOptionRowScenario: '//div[@id="scenarios-edit-tab"]//button[@aria-haspopup="menu"]',
+    menuSelectors: [
+        '.dropdown-menu.show',
+        'ul[role="menu"].show',
+        '.dropdown-menu',
+        'ul[role="menu"]',
+        '[data-test="scenario-ellipsis"] + ul',
+        '.menu-items'
+    ],
+    deleteButtonSelectors: [
+        'a[data-test="delete-scenario-btn"]',
+        'a[href*="delete"]',
+        'button[data-test="delete-scenario-btn"]',
+        'li a:contains("Delete")',
+        'li:contains("Delete")',
+        '[role="menuitem"]:contains("Delete")',
+        'button:contains("Delete")',
+        '[data-test="delete"]'
 
-
+    ]
 
 
 

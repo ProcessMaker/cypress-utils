@@ -606,7 +606,7 @@ export class ProcessTesting {
                         }
 
                         if (!menuFound) {
-                            throw new Error('No se pudo encontrar el menú de opciones');
+                            throw new Error('Menu not found');
                         }
                     });
 
@@ -619,13 +619,13 @@ export class ProcessTesting {
                             this.deleteScenario();
                             break;
                         default:
-                            cy.log(`Opción no reconocida: ${option2}`);
+                            cy.log(`Option not recognized: ${option2}`);
                             break;
                     }
 
                     
                 } else {
-                    throw new Error(`No se encontró el escenario: ${nameScenario}`);
+                    throw new Error(`Scenario not found: ${nameScenario}`);
                 }
             });
     }
@@ -667,7 +667,7 @@ export class ProcessTesting {
 
     //IV. Delete scenario
     deleteScenario() {
-        // Función para verificar si un elemento está realmente visible
+        // Function to verify if an element is really visible
         const isElementVisible = ($el) => {
             return $el.length > 0 && 
                    $el.is(':visible') && 
@@ -676,13 +676,13 @@ export class ProcessTesting {
                    $el.css('opacity') !== '0';
         };
 
-        // Función para forzar la visibilidad de un elemento
+        // Function to force the visibility of an element
         const forceElementVisible = ($el) => {
             cy.wrap($el)
                 .invoke('attr', 'style', 'display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;');
         };
 
-        // Función para intentar hacer clic en el botón de eliminar
+        // Function to try to click on the delete button
         const tryClickDeleteButton = ($menu) => {
             const deleteButtonSelectors = [
                 'a[data-test="delete-scenario-btn"]',
@@ -714,7 +714,7 @@ export class ProcessTesting {
             return false;
         };
 
-        // Función para confirmar la eliminación
+        // Function to confirm the deletion
         const confirmDeletion = () => {
             return cy.get('#__BVID__22___BV_modal_body_', { timeout: 30000 })
                 .should('exist')
@@ -729,16 +729,16 @@ export class ProcessTesting {
                 });
         };
 
-        // Función para verificar el mensaje de éxito
+        // Function to verify the success message
         const verifySuccessMessage = () => {
-            // Esperar a que el modal de confirmación desaparezca
+            // Wait for the confirmation modal to disappear
             cy.get('#__BVID__22___BV_modal_body_', { timeout: 30000 })
                 .should('not.exist');
 
-            // Esperar un momento para que aparezca el mensaje de alerta
+            // Wait for a moment for the alert message to appear
             cy.wait(2000);
 
-            // Intentar diferentes selectores para el mensaje de éxito
+            // Try different selectors for the success message
             const alertSelectors = [
                 '.alert-wrapper > .alert',
                 '.alert-success',
@@ -749,7 +749,7 @@ export class ProcessTesting {
                 '.alert-dismissible'
             ];
 
-            // Verificar cada selector hasta encontrar uno que funcione
+            // Verify each selector until one works
             let alertFound = false;
             for (const selector of alertSelectors) {
                 cy.get('body').then($body => {
@@ -758,7 +758,7 @@ export class ProcessTesting {
                             .should('exist')
                             .should('be.visible')
                             .then($alert => {
-                                // Verificar si el mensaje contiene texto de éxito
+                                // Verify if the message contains success text
                                 const alertText = $alert.text().toLowerCase();
                                 if (alertText.includes('success') || 
                                     alertText.includes('deleted') || 
@@ -772,7 +772,7 @@ export class ProcessTesting {
                 });
             }
 
-            // Si no se encuentra ningún mensaje de alerta, verificar que la tabla se haya actualizado
+            // If no alert message is found, verify that the table has been updated
             if (!alertFound) {
                 cy.get('.data-table')
                     .should('exist')
@@ -780,16 +780,16 @@ export class ProcessTesting {
                     .should('not.contain', 'Loading')
                     .should('not.contain', 'No Data Available')
                     .then($table => {
-                        cy.log('No se encontró mensaje de alerta, pero la tabla se actualizó correctamente');
+                        cy.log('No alert message found, but the table was updated correctly');
                     });
             }
         };
 
-        // Esperar a que la página esté lista
+                // Wait for the page to be ready
         cy.get('#testing-configuration')
             .should('exist')
             .then(() => {
-                // Intentar diferentes selectores de menú
+                // Try different menu selectors
                 const menuSelectors = [
                     '.dropdown-menu.show',
                     'ul[role="menu"].show',
@@ -799,7 +799,7 @@ export class ProcessTesting {
                     '.menu-items'
                 ];
 
-                // Intentar cada selector de menú
+                // Try each menu selector
                 let menuProcessed = false;
                 for (const selector of menuSelectors) {
                     if (menuProcessed) break;
@@ -807,7 +807,7 @@ export class ProcessTesting {
                     cy.get('body').then($body => {
                         const $menu = $body.find(selector);
                         if ($menu.length > 0) {
-                            // Asegurar que el menú esté visible
+                            // Ensure the menu is visible
                             if (!isElementVisible($menu)) {
                                 forceElementVisible($menu);
                             }
@@ -826,7 +826,7 @@ export class ProcessTesting {
                     });
                 }
 
-                // Si no se encontró ningún menú o no se pudo hacer clic, intentar con XPath
+                // If no menu is found or the click fails, try with XPath
                 if (!menuProcessed) {
                     cy.wait(4000);
                     cy.get('[data-test="confirm-btn-ok"]').should('be.visible');
