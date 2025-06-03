@@ -101,7 +101,7 @@ export default {
         '[data-test="scenario-ellipsis"] + ul',
         '.menu-items'
     ],
-    alertSelectors = [
+    alertSelectors : [
         '.alert-wrapper > .alert',
         '.alert-success',
         '.alert',
