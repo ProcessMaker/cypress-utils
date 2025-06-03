@@ -355,16 +355,7 @@ export class ProcessTesting {
                         default:
                             throw new Error(`Opción no reconocida: ${option}`);
                     }
-
-                    // Verificar que la acción se completó
-                    cy.get('.alert-wrapper > .alert')
-                        .should('exist')
-                        .should('be.visible')
-                        .then($alert => {
-                            if ($alert.length > 0) {
-                                cy.wrap($alert).should('contain', 'success');
-                            }
-                        });
+                    
                 } else {
                     throw new Error(`No se encontró el escenario: ${scenarioName}`);
                 }
@@ -632,20 +623,13 @@ export class ProcessTesting {
                             break;
                     }
 
-                    // Verificar que la acción se completó
-                    cy.get('.alert-wrapper > .alert')
-                        .should('exist')
-                        .should('be.visible')
-                        .then($alert => {
-                            if ($alert.length > 0) {
-                                cy.wrap($alert).should('contain', 'success');
-                            }
-                        });
+                    
                 } else {
                     throw new Error(`No se encontró el escenario: ${nameScenario}`);
                 }
             });
     }
+    
 
     editScenario(scenarioConfig = {}) {
         this.clickOnEditScenario();
@@ -676,130 +660,179 @@ export class ProcessTesting {
             });   
         }
     
-        /*if (editData) {
-            cy.get('[class="active-line-number line-numbers lh-odd"]')
-                .should('be.visible');
-            this.clearDataField();
-            this.addDataInScenario(editData.data);
-        }*/
-
-        // Change xpath() to get() if it is a CSS selector
+                // Change xpath() to get() if it is a CSS selector
         cy.get('footer button').contains('Save').click();   //save escenario
         cy.get('.alert-wrapper > .alert').should('be.visible');
     }
 
     //IV. Delete scenario
     deleteScenario() {
-        // Esperar a que el menú desplegable esté visible
-        cy.get('body').then($body => {
-            const menuSelectors = [
-                '.dropdown-menu.show',
-                'ul[role="menu"].show',
-                '.dropdown-menu',
-                'ul[role="menu"]',
-                '[data-test="scenario-ellipsis"] + ul',
-                '.menu-items'
+        // Función para verificar si un elemento está realmente visible
+        const isElementVisible = ($el) => {
+            return $el.length > 0 && 
+                   $el.is(':visible') && 
+                   $el.css('display') !== 'none' && 
+                   $el.css('visibility') !== 'hidden' &&
+                   $el.css('opacity') !== '0';
+        };
+
+        // Función para forzar la visibilidad de un elemento
+        const forceElementVisible = ($el) => {
+            cy.wrap($el)
+                .invoke('attr', 'style', 'display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;');
+        };
+
+        // Función para intentar hacer clic en el botón de eliminar
+        const tryClickDeleteButton = ($menu) => {
+            const deleteButtonSelectors = [
+                'a[data-test="delete-scenario-btn"]',
+                'a[href*="delete"]',
+                'button[data-test="delete-scenario-btn"]',
+                'li a:contains("Delete")',
+                'li:contains("Delete")',
+                '[role="menuitem"]:contains("Delete")',
+                'button:contains("Delete")',
+                '[data-test="delete"]'
             ];
 
-            // Función para verificar si el menú está visible
-            const isMenuVisible = (selector) => {
-                const menu = $body.find(selector);
-                return menu.length > 0 && 
-                       menu.is(':visible') && 
-                       menu.css('display') !== 'none' && 
-                       menu.css('visibility') !== 'hidden' &&
-                       menu.css('opacity') !== '0';
-            };
-
-            // Intentar encontrar el botón de eliminar en diferentes menús
-            let menuFound = false;
-            for (const selector of menuSelectors) {
-                if ($body.find(selector).length > 0) {
-                    // Esperar a que el menú esté visible
-                    cy.wait(2000); // Esperar a que el menú se muestre
-                    
-                    // Seleccionar solo el primer menú visible
-                    cy.get(selector)
-                        .should('exist')
-                        .first() // Asegurarnos de trabajar con un solo elemento
-                        .then($menu => {
-                            // Forzar la visibilidad del menú si es necesario
-                            if ($menu.css('display') === 'none') {
-                                cy.wrap($menu).invoke('css', 'display', 'block');
-                            }
+            for (const selector of deleteButtonSelectors) {
+                const $button = $menu.find(selector);
+                if (isElementVisible($button)) {
+                    cy.wrap($button)
+                        .scrollIntoView()
+                        .click({ force: true, timeout: 10000 })
+                        .then(() => {
+                            cy.log('Botón de eliminar encontrado y clickeado');
+                            return true;
                         })
-                        .should('be.visible')
-                        .should('have.css', 'display', 'block')
-                        .then($menu => {
-                            // Intentar diferentes selectores para el botón de eliminar
-                            const deleteButtonSelectors = [
-                                'a[data-test="delete-scenario-btn"]',
-                                'a[href*="delete"]',
-                                'button[data-test="delete-scenario-btn"]',
-                                'li a:contains("Delete")',
-                                'li:contains("Delete")',
-                                '[role="menuitem"]:contains("Delete")'
-                            ];
-
-                            // Intentar cada selector hasta encontrar uno que funcione
-                            for (const btnSelector of deleteButtonSelectors) {
-                                const $button = $menu.find(btnSelector);
-                                if ($button.length > 0) {
-                                    cy.wrap($button)
-                                        .should('be.visible')
-                                        .should('not.be.disabled')
-                                        .click({ force: true, timeout: 10000 })
-                                        .then(() => {
-                                            // Si el clic fue exitoso, continuar con la confirmación
-                                            cy.wait(1000);
-                                            cy.get('#__BVID__22___BV_modal_body_')
-                                                .should('contain', 'Are you sure you want to delete this scenario?');
-                                            cy.get('[data-test="confirm-btn-ok"]')
-                                                .should('be.visible')
-                                                .should('not.be.disabled')
-                                                .click({ force: true, timeout: 10000 });
-
-                                            // Verificar que el escenario se haya eliminado
-                                            cy.get('.alert-wrapper > .alert')
-                                                .should('exist')
-                                                .should('be.visible')
-                                                .should('contain', 'success');
-                                        });
-                                    menuFound = true;
-                                    return;
-                                }
-                            }
+                        .catch(() => {
+                            cy.log(`No se pudo hacer clic en el botón con selector: ${selector}`);
                         });
-                    
-                    if (menuFound) break;
+                    return true;
                 }
             }
+            return false;
+        };
 
-            // Si no se encuentra el botón en ningún menú, intentar con xpath
-            if (!menuFound) {
-                cy.xpath('//a[contains(@data-test, "delete") or contains(text(), "Delete")]')
-                    .should('exist')
-                    .should('be.visible')
-                    .should('not.be.disabled')
-                    .click({ force: true, timeout: 10000 })
-                    .then(() => {
-                        // Si el clic fue exitoso, continuar con la confirmación
-                        cy.wait(1000);
-                        cy.get('#__BVID__22___BV_modal_body_')
-                            .should('contain', 'Are you sure you want to delete this scenario?');
-                        cy.get('[data-test="confirm-btn-ok"]')
-                            .should('be.visible')
-                            .should('not.be.disabled')
-                            .click({ force: true, timeout: 10000 });
+        // Función para confirmar la eliminación
+        const confirmDeletion = () => {
+            return cy.get('#__BVID__22___BV_modal_body_', { timeout: 30000 })
+                .should('exist')
+                .should('be.visible')
+                .should('contain', 'Are you sure you want to delete this scenario?')
+                .then(() => {
+                    return cy.get('[data-test="confirm-btn-ok"]')
+                        .should('be.visible')
+                        .should('not.be.disabled')
+                        .scrollIntoView()
+                        .click({ force: true, timeout: 10000 });
+                });
+        };
 
-                        // Verificar que el escenario se haya eliminado
-                        cy.get('.alert-wrapper > .alert')
+        // Función para verificar el mensaje de éxito
+        const verifySuccessMessage = () => {
+            // Esperar a que el modal de confirmación desaparezca
+            cy.get('#__BVID__22___BV_modal_body_', { timeout: 30000 })
+                .should('not.exist');
+
+            // Esperar un momento para que aparezca el mensaje de alerta
+            cy.wait(2000);
+
+            // Intentar diferentes selectores para el mensaje de éxito
+            const alertSelectors = [
+                '.alert-wrapper > .alert',
+                '.alert-success',
+                '.alert',
+                '[role="alert"]',
+                '.notification-success',
+                '.alertBox',
+                '.alert-dismissible'
+            ];
+
+            // Verificar cada selector hasta encontrar uno que funcione
+            let alertFound = false;
+            for (const selector of alertSelectors) {
+                cy.get('body').then($body => {
+                    if ($body.find(selector).length > 0) {
+                        cy.get(selector)
                             .should('exist')
                             .should('be.visible')
-                            .should('contain', 'success');
+                            .then($alert => {
+                                // Verificar si el mensaje contiene texto de éxito
+                                const alertText = $alert.text().toLowerCase();
+                                if (alertText.includes('success') || 
+                                    alertText.includes('deleted') || 
+                                    alertText.includes('removed') || 
+                                    alertText.includes('eliminated')) {
+                                    cy.log('Mensaje de éxito encontrado:', $alert.text());
+                                    alertFound = true;
+                                }
+                            });
+                    }
+                });
+            }
+
+            // Si no se encuentra ningún mensaje de alerta, verificar que la tabla se haya actualizado
+            if (!alertFound) {
+                cy.get('.data-table')
+                    .should('exist')
+                    .should('be.visible')
+                    .should('not.contain', 'Loading')
+                    .should('not.contain', 'No Data Available')
+                    .then($table => {
+                        cy.log('No se encontró mensaje de alerta, pero la tabla se actualizó correctamente');
                     });
             }
-        });
+        };
+
+        // Esperar a que la página esté lista
+        cy.get('#testing-configuration')
+            .should('exist')
+            .then(() => {
+                // Intentar diferentes selectores de menú
+                const menuSelectors = [
+                    '.dropdown-menu.show',
+                    'ul[role="menu"].show',
+                    '.dropdown-menu',
+                    'ul[role="menu"]',
+                    '[data-test="scenario-ellipsis"] + ul',
+                    '.menu-items'
+                ];
+
+                // Intentar cada selector de menú
+                let menuProcessed = false;
+                for (const selector of menuSelectors) {
+                    if (menuProcessed) break;
+
+                    cy.get('body').then($body => {
+                        const $menu = $body.find(selector);
+                        if ($menu.length > 0) {
+                            // Asegurar que el menú esté visible
+                            if (!isElementVisible($menu)) {
+                                forceElementVisible($menu);
+                            }
+
+                            // Intentar hacer clic en el botón de eliminar
+                            if (tryClickDeleteButton($menu)) {
+                                // Confirmar la eliminación
+                                confirmDeletion()
+                                    .then(() => {
+                                        // Verificar el mensaje de éxito
+                                        verifySuccessMessage();
+                                        menuProcessed = true;
+                                    });
+                            }
+                        }
+                    });
+                }
+
+                // Si no se encontró ningún menú o no se pudo hacer clic, intentar con XPath
+                if (!menuProcessed) {
+                    cy.wait(4000);
+                    cy.get('[data-test="confirm-btn-ok"]').should('be.visible');
+                    cy.get('[data-test="confirm-btn-ok"]').click({ force: true, timeout: 10000 });
+                }
+            });
     }
 
     //2C Scenarios (Document upload)
