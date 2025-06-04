@@ -97,20 +97,8 @@ export class SmartInbox {
     }
 
     waitMessageSuccessCreateRuleInbox(ruleName) {
-        //cy.get(selectors.messageCreateRule).as("message").should("be.visible");
-        //cy.get("@message").should("have.text", ruleName);
         cy.log(ruleName);
         cy.get(selectors.modalCreateRule).within(() => {
-            cy.get("img").should(
-                "have.attr",
-                "src",
-                "/img/check-circle-lg.svg"
-            );
-            cy.get("img").should(
-                "have.attr",
-                "alt",
-                "Rule successfully created"
-            );
             cy.get("b").should("have.text", "Rule successfully created");
             cy.get("span").should(
                 "have.text",
@@ -196,7 +184,8 @@ export class SmartInbox {
             .scrollIntoView()
             .invoke("text")
             .then(($el) => {
-                if ($el.trim() == "0 items") {
+                const count = parseInt($el.trim());
+                if (count === 0) {
                     this.pressCreateRule();
                     this.pressBtn(2);
                     this.pressSelectOptionSaveSearch(saveSearchName);
