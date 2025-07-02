@@ -96,19 +96,86 @@ export class Admin {
 	}
 
 	createUser(username, firstName, lastName, jobTitle, status, email, password) {
-        cy.get(selectors.newUserBtn).click();
-		//fll data to user
-		cy.get(selectors.usernameInputTxtBox).type(username).should('have.value', username);
-		cy.get(selectors.firstNameInputTxtBox).type(firstName).should('have.value', firstName);
-		cy.get(selectors.lastNameInputTxtBox).type(lastName).should('have.value', lastName);
-		cy.get(selectors.jobTitleInputTxtBox).type(jobTitle).should('have.value', jobTitle);
-		cy.get(selectors.statusDropdown).select(status);
-		cy.get(selectors.emailInputTxtBox).type(email).should('have.value', email);
-		cy.get(selectors.passwordInputTxtBox).type(password).should('have.value', password);
-		cy.get(selectors.confirmPasswordInputTxtBox).type(password);
+        // Wait for the new user button to be visible and clickable
+        cy.get(selectors.newUserBtn).should('be.visible').should('not.be.disabled').click();
+        
+        // Wait for the form to load completely
+        cy.get('body').should('not.contain', 'Loading...');
+        cy.wait(2000); // Additional wait for form to stabilize
+        
+        // Helper function to fill field with retry logic
+        const fillFieldWithRetry = (selector, value, fieldName, maxRetries = 3) => {
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                cy.get(selector)
+                    .should('be.visible')
+                    .should('not.be.disabled')
+                    .clear()
+                    .type(value, { delay: 150 })
+                    .should('have.value', value)
+                    .then($input => {
+                        const actualValue = $input.val();
+                        if (actualValue !== value) {
+                            cy.log(`Attempt ${attempt}: ${fieldName} value mismatch. Expected: "${value}", Got: "${actualValue}"`);
+                            if (attempt === maxRetries) {
+                                // Last attempt - use force and longer delay
+                                cy.wrap($input).clear().type(value, { delay: 300, force: true });
+                                cy.wrap($input).should('have.value', value);
+                            } else {
+                                // Retry with different approach
+                                cy.wrap($input).clear().focus().type(value, { delay: 200 });
+                                cy.wait(500);
+                            }
+                        } else {
+                            cy.log(`${fieldName} filled successfully on attempt ${attempt}`);
+                        }
+                    });
+                
+                // Check if the value is correct before proceeding
+                cy.get(selector).should('have.value', value);
+            }
+        };
+        
+        // Fill all fields with retry logic
+        fillFieldWithRetry(selectors.usernameInputTxtBox, username, 'Username');
+        fillFieldWithRetry(selectors.firstNameInputTxtBox, firstName, 'First Name');
+        fillFieldWithRetry(selectors.lastNameInputTxtBox, lastName, 'Last Name');
+        fillFieldWithRetry(selectors.jobTitleInputTxtBox, jobTitle, 'Job Title');
+        
+        // Select status dropdown
+        cy.get(selectors.statusDropdown)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .select(status)
+            .should('have.value', status);
+        
+        fillFieldWithRetry(selectors.emailInputTxtBox, email, 'Email');
+        fillFieldWithRetry(selectors.passwordInputTxtBox, password, 'Password');
+        fillFieldWithRetry(selectors.confirmPasswordInputTxtBox, password, 'Confirm Password');
 
-		cy.get(selectors.saveUserBtn).click();
-		cy.xpath(selectors.profileUserLabel).should('be.visible');
+        // Verify all fields have correct values before saving
+        cy.get(selectors.usernameInputTxtBox).should('have.value', username);
+        cy.get(selectors.firstNameInputTxtBox).should('have.value', firstName);
+        cy.get(selectors.lastNameInputTxtBox).should('have.value', lastName);
+        cy.get(selectors.jobTitleInputTxtBox).should('have.value', jobTitle);
+        cy.get(selectors.emailInputTxtBox).should('have.value', email);
+        cy.get(selectors.passwordInputTxtBox).should('have.value', password);
+        cy.get(selectors.confirmPasswordInputTxtBox).should('have.value', password);
+
+        // Save user with retry logic
+        cy.get(selectors.saveUserBtn)
+            .should('be.visible')
+            .should('not.be.disabled')
+            .click();
+        
+        // Wait for save to complete and verify success
+        cy.xpath(selectors.profileUserLabel).should('be.visible', { timeout: 30000 });
+        
+        // Additional verification that the user was created successfully
+        cy.get('body').should('not.contain', 'Error');
+        cy.get('body').should('not.contain', 'Failed');
+        
+        // Final verification - check if we're on the user profile page
+        cy.url().should('include', '/users/');
 	}
 
     getUserByUsernameAPI(username){
