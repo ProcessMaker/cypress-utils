@@ -47,5 +47,12 @@ export default{
     RTLoopAllow4:'(//div[contains(text(),"add")])[4]',
     RTLoopAllow5:'(//div[contains(text(),"add")])[5]',
     uploadPhotoCamara: '//*[@class="btn btn-upload"]',
+    allowCheckbox1: '//input[@type="checkbox" and contains(@name,"allow")][1]/following-sibling::span[contains(text(),"Allow")]',
+    allowAdditionalLoops3: '//*[@name="config"]',
+    allowCheckbox2: '//input[@type="checkbox" and contains(@name,"allow")][2]/following-sibling::span[contains(text(),"Allow")]',
+    allowAdditionalLoops2: '//*[@name="config"]',
+    allowCheckbox3: '//input[@type="checkbox" and contains(@name,"allow")][3]/following-sibling::span[contains(text(),"Allow")]',
+    allowAdditionalLoops1: '//*[@name="config"]',
+    addItemButton: '//button[@title="Add Item" and contains(@class,"btn")]',
 
 }
