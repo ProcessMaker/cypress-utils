@@ -502,6 +502,7 @@ export class ExecutionConnectors {
 
         //Step 2: Search created Data Connector and Add to Project
         navHelper.navigateToDataConnectorPage();
+        cy.wait(4000);
         dataconnector.searchDataConnectorAndSelectAction(dataConnectorName, "Add to Project");
 
         //Step 3: Click on Assign
@@ -513,10 +514,12 @@ export class ExecutionConnectors {
 
         //Step 4: verify that the process is added to the project
         navHelper.navigateToPmProjects();
+        cy.wait(4000);
         pmProjects.searchProjectsAndSelectOptions(name, "open");
         request.waitUntilElementIsVisible('selector','[data-cy="asset-listing-table"]');
         cy.get('.search-bar > .search-bar-container > .pmql-input').should('be.visible');
         cy.get('.search-bar > .search-bar-container > .pmql-input').type(dataConnectorName,{delay:35}).type('{enter}').should('have.value',dataConnectorName);
+        cy.wait(4000);
         cy.xpath('//tbody[@class="vuetable-body"]//tr//a').should('contain',dataConnectorName);
      }
     actionsAndAssertionsOfTCP42963(processName){
