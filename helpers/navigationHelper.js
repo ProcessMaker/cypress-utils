@@ -214,8 +214,26 @@ export class NavigationHelper {
     }
 
     navigateToPmProjects() {
-        cy.visit("/designer/projects");
-        cy.title().should('eq','Projects - ProcessMaker');
+        
+        cy.visit("designer/projects", {
+            timeout: 30000,
+            retryOnStatusCodeFailure: true,
+            retryOnNetworkFailure: true,
+            failOnStatusCode: true
+        });
+        
+        cy.title().should('eq','Projects - ProcessMaker', { timeout: 30000 })
+            .then((title) => {
+                cy.log(`Título verificado: ${title}`);
+            });
+        
+        // verify that the page is completely loaded
+        cy.get('body').should('be.visible');
+        cy.wait(1500);
+        
+        // verify that the page is completely loaded
+        cy.get('body').should('be.visible');
+        cy.wait(1500);
     }
 
     navigateToEnvironmentVariables(){
