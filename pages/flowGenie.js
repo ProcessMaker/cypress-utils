@@ -255,8 +255,9 @@ export class FlowGenie {
     //Categories
     enterFlowGenieCategory(nameCat) {
         cy.xpath(selectors.genieCategoryFieldXpath).click();
-        cy.xpath(selectors.genieCategoryInputXpath).type(nameCat, {delay: 200,});
-        cy.xpath(selectors.selectCategoryListXpath.replace("categoryName", nameCat))
+        cy.xpath(selectors.genieCategoryInputXpath).type(nameCat, {delay: 300,});
+        cy.wait(4000);
+        cy.xpath(selectors.selectCategoryListXpath.replace("categoryName", nameCat, {delay: 300}))
             .should("be.visible")
             .click();
     }
