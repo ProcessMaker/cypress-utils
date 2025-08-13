@@ -78,7 +78,10 @@ export default {
      authenticationTypeInput: '[name="authtype"]',
      nameInput: '#title',
      descriptionInput: '#description', 
-     saveBtn: "(//button[normalize-space()='Save'])[1]",   
+     saveBtn: "(//button[normalize-space()='Save'])[1]",
+     membersList: ".members-list.list-group li",
+     projectMembersSelectInOpenPage: ".multiselect .multiselect__tags",  
+     projectsTab: "//*[@id='nav-sources-tab']", 
      
 
 };
