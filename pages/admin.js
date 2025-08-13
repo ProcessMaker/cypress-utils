@@ -501,6 +501,7 @@ export class Admin {
 
     deleteDashboard(nameDashboard) {
         cy.get('[placeholder="Search"]').should('be.visible');
+        cy.wait(8000);
         cy.get('[placeholder="Search"]')
             .type(nameDashboard)
             .wait(1000)
