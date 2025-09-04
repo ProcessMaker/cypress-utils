@@ -498,7 +498,7 @@ export class Screens {
 			if (el.text().includes("No Data Available")) {
 			    cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
 			  }else{
-				cy.xpath('//div[@id="screenIndex"]//tbody//tr//td//span').first().then((row)=>{
+				cy.get('[data-cy="screens-table-td-0-0"] span').then((row)=>{
 					if(!(row.text()===screenName)){
 						cy.get(Selectors.searchInputBox).first().clear().type(screenName, { delay: 1}).type(" ",{ delay: 600}).type("{backspace}").type(" ").type("{backspace}").should('have.value', screenName);
 					}
