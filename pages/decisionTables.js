@@ -118,7 +118,7 @@ export class DecisionTable {
     }
 
     clickOnDeleteDecisionTable() {
-        cy.xpath(selectors.deleteDTbutton).first().should('be.visible').click();
+        cy.xpath(selectors.deleteDTbutton).first().should('be.visible').click({force: true});
     }
 
     copyTable(decisionTableName, newNameDecisionTable) {
@@ -460,7 +460,7 @@ export class DecisionTable {
     }
 
     cancelInConfigureDT() {
-        cy.xpath(selectors.cancelButtonInconfigureDT).click();
+        cy.xpath(selectors.cancelButtonInconfigureDT).first().click();
     }
 
     configureDecisionTable({ newNameDT, descriptionDT, category, option }) {
