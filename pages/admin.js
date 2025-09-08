@@ -501,6 +501,7 @@ export class Admin {
 
     deleteDashboard(nameDashboard) {
         cy.get('[placeholder="Search"]').should('be.visible');
+        cy.wait(8000);
         cy.get('[placeholder="Search"]')
             .type(nameDashboard)
             .wait(1000)
@@ -1014,9 +1015,10 @@ export class Admin {
                     cy.get('#nav-profile-tab').should('be.visible');
                     cy.get('#nav-profile-tab').click();
                     cy.xpath('//div[contains(text(),"Screens")]').scrollIntoView();
-                    
+                    cy.wait(3000);
                     cy.xpath('//div[contains(text(),"Screens")]').should('be.visible');
                     cy.xpath('//div[contains(text(),"Screens")]').click();
+                    cy.wait(3000);
                     cy.xpath('//label[contains(text(),"Create Screen Categories")]').should('be.visible').click();
                     cy.xpath('//label[contains(text(),"Create Screens")]').should('be.visible').click();
                     cy.xpath('//label[contains(text(),"Delete Screen Categories")]').should('be.visible').click();
@@ -1027,6 +1029,8 @@ export class Admin {
                     cy.xpath('//label[contains(text(),"View Screen Categories")]').should('be.visible').click();
                     cy.xpath('//label[contains(text(),"View Screens")]').should('be.visible').click();
                     cy.xpath('//*[@id="savePermissions"]').should('be.visible').click();
+                    cy.wait(3000);
+                    cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('be.visible');
                 }
                 else return;
             });

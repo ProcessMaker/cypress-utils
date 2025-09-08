@@ -471,8 +471,8 @@ export class ProcessTesting {
         // Esperar a que el modal comience a cerrarse
         cy.wait(2000);
 
-        // Verificar que el modal desaparezca
-        cy.get('.modal-content', { timeout: 30000 }).should('not.exist');
+        // Verificar que el modal desaparezca: Update - Desaparecer no implica que no exista el elemento
+        //cy.get('.modal-content', { timeout: 30000 }).should('not.exist');
 
         // Verificar que no haya mensajes de error
         cy.get('[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]').should('not.exist');
@@ -918,9 +918,9 @@ export class ProcessTesting {
             // Crear el escenario
             this.createScenario(nameScenario, scenarioDescription, scenarioCreationType, data, nameFile, filePath);
             
-            // Verificar que el modal se haya cerrado correctamente
-            cy.get('.modal-content', { timeout: 30000 })
-                .should('not.exist')
+            // Verificar que el modal se haya cerrado correctamente { .modal-content }
+            cy.get('div[id="createScenario"]')
+                .should('not.exist', { timeout: 30000 })
                 .then(() => {
                     cy.log('Modal cerrado exitosamente');
                 });

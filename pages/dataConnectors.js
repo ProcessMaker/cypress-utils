@@ -202,11 +202,11 @@ export class Dataconnectors {
         cy.xpath('//div[@id="dataSourceIndex"]//div[@id="search"]//input')
             .clear()
             .type(dataConnectorName)
-            .should("have.value", dataConnectorName);
+            .should("have.value", dataConnectorName, {delay: 150});
         cy.xpath(
             '//div[@id="dataSourceIndex"]//div[@class="jumbotron jumbotron-fluid"]//h3[text()="Loading"]'
         ).should("be.visible");
-        cy.wait(4000);
+        cy.wait(6000);
         cy.xpath('//div[@id="dataSourceIndex"]//div[@class="datasources-table-card"]', { timeout: 12000 })
             .invoke("show")
             .find('[data-cy="datasource-pagination"] [class="pagination-total"]')

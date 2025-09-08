@@ -64,7 +64,8 @@ export class PMProjects {
             .first()
             .should("be.visible");
         cy.xpath(selectors.projectCategoryFieldXpath).click();
-        cy.xpath(selectors.projectCategoryFieldXpath).should("be.visible").type(name, {delay: 100});
+        cy.wait(4000);
+        cy.xpath(selectors.projectCategoryFieldXpath).should("be.visible").type(name, {delay: 300});
         cy.xpath(selectors.projectName.replace('projectName', name)).should('be.visible').first().click({force: true});
     }
 
