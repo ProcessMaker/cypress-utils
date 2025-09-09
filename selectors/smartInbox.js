@@ -31,4 +31,13 @@ export default {
     actionInboxRule: 'div[data-cy="inboxRulesRowButtons0"] button img[alt="selectOption"]',
     confirmActionInboxRule: 'div[class="popover-body"] div[class="col"] button',
     clearDraftBtn: '//div[@id="details"]//button[contains(text(),"Clear Draft")]',
+    tasksTable: '//*[@data-cy="tasks-table"]',
+    tableRow: '//tbody//tr',
+    tableCell: '//table//td',
+    jumbotron: '[class="jumbotron jumbotron-fluid"]',
+    priorityImage: '[alt="priority"]',
+    noPriorityImage: '[alt="no-priority"]',
+    newInboxRuleTitle: '[id="inbox-rules"] h4',
+    tableBodyRow: 'tbody tr',
+    tableCellSpan: 'td span'
 };
