@@ -153,7 +153,7 @@ export class RequestTitle {
 
     cleanFilters(){
         for (let index = 0; index < 8;  index++) {
-            if (index==3) {
+            if (index==4) {
                 continue;  
             }
             cy.get('[id="table-container"]').should('be.visible');
