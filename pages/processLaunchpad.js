@@ -272,8 +272,10 @@ export class ProcessLaunchpad {
     } 
 
     click_accordeonProcessBrowser(name){
-        cy.wait(1000)
-        cy.xpath('//div[contains(text(), "' + name + '")]').should("be.visible", {timeout: 1000}).click();
+        cy.xpath('//div[contains(text(), "' + name + '")]')
+            .should("not.have.class", "tw-opacity-0", { timeout: 10000 })
+            .should("be.visible")
+            .click();
     }
 
     click_optionInsideAccordeonProcessBrowser(option){
