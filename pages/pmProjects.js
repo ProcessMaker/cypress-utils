@@ -374,9 +374,9 @@ export class PMProjects {
     }
 
     verifyPresenceOfProjectAndCreate(project) {
-        var editBtn =
-        '//div[@id="main"]//div[@id="projectList"]//tbody//button[@aria-haspopup="menu"]';
-        cy.xpath(editBtn).should("be.visible");
+        //This button is not required for creating a project
+        //var editBtn = '//div[@id="main"]//div[@id="projectList"]//tbody//button[@aria-haspopup="menu"]';
+        //cy.xpath(editBtn).should("be.visible");
         cy.xpath(selectors.searchProjects).type(`${project}`, {delay:60}).should("have.value", project);
         cy.xpath(selectors.searchProjects).type('{enter}');
         cy.xpath(selectors.loadingSpinnerProject).should('be.visible');
