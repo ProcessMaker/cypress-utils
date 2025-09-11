@@ -1197,6 +1197,7 @@ export class ProcessTesting {
         cy.get('.modal-content', { timeout: 30000 })
             .should('exist')
             .should('be.visible')
+            .first()
             .within(() => {
                 // Verify main elements
                 cy.xpath(selectors.labelAlternative, { timeout: 30000 })
