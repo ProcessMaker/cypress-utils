@@ -275,16 +275,16 @@ export class SaveSearchs {
         cy.xpath(selectors.clickOnSourceOptn).click();
         cy.xpath(selectors.clickOnSeriesDrpDwn).should('be.visible');
         cy.xpath(selectors.clickOnSeriesDrpDwn).click();
-        cy.xpath(selectors.clickOnSeriesInptBx).type(series,{delay:100});
-        cy.xpath(selectors.clickOnSeriesValue.replace('name',series))
-            .should('be.visible')
-            .click();
+        cy.xpath(selectors.clickOnSeriesInptBx).type(series + "{enter}",{delay:100});
+        // cy.xpath(selectors.clickOnSeriesValue.replace('name',series))
+        //     .should('be.visible')
+        //     .click();
         cy.wait(2000);
         cy.xpath(selectors.clickOnMetricDrpDwn).click();
-        cy.xpath(selectors.clickOnMetricInptBx).type(metric,{delay:100});
-        cy.xpath(selectors.clickOnMetricValue.replace('name',metric))
-        .should('be.visible')
-        .click();
+        cy.xpath(selectors.clickOnMetricInptBx).type(metric + "{enter}",{delay:100});
+        // cy.xpath(selectors.clickOnMetricValue.replace('name',metric))
+        // .should('be.visible')
+        // .click();
         cy.wait(2000);
         cy.xpath(selectors.clickOnSumBtn).click();
         switch(metric_type){
