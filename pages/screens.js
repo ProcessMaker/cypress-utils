@@ -507,6 +507,7 @@ export class Screens {
 					  })
 				  }
 			});
+		});
 	}
 
 	clickOnEditScreen(screenName) {
