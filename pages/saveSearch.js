@@ -121,10 +121,10 @@ export class SaveSearchs {
             .should('be.visible')
             .click();
         
-        cy.get(':nth-child(3) > .btn')
-            .first()
-            .should('be.visible')
-            .click();
+        // cy.get(':nth-child(3) > .btn')
+        //     .first()
+        //     .should('be.visible')
+        //     .click();
     }
     //Configurations
     configurationsSaveSearch() {
@@ -148,7 +148,7 @@ export class SaveSearchs {
      * @param completeUserName: this name is needed because the user will be selected in the User list 
      * @return: nothing value
     */
-    createSaveSearch(name,iconName, userName="", groupName="", completeUserName=""){
+    createSaveSearch(name, iconName, userName="", groupName="", completeUserName="", buttonName = "Save"){
         cy.get('button[title="Save Search"]').should('be.visible');
         cy.get('button[title="Save Search"]').click();
         cy.get('[aria-label="Close"]')
@@ -174,7 +174,7 @@ export class SaveSearchs {
             cy.xpath('//legend[text()="Share With Groups"]//following-sibling::div//div[@class="multiselect__content-wrapper"]/ul/li/span/span').should('have.text',groupName);
             cy.xpath('//legend[text()="Share With Groups"]//following-sibling::div//div[@class="multiselect__content-wrapper"]/ul/li/span/span').click();
         }
-        cy.xpath('//footer[@id="save-search-modal___BV_modal_footer_"]/button[text()="Save"]').click(); 
+        cy.xpath('//footer[@id="save-search-modal___BV_modal_footer_"]/button[text()="'+buttonName+'"]').click(); 
     }
 
     enableNotification(){
