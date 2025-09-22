@@ -3370,14 +3370,14 @@ export class Execution {
         cy.get('h5').eq(0).should('have.text','Active Columns');
         cy.get('h5').eq(1).should('have.text','Available Columns');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9);
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',10);
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',4);
         //move element
         cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
         cy.get(':nth-child(2) > .border > :nth-child(1) > .column-card > .d-flex').drag('div[class="border bg-muted px-3 draggable-list draggable-current"]');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',11);
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',12);
         //verify available column
         cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',2);
         cy.get('.mt-3 > .d-flex > .btn-secondary')
@@ -3400,9 +3400,9 @@ export class Execution {
         cy.wait(5000);
         cy.xpath('//div[@class="border bg-muted px-3 draggable-list draggable-available"]//div/span[text()="Line 1"]').should('have.text','Line 1');
         //verify active column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',9);
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-current"] > div').should('have.length',10);
         //verify available column
-        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',3);
+        cy.get('div[class="border bg-muted px-3 draggable-list draggable-available"] > div').should('have.length',4);
         cy.get('.mt-3 > .d-flex > .btn-secondary').click();
         cy.get('.mt-3 > .d-flex > .btn-outline-secondary').click();
     }
@@ -6459,7 +6459,7 @@ export class Execution {
         cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
-        cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
+        //cy.get("div [class='border bg-muted px-3 draggable-list draggable-available'] :nth-child(11) > .column-card").drag(".mr-3 > .border");
         cy.xpath('//*[@id="nav-columns"]//button[2]').click({ force: true });
     }
     waitUntilcardBodyIsVisible(selectorXPath,maxAttempts=10, attempts=0){

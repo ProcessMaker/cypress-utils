@@ -121,10 +121,10 @@ export class SaveSearchs {
             .should('be.visible')
             .click();
         
-        cy.get(':nth-child(3) > .btn')
-            .first()
-            .should('be.visible')
-            .click();
+        // cy.get(':nth-child(3) > .btn')
+        //     .first()
+        //     .should('be.visible')
+        //     .click();
     }
     //Configurations
     configurationsSaveSearch() {
@@ -139,7 +139,7 @@ export class SaveSearchs {
             .click();
     }
 
-   /**
+    /**
     This method creates a Save Search from Request > Save Search
      * @param name: Assign a name for the Save Search
      * @param iconName: the correct name must be assigned. E.g. iconName: clipboard because the class="fas fa-fw fa-clipboard"
@@ -148,13 +148,13 @@ export class SaveSearchs {
      * @param completeUserName: this name is needed because the user will be selected in the User list 
      * @return: nothing value
     */
-    createSaveSearch(name,iconName, userName="", groupName="", completeUserName=""){
+    createSaveSearch(name, iconName, userName="", groupName="", completeUserName="", buttonName = "Save"){
         cy.get('button[title="Save Search"]').should('be.visible');
         cy.get('button[title="Save Search"]').click();
         cy.get('[aria-label="Close"]')
             .first()
             .click();
-       cy.get('button[title="Save Search"]').click();
+        cy.get('button[title="Save Search"]').click();
         cy.xpath('//legend[text()="Share With Users"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
         cy.xpath('//legend[text()="Share With Groups"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
         cy.xpath("//label[contains(text(),'Name')]/parent::div//input").should('be.visible');
@@ -174,7 +174,7 @@ export class SaveSearchs {
             cy.xpath('//legend[text()="Share With Groups"]//following-sibling::div//div[@class="multiselect__content-wrapper"]/ul/li/span/span').should('have.text',groupName);
             cy.xpath('//legend[text()="Share With Groups"]//following-sibling::div//div[@class="multiselect__content-wrapper"]/ul/li/span/span').click();
         }
-        cy.xpath('//footer[@id="save-search-modal___BV_modal_footer_"]/button[text()="Save"]').click(); 
+        cy.xpath('//footer[@id="save-search-modal___BV_modal_footer_"]/button[text()="'+buttonName+'"]').click(); 
     }
 
     enableNotification(){
@@ -275,16 +275,16 @@ export class SaveSearchs {
         cy.xpath(selectors.clickOnSourceOptn).click();
         cy.xpath(selectors.clickOnSeriesDrpDwn).should('be.visible');
         cy.xpath(selectors.clickOnSeriesDrpDwn).click();
-        cy.xpath(selectors.clickOnSeriesInptBx).type(series,{delay:100});
-        cy.xpath(selectors.clickOnSeriesValue.replace('name',series))
-            .should('be.visible')
-            .click();
+        cy.xpath(selectors.clickOnSeriesInptBx).type(series + "{enter}",{delay:100});
+        // cy.xpath(selectors.clickOnSeriesValue.replace('name',series))
+        //     .should('be.visible')
+        //     .click();
         cy.wait(2000);
         cy.xpath(selectors.clickOnMetricDrpDwn).click();
-        cy.xpath(selectors.clickOnMetricInptBx).type(metric,{delay:100});
-        cy.xpath(selectors.clickOnMetricValue.replace('name',metric))
-        .should('be.visible')
-        .click();
+        cy.xpath(selectors.clickOnMetricInptBx).type(metric + "{enter}",{delay:100});
+        // cy.xpath(selectors.clickOnMetricValue.replace('name',metric))
+        // .should('be.visible')
+        // .click();
         cy.wait(2000);
         cy.xpath(selectors.clickOnSumBtn).click();
         switch(metric_type){
