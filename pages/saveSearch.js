@@ -139,7 +139,7 @@ export class SaveSearchs {
             .click();
     }
 
-   /**
+    /**
     This method creates a Save Search from Request > Save Search
      * @param name: Assign a name for the Save Search
      * @param iconName: the correct name must be assigned. E.g. iconName: clipboard because the class="fas fa-fw fa-clipboard"
@@ -154,7 +154,7 @@ export class SaveSearchs {
         cy.get('[aria-label="Close"]')
             .first()
             .click();
-       cy.get('button[title="Save Search"]').click();
+        cy.get('button[title="Save Search"]').click();
         cy.xpath('//legend[text()="Share With Users"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
         cy.xpath('//legend[text()="Share With Groups"]/parent::fieldset//div[@class="multiselect__spinner"]').should('not.be.visible');
         cy.xpath("//label[contains(text(),'Name')]/parent::div//input").should('be.visible');

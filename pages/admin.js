@@ -1576,7 +1576,7 @@ export class Admin {
      * @return nothing returns
      */
     enableRandomlyGenerated(){
-	    cy.xpath('(//label[@class="custom-control-label"])[1]').should('be.visible').click();
+        cy.xpath('(//label[@class="custom-control-label"])[1]').should('be.visible').click();
     }
 
     /**
