@@ -319,4 +319,29 @@ export class SaveSearchs {
             .should('be.visible')
             .click();
     }
+
+    addScheduledReportAPI(payload){
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.post('/saved-searches/reports', payload)
+            .then(response => {
+                console.log("Created report: ", response.data.data);
+                return response.data.data;
+            })
+            .catch(err => {
+                    throw err;
+            });
+        });
+    }
+
+    configScheduledReport(mySchedule, saved_search_id, dayIndex, hours, utcMinutes){
+        mySchedule = {
+            ...mySchedule,
+            "saved_search_id":`${saved_search_id}`,
+            "config":{
+                "when":"weeklyOn",
+                "at":[dayIndex,`${hours}:${utcMinutes}`]
+            }
+        }
+        this.addScheduledReportAPI(mySchedule);
+    }
 }
