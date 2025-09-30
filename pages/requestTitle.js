@@ -141,13 +141,13 @@ export class RequestTitle {
     }
 
     verifyCaseTitleInColumn(caseTitle){
-        this.verifyTitleinColumn(1,/case title/i);
+        this.verifyTitleinColumn(2,/case title/i);
         cy.xpath(selectors.bodyTable).should('contain', caseTitle);
     }
 
     verifyTaskNameInColumn(taskName){
         cy.get('[id="table-container"]').should('be.visible');
-        this.verifyTitleinColumn(3,/task/i);
+        this.verifyTitleinColumn(4,/task/i);
         cy.xpath('//table[@aria-label="custom-pm-table"]//tbody').should('contain', taskName);
     }
 
@@ -165,7 +165,7 @@ export class RequestTitle {
 
     verifyTitleinColumn = function(numColumn,regex){
         cy.xpath(`//th[@id="-column-${numColumn}"]//div[@class="pm-table-column-header-text"]`).invoke('text').then(($value)=>{
-        expect($value).to.match(regex);
+            expect($value.trim()).to.match(regex);
         }) 
     }
 

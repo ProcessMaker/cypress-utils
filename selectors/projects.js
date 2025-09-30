@@ -23,7 +23,7 @@ export default {
     optionCatXpath:
         '//*[@id="projectList"]/div[2]/div/table/tbody//button[@aria-haspopup="menu"]',
     threePointsBtnXpathProjects:
-        '//*[@id="projectList"]/div[2]/div/table/tbody//button[@aria-haspopup="menu"]',
+        '//*[@data-cy="project-listing-table"]/table/tbody//button[@aria-haspopup="menu"]',
     threePointsScreenProjects: "//div[@data-cy='asset-listing-table']//button[@aria-haspopup='menu']",
     threePointsScriptProjects: "//div[@data-cy='asset-listing-table']//button[@aria-haspopup='menu']",    
     searchProjects: '//*[@id="search-bar-data-source"]//textarea',

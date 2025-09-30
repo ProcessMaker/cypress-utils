@@ -70,7 +70,8 @@ export class ScreenTemplate {
     }
 
     selectMenuOptionRow(nameOption){
-        var optionXpath = '//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="screenIndex"]//table/tbody/tr//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"'+nameOption+'")]'
+        //var optionXpath = '//div[@id="categorizedList"]/ul/li/a[@id="nav-sources-tab"]//ancestor::div[@id="categorizedList"]/descendant::div[@id="screenIndex"]//table/tbody/tr//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"'+nameOption+'")]'
+        var optionXpath = '//div[@id="categorizedList"]//div[@id="screenIndex"]//table/tbody/tr//button[@aria-haspopup="menu"]/following-sibling::ul//li//span[contains(text(),"'+nameOption+'")]'
         cy.xpath(optionXpath).should('be.visible');
         cy.xpath(optionXpath).click();
     }
