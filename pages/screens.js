@@ -582,12 +582,18 @@ export class Screens {
 					cy.xpath(Selectors.screenContainer).invoke('text')
 						.then(($loadedContent) => {
 							cy.log($loadedContent)
-							if ($loadedContent.includes('No Data Available')){
-								this.importScreen(filePath);
+							cy.get('table tbody').then($tbody => {
+								if ($tbody.is(':empty')) {
+									this.importScreen(filePath);
+								}
+							})
+						})
+				} else 
+					{cy.get('table tbody').then($tbody => {
+						if ($tbody.is(':empty')) {
+							this.importScreen(filePath);
 							}
 						})
-				}else if($loadedContent.includes('No Data Available')){
-						this.importScreen(filePath);
 					}
 		})
 	}

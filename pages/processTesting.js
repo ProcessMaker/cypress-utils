@@ -1024,26 +1024,32 @@ export class ProcessTesting {
 
     //Alternative
     selectAlternativeFromProcessConfigure(alternative) {
-        cy.get('#select-alternative').invoke('attr', 'disabled').then(($Alternative) => {
-            cy.log($Alternative)
-            if ($Alternative == 'disabled') {
-                return
-            } else {
-                switch (alternative) {
-                    case "Alternative A":
-                        cy.get(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
-                        break;
-                    case "Alternative B":
-                        cy.get(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
-                        break;
-                    case "As configured in the process":
-                        cy.get(selectors.alternativeField).select('As configured in the process').should('have.value', 'AB');
-                        break;
-                    default:
-                        break;
-                }
-            }
-        })
+        cy.get('.modal-content', { timeout: 30000 })
+            .should('exist')
+            .should('be.visible')
+            .first()
+            .within(() => {
+                cy.get('select[id="select-alternative"]').invoke('attr', 'disabled').then(($Alternative) => {
+                    cy.log($Alternative)
+                    if ($Alternative == 'disabled') {
+                        return
+                    } else {
+                        switch (alternative) {
+                            case "Alternative A":
+                                cy.get(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
+                                break;
+                            case "Alternative B":
+                                cy.get(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
+                                break;
+                            case "As configured in the process":
+                                cy.get(selectors.alternativeField).select('As configured in the process').should('have.value', 'AB');
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                })
+            })
     }
 
     //Starting point from process configure
