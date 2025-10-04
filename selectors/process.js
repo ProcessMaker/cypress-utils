@@ -271,5 +271,12 @@ export default{
 
     //modeler
     optionsMenu: '//*[contains(text(),"Options")]/ancestor::button',
-    options_discardDraft: '//*[contains(text(),"Discard Draft")]'
+    options_discardDraft: '//*[contains(text(),"Discard Draft")]',
+
+    //Task inside modeler
+    taskElementBPMN_xpath: '//*[@data-type="processmaker.components.nodes.task.Shape"]//*[contains(text(),"elementName")]',
+    
+    //inspector button
+    inspectorButton: '[data-cy="inspector-button"]',
+
 }

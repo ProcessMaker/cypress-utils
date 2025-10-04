@@ -123,4 +123,7 @@ export class Tasks {
         cy.get(buttonList).eq(opt).click();
     }
 
+    openTaskByTaskId(taskID){
+        cy.visit("/tasks/"+taskID+"/edit");
+    }
 }
