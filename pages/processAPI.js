@@ -126,7 +126,7 @@ export class ProcessAPI {
                                     err.response.data.message.toLowerCase() === 'The Name has already been taken.') {
                                         return this.getCategoryByNameAPI(payload.name);
                                 } else {
-                                    return this.getCategoryByNameAPI(payload.name);
+                                    throw err;
                                 }
                             }));
                     } else {

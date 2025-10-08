@@ -6,7 +6,7 @@ export class ConditionalRedirectModel {
     /**
      * Selects and fills a conditional redirect, verifies fields, and applies destination settings.
      * @param dataConditionalRedirects - Object Data used to configure the conditional redirect. 
-     * example 1: {"condition":"test1 == 20", "option":"External URL", "nroGroup":0, "dataUrl":"https://www.processmaker.com"},
+     * example 1: {"condition":"test1 == 20", "option":"External URL", "nroGroup":0, "dataUrl":"https://www.processmaker.com", urlField = 0},
      * example 2: {"condition":"test3 == 3", "option":"Custom Dashboard", "nroGroup":1, "dataDashboard":"DEFAULT_WELCOME_DASHBOARD"},
      * example 3: {"condition":"test1 < 0", "option":"Task List", "nroGroup":2},
      * example 4: {"condition":"test1 < 2 && test2 = 2", "option":"Display Next Assigned Task", "nroGroup":6, "dataScreenInterstitial":"Screen Interstitial"}
@@ -24,7 +24,7 @@ export class ConditionalRedirectModel {
                 break;
             case "External URL":
                 crPage.addExternalURLCondition(dataConditionalRedirects.dataUrl, dataConditionalRedirects.nroGroup)
-                crPage.verifyCustomURLValue(dataConditionalRedirects.dataUrl)
+                crPage.verifyCustomURLValue(dataConditionalRedirects.dataUrl, dataConditionalRedirects.urlField)
                 break;
             case "Display Next Assigned Task":
                 crPage.verifyScreenInterstitialIsVisible();

@@ -110,7 +110,7 @@ export class AdminAPI {
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.delete('/users/'+userID).then(response => {
                 console.log(JSON.stringify(response));
-                return "user " + userID + "was deleted";
+                return "user " + userID + " was deleted";
             });
         });
     }
