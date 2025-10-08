@@ -208,11 +208,23 @@ export class ConditionalRedirectPage {
         })
     }
 
+    /**
+     * Verifies that the screen interstitial field contains the expected value
+     * @param {string} screenInterstitial - The expected screen interstitial value to verify
+     */
     verifyScreenInterstitialValue(screenInterstitial) {
         cy.get(selectors.screenInterstitialSection).within(() => {
             cy.get(selectors.selectOptionValue).should('have.text', screenInterstitial);
         })
     }
 
-
+    /**
+     * Opens the dropdown options list for the specified condition select
+     * @param {number} nro - The index of the condition select (default: 0)
+     */
+    openListOptions(nro=0){
+        cy.get(selectors.condition_select).eq(nro).within(() => {
+            cy.get(selectors.selectField).click();
+        })
+    }
 }

@@ -40,6 +40,7 @@ export class ConditionalRedirectModel {
 
     /**
      * Enables the Conditional Redirect feature on the page.
+     * This method makes the conditional redirect section visible and enables the checkbox.
      */
     activeConditionalRedirect(){
         crPage.conditionRedirectSectionIsVisible()
@@ -48,6 +49,7 @@ export class ConditionalRedirectModel {
 
     /**
      * Disables the Conditional Redirect feature on the page.
+     * This method makes the conditional redirect section visible and disables the checkbox.
      */
     unCheckConditionalRedirect(){
         crPage.conditionRedirectSectionIsVisible()
@@ -56,13 +58,16 @@ export class ConditionalRedirectModel {
 
     /**
      * Clicks the button to add a new conditional redirect row.
+     * This method verifies the add condition button is visible and then clicks it to create a new row.
      */
     pressAddConditionRedirectButton(){
+        crPage.verifyAddConditionButton()
         crPage.pressAddConditionButton()
     }
     
     /**
      * Removes a conditional redirect row by index.
+     * This method verifies the remove button is visible for the specified row and then clicks it to delete the condition.
      * @param {number} [nro=0] - Index of the condition to remove.
      */
     pressRemoveCondition(nro=0){
@@ -72,6 +77,7 @@ export class ConditionalRedirectModel {
 
     /**
      * Duplicates a conditional redirect row by index.
+     * This method verifies the duplicate button is visible for the specified row and then clicks it to create a copy of the condition.
      * @param {number} [nro=0] - Index of the condition to duplicate.
      */
     pressDuplicateCondition(nro=0){
@@ -79,4 +85,11 @@ export class ConditionalRedirectModel {
         crPage.pressDuplicateButton(nro)
     }
 
+    /**
+     * Opens the list of task destination options.
+     * This method opens the dropdown list that contains all available task destination options for conditional redirects.
+     */
+    openListTaskDestination(){
+        crPage.openListOptions()
+    }
 }

@@ -279,4 +279,19 @@ export default{
     //inspector button
     inspectorButton: '[data-cy="inspector-button"]',
 
+    //publish button
+    publishButton: '[data-cy="publish-btn"]',
+    modalVersionNameField: 'input[id="name"]',
+    modalDescriptionTextarea: 'textarea[id="additional-details"]',
+    modalPublishVersion: '[role="dialog"][aria-modal="true"]',
+    modalPublishButton: 'button[data-test="btn-save-publish"]',
+    modalCancelButton: '.justify-content-end button.btn-outline-secondary',
+    modalFlashMessage: '[class="alert-wrapper"] div[role="alert"]',
+
+    //option
+    optionEllipsis: '[data-cy="ellipsis-menu"]',
+    optionEllipsisList: '[class="ellipsis-dropdown-content"] span',
+    discardDraftModal: '[role="dialog"][aria-modal="true"]',
+    discardButton: '[class="modal-footer"] button',
+
 }
