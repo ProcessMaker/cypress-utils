@@ -8481,6 +8481,6 @@ export class Execution {
     }
 
     verifyDefaultWelcomeScreen(){
-        cy.get('#main').should('contain','Welcome Back')
+        cy.get('#navbar2').find('a').filter(':contains("Inbox")').first().should("exist")
     }
 }

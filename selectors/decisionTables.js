@@ -36,8 +36,8 @@ export default{
     //Configure Decision Table
     nameFieldInconfigureDT: '//label[text()="Name"]/following-sibling::input',
     descriptionFieldInconfigureDT: '//label[text()="Description"]/following-sibling::textarea',
-    saveButtonInconfigureDT: '//button[contains(text(),"Save")]',
-    cancelButtonInconfigureDT:'//button[contains(text(),"Cancel")]',
+    saveButtonInconfigureDT: '//div[@id="formDecisionTable"]//button[contains(text(),"Save")]',
+    cancelButtonInconfigureDT:'//div[@id="formDecisionTable"]//button[contains(text(),"Cancel")]',
 
     //Delete Decision Table
     confirmDeleteButton:'//button[contains(text(),"Confirm")]',
