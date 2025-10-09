@@ -119,6 +119,7 @@ export class DecisionTable {
 
     clickOnDeleteDecisionTable() {
         cy.xpath(selectors.deleteDTbutton).first().should('exist').click();
+        cy.xpath(selectors.confirmDeleteButton, {timeout: 2000}).first().should('exist').click();
     }
 
     copyTable(decisionTableName, newNameDecisionTable) {

@@ -15,8 +15,8 @@ export default {
     modalSettings: '//div[contains(@id,"launchpadSettingsModal")][@class="modal-body"]',
 
     launch_category: '//*[@class="menu"]//*[contains(text(),"category")]',
-    launch_searchProcess: '[class="processes-info"]>* [class="search"]>* input',
-    launch_searchProcessButton: '[title="Search Processes"]',
+    launch_searchProcess: '//div[contains(@class, "search")]//input[@class="search-box form-control"]',
+    launch_searchProcessButton: '//button[@title="Search Processes"]',
     launch_cardProcess: '//*[contains(text(),"processName")]',
     launch_cardCategory: '//button[contains(text(),"categoryName")]',
     launch_startProcessButton: '//*[contains(text(),"Start this")]',
@@ -30,7 +30,7 @@ export default {
     launchPadSettingOption: '//a[contains(., "Launchpad Settings")]',
     inputSearchCategories: '//input[@placeholder="Search Categories"]',
     categoryFound: "//div['#infinite-list']/div[contains(text(),'category')]",
-    bookMarkedSuccessAlert: '[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]',
+    bookMarkedSuccessAlert: '//*[class="alert d-none d-lg-block alertBox alert-dismissible alert-success"]',
     optionLaunchPad: '//a//span[contains(text(),"option")]',
     dragAndClickHere: "//span[contains(text(),'Drag or click here')]",
     loadAnImage: '//div[@class="input-file-custom dropdown-toggle"]',
@@ -43,6 +43,6 @@ export default {
     deleteVideo: '//div/button[@class="btn btn-delete-embed btns-popover"]',
     embedMediaDeleteAlert: '//span[contains(text(), "The embed media was deleted")]',
     inputLaunchScreen: '//div/input[@placeholder="Type to search Screen"]',
-    cardLaunchProcess: '[class="card-text"]'
+    cardLaunchProcess: '//*[class="card-text"]'
 }
 

@@ -20,13 +20,13 @@ export class ProcessTesting {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
         switch (alternative) {
             case "Alternative A":
-                cy.iframe(iframeSelector).find(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
+                cy.iframe(iframeSelector).xpath(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
                 break;
             case "Alternative B":
-                cy.iframe(iframeSelector).find(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
+                cy.iframe(iframeSelector).xpath(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
                 break;
             case "Advanced":
-                cy.iframe(iframeSelector).find(selectors.alternativeField).select('Advanced').should('have.value', 'Advanced');
+                cy.iframe(iframeSelector).xpath(selectors.alternativeField).select('Advanced').should('have.value', 'Advanced');
             default:
                 break;
         }
@@ -68,7 +68,7 @@ export class ProcessTesting {
     //Additional Data from Modeler
     addAdditionalDataFromModeler(data, iframeOption = 'a') {
         let iframeSelector = iframeOption === 'a' ? selectors.iframeA : selectors.iframeB
-        cy.iframe(iframeSelector).find(selectors.additionalData).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
+        cy.iframe(iframeSelector).xpath(selectors.additionalData).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
     }
 
     //Bypass Script task and Data Connectors from Modeler
@@ -1024,32 +1024,28 @@ export class ProcessTesting {
 
     //Alternative
     selectAlternativeFromProcessConfigure(alternative) {
-        cy.get('.modal-content', { timeout: 30000 })
-            .should('exist')
-            .should('be.visible')
-            .first()
-            .within(() => {
-                cy.get('select[id="select-alternative"]').invoke('attr', 'disabled').then(($Alternative) => {
-                    cy.log($Alternative)
-                    if ($Alternative == 'disabled') {
-                        return
-                    } else {
-                        switch (alternative) {
-                            case "Alternative A":
-                                cy.get(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
-                                break;
-                            case "Alternative B":
-                                cy.get(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
-                                break;
-                            case "As configured in the process":
-                                cy.get(selectors.alternativeField).select('As configured in the process').should('have.value', 'AB');
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                })
-            })
+        cy.xpath(selectors.alternativeField)
+            .should("exist")
+            .invoke('attr', 'disabled').then(($Alternative) => {
+            cy.log($Alternative)
+            if ($Alternative == 'disabled') {
+                return
+            } else {
+                switch (alternative) {
+                    case "Alternative A":
+                        cy.xpath(selectors.alternativeField).select('Alternative A').should('have.value', 'A');
+                        break;
+                    case "Alternative B":
+                        cy.xpath(selectors.alternativeField).select('Alternative B').should('have.value', 'B');
+                        break;
+                    case "As configured in the process":
+                        cy.xpath(selectors.alternativeField).select('As configured in the process').should('have.value', 'AB');
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
     }
 
     //Starting point from process configure
@@ -1076,10 +1072,10 @@ export class ProcessTesting {
     selectManualOrAdvanced(option) {
         switch (option) {
             case "Manual":
-                cy.get(selectors.manualBtn).click();
+                cy.xpath(selectors.manualBtn).click();
                 break;
             case "Advanced":
-                cy.get(selectors.advancedBtn).click();
+                cy.xpath(selectors.advancedBtn).click();
                 break;
             default:
                 break;
@@ -1088,11 +1084,11 @@ export class ProcessTesting {
 
     //Advanced
     fillPMQL(query) {
-        cy.get(selectors.pmqlField).type(query).should('have.value', query);
+        cy.xpath(selectors.pmqlField).type(query).should('have.value', query);
     }
 
     clickOnBrowseBtn() {
-        cy.get(selectors.browseBtn).click();
+        cy.xpath(selectors.browseBtn).click();
     }
 
     //Scenarios from process configure
@@ -1167,7 +1163,7 @@ export class ProcessTesting {
 
     //Additional Data from process configure
     addAdditionalData(data) {
-        cy.get(selectors.additionalData).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
+        cy.xpath(selectors.additionalData).type('{backspace}').type('{backspace}').type(`{{}${data}}`).should('contain', `{${data}}`);
     }
 
     //Bypass Script task and Data Connectors from process configure
@@ -1245,13 +1241,13 @@ export class ProcessTesting {
                 switch (manualOrAdvanced) {
                     case "Manual":
                         this.selectManualOrAdvanced('Manual');
-                        cy.get(selectors.manualBtn)
+                        cy.xpath(selectors.manualBtn)
                             .should('have.class', 'active')
                             .should('be.visible');
                         break;
                     case "Advanced":
                         this.selectManualOrAdvanced('Advanced');
-                        cy.get(selectors.advancedBtn)
+                        cy.xpath(selectors.advancedBtn)
                             .should('have.class', 'active')
                             .should('be.visible');
                         if (query) {

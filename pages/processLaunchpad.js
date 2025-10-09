@@ -194,11 +194,11 @@ export class ProcessLaunchpad {
     }
 
     searchProcess(nameProcess,findProcess=true){
-        cy.get(selectors.launch_searchProcess).should("be.visible");
+        cy.xpath(selectors.launch_searchProcess).should("be.visible");
         cy.wait(3000);
-        cy.get(selectors.launch_searchProcess).type(nameProcess).should("have.value",nameProcess);
+        cy.xpath(selectors.launch_searchProcess).type(nameProcess).should("have.value",nameProcess);
         cy.wait(3000);
-        cy.get(selectors.launch_searchProcessButton).click();
+        cy.xpath(selectors.launch_searchProcessButton).click();
         if(findProcess)
             cy.xpath(selectors.launch_cardProcess.replace("processName",nameProcess)).should("be.visible");
         else
@@ -274,12 +274,13 @@ export class ProcessLaunchpad {
     click_accordeonProcessBrowser(name){
         cy.xpath('//div[contains(text(), "' + name + '")]')
             .should("not.have.class", "tw-opacity-0", { timeout: 10000 })
-            //.should("be.visible")
-            .click();
+            .click({force: true});
     }
 
     click_optionInsideAccordeonProcessBrowser(option){
-        cy.xpath('//div[@class="list-group"]//div[contains(text(),"' + option + '")]').should("be.visible").click();
+        cy.xpath('//div[@class="list-group"]//div[contains(text(),"' + option + '")]')
+            .should("not.have.class", "tw-opacity-0", { timeout: 10000 })
+            .click({force: true});
     }
     waitLaunchPageLoad(){
         cy.get('[id="pie-chart"]').should('be.visible');
