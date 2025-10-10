@@ -114,4 +114,26 @@ export class VerifyElementHelper{
     verifyElementIsDisabledNRO(cssSelectorElement, nro=0){
         cy.get(cssSelectorElement).eq(nro).should("be.disabled")
     }
+
+    /**
+     * Validates that an element's text content (trimmed) matches the expected value exactly
+     * @param {string} selector - CSS selector for the element
+     * @param {string} selectorValue - Expected text value (without spaces)
+     */
+    expectTextElementWithoutSpaces(selector, selectorValue){
+        cy.get(selector).then(($el) => {
+            expect($el.text().trim()).to.be.eq(selectorValue)
+        })   
+    }
+    /**
+     * Validates that a specific element's text content (by index, trimmed) matches the expected value exactly
+     * @param {string} selector - CSS selector for the element
+     * @param {string} selectorValue - Expected text value (without spaces)
+     * @param {number} nro - Element index (default: 0)
+     */
+    expectTextElementWithoutSpacesNRO(selector, selectorValue, nro=0){
+        cy.get(selector).eq(nro).then(($el) => {
+            expect($el.text().trim()).to.be.eq(selectorValue)
+        })   
+    }
 }
