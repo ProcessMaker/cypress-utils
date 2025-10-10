@@ -6,7 +6,7 @@ export default {
     runTestBtnInModeler: '//div[@data-cy="ellipsis-menu"]//ul//li//*[contains(text(),"Run Test")]',
     //Alternative
     labelAlternative: '//label[text()="Alternative *"]',
-    alternativeField: '[id="select-alternative"]',
+    alternativeField: '//*[@id="select-alternative"]',
     expressionInput: '[id="expression"]',
     typeOfRun: '[id="select-type-run"]',
     //Starting Point
@@ -25,7 +25,7 @@ export default {
     inputScenario: 'input[id="scenario-select"]',
     itemScenario: '//label[text()="Scenario"]/parent::div//div[@class="multiselect__content-wrapper"]//li[2]',
     //Additional data
-    additionalData: '.view-lines',
+    additionalData: '//*[@class="view-lines monaco-mouse-cursor-text"]',
     runTestBtn: '//button[contains(text(),"Run")]',
     cancelBtn: '//footer//button[text()[normalize-space()="Cancel"]]',
     //Check to bypass Script tasks and Data Connectors
@@ -42,10 +42,10 @@ export default {
     searchScenario: '#scenarios-edit-tab > :nth-child(1) > #search-bar > :nth-child(1) > .flex-grow-1 > #search > .input-group > .form-control',
 
     //Manual or Advanced
-    manualBtn: '[data-test="test-run-btn-manual"]',
-    advancedBtn: 'button[data-test="test-run-btn-advanced"]',
-    pmqlField: '[data-test="test-run-pmql-input"]',
-    browseBtn: '[data-test="test-run-pmql-browse"]',
+    manualBtn: '//*[@data-test="test-run-btn-manual"]',
+    advancedBtn: '//*[@data-test="test-run-btn-advanced"]',
+    pmqlField: '//*[@data-test="test-run-pmql-input"]',
+    browseBtn: '//*[@data-test="test-run-pmql-browse"]',
 
     //Scenario Creation
     labelScenarioCreationType: '//legend[text()="Scenario Creation Type *"]',
