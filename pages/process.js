@@ -2593,4 +2593,16 @@ export class Process {
             });
         });
     }
+
+    openProcessByIdAndAlternative(processID, alternative = "A"){
+        cy.visit("/modeler/" + processID + "/alternative/" + alternative);
+    }
+
+    selectTaskInsideModeler(taskName){
+        cy.xpath(selectors.taskElementBPMN_xpath.replace("elementName",taskName)).first().click();
+    }
+
+    openInspectorButton(){
+        cy.get(selectors.inspectorButton).click()
+    }
 }

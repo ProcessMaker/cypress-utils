@@ -11,7 +11,8 @@
     "#helpers/*": "./helpers/*",
     "#pages/*": "./pages/*",
     "#selectors/*": "./selectors/*",
-    "#support/*": "./support/*"
+    "#support/*": "./support/*",
+    "#model/*": "./model/*"
   },
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.5",
