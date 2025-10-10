@@ -85,10 +85,7 @@ export class ConditionalRedirectPage {
      * @param {number} nro - The index of the condition (default: 0)
      */
     addExternalURLCondition(urlData, nro = 0) {
-        cy.get(selectors.condition_select).eq(nro).scrollIntoView().should('be.visible')
-        cy.get(selectors.externalURL_input).its('length').then((count) => {
-            cy.get(selectors.externalURL_input).eq((count - 1 <= 0) ? 0 : count - 1).scrollIntoView().should('be.visible').type(urlData)
-        });
+        cy.get(selectors.externalURL_input).eq(nro).scrollIntoView().should('be.visible').type(urlData)
     }
 
     /**
