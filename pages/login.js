@@ -26,12 +26,7 @@ export class Login {
     cy.wait(2000);
     
     // Verify that the login was successful
-    cy.get('body').then($body => {
-      // Verify if there are error messages
-      if ($body.find('.alert-danger').length > 0) {
-        throw new Error('Error in login: Invalid credentials');
-      }
-    });
+    cy.url().should('include', '/inbox');
     
     // Verify that the navbar is present and visible
     cy.get('#navbar1', { timeout: 30000 })
