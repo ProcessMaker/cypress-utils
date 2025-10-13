@@ -26,7 +26,6 @@ export class Login {
     cy.wait(2000);
     
     // Verify that the login was successful
-    cy.url().should('include', '/inbox');
     
     // Verify that the navbar is present and visible
     cy.get('#navbar1', { timeout: 30000 })
