@@ -24,7 +24,7 @@ export class AdminAPI {
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.post('/users', payload)
             .then(response => {
-                return response.data.data;
+                return response.data;
             })
             .catch(err => {
                 if (
