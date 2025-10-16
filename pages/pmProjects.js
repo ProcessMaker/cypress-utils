@@ -199,16 +199,10 @@ export class PMProjects {
         this.load();
         {
             this.load();
-            cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
-            this.load();
             cy.xpath(selectors.searchProjects).type(`${projectName}{enter}`).should("have.value", projectName);
             //cy.get(selectors.loadingSpinnerProcess).should("be.visible");
             this.load();
-            cy.xpath(selectors.threePointsBtnXpathProjects).should("be.visible");
-            this.load();
-            cy.xpath(selectors.threePointsBtnXpathProjects).first().should("be.visible");
-            this.load();
-            cy.xpath(selectors.threePointsBtnXpathProjects).first().click({force:true}, {delay: 1000});
+            cy.xpath(selectors.threePointsBtnXpathProjects).first().should("be.visible", {timeout: 5000}).click({force:true}, {delay: 1000});
         
         }
         //cy.xpath('//td//a[contains(text(),"'+projectName+'")]').should("be.visible");
