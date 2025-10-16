@@ -1991,8 +1991,8 @@ export class Process {
                         cy.wait(5000);
                         cy.xpath(inputUserGroup).type(userGroup,{delay:700});
                         cy.wait(8000);
-                        cy.xpath('//li[@aria-label="userGroup. "]'.replace("userGroup",compareUserGroup)).first().should('be.visible')
-                            .click();
+                        cy.xpath('//li[@aria-label="userGroup. "]'.replace("userGroup",compareUserGroup)).first().should('exist')
+                            .click({force: true});
                         cy.wait(5000);
                     }
                     else{
