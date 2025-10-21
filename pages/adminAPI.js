@@ -64,7 +64,7 @@ export class AdminAPI {
             return win.ProcessMaker.apiClient
                 .post("/groups", payload) 
                 .then((response) => {
-                    return response.data.data;
+                    return response.data;
                 })
                 .catch(err => {
                     if (ignoreTakenError && err.response.data.message.toLowerCase() === "the name has already been taken.") {
@@ -87,7 +87,7 @@ export class AdminAPI {
             return win.ProcessMaker.apiClient
                 .post("/group_members", payload)
                 .then((response) => {
-                    return response.data.data;
+                    return response.data;
                 })
                 .catch(err => {
                     if (
