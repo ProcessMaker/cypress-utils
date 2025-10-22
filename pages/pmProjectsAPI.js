@@ -1,4 +1,9 @@
 export class PMProjectsAPI {
+    /**
+     * Retrieves a project by its title from the ProcessMaker API
+     * @param {string} projectTitle - The title of the project to search for
+     * @returns {Promise<Object>} The project object if found, undefined otherwise
+     */
     getProjectByTitleAPI(projectTitle) {
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.get('/projects', { params: { title: projectTitle } }).then(response => {
@@ -8,7 +13,20 @@ export class PMProjectsAPI {
         });
     }
     
-    createProjectAPI(payload, ignoreTakenError) {
+    /**
+     * Creates a new project via the ProcessMaker API
+     * @param {Object} payload - The project data to create in this format
+     * {
+     *   title: "name_project",
+     *   categories: categoryID,
+     *   user_id: userID,
+     *   members: '{"users":["1"], "groups":["1"]}'
+     * };
+     * @param {boolean} ignoreTakenError - If true, returns existing project when name is already taken
+     * @returns {Promise<Object>} The created project data or existing project if name is taken
+     * @throws {Error} If project creation fails and ignoreTakenError is false
+     */
+    createProjectAPI(payload, ignoreTakenError = true) {
         const formData = new FormData();
         formData.append('title', payload.title);
         formData.append('categories', payload.categories);
@@ -17,7 +35,7 @@ export class PMProjectsAPI {
         return cy.window().then(win => {
             return win.ProcessMaker.apiClient.post('/projects', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             }).then(response => {
                 return response.data;
