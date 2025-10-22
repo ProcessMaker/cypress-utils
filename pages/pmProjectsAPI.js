@@ -6,7 +6,7 @@ export class PMProjectsAPI {
      */
     getProjectByTitleAPI(projectTitle) {
         return cy.window().then(win => {
-            return win.ProcessMaker.apiClient.get('/projects', { params: { title: projectTitle } }).then(response => {
+            return win.ProcessMaker.apiClient.get('/projects', { params: { filter: projectTitle } }).then(response => {
                 const project = response.data.data.find(project => project.title === projectTitle);
                 return project;
             });
