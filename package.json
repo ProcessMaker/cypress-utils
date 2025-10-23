@@ -1,6 +1,6 @@
 {
   "name": "@processmaker/cypress-utils",
-  "version": "1.0.563",
+  "version": "1.0.564",
   "description": "ProcessMaker Cypress Testing Utilities",
   "main": "index.js",
   "scripts": {},
