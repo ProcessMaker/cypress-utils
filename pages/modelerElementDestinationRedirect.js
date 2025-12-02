@@ -45,6 +45,9 @@ export class ModelerElementDestinationRedirect {
                 this.selectElementDestination('External URL',iframeOption);
                 this.selectExternalURLInModeler(url,iframeOption);
                 break;
+            case 'Display Next Assigned Task':
+                this.selectElementDestination('Display Next Assigned Task', iframeOption);
+                break;
             default:
                 break;
         }
