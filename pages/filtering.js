@@ -20,7 +20,7 @@ export class Filtering {
         cy.get(selectors.columnHeader.replace("{col}", column)).should("be.visible").trigger(
             "mouseover"
         );
-        cy.get(selectors.openFilter.replace("{col}", column)).click({
+        cy.get(selectors.openFilter).eq(column).find("button").click({
             force: true,
         });
         cy.get(selectors.filterForm, { timeout: 10000 } ).should("be.visible");
