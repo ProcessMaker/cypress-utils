@@ -6,7 +6,7 @@ export default {
     filterFooterBtns: '[class="pm-filter-form"] fieldset',
     tableRequest: '[class="pm-table-container"]',
     //new filteringV1
-    openFilter: '[class="pm-table-ellipsis-column"] [class="pm-table-column-header"]',
+    openFilter: '[class="pm-table-ellipsis-column"] [class="pm-table-filter-button"]',
     threeDots: '.pm-table-ellipsis-column button',
     modalFilter: '[class="pm-filter-form"]',
     filterForm: '[class="pm-filter-form"]',
