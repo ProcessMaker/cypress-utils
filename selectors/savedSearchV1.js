@@ -5,4 +5,5 @@ export default {
   scheduleReportBtn: 'a[title="Scheduled Reports"]',
   notificationBtn: 'button[title="Enable Notifications"]',
   configurationBtn: 'a[title="Configure Saved Search"]',
+  columnTab: "[id='nav-columns-tab']",
 }

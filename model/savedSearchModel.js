@@ -22,6 +22,18 @@ class savedSearchModel {
     searchSavedSearch(criteria) {
         savedSearchAction.searchSavedSearch(criteria)
     }
+
+    pressConfigurationButton(){
+        savedSearchAction.pressConfigurationButton()
+    }
+
+    pressColumnTabSavedSearchById(){
+        savedSearchAction.pressColumnsButton()
+    }
+
+    pressTab(name){
+        savedSearchAction.pressTab(name);
+    }
 }
 
 export default new savedSearchModel();

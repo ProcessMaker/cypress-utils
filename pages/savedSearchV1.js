@@ -21,6 +21,10 @@ class savedSearchAction {
         return cy.get(selector.tabList)
     }
 
+    getColumnTabSaveSearch(){
+        return cy.get(selector.columnTab)
+    }
+
     getSearchSavedSeachField() {
         return cy.get(selector.searchField)
     }
@@ -63,6 +67,50 @@ class savedSearchAction {
         this.getConfigurationButton().click()
     }
 
+    pressColumnsButton(){
+        this.getColumnTabSaveSearch().click()
+    }
+
+    addNameChartConfig(nameChart){
+        cy.get("div[class='saved-search-chart-config'] input[name='title']").type(nameChart)
+    }
+    selectChartTypeConfig(type){
+        let chartType
+        switch(type){
+            case "vertical":
+                chartType = cy.get("div[class='saved-search-chart-config'] canvas[id='bar-chart']")
+            break
+            case "Line":
+                chartType = cy.get("div[class='saved-search-chart-config'] canvas[id='line-chart']")
+            break
+            case "Pie":
+                chartType = cy.get("div[class='saved-search-chart-config'] canvas[id='pie-chart']")
+            break
+            case "Doughnut":
+                chartType = cy.get("div[class='saved-search-chart-config'] canvas[id='doughnut-chart']")
+            break
+            case "Count":
+                chartType = cy.get("div[class='saved-search-chart-config'] div.count-chart-preview")
+            break
+            case "List":
+                chartType = cy.get("div[class='saved-search-chart-config'] div.list-chart-preview")
+            break
+            default:
+                //"bar (horizontal)"
+                chartType = cy.get("div[class='saved-search-chart-config'] canvas[id='horizontalbar-chart']")
+            break
+        }
+        chartType.click()
+    }
+    selectGeneralTabChartConfig(){
+        cy.get("div[class='saved-search-chart-config'] a[id='general-tab']").click()
+    }
+    selectSourceTabChartConfig(){
+        cy.get("div[class='saved-search-chart-config'] a[id='data-tab']").click()
+    }
+    selectDisplayTabChartConfig(){
+        cy.get("div[class='saved-search-chart-config'] a[id='display-tab']").click()
+    }
 }
 
 export default new savedSearchAction();
