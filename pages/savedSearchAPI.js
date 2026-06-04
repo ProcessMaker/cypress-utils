@@ -21,6 +21,17 @@ class SavedSearchAPI {
         });
     });
   }
+
+  createChartAPI(savedSearchID, payload){
+    return cy.window().then(win => {
+      return win.ProcessMaker.apiClient.post(
+          `/saved-searches/${savedSearchID}/charts`,
+          payload
+      ).then(response => {
+          return response.data
+      });
+    });
+  }
 }
 
 export default new SavedSearchAPI();

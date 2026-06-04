@@ -23,6 +23,10 @@ class savedSearchModel {
         savedSearchAction.searchSavedSearch(criteria)
     }
 
+    pressNotificationButton(){
+        savedSearchAction.pressNotificationButton()
+    }
+
     pressConfigurationButton(){
         savedSearchAction.pressConfigurationButton()
     }
@@ -34,6 +38,11 @@ class savedSearchModel {
     pressTab(name){
         savedSearchAction.pressTab(name);
     }
+
+    createChartAPI(savedSearchID, payload){
+        savedSearchAPI.createChartAPI(savedSearchID, payload)
+    }
+
 }
 
 export default new savedSearchModel();
