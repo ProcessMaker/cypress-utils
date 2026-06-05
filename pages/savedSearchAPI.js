@@ -32,6 +32,17 @@ class SavedSearchAPI {
       });
     });
   }
+
+  updateSavedSearchAPI(savedSearchID, payload){
+    return cy.window().then(win => {
+      return win.ProcessMaker.apiClient.put(
+          `/saved-searches/${savedSearchID}`,
+          payload
+      ).then(response => {
+          return response.data
+      });
+    });
+  }
 }
 
 export default new SavedSearchAPI();

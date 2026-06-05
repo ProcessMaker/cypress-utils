@@ -111,6 +111,29 @@ class savedSearchAction {
     selectDisplayTabChartConfig(){
         cy.get("div[class='saved-search-chart-config'] a[id='display-tab']").click()
     }
+
+    fillSendTo(t, element, text){
+        if(t == "css"){
+            cy.get(element).type(text)
+        }else{
+            cy.xpath(element).type(text)
+        }
+    }
+
+    fillEmailSubject(t, element, text){
+        const selector = (t == "css") ? cy.get(element) : cy.xpath(element);
+        selector.type(text);
+    }
+
+    fillBody(t, element, text){
+        const selector = (t == "css") ? cy.get(element) : cy.xpath(element);
+        selector.type(text);
+    }
+
+    pressSaveReport(t, element){
+        const selector = (t=="css") ? cy.get(element): cy.xpath(element)
+        selector.click()
+    }
 }
 
 export default new savedSearchAction();
