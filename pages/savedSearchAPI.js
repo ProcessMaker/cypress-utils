@@ -12,7 +12,8 @@ class SavedSearchAPI {
       });
   }
 
-  deleteSavedSearchByIdAPI(savedSearchID) {
+  deleteSavedSearchByIdAPI(savedSearchID, staticTime=2000) {
+    cy.wait(staticTime)
     return cy.window().then(win => {
         return win.ProcessMaker.apiClient.delete(
             '/saved-searches/'+savedSearchID

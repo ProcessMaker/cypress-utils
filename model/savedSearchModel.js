@@ -7,8 +7,8 @@ class savedSearchModel {
         return savedSearchAPI.createSavedSearchAPI(data)
     }
 
-    deleteSavedSearchByIdAPI(id) {
-        return savedSearchAPI.deleteSavedSearchByIdAPI(id)
+    deleteSavedSearchByIdAPI(id, time=2000) {
+        return savedSearchAPI.deleteSavedSearchByIdAPI(id, time)
     }
 
     openSavedSearchByObject(objSS, type) {
@@ -51,7 +51,7 @@ class savedSearchModel {
         savedSearchAction.pressSendReportButton()
         savedSearchAction.fillSendTo(payload.sendTo.type, payload.sendTo.selector, payload.sendTo.value)
         savedSearchAction.fillEmailSubject(payload.subject.type, payload.subject.selector, payload.subject.value)
-        savedSearchAction.fillBody(payload.body.type, payload.body.selector, payload.body.value)
+        savedSearchAction.fillBody(payload.body.type, payload.body.selector, payload.body.value)        
         savedSearchAction.pressSaveReport(payload.sendReport.type, payload.sendReport.selector)
     }
 
