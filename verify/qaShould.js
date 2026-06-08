@@ -13,6 +13,10 @@ class qaShould {
   elementIsVisible(type, element) {
     this.returnElement(type, element).should("be.visible")
   }
+  
+  elementHaveLenght(type, element, value){
+    this.returnElement(type, element).should('have.length',value);
+  }
 
   elementHaveText(type, element, value) {
     this.returnElement(type, element).invoke('text').should("have.text", value);
