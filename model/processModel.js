@@ -1,6 +1,7 @@
-import { ProcessV1 } from "../pages/processV1"; 
+import { ProcessV1 } from "#pages/processV1"
+import { ProcessAPI } from "#pages/processAPI"
 const processPage = new ProcessV1()
-
+const processAPI = new ProcessAPI()
 export class ProcessModel {
     /**
      * Publishes a process with optional version data
@@ -50,6 +51,16 @@ export class ProcessModel {
         processPage.pressOptionEllipsis()
         processPage.selectOptionEllipsis(option)
         processPage.pressDiscardButtonModal()
+    }
+
+    openCreatedRequest(processData){
+        processData.then(processData => {
+            processPage.openRequestByID(processData.id)
+        })
+    }
+
+    createRequestAPI(processId, nodeId, data = {}){
+        return processAPI.returnDataStartProcessAPI(processId, nodeId, data)
     }
 
 }

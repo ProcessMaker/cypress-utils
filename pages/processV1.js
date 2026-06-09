@@ -96,4 +96,8 @@ export class ProcessV1 {
             cy.get(selectors.discardButton).contains(optionButton).click()
         })
     }
+
+    openRequestByID(id){
+        cy.visit(`/requests/${id}`)
+    }
 }

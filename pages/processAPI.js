@@ -165,4 +165,26 @@ export class ProcessAPI {
             });
         });
     }
+
+
+    /**
+     * Starts a process instance using the ProcessMaker API
+     * @param {string|number} processId - The ID of the process to start
+     * @param {string} nodeId - The node ID where the process should start
+     * @param {Object} data - Optional data to pass to the process instance
+     * @returns {Promise<object>} - A promise that resolves to the process data
+     */
+    returnDataStartProcessAPI(processId, nodeId, data = {}) {
+        return cy.window().then(win => {
+            return win.ProcessMaker.apiClient.post(
+                'process_events/' + processId,
+                data,
+                {
+                    params: { event: nodeId }
+                }
+            ).then(response => {
+                return response.data;
+            });
+        })   
+    }
 }
