@@ -11,6 +11,11 @@ class EndTestEmail {
     return cy.get("div.email_from")
   }
 
+  deleteEmails(email){
+    cy.session("delete email endTest", () => {
+      cy.visit(`https://app.endtest.io/mailbox?email=${email}&action=delete`)
+    })
+  }
   verifyFirstEndTestEmail(emailData){
     cy.session("Verify email endTest", () => {
       cy.visit("https://app.endtest.io/")
