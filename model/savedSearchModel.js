@@ -55,6 +55,13 @@ class savedSearchModel {
         savedSearchAction.pressSaveReport(payload.sendReport.type, payload.sendReport.selector)
     }
 
+    createNewSavedSearch(payload){
+        return savedSearchAPI.createTableAndPolulate(payload);
+    }
+
+    createYamlFile(payload){
+        return savedSearchAPI.createYamlFile(payload);
+    }
 }
 
 export default new savedSearchModel();
